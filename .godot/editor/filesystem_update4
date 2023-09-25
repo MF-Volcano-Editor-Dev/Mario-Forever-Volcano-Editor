@@ -9,3 +9,6 @@ res://EntityBody2D.gd
 res://scenes/templates/Node2D.gd
 res://scenes/templates/level.gd
 res://test.gd
+res://scripts/classes/refcounteds/interface/interface/class_caller.gd
+res://scripts/classes/refcounteds/interface/interface/class_call_rules.gd
+res://scripts/classes/refcounteds/call_rules_entity.gd

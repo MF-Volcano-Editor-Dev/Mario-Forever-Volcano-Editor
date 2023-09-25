@@ -22,10 +22,6 @@ signal collided_wall
 signal collided_ceiling
 signal collided_floor
 
-# == Interfaces == #
-## Interface of [Interface.EntityHandler]
-var entity_handler: EntityHandler = EntityHandler.new(self)
-
 ## Easier accessor to [member CharacterBody2D.velocity], affecting this property (velocity) with [member Node2D.global_rotation]
 @export var motion: Vector2:
 	get: return velocity.rotated(-global_rotation)
@@ -36,47 +32,45 @@ var entity_handler: EntityHandler = EntityHandler.new(self)
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var max_falling_speed: float = 1500
 
 var _temp_up_direction: Vector2
+var _temp_up_direction_real: Vector2
+
+
+func move(delta: float) -> void:
+	_temp_up_direction = up_direction
+	up_direction = up_direction.rotated(global_rotation)
+	_temp_up_direction_real = up_direction
+
+	if is_on_floor() != floor_stop_on_slope:
+		motion.y += gravity * delta
+		if max_falling_speed > 0 && motion.y > max_falling_speed:
+			motion.y = max_falling_speed
+	
+	move_and_slide()
+	if !floor_constant_speed:
+		velocity = get_real_velocity()
+	
+	up_direction = _temp_up_direction
+	
+	if is_on_wall():
+		collided_wall.emit()
+	if is_on_ceiling():
+		collided_ceiling.emit()
+	if is_on_floor():
+		collided_floor.emit()
+
+
+func jump(jumping_speed: float) -> void: 
+	motion.y = -abs(jumping_speed)
+
+
+func accelerate(_to: Vector2, _acceleration: float, _delta: float) -> void: pass
+func accelerate_x(_to: float, _acceleration: float, _delta: float) -> void: pass
+func accelerate_y(_to: float, _acceleration: float, _delta: float) -> void: pass
+func turn_x() -> void: pass
+func turn_y() -> void: pass
+
 
 
 func get_real_up_direction() -> Vector2:
-	return _temp_up_direction
+	return _temp_up_direction_real
 
-
-class EntityHandler extends InterfacesList.EntityHandler:
-	var _temp_up_direction: Vector2
-
-	func move(delta: float) -> void:
-		_object = _object as EntityBody2D
-
-		_temp_up_direction = _object.up_direction
-		_object.up_direction = _object.up_direction.rotated(_object.global_rotation)
-		_object._temp_up_direction = _object.up_direction
-
-		if _object.is_on_floor() != _object.floor_stop_on_slope:
-			_object.motion.y += _object.gravity * delta
-			if _object.max_falling_speed > 0 && _object.motion.y > _object.max_falling_speed:
-				_object.motion.y = _object.max_falling_speed
-		
-		_object.move_and_slide()
-		if !_object.floor_constant_speed:
-			_object.velocity = _object.get_real_velocity()
-		
-		_object.up_direction = _temp_up_direction
-		
-		if _object.is_on_wall():
-			_object.collided_wall.emit()
-		if _object.is_on_ceiling():
-			_object.collided_ceiling.emit()
-		if _object.is_on_floor():
-			_object.collided_floor.emit()
-
-
-	func jump(jumping_speed: float) -> void: 
-		_object.motion.y = -abs(jumping_speed)
-
-
-	func accelerate(_to: Vector2, _acceleration: float, _delta: float) -> void: pass
-	func accelerate_x(_to: float, _acceleration: float, _delta: float) -> void: pass
-	func accelerate_y(_to: float, _acceleration: float, _delta: float) -> void: pass
-	func turn_x() -> void: pass
-	func turn_y() -> void: pass
