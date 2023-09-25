@@ -1,0 +1,11 @@
+res://scripts/classes/refcounteds/interface/interface/class_interface.gd
+res://scripts/classes/nodes/physics/class_entity_body_2d.gd
+res://scenes/templates/test.gd
+res://scenes/templates/level.tscn
+res://main.tscn
+res://scenes/templates/character_body_2d.tscn
+res://scripts/classes/refcounteds/interface/interface/class_interfaces_list.gd
+res://EntityBody2D.gd
+res://scenes/templates/Node2D.gd
+res://scenes/templates/level.gd
+res://test.gd
