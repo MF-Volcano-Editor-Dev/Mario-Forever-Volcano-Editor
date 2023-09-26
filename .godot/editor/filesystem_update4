@@ -1,6 +1,7 @@
-res://scripts/classes/nodes/physics/class_entity_body_2d.gd
-res://scripts/libs/lib_math.gd
-res://scenes/templates/level.tscn
-res://EntityBody2D.gd
+res://scripts/classes/refcounteds/class_interface.gd
+res://scripts/classes/refcounteds/interfaces/interface_entity.gd
 res://main.tscn
+res://main.gd
 res://scripts/libs/lib_extensive_math.gd
+res://EntityBody2D.gd
+res://scenes/templates/level.tscn

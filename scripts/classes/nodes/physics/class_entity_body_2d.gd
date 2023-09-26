@@ -1,6 +1,5 @@
 @icon("class_entity_body_2d.png")
-extends CharacterBody2D
-class_name EntityBody2D
+class_name EntityBody2D extends CharacterBody2D
 
 ## Class that extends the functionality of original [CharacterBody2D] with such like [member gravity] and [member motion]
 ##

@@ -14,7 +14,6 @@ size = Vector2(640, 32)
 position = Vector2(320, 32)
 script = ExtResource("1_ei0d7")
 gravity = 500.0
-auto_gravity = null
 max_falling_speed = 500.0
 metadata/_edit_group_ = true
 
