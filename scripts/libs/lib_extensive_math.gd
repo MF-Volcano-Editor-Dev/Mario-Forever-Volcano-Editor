@@ -24,9 +24,14 @@ class Vector2D:
 ##
 ##
 class Ellipse:
+	const _MIN_SAMPLES: int = 256
+
+	## Origin of the ellipse
 	var origin: Vector2
+	## Amplitude of the ellipse
 	var amplitude: Vector2:
 		set(value): amplitude = value.abs()
+	## Rotation of the ellipse
 	var rotation: float
 
 
@@ -35,11 +40,12 @@ class Ellipse:
 		amplitude = p_amplitude
 		rotation = p_rotation
 	
-
+	## Returns the point's position on the ellipse with given [param phase]
 	func get_point_on_ellipse(phase: float) -> Vector2:
 		return origin + Vector2(amplitude.x * cos(phase), amplitude.y * sin(phase)).rotated(rotation)
 	
 	
+	## Returns the focal length of the ellipse
 	func get_focal_length() -> float:
 		var ret: float = 0
 
@@ -51,6 +57,7 @@ class Ellipse:
 		return ret
 
 
+	## Returns the eccentricity of the ellipse
 	func get_eccentricity() -> float:
 		var long_axis: float = \
 			amplitude.x if amplitude.x > amplitude.y \
@@ -60,20 +67,34 @@ class Ellipse:
 		return get_focal_length() / 2 / long_axis
 	
 
-	func get_size() -> float:
+	## Returns the area of the ellipse
+	func get_area() -> float:
 		return PI * amplitude.x * amplitude.y
 	
 
-	func get_circle(sampling_times: int = 256) -> float:
+	## Returns length of the ellipse[b]
+	## [br]
+	## [b]Note:[/b] Due to the speciality of ellipse, you need to input the samples to provide calculation accuracy.
+	## With minimum of 256, and if lower, an error will be thrown
+	func get_length(samples: int = _MIN_SAMPLES) -> float:
 		var ret: float = 0
 		
-		var phase: float = 0
-		var point: Vector2 = Vector2.ZERO
-		for i in sampling_times:
-			phase += TAU * float(i) / float(sampling_times)
+		# If the ellipse is a circle, then C = 2πr
+		if amplitude.x == amplitude.y:
+			return 2 * PI * amplitude.x
+		# If not a circle, then use iteration calculation
+		else:
+			var phase: float = 0
+			var point: Vector2 = Vector2.ZERO
+			
+			if samples < _MIN_SAMPLES:
+				printerr("Sample time is lower than %s and the result will be inaccurate!" % [_MIN_SAMPLES])
 
-			var _point: Vector2 = get_point_on_ellipse(phase)
-			ret += _point.distance_to(point)
+			for i in samples:
+				phase += TAU * float(i) / float(samples)
+
+				var _point: Vector2 = get_point_on_ellipse(phase)
+				ret += _point.distance_to(point)
 		
 		return ret
 
