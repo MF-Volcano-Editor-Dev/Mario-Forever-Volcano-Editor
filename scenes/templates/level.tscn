@@ -1,6 +1,31 @@
-[gd_scene load_steps=2 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=4 format=3 uid="uid://xm2gptsn2yh8"]
 
-[ext_resource type="Script" path="res://scenes/templates/level.gd" id="1_rw0q8"]
+[ext_resource type="Script" path="res://EntityBody2D.gd" id="1_ei0d7"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1fvja"]
+radius = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_18bc3"]
+size = Vector2(640, 32)
 
 [node name="Level" type="Node2D"]
-script = ExtResource("1_rw0q8")
+
+[node name="EntityBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(320, 32)
+script = ExtResource("1_ei0d7")
+gravity = 500.0
+auto_gravity = null
+max_falling_speed = 500.0
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntityBody2D"]
+shape = SubResource("CircleShape2D_1fvja")
+debug_color = Color(0, 0.647059, 0.227451, 0.419608)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, 448)
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(320, 16)
+shape = SubResource("RectangleShape2D_18bc3")

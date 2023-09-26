@@ -18,8 +18,11 @@ class_name EntityBody2D
 ## 1. [member Node2D.global_rotation] is used for assignment of the body's gravity direction(and also its [member CharacterBody2D.up_direction]), 
 ## so if you expect to rotate the body, please use [method rotate_body] instead of directly changing the property!
 
+## Emitted when the body collides with a wall
 signal collided_wall
+## Emitted when the body collides with a ceiling
 signal collided_ceiling
+## Emitted when the body collides with a floor
 signal collided_floor
 
 ## Easier accessor to [member CharacterBody2D.velocity], affecting this property (velocity) with [member Node2D.global_rotation]
@@ -28,22 +31,26 @@ signal collided_floor
 	set(value): velocity = value.rotated(global_rotation)
 ## Gravity acceleration of the body
 @export_range(-1, 1, 0.001, "or_less", "or_greater", "hide_slider", "suffix: px/s²") var gravity: float
+@export var gravity_direction: Vector2 = Vector2.DOWN:
+	set(value): gravity_direction = value.normalized()
 ## Maximum of [member motion].y under the action of gravity. This property is POSITIVE ONLY.
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var max_falling_speed: float = 1500
 
+var _velocity: Vector2
+
 var _temp_up_direction: Vector2
-var _temp_up_direction_real: Vector2
+var _temp_up_direction_real: Vector2:
+	get = get_real_up_direction, 
+	set = set_real_up_direction
 
 
 func move(delta: float) -> void:
+	_velocity = velocity
 	_temp_up_direction = up_direction
-	up_direction = up_direction.rotated(global_rotation)
 	_temp_up_direction_real = up_direction
 
 	if is_on_floor() != floor_stop_on_slope:
-		motion.y += gravity * delta
-		if max_falling_speed > 0 && motion.y > max_falling_speed:
-			motion.y = max_falling_speed
+		velocity = ExtensiveMath.Vector2D.projection_limit(velocity + gravity_direction * gravity * delta, gravity_direction, max_falling_speed)
 	
 	move_and_slide()
 	if !floor_constant_speed:
@@ -69,6 +76,10 @@ func accelerate_y(_to: float, _acceleration: float, _delta: float) -> void: pass
 func turn_x() -> void: pass
 func turn_y() -> void: pass
 
+
+func set_real_up_direction(value: Vector2) -> void:
+	up_direction = value.rotated(global_rotation)
+	_temp_up_direction_real = up_direction
 
 
 func get_real_up_direction() -> Vector2:
