@@ -8,23 +8,23 @@ class_name ExtensiveMath
 ## Static library subclass to provide a branch of useful methods of calculus calculations
 ##
 ## [b]Notes:[/b][br]
-## 1. It's NOT RECOMMENDED to use these methods in GDScript because of the bad performance
-## when calculation is soaring, including over-high samples and over-amount calculation calls[br]
+## 1. It's NOT RECOMMENDED to use these methods in GDScript because of its bad performance
+## when calculations is soaring, including over-high samples and over-amount calculation calls[br]
 ## If you do want to do so, please consider C# and translate these codes into it.[br]
 ## 2. All [param function]s are required to be and can ONLY be:
 ## [codeblock]
 ## func(x: float) -> float: return <expression with x>
 ## [/codeblock]
 ## Of course, you can replace x to any identifier you want, such as a, b, y, th, etc.
-## @tutorial(Calling C# Methods in GDScript): https://docs.godotengine.org/en/4.0/tutorials/scripting/cross_language_scripting.html#calling-methods
+## @tutorial(Calling C# Methods in GDScript(For Extensive Calculations)): https://docs.godotengine.org/en/4.0/tutorials/scripting/cross_language_scripting.html#calling-methods
 class Calculus:
 	## Default sampling amount of intergral calculation
 	const INTERGRAL_SAMPLE: int = 2400
-	## Default sampling amount of derivative calculation, often being the reciprocal of [const INTERGRAL_SAMPLE]
+	## Default sampling amount of derivative calculation, often being the reciprocal of [constant INTERGRAL_SAMPLE]
 	const DERIVATIVE_SAMPLE: float = 1.0 / float(INTERGRAL_SAMPLE)
 	
 	## Returns derivative of a [param function] at [param x0]. 
-	## The lower [param sample] is, the more accuracy the result will present with
+	## The lower [param sample] is, the more accuracy the result will be presented with
 	static func derivative_at(function: Callable, x0: float, sample: float = DERIVATIVE_SAMPLE) -> float:
 		assert(sample >= INTERGRAL_SAMPLE, "Sample amount (%s) is higher than %s, derivative calculation failed!" % [sample, DERIVATIVE_SAMPLE])
 		return (function.call(x0 + sample) - function.call(x0)) / sample
@@ -51,9 +51,9 @@ class Calculus:
 		return ret
 	
 	
-	## Returns the result of a Legender Ellipse Integral II [E(x)], with [param top] and [param k] input[br]
+	## Returns the result of a Legendre Elliptic Integral II [E(x)], with [param top] and [param k] input[br]
 	## E(x) = ∫[0, top]√(1 - k * sin(t)^2)dt, in which k is often a square-powered value
-	static func legender_ellipse_ii(top: float, k: float, sample: int = INTERGRAL_SAMPLE) -> float:
+	static func legendre_elliptic_ii(top: float, k: float, sample: int = INTERGRAL_SAMPLE) -> float:
 		return integral_finite(
 			func(t: float) -> float:
 				return sqrt(1 - k * (sin(t) ** 2)),
@@ -136,10 +136,11 @@ class Ellipse:
 		# If the ellipse is a circle, then C = 2πr
 		if amplitude.x == amplitude.y:
 			return 2 * PI * amplitude.x
-		# If not a circle, then use ellipse integral
+		# If not a circle, then use Legendre Elliptical Integral II [E(x)]
+		# C = 4aE(e^2)
 		else:
 			var a: float = get_long_axis()
 			var e: float = get_eccentricity()
-			ret = 4 * a * Calculus.legender_ellipse_ii(PI/2, e ** 2)
+			ret = 4 * a * Calculus.legendre_elliptic_ii(PI/2, e ** 2, sample)
 		
 		return ret
