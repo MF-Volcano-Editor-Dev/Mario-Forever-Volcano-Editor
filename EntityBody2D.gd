@@ -2,10 +2,7 @@ extends EntityBody2D
 
 
 func _ready() -> void:
-	print(ExtensiveMath.Calculus.derivative_at(
-			func(x: float) -> float: return x ** 2,
-			0.5)
-	)
+	print(ExtensiveMath.Ellipse.new(Vector2.ZERO, Vector2(2, 3)).get_length_fast())
 
 
 func _physics_process(delta: float) -> void:

@@ -26,7 +26,7 @@ class Calculus:
 	## Returns derivative of a [param function] at [param x0]. 
 	## The lower [param sample] is, the more accuracy the result will be presented with
 	static func derivative_at(function: Callable, x0: float, sample: float = DERIVATIVE_SAMPLE) -> float:
-		assert(sample >= INTERGRAL_SAMPLE, "Sample amount (%s) is higher than %s, derivative calculation failed!" % [sample, DERIVATIVE_SAMPLE])
+		assert(sample >= DERIVATIVE_SAMPLE, "Sample amount (%s) is higher than %s, derivative calculation failed!" % [sample, DERIVATIVE_SAMPLE])
 		return (function.call(x0 + sample) - function.call(x0)) / sample
 	
 	## Returns integral of a [param function] between/from [param bottom] and/to [param top]. 
@@ -126,11 +126,25 @@ class Ellipse:
 		return PI * amplitude.x * amplitude.y
 	
 	
-	## Returns length of the ellipse[b]
+	## Returns the circumference pf the ellipse (in Ramanujan's Ellpitic Length Formula)
+	## [br]
+	## [b]Note:[/b] This runs faster than [method get_length_accurate], and normally returns accurate results;
+	## if you want to get more accurate one, please consider that method.
+	func get_circumference_fast() -> float:
+		var a: float = get_long_axis()
+		var b: float = get_short_axis()
+		var lambda: float = (a - b) / (a + b)
+		var p: float = 3 * lambda ** 2
+		var q: float = 1 + p / (10 + sqrt(4 - p))
+		
+		return PI * (a + b) * q
+	
+	
+	## Returns the circumference of the ellipse[b]
 	## [br]
 	## [b]Note:[/b] Due to the speciality of ellipse, you need to input the samples to provide calculation accuracy.
 	## With minimum of 256, and if lower, an error will be thrown
-	func get_length(sample: int = Calculus.INTERGRAL_SAMPLE) -> float:
+	func get_circumference_accurate(sample: int = Calculus.INTERGRAL_SAMPLE) -> float:
 		var ret: float = 0
 		
 		# If the ellipse is a circle, then C = 2πr

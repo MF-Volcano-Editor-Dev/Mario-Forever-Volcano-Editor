@@ -1,7 +1,4 @@
-res://scripts/classes/refcounteds/class_interface.gd
-res://scripts/classes/refcounteds/interfaces/interface_entity.gd
-res://main.tscn
-res://main.gd
-res://scripts/libs/lib_extensive_math.gd
 res://EntityBody2D.gd
+res://main.tscn
 res://scenes/templates/level.tscn
+res://classes/libs/lib_extensive_math.gd
