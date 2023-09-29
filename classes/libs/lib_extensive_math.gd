@@ -23,11 +23,13 @@ class Calculus:
 	## Default sampling amount of derivative calculation, often being the reciprocal of [constant INTERGRAL_SAMPLE]
 	const DERIVATIVE_SAMPLE: float = 1.0 / float(INTERGRAL_SAMPLE)
 	
+	
 	## Returns derivative of a [param function] at [param x0]. 
 	## The lower [param sample] is, the more accuracy the result will be presented with
 	static func derivative_at(function: Callable, x0: float, sample: float = DERIVATIVE_SAMPLE) -> float:
 		assert(sample >= DERIVATIVE_SAMPLE, "Sample amount (%s) is higher than %s, derivative calculation failed!" % [sample, DERIVATIVE_SAMPLE])
 		return (function.call(x0 + sample) - function.call(x0)) / sample
+	
 	
 	## Returns integral of a [param function] between/from [param bottom] and/to [param top]. 
 	## The higher [param sample] is, the more accurate the result will be
@@ -52,7 +54,7 @@ class Calculus:
 	
 	
 	## Returns the result of a Legendre Elliptic Integral II [E(x)], with [param top] and [param k] input[br]
-	## E(x) = ∫[0, top]√(1 - k * sin(t)^2)dt, in which k is often a square-powered value
+	## E(top, x) = ∫[0, top]√(1 - k * sin(t)^2)dt, in which k is often a square-powered value
 	static func legendre_elliptic_ii(top: float, k: float, sample: int = INTERGRAL_SAMPLE) -> float:
 		return integral_finite(
 			func(t: float) -> float:
@@ -80,8 +82,6 @@ class Vector2D:
 ##
 ##
 class Ellipse:
-	const _MIN_SAMPLES: int = 1024
-	
 	## Origin of the ellipse
 	var origin: Vector2
 	## Amplitude of the ellipse
@@ -95,6 +95,7 @@ class Ellipse:
 		origin = p_origin
 		amplitude = p_amplitude
 		rotation = p_rotation
+	
 	
 	## Returns the point's position on the ellipse with given [param phase]
 	func get_point_on_ellipse(phase: float) -> Vector2:
@@ -158,3 +159,4 @@ class Ellipse:
 			ret = 4 * a * Calculus.legendre_elliptic_ii(PI/2, e ** 2, sample)
 		
 		return ret
+
