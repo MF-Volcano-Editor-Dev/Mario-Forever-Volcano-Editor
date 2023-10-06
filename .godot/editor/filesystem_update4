@@ -1,4 +1,1 @@
-res://EntityBody2D.gd
-res://main.tscn
 res://scenes/templates/level.tscn
-res://classes/libs/lib_extensive_math.gd

@@ -17,7 +17,7 @@ class_name ExtensiveMath
 ## [/codeblock]
 ## Of course, you can replace x to any identifier you want, such as a, b, y, th, etc.
 ## @tutorial(Calling C# Methods in GDScript(For Extensive Calculations)): https://docs.godotengine.org/en/4.0/tutorials/scripting/cross_language_scripting.html#calling-methods
-class Calculus:
+class Calculus2:
 	## Default sampling amount of intergral calculation
 	const INTERGRAL_SAMPLE: int = 2400
 	## Default sampling amount of derivative calculation, often being the reciprocal of [constant INTERGRAL_SAMPLE]
@@ -66,7 +66,7 @@ class Calculus:
 ## Static sublibrary class to provide extra methods for [Vector2D]'s operations
 ##
 ##
-class Vector2D:
+class Vector2D2:
 	static func projection_limit(vector: Vector2, onto: Vector2, length: float) -> Vector2:
 		# Get projection on the vector "onto"
 		var v: Vector2 = vector.project(onto)
@@ -81,7 +81,7 @@ class Vector2D:
 ## Class that provides an ellipse with methods to use
 ##
 ##
-class Ellipse:
+class Ellipse2:
 	## Origin of the ellipse
 	var origin: Vector2
 	## Amplitude of the ellipse
@@ -145,7 +145,7 @@ class Ellipse:
 	## [br]
 	## [b]Note:[/b] Due to the speciality of ellipse, you need to input the samples to provide calculation accuracy.
 	## With minimum of 256, and if lower, an error will be thrown
-	func get_circumference_accurate(sample: int = Calculus.INTERGRAL_SAMPLE) -> float:
+	func get_circumference_accurate(sample: int = Calculus2.INTERGRAL_SAMPLE) -> float:
 		var ret: float = 0
 		
 		# If the ellipse is a circle, then C = 2πr
@@ -156,7 +156,7 @@ class Ellipse:
 		else:
 			var a: float = get_long_axis()
 			var e: float = get_eccentricity()
-			ret = 4 * a * Calculus.legendre_elliptic_ii(PI/2, e ** 2, sample)
+			ret = 4 * a * Calculus2.legendre_elliptic_ii(PI/2, e ** 2, sample)
 		
 		return ret
 
