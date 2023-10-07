@@ -156,7 +156,7 @@ class Ellipse2:
 		else:
 			var a: float = get_long_axis()
 			var e: float = get_eccentricity()
-			ret = 4 * a * Calculus2.legendre_elliptic_ii(PI/2, e ** 2, sample)
+			ret = 4.0 * a * Calculus2.legendre_elliptic_ii(PI/2, e ** 2, sample)
 		
 		return ret
 
