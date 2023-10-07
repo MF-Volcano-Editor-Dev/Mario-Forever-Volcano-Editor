@@ -1,0 +1,6 @@
+[submodule "gdextension/mathorm"]
+	path = gdextension/mathorm
+	url = https://github.com/Lazy-Rabbit-2001/Godot-4-Mathorm
+[submodule "gdextension/entity_body_2d"]
+	path = gdextension/entity_body_2d
+	url = https://github.com/Lazy-Rabbit-2001/Godot-4-EntityBody2D
