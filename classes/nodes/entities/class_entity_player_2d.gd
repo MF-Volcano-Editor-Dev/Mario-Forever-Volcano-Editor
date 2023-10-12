@@ -1,0 +1,1 @@
+class_name EntityPlayer2D extends EntityBody2D

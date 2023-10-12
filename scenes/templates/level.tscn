@@ -1,3 +1,11 @@
-[gd_scene format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=3 format=3 uid="uid://xm2gptsn2yh8"]
+
+[ext_resource type="Script" path="res://lib_effect.gd" id="1_2etbr"]
+[ext_resource type="Texture2D" uid="uid://dhavc20jh01hs" path="res://icon.svg" id="2_nmd3p"]
 
 [node name="Level" type="Node2D"]
+script = ExtResource("1_2etbr")
+
+[node name="Icon" type="Sprite2D" parent="."]
+position = Vector2(288, 200)
+texture = ExtResource("2_nmd3p")

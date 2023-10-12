@@ -4,3 +4,6 @@
 [submodule "gdextension/entity_body_2d"]
 	path = gdextension/entity_body_2d
 	url = https://github.com/Lazy-Rabbit-2001/Godot-4-EntityBody2D
+[submodule "gdextension/effects_2d"]
+	path = gdextension/effects_2d
+	url = https://github.com/Lazy-Rabbit-2001/Godot-4-Effects2D.git
