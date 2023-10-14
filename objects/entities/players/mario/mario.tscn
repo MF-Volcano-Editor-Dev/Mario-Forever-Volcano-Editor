@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bv26woxthkhv6"]
+
+[ext_resource type="Script" path="res://classes/nodes/entities/class_entity_player_2d.gd" id="1_7xriq"]
+
+[node name="Mario" type="EntityBody2D"]
+script = ExtResource("1_7xriq")
+nickname = &"Mario"
+metadata/_edit_pinned_properties_ = [&"nickname"]

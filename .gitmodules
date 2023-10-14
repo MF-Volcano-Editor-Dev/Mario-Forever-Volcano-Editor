@@ -7,3 +7,6 @@
 [submodule "gdextension/effects_2d"]
 	path = gdextension/effects_2d
 	url = https://github.com/Lazy-Rabbit-2001/Godot-4-Effects2D.git
+[submodule "gdextension/state_machine"]
+	path = gdextension/state_machine
+	url = https://github.com/Lazy-Rabbit-2001/Godot-4-StateMachine.git
