@@ -6,7 +6,7 @@ var _player_suits_list: Dictionary:
 
 func _ready() -> void:
 	for i: MarioSuit2D in get_children():
-		var id: StringName = i.character_id + &"/" + i.suit_id
+		var id: StringName = get_player_suit_id(i.character_id, i.suit_id)
 		if !id in _player_suits_list:
 			_player_suits_list.merge({id: load(i.scene_file_path)})
 		queue_free()
@@ -18,6 +18,14 @@ func get_player_suits() -> Dictionary:
 
 func get_player_suit(id: StringName) -> MarioSuit2D:
 	if !id in _player_suits_list:
-		printerr("No such id %s registered!" % [id])
 		return null
-	return (_player_suits_list[id] as PackedScene).instantiate()
+	
+	var pck: PackedScene = _player_suits_list[id] as PackedScene
+	if !pck:
+		return null
+	
+	return pck.instantiate()
+
+
+func get_player_suit_id(character_id: StringName, suit_id: StringName) -> StringName:
+	return character_id + &"/" + suit_id

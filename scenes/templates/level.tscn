@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=2 format=3 uid="uid://xm2gptsn2yh8"]
+
+[ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_4f82d"]
 
 [node name="Level" type="Node2D"]
+
+[node name="Mario" parent="." instance=ExtResource("1_4f82d")]
+position = Vector2(264, 256)
