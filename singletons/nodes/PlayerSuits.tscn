@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2vriv3u48i0"]
+
+[ext_resource type="Script" path="res://singletons/scripts/PlayerSuits.gd" id="1_n51ai"]
+[ext_resource type="PackedScene" uid="uid://bvq8x1atfxyaq" path="res://objects/entities/players/mario/suits/mario_small.tscn" id="2_25y1a"]
+
+[node name="PlayerSuits" type="Node2D"]
+script = ExtResource("1_n51ai")
+
+[node name="MarioSmall" parent="." instance=ExtResource("2_25y1a")]

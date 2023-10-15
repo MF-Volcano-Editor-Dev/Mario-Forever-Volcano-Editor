@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://bvq8x1atfxyaq"]
+
+[ext_resource type="Script" path="res://classes/nodes/entities/player_mario/class_mario_suit_2d.gd" id="1_87puv"]
+[ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://assets/textures/entities/players/mario/mario_small.png" id="2_k3flq"]
+[ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_lib.res" id="3_6ku0f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5l343"]
+size = Vector2(20, 28)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5655p"]
+
+[node name="MarioSmall" type="Node2D"]
+script = ExtResource("1_87puv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_5l343")
+debug_color = Color(0.658824, 0.321569, 1, 0.419608)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_mask = 30
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_5l343")
+debug_color = Color(0.776471, 0.439216, 0, 0.419608)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+texture = ExtResource("2_k3flq")
+hframes = 13
+
+[node name="PosBubble" type="Marker2D" parent="Sprite2D"]
+position = Vector2(4, 16)
+gizmo_extents = 4.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5655p"),
+"Mario": ExtResource("3_6ku0f")
+}
+
+[node name="Behavior" type="Node" parent="."]

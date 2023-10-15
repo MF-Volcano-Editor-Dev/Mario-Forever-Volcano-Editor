@@ -1,8 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://bv26woxthkhv6"]
 
-[ext_resource type="Script" path="res://classes/nodes/entities/class_entity_player_2d.gd" id="1_7xriq"]
+[ext_resource type="Script" path="res://classes/nodes/entities/player_mario/class_mario_2d.gd" id="1_5eyu0"]
 
 [node name="Mario" type="EntityBody2D"]
-script = ExtResource("1_7xriq")
-nickname = &"Mario"
+collision_mask = 2
+script = ExtResource("1_5eyu0")
+nickname = &"Player"
 metadata/_edit_pinned_properties_ = [&"nickname"]
