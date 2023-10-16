@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://classes/nodes/entities/player_mario/class_mario_2d.gd" id="1_5eyu0"]
 
 [node name="Mario" type="EntityBody2D"]
+gravity = 2500.0
+max_falling_speed = 500.0
 collision_mask = 2
 script = ExtResource("1_5eyu0")
 nickname = &"Player"

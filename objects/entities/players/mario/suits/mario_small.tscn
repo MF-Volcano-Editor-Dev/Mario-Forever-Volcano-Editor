@@ -1,16 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvq8x1atfxyaq"]
+[gd_scene load_steps=7 format=3 uid="uid://bvq8x1atfxyaq"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/player_mario/class_mario_suit_2d.gd" id="1_87puv"]
 [ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://assets/textures/entities/players/mario/mario_small.png" id="2_k3flq"]
 [ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_lib.res" id="3_6ku0f"]
+[ext_resource type="Script" path="res://objects/entities/players/mario/scripts/mario_behavior_default.gd" id="4_7qajs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5l343"]
 size = Vector2(20, 28)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5655p"]
 
-[node name="MarioSmall" type="Node2D"]
+[node name="MarioSmall" type="Node2D" node_paths=PackedStringArray("direct_manage_nodes", "collision_boxes_normal")]
 script = ExtResource("1_87puv")
+direct_manage_nodes = [NodePath("CollisionShape2D")]
+collision_boxes_normal = [NodePath("CollisionShape2D"), NodePath("Area2D/CollisionShape2D")]
+metadata/_edit_pinned_properties_ = [&"direct_manage_nodes"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
@@ -29,6 +33,7 @@ debug_color = Color(0.776471, 0.439216, 0, 0.419608)
 position = Vector2(0, -16)
 texture = ExtResource("2_k3flq")
 hframes = 13
+frame = 1
 
 [node name="PosBubble" type="Marker2D" parent="Sprite2D"]
 position = Vector2(4, 16)
@@ -41,3 +46,4 @@ libraries = {
 }
 
 [node name="Behavior" type="Node" parent="."]
+script = ExtResource("4_7qajs")

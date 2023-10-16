@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://singletons/scripts/PlayerSuits.gd" id="1_n51ai"]
 [ext_resource type="PackedScene" uid="uid://bvq8x1atfxyaq" path="res://objects/entities/players/mario/suits/mario_small.tscn" id="2_25y1a"]
 
-[node name="PlayerSuits" type="Node2D"]
+[node name="PlayerSuits" type="Node"]
 script = ExtResource("1_n51ai")
 
 [node name="MarioSmall" parent="." instance=ExtResource("2_25y1a")]

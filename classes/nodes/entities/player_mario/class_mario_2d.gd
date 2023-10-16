@@ -4,7 +4,7 @@ class_name Mario2D extends EntityPlayer2D
 @export var character_id: StringName = &"mario"
 @export var suit_id: StringName = &"small":
 	set = change_suit
-@export var suit_appear_animation: bool = true
+@export var suit_no_appear_animation: bool = true
 
 var _suit: MarioSuit2D:
 	get = get_suit
@@ -17,7 +17,7 @@ func _ready() -> void:
 ##regionbegin SuitBehaviors
 func change_suit(new_suit_id: StringName) -> void:
 	# Removes previous suit
-	for i in get_children():
+	for i: Node in get_children():
 		if !i.is_in_group(&"#mario_cpn_fixed"):
 			i.queue_free()
 	
@@ -35,8 +35,9 @@ func change_suit(new_suit_id: StringName) -> void:
 	_suit.deploy(self)
 	
 	# Appear animation
-	if suit_appear_animation:
-		suit_appear_animation = false
+	if suit_no_appear_animation:
+		suit_no_appear_animation = false
+	else:
 		await _suit.ready # Here must wait for the ready to make sure the suit has been totally deployed
 		_suit.appear()
 

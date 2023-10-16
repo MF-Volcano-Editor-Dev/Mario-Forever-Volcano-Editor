@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 var _player_suits_list: Dictionary:
 	get = get_player_suits
@@ -9,7 +9,7 @@ func _ready() -> void:
 		var id: StringName = get_player_suit_id(i.character_id, i.suit_id)
 		if !id in _player_suits_list:
 			_player_suits_list.merge({id: load(i.scene_file_path)})
-		queue_free()
+		i.free()
 
 
 func get_player_suits() -> Dictionary:
