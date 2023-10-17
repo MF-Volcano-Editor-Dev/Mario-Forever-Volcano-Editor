@@ -26,10 +26,10 @@ func deploy(on: Mario2D) -> void:
 		await on.ready
 	
 	for i: Node in direct_manage_nodes:
-		i.reparent(on, false)
+		i.reparent.call_deferred(on, false)
 	
 	_player = on
-	_player.add_child(self)
+	_player.add_child.call_deferred(self)
 
 
 ##regionbegin Animations
