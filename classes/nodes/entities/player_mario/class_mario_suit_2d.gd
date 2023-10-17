@@ -13,6 +13,7 @@ class_name MarioSuit2D extends Node2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var body: Area2D = $Area2D
+@onready var sound: AudioStreamPlayer2D = $Sound
 
 var _player: Mario2D:
 	get = get_player

@@ -6,6 +6,7 @@
 gravity = 2500.0
 max_falling_speed = 500.0
 collision_mask = 2
+floor_snap_length = 12.0
 script = ExtResource("1_5eyu0")
-nickname = &"Player"
+nickname = &"Mario"
 metadata/_edit_pinned_properties_ = [&"nickname"]

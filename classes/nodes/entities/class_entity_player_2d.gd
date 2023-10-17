@@ -6,8 +6,7 @@ class_name EntityPlayer2D extends EntityBody2D
 @export var nickname: StringName = &"Player"
 @export_enum("Left: -1", "Right: 1") var direction: int = 1
 
-@onready var state_machine: StateMachine = StateMachine.new()
-@onready var effects_2d: Effects2D = Effects2D.new()
+var state_machine: StateMachine = StateMachine.new()
 
 
 func _ready() -> void:

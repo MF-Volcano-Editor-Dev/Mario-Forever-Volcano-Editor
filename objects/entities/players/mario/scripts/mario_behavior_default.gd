@@ -20,18 +20,29 @@ extends Node
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var acceleration: float = 312.5
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration: float = 312.5
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var turning_aceleration: float = 1250
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var max_walking_speed: float = 262.5
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var max_running_speed: float = 375
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var min_speed: float
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var max_walking_speed: float = 175
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var max_running_speed: float = 350
+@export_subgroup("Jumping")
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var initial_jumping_speed: float = 700
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var jumping_acceleration_static: float = 1000
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var jumping_acceleration_dynamic: float = 1250
+@export_subgroup("Swimming")
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var swimming_speed: float = 150
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var swimming_jumping_speed: float = 450
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var swimming_peak_speed: float = 150
 
 var _left_right: int
 var _up_down: int
 var _jumped: bool
-var _jumpinig: bool
+var _jumping: bool
+var _jumped_already: bool
 var _running: bool
 
 @onready var mario: Mario2D = get_parent().get_player()
 @onready var sprite: Sprite2D = $"../Sprite2D"
 @onready var animation: AnimationPlayer = $"../AnimationPlayer"
+@onready var sound: AudioStreamPlayer2D = $"../Sound"
 
 
 func _ready() -> void:
@@ -48,8 +59,11 @@ func _process(delta: float) -> void:
 	_animation_process(delta)
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
+	# Core
 	mario.move_and_slide()
+	mario.correct_onto_floor()
+	mario.correct_on_wall_corner()
 
 
 ##regionbegin Controls
@@ -57,7 +71,7 @@ func _control_process() -> void:
 	_left_right = int(Input.get_axis(_get_key_input(key_inputs.left), _get_key_input(key_inputs.right)))
 	_up_down = int(Input.get_axis(_get_key_input(key_inputs.up), _get_key_input(key_inputs.down)))
 	_jumped = Input.is_action_just_pressed(_get_key_input(key_inputs.jump))
-	_jumpinig = Input.is_action_pressed(_get_key_input(key_inputs.jump))
+	_jumping = Input.is_action_pressed(_get_key_input(key_inputs.jump))
 	_running = Input.is_action_pressed(_get_key_input(key_inputs.run))
 
 
@@ -73,7 +87,7 @@ func _accelerate(to: float, acce_with_delta: float) -> void:
 func _movement_x_process(delta: float) -> void:
 	# Deceleration
 	if _is_decelerating():
-		_accelerate(0, deceleration * delta)
+		_accelerate(min_speed, deceleration * delta)
 		return
 	
 	# Initial speed
@@ -93,16 +107,54 @@ func _movement_x_process(delta: float) -> void:
 
 
 func _movement_y_process(delta: float) -> void:
-	if _jumped:
-		mario.jump(600)
+	if mario.state_machine.is_state(&"no_jumping"):
+		return
+	
+	var underwater: bool = mario.state_machine.is_state(&"underwater")
+	var underwater_jumpout: bool = mario.state_machine.is_state(&"underwater_jumpout")
+	
+	if _is_jumpable():
+		# Underwater
+		if underwater:
+			# Jumping out of water
+			if underwater_jumpout:
+				mario.jump(swimming_jumping_speed)
+			# Swimming
+			else:
+				mario.jump(swimming_speed)
+			_jumped_already = true
+		elif _jumped && mario.is_on_floor():
+			mario.jump(initial_jumping_speed)
+			_jumped_already = true
+	
+	# Jumping acceleration
+	if _jumping && mario.is_leaving_ground() && !mario.is_on_floor():
+		var jumping_acce: float = jumping_acceleration_dynamic if absf(mario.motion.x) > 31.25 else jumping_acceleration_static
+		mario.jump(jumping_acce * delta, true)
+	
+	# Underwater peak swimming speed
+	var up_velocity: Vector2 = mario.velocity.project(mario.get_real_up_direction())
+	if underwater && up_velocity.length_squared() > swimming_peak_speed ** 2:
+		mario.velocity = Vec2D.get_projection_limit(mario.velocity, up_velocity.normalized(), swimming_peak_speed)
+	
+	_test_reset_jumping()
 
 
 ##region Test for Movement
 func _is_decelerating() -> bool:
 	return _left_right == 0 || mario.state_machine.is_state(&"crouching")
 
+
 func _is_running() -> bool:
 	return _running
+
+
+func _is_jumpable() -> bool:
+	return _jumped && !_jumped_already
+
+
+func _test_reset_jumping() -> void:
+	if !_jumping && _jumped_already: _jumped_already = false
 ##endregion
 
 ##endregion
