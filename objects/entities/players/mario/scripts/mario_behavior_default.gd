@@ -42,7 +42,7 @@ var _running: bool
 @onready var mario: Mario2D = get_parent().get_player()
 @onready var sprite: Sprite2D = $"../Sprite2D"
 @onready var animation: AnimationPlayer = $"../AnimationPlayer"
-@onready var sound: AudioStreamPlayer2D = $"../Sound"
+@onready var sound: Sound2D = $"../Sound2D"
 
 
 func _ready() -> void:
