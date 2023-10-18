@@ -1,0 +1,15 @@
+[icons]
+
+Sound2D = "res://gdextension/sound_2d/sound_2d.svg"
+
+
+[configuration]
+
+entry_symbol = "sound_2d_library_init"
+compatibility_minimum = 4.2
+
+
+[libraries]
+
+windows.x86_64 = "sound_2d_datalib.windows.template_release.x86_64.dll"
+linux.x86_64 = "libsound_2d_datalib.linux.template_release.x86_64.dll"

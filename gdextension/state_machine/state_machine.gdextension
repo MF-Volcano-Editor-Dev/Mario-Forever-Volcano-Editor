@@ -1,0 +1,10 @@
+[configuration]
+
+entry_symbol = "state_machine_library_init"
+compatibility_minimum = 4.2
+
+
+[libraries]
+
+windows.x86_64 = "state_machine_datalib.windows.template_release.x86_64.dll"
+linux.x86_64 = "libstate_machine_datalib.linux.template_release.x86_64.dll"

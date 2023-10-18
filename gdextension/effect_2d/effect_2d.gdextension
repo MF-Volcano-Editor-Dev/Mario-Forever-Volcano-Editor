@@ -1,0 +1,10 @@
+[configuration]
+
+entry_symbol = "effect_2d_library_init"
+compatibility_minimum = 4.2
+
+
+[libraries]
+
+windows.x86_64 = "effect_2d_datalib.windows.template_release.x86_64.dll"
+linux.x86_64 = "libeffect_2d_datalib.linux.template_release.x86_64.dll"
