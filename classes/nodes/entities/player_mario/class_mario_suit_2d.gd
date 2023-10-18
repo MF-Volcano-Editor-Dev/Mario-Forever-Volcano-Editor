@@ -9,6 +9,9 @@ class_name MarioSuit2D extends Node2D
 @export_group("Collision Boxes")
 @export var collision_boxes_normal: Array[CollisionShape2D]
 @export var collision_boxes_crouch: Array[CollisionShape2D]
+@export_group("Suit Sounds", "sound_")
+@export var sound_hurt: AudioStream = preload("res://assets/sounds/power_down.wav")
+@export var sound_death: AudioStream = preload("res://assets/sounds/player_death.ogg")
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var animation: AnimationPlayer = $AnimationPlayer

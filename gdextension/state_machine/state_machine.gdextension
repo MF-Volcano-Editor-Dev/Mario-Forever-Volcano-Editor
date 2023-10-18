@@ -1,3 +1,7 @@
+[icons]
+
+StateMachine = "res://gdextension/state_machine/state_machine.svg"
+
 [configuration]
 
 entry_symbol = "state_machine_library_init"

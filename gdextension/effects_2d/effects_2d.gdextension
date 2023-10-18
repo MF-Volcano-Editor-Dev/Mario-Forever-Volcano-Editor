@@ -1,3 +1,7 @@
+[icons]
+
+Effects2D = "res://gdextension/effects_2d/effects_2d.svg"
+
 [configuration]
 
 entry_symbol = "effects_2d_library_init"

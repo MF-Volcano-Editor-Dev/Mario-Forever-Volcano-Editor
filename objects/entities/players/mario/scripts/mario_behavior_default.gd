@@ -31,6 +31,13 @@ extends Node
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var swimming_speed: float = 150
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var swimming_jumping_speed: float = 450
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var swimming_peak_speed: float = 150
+@export_subgroup("Climbing")
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var climbing_speed: float = 200
+@export_group("Behavior Sounds", "sound_")
+@export var sound_jump: AudioStream = preload("res://assets/sounds/jump.wav")
+@export var sound_swim: AudioStream = preload("res://assets/sounds/swim.wav")
+
+var _pos: Vector2
 
 var _left_right: int
 var _up_down: int
@@ -49,21 +56,27 @@ func _ready() -> void:
 	# Animations
 	animation.animation_finished.connect(_on_animation_swim_reset)
 
+
 func _process(delta: float) -> void:
 	# Control
 	_control_process()
 	# Movement
-	_movement_x_process(delta)
-	_movement_y_process(delta)
+	if mario.state_machine.is_state(&"climbing"):
+		_movement_climb_process()
+	else:
+		_movement_x_process(delta)
+		_movement_y_process(delta)
 	# Animations
 	_animation_process(delta)
 
 
 func _physics_process(_delta: float) -> void:
 	# Core
+	_pos = mario.global_position
 	mario.move_and_slide()
 	mario.correct_onto_floor()
 	mario.correct_on_wall_corner()
+	_pos = mario.global_position - _pos
 
 
 ##regionbegin Controls
@@ -85,6 +98,9 @@ func _accelerate(to: float, acce_with_delta: float) -> void:
 	mario.motion.x = move_toward(mario.motion.x, to * mario.direction, acce_with_delta)
 
 func _movement_x_process(delta: float) -> void:
+	if mario.state_machine.is_state(&"no_walking"):
+		return
+	
 	# Deceleration
 	if _is_decelerating():
 		_accelerate(min_speed, deceleration * delta)
@@ -113,9 +129,11 @@ func _movement_y_process(delta: float) -> void:
 	var underwater: bool = mario.state_machine.is_state(&"underwater")
 	var underwater_jumpout: bool = mario.state_machine.is_state(&"underwater_jumpout")
 	
+	_test_reset_jumping()
 	if _is_jumpable():
 		# Underwater
 		if underwater:
+			sound.play(sound_swim)
 			# Jumping out of water
 			if underwater_jumpout:
 				mario.jump(swimming_jumping_speed)
@@ -124,6 +142,7 @@ func _movement_y_process(delta: float) -> void:
 				mario.jump(swimming_speed)
 			_jumped_already = true
 		elif _jumped && mario.is_on_floor():
+			sound.play(sound_jump)
 			mario.jump(initial_jumping_speed)
 			_jumped_already = true
 	
@@ -136,8 +155,20 @@ func _movement_y_process(delta: float) -> void:
 	var up_velocity: Vector2 = mario.velocity.project(mario.get_real_up_direction())
 	if underwater && up_velocity.length_squared() > swimming_peak_speed ** 2:
 		mario.velocity = Vec2D.get_projection_limit(mario.velocity, up_velocity.normalized(), swimming_peak_speed)
+
+
+func _movement_climb_process() -> void:
+	if mario.state_machine.is_state(&"no_climbing"):
+		mario.state_machine.remove_state(&"climbing")
+		return
 	
-	_test_reset_jumping()
+	mario.velocity = Vector2(_left_right, _up_down).normalized() * climbing_speed
+	
+	if _jumped && !_jumped_already:
+		_jumped_already = true
+		sound.play(sound_jump)
+		mario.jump(initial_jumping_speed)
+		mario.state_machine.remove_state(&"climbing")
 
 
 ##region Test for Movement
@@ -167,10 +198,11 @@ func _animation_process(delta: float) -> void:
 	
 	if mario.state_machine.is_state(&"climbing"):
 		animation.play(&"Mario/climb")
+		animation.speed_scale = 0.0 if mario.velocity.is_zero_approx() else 1.0
 	elif mario.is_on_floor():
 		if mario.state_machine.is_state(&"crouching"):
 			animation.play(&"Mario/crouch")
-		elif is_zero_approx(snappedf(mario.motion.x, 0.01)):
+		elif is_zero_approx(snappedf(_pos.length_squared(), 0.01)):
 			animation.play(&"Mario/RESET")
 		else:
 			animation.play(&"Mario/walk")
