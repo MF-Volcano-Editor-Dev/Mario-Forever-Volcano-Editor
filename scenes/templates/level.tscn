@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=7 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
 [ext_resource type="Texture2D" uid="uid://dhavc20jh01hs" path="res://icon.svg" id="2_vi4lm"]
+[ext_resource type="Script" path="res://Area2D.gd" id="3_0625b"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pfj8d"]
 texture = ExtResource("2_vi4lm")
@@ -77,12 +78,31 @@ physics_layer_0/collision_layer = 10
 physics_layer_0/collision_mask = 0
 sources/1 = SubResource("TileSetAtlasSource_pfj8d")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6qa1y"]
+size = Vector2(192, 208)
+
 [node name="Level" type="Node2D"]
 
 [node name="Mario" parent="." instance=ExtResource("1_p1j5j")]
-position = Vector2(256, 160)
+position = Vector2(144, 400)
+floor_snap_length = 1.0
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_g5tqc")
 format = 2
-layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851978, 65537, 0, 851979, 65537, 0, 851981, 65537, 0, 851982, 65537, 0, 851983, 65537, 0, 851984, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1)
+layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851978, 65537, 0, 851979, 65537, 0, 851981, 65537, 0, 851982, 65537, 0, 851983, 65537, 0, 851984, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 655364, 65537, 3, 655365, 65537, 3, 655366, 65537, 3, 589828, 65537, 0, 589829, 65537, 0, 589830, 65537, 0)
+
+[node name="TileMap2" type="TileMap" parent="."]
+rotation = -0.785397
+tile_set = SubResource("TileSet_g5tqc")
+format = 2
+layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 983047, 65537, 0, 983046, 65537, 0, 1048582, 65537, 0, 1048583, 65537, 0, 1114119, 65537, 0, 1114118, 65537, 0, 1179654, 65537, 0, 1179655, 65537, 0)
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(184, 128)
+collision_layer = 64
+script = ExtResource("3_0625b")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_6qa1y")
