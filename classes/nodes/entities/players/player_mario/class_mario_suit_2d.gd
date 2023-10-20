@@ -36,7 +36,7 @@ func deploy(on: Mario2D) -> void:
 	_player.add_child.call_deferred(self)
 
 
-##regionbegin Animations
+#regionbegin Animations
 func appear(duration: float = 1.0) -> void:
 	animation.play(&"Mario/appear")
 	await get_tree().create_timer(duration, false).timeout
@@ -50,10 +50,10 @@ func crouch_collision_shapes(is_crouching: bool) -> void:
 		i.set_deferred(&"disabled", is_crouching)
 	for j: CollisionShape2D in collision_boxes_crouch:
 		j.set_deferred(&"disabled", !is_crouching)
-##endregion
+#endregion
 
 
-##regionbegin Setters & Getters
+#regionbegin Setters & Getters
 func get_player() -> Mario2D:
 	return _player if is_instance_valid(_player) else null
-##endregion
+#endregion

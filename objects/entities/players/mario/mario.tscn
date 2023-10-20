@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bv26woxthkhv6"]
 
-[ext_resource type="Script" path="res://classes/nodes/entities/player_mario/class_mario_2d.gd" id="1_5eyu0"]
+[ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_2d.gd" id="1_5eyu0"]
 [ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://assets/textures/entities/players/mario/mario_small.png" id="2_vku1p"]
 
 [node name="Mario" type="EntityBody2D"]

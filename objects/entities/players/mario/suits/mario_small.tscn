@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bvq8x1atfxyaq"]
 
-[ext_resource type="Script" path="res://classes/nodes/entities/player_mario/class_mario_suit_2d.gd" id="1_87puv"]
+[ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_suit_2d.gd" id="1_87puv"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario_small.tres" id="2_55vlb"]
 [ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://assets/textures/entities/players/mario/mario_small.png" id="2_k3flq"]
 [ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_lib.res" id="3_6ku0f"]
@@ -11,8 +11,8 @@
 [node name="MarioSmall" type="Node2D" node_paths=PackedStringArray("direct_manage_nodes", "collision_boxes_normal")]
 script = ExtResource("1_87puv")
 direct_manage_nodes = [NodePath("CollisionShape2D")]
-collision_boxes_normal = [NodePath("CollisionShape2D"), NodePath("Area2D/CollisionShape2D")]
-metadata/_edit_pinned_properties_ = [&"direct_manage_nodes"]
+collision_boxes_normal = [NodePath("CollisionShape2D")]
+metadata/_edit_pinned_properties_ = [&"direct_manage_nodes", &"collision_boxes_normal"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)

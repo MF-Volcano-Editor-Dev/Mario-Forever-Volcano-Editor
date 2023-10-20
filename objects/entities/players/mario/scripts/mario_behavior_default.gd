@@ -73,12 +73,12 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-	##regionbegin Movement
+#region Movement
 	_pos = mario.global_position
 	
 	if mario.state_machine.is_state(&"climbing"):
-		var c := mario.move_and_collide(mario.velocity * delta)
-		if c: mario.set_velocity(mario.velocity.slide(c.get_normal()))
+		var c := mario.move_and_collide(mario.global_velocity * delta)
+		if c: mario.velocity = mario.velocity.slide(c.get_normal())
 	else:
 		mario.move_and_slide()
 	
@@ -86,10 +86,10 @@ func _physics_process(delta: float) -> void:
 	mario.correct_on_wall_corner()
 	
 	_pos = mario.global_position - _pos
-	##endregion
+#endregion
 
 
-##regionbegin Controls
+#regionbegin Controls
 func _control_process() -> void:
 	_left_right = int(Input.get_axis(_get_key_input(key_inputs.left), _get_key_input(key_inputs.right)))
 	_up_down = int(Input.get_axis(_get_key_input(key_inputs.up), _get_key_input(key_inputs.down)))
@@ -100,12 +100,12 @@ func _control_process() -> void:
 
 func _get_key_input(key_name: StringName) -> StringName:
 	return key_name + StringName(str(mario.id))
-##endregion
+#endregion
 
 
-##regionbegin Movements
+#regionbegin Movements
 func _accelerate(to: float, acce_with_delta: float) -> void:
-	mario.motion.x = move_toward(mario.motion.x, to * mario.direction, acce_with_delta)
+	mario.velocity.x = move_toward(mario.velocity.x, to * mario.direction, acce_with_delta)
 
 func _movement_x_process(delta: float) -> void:
 	if mario.state_machine.is_state(&"no_walking"):
@@ -117,17 +117,17 @@ func _movement_x_process(delta: float) -> void:
 		return
 	
 	# Initial speed
-	if _left_right != 0 && mario.motion.x == 0:
+	if _left_right != 0 && mario.velocity.x == 0:
 		mario.direction = _left_right
-		mario.motion.x = initial_walking_speed * mario.direction
-	elif _left_right * signf(mario.motion.x) > 0:
+		mario.velocity.x = initial_walking_speed * mario.direction
+	elif _left_right * signf(mario.velocity.x) > 0:
 		var max_speed: float = max_running_speed if _is_running() else max_walking_speed
 		_accelerate(max_speed, acceleration * delta)
-	elif _left_right * signf(mario.motion.x) < 0:
+	elif _left_right * signf(mario.velocity.x) < 0:
 		_accelerate(0, turning_aceleration * delta)
 		mario.state_machine.set_state(&"turning")
 		
-		if is_zero_approx(mario.motion.x):
+		if is_zero_approx(mario.velocity.x):
 			mario.direction *= -1
 			mario.state_machine.remove_state(&"turning")
 
@@ -158,11 +158,11 @@ func _movement_y_process(delta: float) -> void:
 	
 	# Jumping acceleration
 	if _jumping && mario.is_leaving_ground() && !mario.is_on_floor():
-		var jumping_acce: float = jumping_acceleration_dynamic if absf(mario.motion.x) > 31.25 else jumping_acceleration_static
+		var jumping_acce: float = jumping_acceleration_dynamic if absf(mario.velocity.x) > 31.25 else jumping_acceleration_static
 		mario.jump(jumping_acce * delta, true)
 	
 	# Underwater peak swimming speed
-	var up_velocity: Vector2 = mario.velocity.project(mario.get_real_up_direction())
+	var up_velocity: Vector2 = mario.velocity.project(mario.up_direction)
 	if underwater && up_velocity.length_squared() > swimming_peak_speed ** 2:
 		mario.velocity = Vec2D.get_projection_limit(mario.velocity, up_velocity.normalized(), swimming_peak_speed)
 
@@ -175,7 +175,7 @@ func _movement_climb_process() -> void:
 	if _left_right != 0:
 		mario.direction = _left_right
 	
-	mario.motion = (Vector2(_left_right, _up_down).normalized() if _left_right || _up_down else Vector2.ZERO) * climbing_speed
+	mario.velocity = (Vector2(_left_right, _up_down).normalized() if _left_right || _up_down else Vector2.ZERO) * climbing_speed
 	
 	_jumped_already = false
 	if _jumped:
@@ -185,7 +185,7 @@ func _movement_climb_process() -> void:
 		mario.state_machine.remove_state(&"climbing")
 
 
-##region Test for Movement
+#region Test for Movement
 func _is_decelerating() -> bool:
 	return _left_right == 0 || mario.state_machine.is_state(&"crouching")
 
@@ -200,12 +200,12 @@ func _is_jumpable() -> bool:
 
 func _test_reset_jumping() -> void:
 	if !_jumping && _jumped_already: _jumped_already = false
-##endregion
+#endregion
 
-##endregion
+#endregion
 
 
-##regionbegin Animations
+#regionbegin Animations
 func _animation_process(delta: float) -> void:
 	animation.speed_scale = 1
 	sprite.scale.x = mario.direction
@@ -223,10 +223,10 @@ func _animation_process(delta: float) -> void:
 				animation.play(&"Mario/RESET")
 			else:
 				animation.play(&"Mario/walk")
-				animation.speed_scale = clampf(absf(mario.motion.x) * delta * 0.67, 0, 5)
+				animation.speed_scale = clampf(absf(mario.velocity.x) * delta * 0.67, 0, 5)
 		elif mario.state_machine.is_state(&"underwater"):
 			animation.play(&"Mario/swim")
-		elif mario.motion.y < 0:
+		elif mario.velocity.y < 0:
 			animation.play(&"Mario/jump")
 		else:
 			animation.play(&"Mario/fall")
@@ -236,14 +236,14 @@ func _on_animation_swim_reset(anim_name: StringName) -> void:
 	match anim_name:
 		&"Mario/swim":
 			animation.advance(-0.2)
-##endregion
+#endregion
 
 
-##regionbegin Setters & Getters
+#regionbegin Setters & Getters
 func get_left_right() -> int:
 	return _left_right
 
 
 func get_up_down() -> int:
 	return _up_down
-##endregion
+#endregion
