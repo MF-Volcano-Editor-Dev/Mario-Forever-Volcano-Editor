@@ -1,8 +1,6 @@
 class_name Mario2D extends EntityPlayer2D
 
 @export_group("Suit")
-@export var character_id: StringName = &"mario":
-	set = change_character
 @export var suit_id: StringName = &"small":
 	set = change_suit
 @export var suit_no_appear_animation: bool = true
@@ -14,9 +12,9 @@ func _ready() -> void:
 	change_suit(suit_id)
 
 
-##regionbegin SuitBehaviors
-func change_character(new_character_id: StringName) -> void:
-	character_id = new_character_id
+#region SuitBehaviors
+func set_character_id(new_character_id: StringName) -> void:
+	super(new_character_id)
 	change_suit(suit_id)
 
 func change_suit(new_suit_id: StringName) -> void:
@@ -49,4 +47,4 @@ func change_suit(new_suit_id: StringName) -> void:
 
 func get_suit() -> MarioSuit2D:
 	return _suit
-##endregion
+#endregion

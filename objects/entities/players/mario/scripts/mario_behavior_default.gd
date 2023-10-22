@@ -1,4 +1,4 @@
-extends Node
+extends Component
 
 @export_category("Mario Behaviors")
 ## Override the properties for [Mario2D][br]
@@ -37,12 +37,12 @@ extends Node
 @export var sound_jump: AudioStream = preload("res://assets/sounds/jump.wav")
 @export var sound_swim: AudioStream = preload("res://assets/sounds/swim.wav")
 
+var mario: Mario2D ## Fast access to [member Component.root] casted to [Mario2D]
+
 var _pos: Vector2
 
-var _left_right: int:
-	get = get_left_right
-var _up_down: int:
-	get = get_up_down
+var _left_right: int
+var _up_down: int
 var _jumped: bool
 var _jumping: bool
 var _jumped_already: bool
@@ -53,16 +53,17 @@ var _jumpable_when_crouching: bool
 var _walkable_when_crouching: bool
 var _crouchable_in_small_suit: bool
 
-@onready var mario: Mario2D = get_parent().get_player()
 @onready var sprite: Sprite2D = $"../Sprite2D"
 @onready var animation: AnimationPlayer = $"../AnimationPlayer"
 @onready var sound: Sound2D = $"../Sound2D"
 
 
+#region Main methods
 func _ready() -> void:
+	# Set root
+	mario = (root as MarioSuit2D).get_player()
 	# Animations
 	animation.animation_finished.connect(_on_animation_swim_reset)
-
 
 func _process(delta: float) -> void:
 	# Global settings
@@ -81,7 +82,6 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
-#region Movement
 	_pos = mario.global_position
 	
 	if mario.state_machine.is_state(&"climbing"):
@@ -130,16 +130,17 @@ func _movement_x_process(delta: float) -> void:
 	if _is_decelerating():
 		_accelerate(min_speed, deceleration * delta)
 		return
-	
 	# Initial speed
 	if _left_right != 0 && mario.velocity.x == 0:
 		mario.direction = _left_right
 		mario.velocity.x = initial_walking_speed * mario.direction
+	# Acceleration
 	elif _left_right * signf(mario.velocity.x) > 0:
 		var crouchwalk: bool = _walkable_when_crouching && mario.state_machine.is_state(&"crouching")
 		var walking_factor: float = 0.1 if crouchwalk else 1.0
 		var max_speed: float = (max_running_speed if _is_running() else max_walking_speed) * walking_factor
 		_accelerate(max_speed, acceleration * delta)
+	# Turning back
 	elif _left_right * signf(mario.velocity.x) < 0:
 		_accelerate(0, turning_aceleration * delta)
 		mario.state_machine.set_state(&"turning")
@@ -191,11 +192,14 @@ func _movement_climb_process() -> void:
 		mario.state_machine.remove_state(&"climbing")
 		return
 	
+	# Direction correcting
 	if _left_right != 0:
 		mario.direction = _left_right
 	
+	# Velocity
 	mario.velocity = (Vector2(_left_right, _up_down).normalized() if _left_right || _up_down else Vector2.ZERO) * climbing_speed
 	
+	# Jumping from climbing
 	_jumped_already = false
 	if _jumped:
 		_jumped_already = true
@@ -210,18 +214,22 @@ func _movement_crouching_process() -> void:
 	
 	var small: bool = "small" in mario.get_suit().suit_features
 	var crouchable: bool = (_crouchable_in_small_suit && small) || !small
+	var on_floor_down: bool = _up_down > 0 && mario.is_on_floor()
 	
-	if _up_down > 0 && mario.is_on_floor() && crouchable:
-		mario.state_machine.set_state(&"crouching")
-		if !_walkable_when_crouching:
-			_left_right = 0
-	else:
+	if on_floor_down && crouchable:
+		if !mario.state_machine.is_state(&"crouching"):
+			mario.state_machine.set_state(&"crouching")
+			mario.get_suit().crouch_collision_shapes(true)
+	elif mario.state_machine.is_state(&"crouching"):
 		mario.state_machine.remove_state(&"crouching")
+		mario.get_suit().crouch_collision_shapes(false)
 
 
 #region Test for Movement
 func _is_decelerating() -> bool:
-	return _left_right == 0
+	var decelerating: bool = _left_right == 0
+	var crouching_only: bool = mario.state_machine.is_state(&"crouching") && !_walkable_when_crouching
+	return decelerating || crouching_only
 
 
 func _is_running() -> bool:

@@ -39,8 +39,8 @@ enabled=PackedStringArray("res://addons/abfi/plugin.cfg")
 [game]
 
 control/player/jumpable_when_crouching=false
-control/player/crouchable_in_small_suit=false
-control/player/walkable_when_crouching=false
+control/player/crouchable_in_small_suit=true
+control/player/walkable_when_crouching=true
 
 [input]
 

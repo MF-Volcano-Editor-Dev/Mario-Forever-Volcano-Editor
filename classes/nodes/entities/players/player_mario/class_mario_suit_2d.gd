@@ -20,16 +20,19 @@ class_name MarioSuit2D extends Node2D
 @onready var sound: Sound2D = $Sound2D
 @onready var behavior: Node = $Behavior
 
-var _player: Mario2D:
-	get = get_player
+var _player: Mario2D
 
 
 func deploy(on: Mario2D) -> void:
+	# Wait for the readiness of the player body to
+	# safely deploy the components
 	if !is_instance_valid(on):
 		return
 	elif !on.is_node_ready():
 		await on.ready
 	
+	# Some nodes, like CollisonShape2D, should be directly
+	# managed by the player body
 	for i: Node in direct_manage_nodes:
 		i.reparent.call_deferred(on, false)
 	
