@@ -10,9 +10,10 @@
 
 [node name="MarioSmall" type="Node2D" node_paths=PackedStringArray("direct_manage_nodes", "collision_boxes_normal")]
 script = ExtResource("1_87puv")
+suit_features = "small"
 direct_manage_nodes = [NodePath("CollisionShape2D")]
 collision_boxes_normal = [NodePath("CollisionShape2D")]
-metadata/_edit_pinned_properties_ = [&"direct_manage_nodes", &"collision_boxes_normal"]
+metadata/_edit_pinned_properties_ = [&"direct_manage_nodes", &"collision_boxes_normal", &"suit_features"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)

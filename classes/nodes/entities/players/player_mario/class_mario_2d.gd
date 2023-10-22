@@ -7,8 +7,7 @@ class_name Mario2D extends EntityPlayer2D
 	set = change_suit
 @export var suit_no_appear_animation: bool = true
 
-var _suit: MarioSuit2D:
-	get = get_suit
+var _suit: MarioSuit2D
 
 
 func _ready() -> void:

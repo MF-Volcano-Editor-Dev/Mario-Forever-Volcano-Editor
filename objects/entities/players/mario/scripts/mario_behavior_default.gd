@@ -48,6 +48,11 @@ var _jumping: bool
 var _jumped_already: bool
 var _running: bool
 
+# These are written as variables because they are set each frame
+var _jumpable_when_crouching: bool
+var _walkable_when_crouching: bool
+var _crouchable_in_small_suit: bool
+
 @onready var mario: Mario2D = get_parent().get_player()
 @onready var sprite: Sprite2D = $"../Sprite2D"
 @onready var animation: AnimationPlayer = $"../AnimationPlayer"
@@ -60,12 +65,15 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	# Global settings
+	_global_settings_process()
 	# Control
 	_control_process()
 	# Movement
 	if mario.state_machine.is_state(&"climbing"):
 		_movement_climb_process()
 	else:
+		_movement_crouching_process()
 		_movement_x_process(delta)
 		_movement_y_process(delta)
 	# Animations
@@ -89,7 +97,13 @@ func _physics_process(delta: float) -> void:
 #endregion
 
 
-#regionbegin Controls
+func _global_settings_process() -> void:
+	_jumpable_when_crouching = ProjectSettings.get_setting("game/control/player/jumpable_when_crouching", false)
+	_walkable_when_crouching = ProjectSettings.get_setting("game/control/player/walkable_when_crouching", false)
+	_crouchable_in_small_suit = ProjectSettings.get_setting("game/control/player/crouchable_in_small_suit", false)
+
+
+#region Controls
 func _control_process() -> void:
 	_left_right = int(Input.get_axis(_get_key_input(key_inputs.left), _get_key_input(key_inputs.right)))
 	_up_down = int(Input.get_axis(_get_key_input(key_inputs.up), _get_key_input(key_inputs.down)))
@@ -103,9 +117,10 @@ func _get_key_input(key_name: StringName) -> StringName:
 #endregion
 
 
-#regionbegin Movements
+#region Movements
 func _accelerate(to: float, acce_with_delta: float) -> void:
 	mario.velocity.x = move_toward(mario.velocity.x, to * mario.direction, acce_with_delta)
+
 
 func _movement_x_process(delta: float) -> void:
 	if mario.state_machine.is_state(&"no_walking"):
@@ -121,7 +136,9 @@ func _movement_x_process(delta: float) -> void:
 		mario.direction = _left_right
 		mario.velocity.x = initial_walking_speed * mario.direction
 	elif _left_right * signf(mario.velocity.x) > 0:
-		var max_speed: float = max_running_speed if _is_running() else max_walking_speed
+		var crouchwalk: bool = _walkable_when_crouching && mario.state_machine.is_state(&"crouching")
+		var walking_factor: float = 0.1 if crouchwalk else 1.0
+		var max_speed: float = (max_running_speed if _is_running() else max_walking_speed) * walking_factor
 		_accelerate(max_speed, acceleration * delta)
 	elif _left_right * signf(mario.velocity.x) < 0:
 		_accelerate(0, turning_aceleration * delta)
@@ -138,6 +155,8 @@ func _movement_y_process(delta: float) -> void:
 	
 	var underwater: bool = mario.state_machine.is_state(&"underwater")
 	var underwater_jumpout: bool = mario.state_machine.is_state(&"underwater_jumpout")
+	var crouching: bool = mario.state_machine.is_state(&"crouching")
+	var jumpable: bool = (_jumpable_when_crouching && crouching) || !crouching
 	
 	_test_reset_jumping()
 	if _is_jumpable():
@@ -151,7 +170,7 @@ func _movement_y_process(delta: float) -> void:
 			else:
 				mario.jump(swimming_speed)
 			_jumped_already = true
-		elif _jumped && mario.is_on_floor():
+		elif _jumped && jumpable && mario.is_on_floor():
 			sound.play(sound_jump)
 			mario.jump(initial_jumping_speed)
 			_jumped_already = true
@@ -185,9 +204,24 @@ func _movement_climb_process() -> void:
 		mario.state_machine.remove_state(&"climbing")
 
 
+func _movement_crouching_process() -> void:
+	if mario.state_machine.is_state(&"no_crouching"):
+		return
+	
+	var small: bool = "small" in mario.get_suit().suit_features
+	var crouchable: bool = (_crouchable_in_small_suit && small) || !small
+	
+	if _up_down > 0 && mario.is_on_floor() && crouchable:
+		mario.state_machine.set_state(&"crouching")
+		if !_walkable_when_crouching:
+			_left_right = 0
+	else:
+		mario.state_machine.remove_state(&"crouching")
+
+
 #region Test for Movement
 func _is_decelerating() -> bool:
-	return _left_right == 0 || mario.state_machine.is_state(&"crouching")
+	return _left_right == 0
 
 
 func _is_running() -> bool:
@@ -205,7 +239,7 @@ func _test_reset_jumping() -> void:
 #endregion
 
 
-#regionbegin Animations
+#region Animations
 func _animation_process(delta: float) -> void:
 	animation.speed_scale = 1
 	sprite.scale.x = mario.direction
@@ -239,7 +273,7 @@ func _on_animation_swim_reset(anim_name: StringName) -> void:
 #endregion
 
 
-#regionbegin Setters & Getters
+#region Setters & Getters
 func get_left_right() -> int:
 	return _left_right
 

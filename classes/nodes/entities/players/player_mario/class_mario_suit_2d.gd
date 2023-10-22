@@ -4,6 +4,7 @@ class_name MarioSuit2D extends Node2D
 @export var character_id: StringName = &"mario"
 @export var suit_id: StringName = &"small"
 @export var down_suit_id: StringName = &""
+@export var suit_features: String = ""
 @export_group("Direct-manage Nodes")
 @export var direct_manage_nodes: Array[Node]
 @export_group("Collision Boxes")
