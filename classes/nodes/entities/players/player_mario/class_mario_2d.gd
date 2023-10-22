@@ -7,7 +7,9 @@ class_name Mario2D extends EntityPlayer2D
 @export_group("Suit")
 ## Name of current suit
 ## [b]Note:[/b] changing this method will automatically change
-## the suit of the character
+## the suit of the character, and to make sure the suit id can be found
+## during the modification, please make sure the same property in [MarioSuit2D]
+## matches this one before the adjustment
 @export var suit_id: StringName = &"small":
 	set = set_suit
 ## If [code]true[/code], the character's appearing animation won't be played.
@@ -27,7 +29,7 @@ func set_character_id(new_character_id: StringName) -> void:
 	set_suit(suit_id)
 
 
-## Change the suit of the character, automatically called when [member suit_id]
+## Changes the suit of the character, automatically called when [member suit_id]
 ## gets changed
 ## [b]Note:[/b] This method will load the suit from [singleton PlayerSuits], so please
 ## tag the suit under the singleton before calling this method
