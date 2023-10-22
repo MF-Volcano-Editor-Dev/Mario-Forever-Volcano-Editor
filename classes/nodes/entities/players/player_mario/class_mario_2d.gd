@@ -1,23 +1,37 @@
 class_name Mario2D extends EntityPlayer2D
 
+## An [EntityPlayer2D] for Super Mario Bros. series characters
+##
+##
+
 @export_group("Suit")
+## Name of current suit
+## [b]Note:[/b] changing this method will automatically change
+## the suit of the character
 @export var suit_id: StringName = &"small":
-	set = change_suit
+	set = set_suit
+## If [code]true[/code], the character's appearing animation won't be played.
+## This is often used at the very beginning of the scene
 @export var suit_no_appear_animation: bool = true
 
 var _suit: MarioSuit2D
 
 
 func _ready() -> void:
-	change_suit(suit_id)
+	set_suit(suit_id)
 
 
-#region SuitBehaviors
+#region Suit Behaviors
 func set_character_id(new_character_id: StringName) -> void:
 	super(new_character_id)
-	change_suit(suit_id)
+	set_suit(suit_id)
 
-func change_suit(new_suit_id: StringName) -> void:
+
+## Change the suit of the character, automatically called when [member suit_id]
+## gets changed
+## [b]Note:[/b] This method will load the suit from [singleton PlayerSuits], so please
+## tag the suit under the singleton before calling this method
+func set_suit(new_suit_id: StringName) -> void:
 	# Removes previous suit
 	for i: Node in get_children():
 		if !i.is_in_group(&"#mario_cpn_fixed"):
@@ -45,6 +59,19 @@ func change_suit(new_suit_id: StringName) -> void:
 		_suit.appear()
 
 
+## Gets the suit of the character
 func get_suit() -> MarioSuit2D:
 	return _suit
+#endregion
+
+
+#region Damage Controls
+## Makes the character hurt
+func hurt() -> void:
+	pass
+
+
+## Makes the character die
+func die() -> void:
+	pass
 #endregion
