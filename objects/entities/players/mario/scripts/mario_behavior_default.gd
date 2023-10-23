@@ -46,9 +46,8 @@ var _pos: Vector2
 var _left_right: int
 var _up_down: int
 var _jumped: bool
-var _jumping: bool
-var _jumped_already: bool
-var _jumping_closely: bool
+var _jumping: bool # True when holding jumping key
+var _jumped_already: bool # True when not close jumping and holding jumping key, prevent from continuous jump by holding the key
 var _running: bool
 
 # These are written as variables because they are set each frame
@@ -260,17 +259,7 @@ func _is_jumpable() -> bool:
 
 
 func _reset_jumping() -> void:
-	if _jumped_already && mario.is_on_floor():
-		_jumped_already = false
-		_jumping_closely = false
-	if !_jumping_closely && _jumped_already && mario.velocity.y > 0:
-		_jumping_closely = true
-		_jumped_already = false
-		
-		var physics_frame: Signal = get_tree().physics_frame
-		for i in 30:
-			await physics_frame
-		
+	if _jumped_already && !_jumping && (mario.is_on_floor() || mario.test_move(mario.global_transform, mario.get_gravity_direction() * 24)):
 		_jumped_already = false
 #endregion
 
