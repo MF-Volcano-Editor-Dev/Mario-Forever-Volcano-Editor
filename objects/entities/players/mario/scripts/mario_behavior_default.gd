@@ -48,6 +48,7 @@ var _up_down: int
 var _jumped: bool
 var _jumping: bool
 var _jumped_already: bool
+var _jumping_closely: bool
 var _running: bool
 
 # These are written as variables because they are set each frame
@@ -58,18 +59,24 @@ var _crouchable_in_small_suit: bool
 @onready var sprite: Sprite2D = $"../Sprite2D"
 @onready var animation: AnimationPlayer = $"../AnimationPlayer"
 @onready var sound: Sound2D = $"../Sound2D"
+@onready var aqua_root: Node = $"../AquaUpdater/AquaRoot"
+@onready var aqua_behavior: Node = $"../AquaUpdater/AquaBehavior"
+@onready var body: ShapeCast2D = $"../ShapeCastBody"
+@onready var head: ShapeCast2D = $"../ShapeCastHead"
 
 
 #region Main methods
 func _ready() -> void:
 	# Set root
 	mario = (root as MarioSuit2D).get_player()
+	# Set root of aqua_properties
+	aqua_root.root = mario
 	# Animations
 	animation.animation_finished.connect(_on_animation_swim_reset)
 
 func _process(delta: float) -> void:
-	# Global settings
-	_global_settings_process()
+	# States
+	_states_process()
 	# Control
 	_control_process()
 	# Movement
@@ -81,6 +88,9 @@ func _process(delta: float) -> void:
 		_movement_y_process(delta)
 	# Animations
 	_animation_process(delta)
+	# Detections
+	_detection_process()
+	
 
 
 func _physics_process(delta: float) -> void:
@@ -99,7 +109,8 @@ func _physics_process(delta: float) -> void:
 #endregion
 
 
-func _global_settings_process() -> void:
+func _states_process() -> void:
+	# States from global settings
 	_jumpable_when_crouching = ProjectSettings.get_setting("game/control/player/jumpable_when_crouching", false)
 	_walkable_when_crouching = ProjectSettings.get_setting("game/control/player/walkable_when_crouching", false)
 	_crouchable_in_small_suit = ProjectSettings.get_setting("game/control/player/crouchable_in_small_suit", false)
@@ -161,32 +172,38 @@ func _movement_y_process(delta: float) -> void:
 	var crouching: bool = mario.state_machine.is_state(&"crouching")
 	var jumpable: bool = (_jumpable_when_crouching && crouching) || !crouching
 	
-	_test_reset_jumping()
-	if _is_jumpable():
-		# Underwater
-		if underwater:
+	_reset_jumping()
+	# Underwater (Swimming)
+	if underwater:
+		if _jumped:
 			sound.play(sound_swim)
+			
 			# Jumping out of water
 			if underwater_jumpout:
 				mario.jump(swimming_jumping_speed)
-			# Swimming
+			# Swimming still
 			else:
 				mario.jump(swimming_speed)
+			
 			_jumped_already = true
-		elif _jumped && jumpable && mario.is_on_floor():
+			animation.stop()
+			animation.play(&"Mario/swim")
+		
+		# Underwater peak swimming speed
+		var swimming_peak: float = -abs(swimming_peak_speed)
+		if !underwater_jumpout && mario.velocity.y < swimming_peak:
+			mario.velocity.y = lerpf(mario.velocity.y, swimming_peak, 0.1)
+	# Non-underwater (Jumping)
+	else:
+		if _is_jumpable() && jumpable && mario.is_on_floor():
 			sound.play(sound_jump)
 			mario.jump(initial_jumping_speed)
 			_jumped_already = true
-	
-	# Jumping acceleration
-	if _jumping && mario.is_leaving_ground() && !mario.is_on_floor():
-		var jumping_acce: float = jumping_acceleration_dynamic if absf(mario.velocity.x) > 31.25 else jumping_acceleration_static
-		mario.jump(jumping_acce * delta, true)
-	
-	# Underwater peak swimming speed
-	var up_velocity: Vector2 = mario.velocity.project(mario.up_direction)
-	if underwater && up_velocity.length_squared() > swimming_peak_speed ** 2:
-		mario.velocity = Vec2D.get_projection_limit(mario.velocity, up_velocity.normalized(), swimming_peak_speed)
+		
+		# Jumping acceleration
+		if _jumping && mario.velocity.y < 0 && !mario.is_on_floor():
+			var jumping_acce: float = jumping_acceleration_dynamic if absf(mario.velocity.x) > 31.25 else jumping_acceleration_static
+			mario.jump(jumping_acce * delta, true)
 
 
 func _movement_climb_process() -> void:
@@ -203,7 +220,7 @@ func _movement_climb_process() -> void:
 	
 	# Jumping from climbing
 	_jumped_already = false
-	if _jumped:
+	if _is_jumpable():
 		_jumped_already = true
 		sound.play(sound_jump)
 		mario.jump(initial_jumping_speed)
@@ -239,11 +256,22 @@ func _is_running() -> bool:
 
 
 func _is_jumpable() -> bool:
-	return _jumped && !_jumped_already
+	return _jumping && !_jumped_already
 
 
-func _test_reset_jumping() -> void:
-	if !_jumping && _jumped_already: _jumped_already = false
+func _reset_jumping() -> void:
+	if _jumped_already && mario.is_on_floor():
+		_jumped_already = false
+		_jumping_closely = false
+	if !_jumping_closely && _jumped_already && mario.velocity.y > 0:
+		_jumping_closely = true
+		_jumped_already = false
+		
+		var physics_frame: Signal = get_tree().physics_frame
+		for i in 30:
+			await physics_frame
+		
+		_jumped_already = false
 #endregion
 
 #endregion
@@ -290,4 +318,41 @@ func get_left_right() -> int:
 
 func get_up_down() -> int:
 	return _up_down
+#endregion
+
+
+#region Detections
+func _detection_process() -> void:
+	# Reset
+	if mario.state_machine.is_state(&"underwater"):
+		mario.state_machine.remove_state(&"underwater")
+		aqua_root.update_from_extracted_value()
+		aqua_behavior.update_from_extracted_value()
+	if !mario.state_machine.is_state(&"underwater_jumpout"):
+		mario.state_machine.set_state(&"underwater_jumpout")
+	
+	# Body detection
+	var body_collisions: int = body.get_collision_count()
+	for i in body_collisions:
+		var target := body.get_collider(i) as CollisionObject2D
+		if !target:
+			continue
+		
+		# Underwater
+		if target is AreaFluid2D && target.fluid_id == &"water" && !mario.state_machine.is_state(&"underwater"):
+			mario.state_machine.set_state(&"underwater")
+			aqua_root.update_from_component()
+			aqua_behavior.update_from_component()
+	
+	# Head detection
+	var head_collisions: int = head.get_collision_count()
+	for j in head_collisions:
+		var target := head.get_collider(j) as CollisionObject2D
+		if !target:
+			continue
+		
+		# Underwater jumpout
+		if target is AreaFluid2D && target.fluid_id == &"water" && mario.state_machine.is_state(&"underwater_jumpout"):
+			mario.state_machine.remove_state(&"underwater_jumpout")
+
 #endregion

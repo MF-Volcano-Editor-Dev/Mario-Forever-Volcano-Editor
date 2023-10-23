@@ -23,20 +23,16 @@ class_name MarioSuit2D extends Node2D
 ## [color=yellow][b]Attention![/b][/color] In the spector, you need to manually initialize the nodes to be managed by the character directly
 @export var direct_manage_nodes: Array[Node]
 @export_group("Collision Boxes")
-## [CollisionShape2D]s when the character IS NOT crouching [br]
+## [CollisionShape2D]s or [ShapeCast2D]s when the character IS NOT crouching [br]
 ## [b]Note:[/b] when the character
-@export var collision_boxes_normal: Array[CollisionShape2D]
-## [CollisionShape2D]s when the character IS crouching
-@export var collision_boxes_crouch: Array[CollisionShape2D]
+@export var collision_boxes_normal: Array[Node2D]
+## [CollisionShape2D]s or [ShapeCast2D]s when the character IS crouching
+@export var collision_boxes_crouch: Array[Node2D]
 
 ## [Sprite2D] of the suit
 @onready var sprite: Sprite2D = $Sprite2D
 ## [AnimationPlayer] of the suit
 @onready var animation: AnimationPlayer = $AnimationPlayer
-## [Area2D] of the suit for collision detection
-@onready var body: Area2D = $Area2D
-## [Sound2D] of the suit
-@onready var sound: Sound2D = $Sound2D
 ## [Component] of the suit that process core codes
 @onready var behavior: Node = $Behavior
 
@@ -76,10 +72,22 @@ func appear(duration: float = 1.0) -> void:
 func crouch_collision_shapes(is_crouching: bool) -> void:
 	if collision_boxes_crouch.is_empty():
 		return
-	for i: CollisionShape2D in collision_boxes_normal:
+	
+	for i: Node2D in collision_boxes_normal:
+		if !i is CollisionShape2D && i is ShapeCast2D:
+			continue
+		
 		i.set_deferred(&"disabled", is_crouching)
-	for j: CollisionShape2D in collision_boxes_crouch:
+		i.set_process(!is_crouching)
+		i.set_physics_process(!is_crouching)
+	
+	for j: Node2D in collision_boxes_crouch:
+		if !j is CollisionShape2D && j is ShapeCast2D:
+			continue
+		
 		j.set_deferred(&"disabled", !is_crouching)
+		j.set_process(is_crouching)
+		j.set_physics_process(is_crouching)
 #endregion
 
 

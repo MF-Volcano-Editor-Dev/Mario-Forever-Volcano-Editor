@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b755dvluuuu6g"]
+
+[ext_resource type="Script" path="res://objects/components/property_updater/property_updater.gd" id="1_qcr3k"]
+
+[node name="PropertyUpdater" type="Node"]
+script = ExtResource("1_qcr3k")

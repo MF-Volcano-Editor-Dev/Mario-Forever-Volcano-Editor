@@ -1,32 +1,43 @@
-[gd_scene load_steps=7 format=3 uid="uid://bvq8x1atfxyaq"]
+[gd_scene load_steps=9 format=3 uid="uid://bvq8x1atfxyaq"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_suit_2d.gd" id="1_87puv"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario_small.tres" id="2_55vlb"]
 [ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://assets/textures/entities/players/mario/mario_small.png" id="2_k3flq"]
 [ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_lib.res" id="3_6ku0f"]
 [ext_resource type="PackedScene" uid="uid://cjwp2krmh5qx5" path="res://objects/entities/players/mario/components/mario_behavior.tscn" id="5_7j5f1"]
+[ext_resource type="PackedScene" uid="uid://b755dvluuuu6g" path="res://objects/components/property_updater/property_updater.tscn" id="6_6wrid"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ualkb"]
+size = Vector2(20, 2)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5655p"]
 
-[node name="MarioSmall" type="Node2D" node_paths=PackedStringArray("direct_manage_nodes", "collision_boxes_normal")]
+[node name="MarioSmall" type="Node2D" node_paths=PackedStringArray("direct_manage_nodes")]
 script = ExtResource("1_87puv")
 suit_features = "small"
 direct_manage_nodes = [NodePath("CollisionShape2D")]
-collision_boxes_normal = [NodePath("CollisionShape2D")]
-metadata/_edit_pinned_properties_ = [&"direct_manage_nodes", &"collision_boxes_normal", &"suit_features"]
+metadata/_edit_pinned_properties_ = [&"direct_manage_nodes", &"suit_features"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
 shape = ExtResource("2_55vlb")
 debug_color = Color(0.658824, 0.321569, 1, 0.419608)
 
-[node name="Area2D" type="Area2D" parent="."]
-collision_mask = 62
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="ShapeCastBody" type="ShapeCast2D" parent="."]
 position = Vector2(0, 2)
 shape = ExtResource("2_55vlb")
-debug_color = Color(0.776471, 0.439216, 0, 0.419608)
+target_position = Vector2(0, 0)
+max_results = 8
+collision_mask = 118
+collide_with_areas = true
+
+[node name="ShapeCastHead" type="ShapeCast2D" parent="."]
+position = Vector2(0, -13)
+shape = SubResource("RectangleShape2D_ualkb")
+target_position = Vector2(0, 0)
+max_results = 8
+collision_mask = 114
+collide_with_areas = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -16)
@@ -38,7 +49,8 @@ position = Vector2(4, 16)
 gizmo_extents = 4.0
 
 [node name="Sound2D" type="Sound2D" parent="."]
-area_mask = 64
+bus = &"Sound"
+area_mask = 128
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -50,4 +62,20 @@ libraries = {
 root = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"root"]
 
-[node name="AquaTrigger" type="Node" parent="."]
+[node name="AquaUpdater" type="Node" parent="."]
+process_mode = 4
+
+[node name="AquaRoot" parent="AquaUpdater" instance=ExtResource("6_6wrid")]
+properties = {
+"gravity": 250.0,
+"max_falling_speed": 150.0
+}
+metadata/_edit_pinned_properties_ = [&"properties"]
+
+[node name="AquaBehavior" parent="AquaUpdater" node_paths=PackedStringArray("root") instance=ExtResource("6_6wrid")]
+properties = {
+"max_running_speed": 175.0,
+"max_walking_speed": 175.0
+}
+root = NodePath("../../Behavior")
+metadata/_edit_pinned_properties_ = [&"root", &"properties"]

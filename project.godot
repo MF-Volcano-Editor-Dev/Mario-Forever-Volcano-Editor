@@ -116,7 +116,8 @@ fire1={
 2d_physics/layer_4="block_npc"
 2d_physics/layer_5="environment"
 2d_physics/layer_6="facilities"
-2d_physics/layer_7="sounds"
+2d_physics/layer_7="fluid"
+2d_physics/layer_8="sounds"
 
 [rendering]
 
