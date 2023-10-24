@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqljw565ywlho"
-path="res://.godot/imported/mario_fireball.png-778bcb0d4092a45e9418000c66dc9f48.ctex"
+uid="uid://d2amp1pvo4bgo"
+path="res://.godot/imported/mario_super.png-e8dbad475f581d9bed0a4b1f9cbb1904.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/entities/players/mario/mario_fireball.png"
-dest_files=["res://.godot/imported/mario_fireball.png-778bcb0d4092a45e9418000c66dc9f48.ctex"]
+source_file="res://objects/entities/players/mario/textures/mario_super.png"
+dest_files=["res://.godot/imported/mario_super.png-e8dbad475f581d9bed0a4b1f9cbb1904.ctex"]
 
 [params]
 

@@ -2,13 +2,13 @@
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_suit_2d.gd" id="1_87puv"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario_small.tres" id="2_55vlb"]
-[ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://assets/textures/entities/players/mario/mario_small.png" id="2_k3flq"]
+[ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://objects/entities/players/mario/textures/mario_small.png" id="2_k3flq"]
 [ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_lib.res" id="3_6ku0f"]
 [ext_resource type="PackedScene" uid="uid://cjwp2krmh5qx5" path="res://objects/entities/players/mario/components/mario_behavior.tscn" id="5_7j5f1"]
 [ext_resource type="PackedScene" uid="uid://b755dvluuuu6g" path="res://objects/components/property_updater/property_updater.tscn" id="6_6wrid"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ualkb"]
-size = Vector2(20, 2)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s4ol5"]
+size = Vector2(20, 4)
 
 [node name="MarioSmall" type="Node2D" node_paths=PackedStringArray("direct_manage_nodes")]
 script = ExtResource("1_87puv")
@@ -21,21 +21,25 @@ position = Vector2(0, 2)
 shape = ExtResource("2_55vlb")
 debug_color = Color(0.658824, 0.321569, 1, 0.419608)
 
-[node name="ShapeCastBody" type="ShapeCast2D" parent="."]
+[node name="AreaBody" type="Area2D" parent="."]
 position = Vector2(0, 2)
-shape = ExtResource("2_55vlb")
-target_position = Vector2(0, 0)
-max_results = 8
 collision_mask = 118
-collide_with_areas = true
+metadata/_edit_group_ = true
 
-[node name="ShapeCastHead" type="ShapeCast2D" parent="."]
-position = Vector2(0, -13)
-shape = SubResource("RectangleShape2D_ualkb")
-target_position = Vector2(0, 0)
-max_results = 8
-collision_mask = 114
-collide_with_areas = true
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaBody"]
+shape = ExtResource("2_55vlb")
+debug_color = Color(0, 0.643137, 0.317647, 0.419608)
+
+[node name="AreaHead" type="Area2D" parent="."]
+position = Vector2(0, -14)
+collision_layer = 0
+collision_mask = 66
+monitorable = false
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="AreaHead"]
+shape = SubResource("RectangleShape2D_s4ol5")
+debug_color = Color(0.878431, 0.345098, 0, 0.419608)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -16)

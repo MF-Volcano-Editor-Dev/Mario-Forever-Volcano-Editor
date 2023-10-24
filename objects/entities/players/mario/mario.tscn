@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://bv26woxthkhv6"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_2d.gd" id="1_5eyu0"]
-[ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://assets/textures/entities/players/mario/mario_small.png" id="2_vku1p"]
+[ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://objects/entities/players/mario/textures/mario_small.png" id="2_mkrgm"]
 
-[node name="Mario" type="EntityBody2D"]
+[node name="Mario" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
 gravity = 2500.0
 max_falling_speed = 500.0
 collision_mask = 2
@@ -14,5 +14,5 @@ metadata/_edit_pinned_properties_ = [&"nickname"]
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(0, -16)
-texture = ExtResource("2_vku1p")
+texture = ExtResource("2_mkrgm")
 hframes = 13

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bufqjkdrgm0gy"
-path="res://.godot/imported/mario_red_lui.png-18831dc0c14464757dc231366f1109b3.ctex"
+uid="uid://d1xuud5s4w4p6"
+path="res://.godot/imported/mario_hammer.png-a83e4f4942a3b0faef6b63b29821c817.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/entities/players/mario/mario_red_lui.png"
-dest_files=["res://.godot/imported/mario_red_lui.png-18831dc0c14464757dc231366f1109b3.ctex"]
+source_file="res://objects/entities/players/mario/textures/mario_hammer.png"
+dest_files=["res://.godot/imported/mario_hammer.png-a83e4f4942a3b0faef6b63b29821c817.ctex"]
 
 [params]
 

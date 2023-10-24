@@ -4,6 +4,8 @@ class_name Mario2D extends EntityPlayer2D
 ##
 ##
 
+# "#mario_component_fixed"
+
 @export_group("Suit")
 ## Name of current suit
 ## [b]Note:[/b] changing this method will automatically change
@@ -36,7 +38,7 @@ func set_character_id(new_character_id: StringName) -> void:
 func set_suit(new_suit_id: StringName) -> void:
 	# Removes previous suit
 	for i: Node in get_children():
-		if !i.is_in_group(&"#mario_cpn_fixed"):
+		if !i.is_in_group(&"#mario_component_fixed"):
 			i.queue_free()
 	
 	# Prepares and check new suit

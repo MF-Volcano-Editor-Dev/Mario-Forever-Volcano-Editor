@@ -42,7 +42,9 @@ extends Component
 var mario: Mario2D ## Fast access to [member Component.root] casted to [Mario2D]
 
 var _pos: Vector2
+var _is_climbable: bool
 
+# These are controlled keys
 var _left_right: int
 var _up_down: int
 var _jumped: bool
@@ -60,22 +62,29 @@ var _crouchable_in_small_suit: bool
 @onready var sound: Sound2D = $"../Sound2D"
 @onready var aqua_root: Node = $"../AquaUpdater/AquaRoot"
 @onready var aqua_behavior: Node = $"../AquaUpdater/AquaBehavior"
-@onready var body: ShapeCast2D = $"../ShapeCastBody"
-@onready var head: ShapeCast2D = $"../ShapeCastHead"
+@onready var body: Area2D = $"../AreaBody"
+@onready var head: Area2D = $"../AreaHead"
 
 
 #region Main methods
 func _ready() -> void:
 	# Set root
 	mario = (root as MarioSuit2D).get_player()
+	
 	# Animations
 	animation.animation_finished.connect(_on_animation_swim_reset)
+	
+	# Detections
+	body.area_entered.connect(_on_body_area_entered)
+	body.area_exited.connect(_on_body_area_exited)
+	head.area_entered.connect(_on_head_area_entered)
+	head.area_exited.connect(_on_head_area_exited)
+
 
 func _process(delta: float) -> void:
-	# States
-	_states_process()
-	# Control
-	_control_process()
+	# States & Controls
+	_general_states_process()
+	_control_state_process()
 	# Movement
 	if mario.state_machine.is_state(&"climbing"):
 		_movement_climb_process()
@@ -85,8 +94,6 @@ func _process(delta: float) -> void:
 		_movement_y_process(delta)
 	# Animations
 	_animation_process(delta)
-	# Detections
-	_detection_process()
 
 
 func _physics_process(delta: float) -> void:
@@ -105,7 +112,7 @@ func _physics_process(delta: float) -> void:
 #endregion
 
 
-func _states_process() -> void:
+func _general_states_process() -> void:
 	# States from global settings
 	_jumpable_when_crouching = ProjectSettings.get_setting("game/control/player/jumpable_when_crouching", false)
 	_walkable_when_crouching = ProjectSettings.get_setting("game/control/player/walkable_when_crouching", false)
@@ -113,12 +120,17 @@ func _states_process() -> void:
 
 
 #region Controls
-func _control_process() -> void:
+func _control_state_process() -> void:
+	# Basic controls
 	_left_right = int(Input.get_axis(_get_key_input(key_inputs.left), _get_key_input(key_inputs.right)))
 	_up_down = int(Input.get_axis(_get_key_input(key_inputs.up), _get_key_input(key_inputs.down)))
 	_jumped = Input.is_action_just_pressed(_get_key_input(key_inputs.jump))
 	_jumping = Input.is_action_pressed(_get_key_input(key_inputs.jump))
 	_running = Input.is_action_pressed(_get_key_input(key_inputs.run))
+	
+	# Climbing
+	if _up_down < 0 && _is_climbable && !mario.state_machine.is_state(&"climbing"):
+		mario.state_machine.set_state(&"climbing")
 
 
 func _get_key_input(key_name: StringName) -> StringName:
@@ -295,6 +307,55 @@ func _on_animation_swim_reset(anim_name: StringName) -> void:
 #endregion
 
 
+#region Body Detections
+func _on_body_area_entered(area: Area2D) -> void:
+	# AreaClimbable2D
+	if area is AreaClimbable2D:
+		if !_is_climbable:
+			_is_climbable = true
+	
+	# AreaFluid2D
+	if area is AreaFluid2D:
+		if area.fluid_id == &"water" && !mario.state_machine.is_state(&"underwater"):
+			mario.state_machine.set_state(&"underwater")
+			aqua_root.update_from_component()
+			aqua_behavior.update_from_component()
+
+
+func _on_body_area_exited(area: Area2D) -> void:
+	# AreaClimbable2D
+	if area is AreaClimbable2D:
+		if _is_climbable:
+			_is_climbable = false
+		if mario.state_machine.is_state(&"climbing"):
+			mario.state_machine.remove_state(&"climbing")
+	
+	# AreaFluid2D
+	if area is AreaFluid2D:
+		if area.fluid_id == &"water" && mario.state_machine.is_state(&"underwater"):
+			mario.state_machine.remove_state(&"underwater")
+			aqua_root.update_from_extracted_value()
+			aqua_behavior.update_from_extracted_value()
+#endregion
+
+
+#region Area Detections
+func _on_head_area_entered(area: Area2D) -> void:
+	# AreaFluid2D
+	if area is AreaFluid2D:
+		if area.fluid_id == &"water" && mario.state_machine.is_state(&"underwater_jumpout"):
+			mario.state_machine.remove_state(&"underwater_jumpout")
+
+
+func _on_head_area_exited(area: Area2D) -> void:
+	if area is AreaFluid2D:
+		if area.fluid_id == &"water" && !mario.state_machine.is_state(&"underwater_jumpout"):
+			mario.state_machine.set_state(&"underwater_jumpout")
+#endregion
+
+#endregion
+
+
 #region Setters & Getters
 func get_left_right() -> int:
 	return _left_right
@@ -302,41 +363,4 @@ func get_left_right() -> int:
 
 func get_up_down() -> int:
 	return _up_down
-#endregion
-
-
-#region Detections
-func _detection_process() -> void:
-	# Reset
-	if mario.state_machine.is_state(&"underwater"):
-		mario.state_machine.remove_state(&"underwater")
-		aqua_root.update_from_extracted_value()
-		aqua_behavior.update_from_extracted_value()
-	if !mario.state_machine.is_state(&"underwater_jumpout"):
-		mario.state_machine.set_state(&"underwater_jumpout")
-	
-	# Body detection
-	var body_collisions: int = body.get_collision_count()
-	for i in body_collisions:
-		var target := body.get_collider(i) as CollisionObject2D
-		if !target:
-			continue
-		
-		# Underwater
-		if target is AreaFluid2D && target.fluid_id == &"water" && !mario.state_machine.is_state(&"underwater"):
-			mario.state_machine.set_state(&"underwater")
-			aqua_root.update_from_component()
-			aqua_behavior.update_from_component()
-	
-	# Head detection
-	var head_collisions: int = head.get_collision_count()
-	for j in head_collisions:
-		var target := head.get_collider(j) as CollisionObject2D
-		if !target:
-			continue
-		
-		# Underwater jumpout
-		if target is AreaFluid2D && target.fluid_id == &"water" && mario.state_machine.is_state(&"underwater_jumpout"):
-			mario.state_machine.remove_state(&"underwater_jumpout")
-
 #endregion
