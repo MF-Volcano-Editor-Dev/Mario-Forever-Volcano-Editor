@@ -11,7 +11,7 @@ size = Vector2(192, 208)
 [node name="Level" type="Node2D"]
 
 [node name="Mario" parent="." instance=ExtResource("1_p1j5j")]
-position = Vector2(128, 392)
+position = Vector2(128, 400)
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_7g6er")

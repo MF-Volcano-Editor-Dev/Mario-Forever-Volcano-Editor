@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvq8x1atfxyaq"]
+[gd_scene load_steps=8 format=3 uid="uid://bvq8x1atfxyaq"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_suit_2d.gd" id="1_87puv"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario_small.tres" id="2_55vlb"]
@@ -9,8 +9,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ualkb"]
 size = Vector2(20, 2)
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_5655p"]
 
 [node name="MarioSmall" type="Node2D" node_paths=PackedStringArray("direct_manage_nodes")]
 script = ExtResource("1_87puv")
@@ -54,7 +52,6 @@ area_mask = 128
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_5655p"),
 "Mario": ExtResource("3_6ku0f")
 }
 

@@ -237,10 +237,8 @@ func _movement_crouching_process() -> void:
 	if on_floor_down && crouchable:
 		if !mario.state_machine.is_state(&"crouching"):
 			mario.state_machine.set_state(&"crouching")
-			mario.get_suit().crouch_collision_shapes(true)
 	elif mario.state_machine.is_state(&"crouching"):
 		mario.state_machine.remove_state(&"crouching")
-		mario.get_suit().crouch_collision_shapes(false)
 
 
 #region Test for Movement
@@ -259,7 +257,7 @@ func _is_jumpable() -> bool:
 
 
 func _reset_jumping() -> void:
-	if _jumped_already && !_jumping && (mario.is_on_floor() || mario.test_move(mario.global_transform, mario.get_gravity_direction() * 24)):
+	if _jumped_already && !_jumping && mario.velocity.y > 0:
 		_jumped_already = false
 #endregion
 
