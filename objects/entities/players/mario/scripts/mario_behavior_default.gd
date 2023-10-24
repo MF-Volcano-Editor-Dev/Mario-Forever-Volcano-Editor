@@ -68,8 +68,6 @@ var _crouchable_in_small_suit: bool
 func _ready() -> void:
 	# Set root
 	mario = (root as MarioSuit2D).get_player()
-	# Set root of aqua_properties
-	aqua_root.root = mario
 	# Animations
 	animation.animation_finished.connect(_on_animation_swim_reset)
 
@@ -89,7 +87,6 @@ func _process(delta: float) -> void:
 	_animation_process(delta)
 	# Detections
 	_detection_process()
-	
 
 
 func _physics_process(delta: float) -> void:
@@ -257,7 +254,7 @@ func _is_jumpable() -> bool:
 
 
 func _reset_jumping() -> void:
-	if _jumped_already && !_jumping && mario.velocity.y > 0:
+	if !_jumping && (mario.velocity.y > 0 || mario.is_on_floor()):
 		_jumped_already = false
 #endregion
 

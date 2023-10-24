@@ -20,8 +20,11 @@ var _properties: Dictionary
 
 
 func _ready() -> void:
+	super()
+	
 	if !is_instance_valid(root):
 		return
+	
 	extract_properties_from_root()
 
 

@@ -67,7 +67,9 @@ properties = {
 "gravity": 250.0,
 "max_falling_speed": 150.0
 }
-metadata/_edit_pinned_properties_ = [&"properties"]
+root_selection_mode = 1
+root_as_string = "../../.."
+metadata/_edit_pinned_properties_ = [&"properties", &"root_selection_mode", &"root_as_string"]
 
 [node name="AquaBehavior" parent="AquaUpdater" node_paths=PackedStringArray("root") instance=ExtResource("6_6wrid")]
 properties = {
