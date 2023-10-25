@@ -22,12 +22,12 @@ func _spray_trigger(body: Node2D, entering: int) -> void:
 
 
 ## Create [member spray] effect on a body with [param transform] preset
-func create_spray(body: CollisionObject2D, transform: Transform2D, entering: int = 0) -> void:
+func create_spray(body: CollisionObject2D, p_transform: Transform2D, entering: int = 0) -> void:
 	if !spray:
 		return
 	
 	var s := spray.instantiate() as Node2D
 	body.add_sibling.call_deferred(s)
 	
-	s.global_transform = transform
+	s.global_transform = p_transform
 	s.set_entering(entering)

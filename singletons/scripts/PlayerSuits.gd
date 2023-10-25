@@ -1,26 +1,16 @@
 extends Node
 
-var _player_suits_list: Dictionary:
-	get = get_player_suits
-
-
-func _ready() -> void:
-	for i: MarioSuit2D in get_children():
-		var id: StringName = get_player_suit_id(i.character_id, i.suit_id)
-		if !id in _player_suits_list:
-			_player_suits_list.merge({id: load(i.scene_file_path)})
-		i.free()
-
-
-func get_player_suits() -> Dictionary:
-	return _player_suits_list
+@export var player_suits_list: Dictionary= {
+	&"mario/small": preload("res://objects/entities/players/mario/suits/mario_small.tscn"),
+	&"mario/big": preload("res://objects/entities/players/mario/suits/mario_big.tscn"),
+}
 
 
 func get_player_suit(id: StringName) -> MarioSuit2D:
-	if !id in _player_suits_list:
+	if !id in player_suits_list:
 		return null
 	
-	var pck: PackedScene = _player_suits_list[id] as PackedScene
+	var pck: = player_suits_list[id] as PackedScene
 	if !pck:
 		return null
 	

@@ -57,6 +57,7 @@ var _jumpable_when_crouching: bool
 var _walkable_when_crouching: bool
 var _crouchable_in_small_suit: bool
 
+@onready var suit: MarioSuit2D = $".."
 @onready var sprite: Sprite2D = $"../Sprite2D"
 @onready var animation: AnimationPlayer = $"../AnimationPlayer"
 @onready var sound: Sound2D = $"../Sound2D"
@@ -131,6 +132,7 @@ func _control_state_process() -> void:
 	# Climbing
 	if _up_down < 0 && _is_climbable && !mario.state_machine.is_state(&"climbing"):
 		mario.state_machine.set_state(&"climbing")
+		_jumped_already = false
 
 
 func _get_key_input(key_name: StringName) -> StringName:
@@ -195,7 +197,7 @@ func _movement_y_process(delta: float) -> void:
 			
 			_jumped_already = true
 			animation.stop()
-			animation.play(&"Mario/swim")
+			animation.play(&"swim")
 		
 		# Underwater peak swimming speed
 		var swimming_peak: float = -abs(swimming_peak_speed)
@@ -227,7 +229,6 @@ func _movement_climb_process() -> void:
 	mario.velocity = (Vector2(_left_right, _up_down).normalized() if _left_right || _up_down else Vector2.ZERO) * climbing_speed
 	
 	# Jumping from climbing
-	_jumped_already = false
 	if _is_jumpable():
 		_jumped_already = true
 		sound.play(sound_jump)
@@ -239,15 +240,17 @@ func _movement_crouching_process() -> void:
 	if mario.state_machine.is_state(&"no_crouching"):
 		return
 	
-	var small: bool = "small" in mario.get_suit().suit_features
+	var small: bool = "small" in suit.suit_features
 	var crouchable: bool = (_crouchable_in_small_suit && small) || !small
 	var on_floor_down: bool = _up_down > 0 && mario.is_on_floor()
 	
 	if on_floor_down && crouchable:
 		if !mario.state_machine.is_state(&"crouching"):
 			mario.state_machine.set_state(&"crouching")
+			suit.switch_shape(&"crouch")
 	elif mario.state_machine.is_state(&"crouching"):
 		mario.state_machine.remove_state(&"crouching")
+		suit.switch_shape(&"normal")
 
 
 #region Test for Movement
@@ -278,31 +281,34 @@ func _animation_process(delta: float) -> void:
 	animation.speed_scale = 1
 	sprite.scale.x = mario.direction
 	
+	if animation.current_animation in [&"appear", &"attack"]:
+		return
+	
 	if mario.state_machine.is_state(&"climbing"):
-		animation.play(&"Mario/climb")
+		animation.play(&"climb")
 		animation.speed_scale = 0.0 if mario.velocity.is_zero_approx() else 1.0
 	else:
 		sprite.flip_h = false
 		
 		if mario.is_on_floor():
 			if mario.state_machine.is_state(&"crouching"):
-				animation.play(&"Mario/crouch")
+				animation.play(&"crouch")
 			elif is_zero_approx(snappedf(_pos.length_squared(), 0.01)):
-				animation.play(&"Mario/RESET")
+				animation.play(&"RESET")
 			else:
-				animation.play(&"Mario/walk")
+				animation.play(&"walk")
 				animation.speed_scale = clampf(absf(mario.velocity.x) * delta * 0.67, 0, 5)
 		elif mario.state_machine.is_state(&"underwater"):
-			animation.play(&"Mario/swim")
+			animation.play(&"swim")
 		elif mario.velocity.y < 0:
-			animation.play(&"Mario/jump")
+			animation.play(&"jump")
 		else:
-			animation.play(&"Mario/fall")
+			animation.play(&"fall")
 
 
 func _on_animation_swim_reset(anim_name: StringName) -> void:
 	match anim_name:
-		&"Mario/swim":
+		&"swim":
 			animation.advance(-0.2)
 #endregion
 

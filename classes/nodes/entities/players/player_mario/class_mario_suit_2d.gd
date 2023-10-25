@@ -22,6 +22,12 @@ class_name MarioSuit2D extends Node2D
 ## [b]Note:[/b] Some nodes, like [CollisionShape2D], should be listed in this property![br]
 ## [color=yellow][b]Attention![/b][/color] In the spector, you need to manually initialize the nodes to be managed by the character directly
 @export var direct_manage_nodes: Array[Node]
+@export_group("Shapes")
+## Shapes that should be controlled, see [method switch_shape]
+@export var shapes_list: Dictionary = {
+	&"normal": [],
+	&"crouch": []
+}
 ## [Sprite2D] of the suit
 @onready var sprite: Sprite2D = $Sprite2D
 ## [AnimationPlayer] of the suit to control displaying of [member sprite]
@@ -30,7 +36,6 @@ class_name MarioSuit2D extends Node2D
 @onready var behavior: Node = $Behavior
 
 var _player: Mario2D
-
 
 ## Deploys the suit for a [Mario2D] and link the [Mario2D] with this suit instance [br]
 ## [b]Note:[/b] This method is a [color=cyan][b]coroutine[/b][/color] for the safety
@@ -46,23 +51,44 @@ func deploy(on: Mario2D) -> void:
 	
 	# Some nodes, like CollisonShape2D, should be directly
 	# managed by the player body
-	for i: Node in direct_manage_nodes:
-		i.reparent.call_deferred(on, false)
+	for k: Node in direct_manage_nodes:
+		k.reparent.call_deferred(on, false)
 	
 	_player = on
 	_player.add_child.call_deferred(self)
 
 
-#regionbegin Animations
+#region Animations
 ## Plays appearing animation of the suit
 func appear(duration: float = 1.0) -> void:
-	animation.play(&"Mario/appear")
+	animation.play(&"appear")
 	await get_tree().create_timer(duration, false).timeout
-	animation.play(&"Mario/RESET")
+	animation.play(&"RESET")
 #endregion
 
 
-#regionbegin Setters & Getters
+#region Shapes
+## Controls the shape
+func switch_shape(shape_state: StringName) -> void:
+	if !shape_state in shapes_list:
+		return
+	
+	for i in shapes_list:
+		if i == shape_state:
+			continue
+		for j: NodePath in shapes_list[i]:
+			var false_shape := get_node_or_null(j) as CollisionShape2D
+			if false_shape:
+				false_shape.set_deferred(&"disabled", true)
+	
+	for k: NodePath in shapes_list[shape_state]:
+		var true_shape := get_node_or_null(k) as CollisionShape2D
+		if true_shape:
+			true_shape.set_deferred(&"disabled", false)
+#endregion
+
+
+#region Setters & Getters
 ## Returns the [Mario2D] linking to this suit
 func get_player() -> Mario2D:
 	return _player if is_instance_valid(_player) else null

@@ -36,6 +36,13 @@ func set_character_id(new_character_id: StringName) -> void:
 ## [b]Note:[/b] This method will load the suit from [singleton PlayerSuits], so please
 ## tag the suit under the singleton before calling this method
 func set_suit(new_suit_id: StringName) -> void:
+	# Applys the new suit
+	suit_id = new_suit_id
+	
+	# Stop running if the node is on initialization
+	if !is_node_ready():
+		return
+	
 	# Removes previous suit
 	for i: Node in get_children():
 		if !i.is_in_group(&"#mario_component_fixed"):
@@ -47,9 +54,6 @@ func set_suit(new_suit_id: StringName) -> void:
 	if !psuit:
 		printerr("No such suit %s!" % [psuit])
 		return
-	
-	# Applys the new suit
-	suit_id = new_suit_id
 	
 	# Deploys the new suit
 	_suit = psuit
