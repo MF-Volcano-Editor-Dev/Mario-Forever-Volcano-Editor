@@ -57,7 +57,8 @@ func set_suit(new_suit_id: StringName) -> void:
 	
 	# Deploys the new suit
 	_suit = psuit
-	_suit.deploy(self)
+	await get_tree().process_frame # Await for one frame to delete the rest of previous suit totally.
+	add_child.call_deferred(_suit, true)
 	
 	# Appear animation
 	if suit_no_appear_animation:

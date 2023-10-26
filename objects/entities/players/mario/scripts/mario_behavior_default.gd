@@ -69,6 +69,8 @@ var _crouchable_in_small_suit: bool
 
 #region Main methods
 func _ready() -> void:
+	super()
+	
 	# Set root
 	mario = (root as MarioSuit2D).get_player()
 	
@@ -247,10 +249,10 @@ func _movement_crouching_process() -> void:
 	if on_floor_down && crouchable:
 		if !mario.state_machine.is_state(&"crouching"):
 			mario.state_machine.set_state(&"crouching")
-			suit.switch_shape(&"crouch")
+			animation.play.call_deferred(&"MarioShapes/crouch")
 	elif mario.state_machine.is_state(&"crouching"):
 		mario.state_machine.remove_state(&"crouching")
-		suit.switch_shape(&"normal")
+		animation.play.call_deferred(&"MarioShapes/normal")
 
 
 #region Test for Movement

@@ -33,4 +33,4 @@ func _process(_delta: float) -> void:
 		
 		if !"small" in suit.suit_features:
 			_player.suit_id = &"small"
-			suit.behavior.sound.play(suit.behavior.sound_hurt, Sound2D.PlayMode.SCENE)
+			suit.behavior.sound.play(suit.behavior.sound_hurt, get_tree().current_scene)
