@@ -61,13 +61,15 @@ func disable() -> void:
 
 #region Damage Controls
 ## Abstract method to make the player hurt [br]
-## [b]Note:[/b] Sometimes you need to emit the signal [signal got_hurt]
-func hurt() -> void:
+## [b]Note 1:[/b] Sometimes you need to emit the signal [signal got_hurt]
+## [b]Note 2:[/b] Sometimes you are required to check the list for [param _tags] in child classes
+func hurt(_tags: Dictionary = {}) -> void:
 	pass
 
 ## Abstract method to make the player die [br]
-## [b]Note:[/b] Sometimes you need to emit the signal [signal got_death]
-func die() -> void:
+## [b]Note 1:[/b] Sometimes you need to emit the signal [signal got_death]
+## [b]Note 2:[/b] Sometimes you are required to check the list for [param _tags] in child classes
+func die(_tags: Dictionary = {}) -> void:
 	pass
 #endregion
 

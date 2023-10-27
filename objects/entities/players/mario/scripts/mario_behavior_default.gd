@@ -36,8 +36,7 @@ extends Component
 @export_group("Behavior Sounds", "sound_")
 @export var sound_jump: AudioStream = preload("res://assets/sounds/jump.wav")
 @export var sound_swim: AudioStream = preload("res://assets/sounds/swim.wav")
-@export var sound_hurt: AudioStream = preload("res://assets/sounds/power_down.wav")
-@export var sound_death: AudioStream = preload("res://assets/sounds/death.ogg")
+
 
 var mario: Mario2D ## Fast access to [member Component.root] casted to [Mario2D]
 
@@ -231,7 +230,7 @@ func _movement_climb_process() -> void:
 	mario.velocity = (Vector2(_left_right, _up_down).normalized() if _left_right || _up_down else Vector2.ZERO) * climbing_speed
 	
 	# Jumping from climbing
-	if _is_jumpable():
+	if _is_jumpable() && _up_down >= 0:
 		_jumped_already = true
 		sound.play(sound_jump)
 		mario.jump(initial_jumping_speed)
@@ -319,7 +318,7 @@ func _on_animation_swim_reset(anim_name: StringName) -> void:
 func _on_body_area_entered(area: Area2D) -> void:
 	# AreaClimbable2D
 	if area is AreaClimbable2D:
-		if !_is_climbable:
+		if !_is_climbable && !_jumping:
 			_is_climbable = true
 	
 	# AreaFluid2D

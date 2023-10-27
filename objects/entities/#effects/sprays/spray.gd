@@ -31,17 +31,19 @@ func _ready() -> void:
 	
 	match in_or_out:
 		true:
-			for i in 1024:
+			for i in 32:
 				global_position += down
 				caster.force_shapecast_update()
 				
 				if caster.get_collision_count():
 					global_position -= down
-					break
+					return
 		false:
-			for i in 1024:
+			for i in 32:
 				global_position -= down
 				caster.force_shapecast_update()
 				
 				if !caster.get_collision_count():
-					break
+					return
+	
+	queue_free()

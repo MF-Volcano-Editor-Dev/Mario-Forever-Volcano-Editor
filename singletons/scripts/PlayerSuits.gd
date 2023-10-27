@@ -6,8 +6,8 @@ extends Node
 ## &"character_id/suit_id" : preload(your_suit.tscn)
 
 @export var player_suits_list: Dictionary= {
-	&"mario/small": preload("res://objects/entities/players/mario/suits/mario_small.tscn"),
-	&"mario/big": preload("res://objects/entities/players/mario/suits/mario_big.tscn"),
+	&"mario/small": preload("res://objects/entities/players/mario/#suits/mario_small.tscn"),
+	&"mario/big": preload("res://objects/entities/players/mario/#suits/mario_big.tscn"),
 }
 
 

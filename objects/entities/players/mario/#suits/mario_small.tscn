@@ -1,27 +1,27 @@
 [gd_scene load_steps=9 format=3 uid="uid://bvq8x1atfxyaq"]
 
-[ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_suit_2d.gd" id="1_87puv"]
-[ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario_small.tres" id="2_55vlb"]
-[ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://objects/entities/players/mario/textures/mario_small.png" id="2_k3flq"]
-[ext_resource type="Shape2D" uid="uid://bq38l552jterp" path="res://objects/entities/players/mario/shapes/shape_mario_head.tres" id="3_yhefb"]
-[ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_small.res" id="4_cym05"]
-[ext_resource type="PackedScene" uid="uid://cjwp2krmh5qx5" path="res://objects/entities/players/mario/components/mario_behavior.tscn" id="5_7j5f1"]
-[ext_resource type="PackedScene" uid="uid://b755dvluuuu6g" path="res://objects/components/property_updater/property_updater.tscn" id="6_6wrid"]
-[ext_resource type="AnimationLibrary" uid="uid://ca46u8ix81rc0" path="res://objects/entities/players/mario/animations/mario_animations_shapes.res" id="6_y2fof"]
+[ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_suit_2d.gd" id="1_xh10y"]
+[ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario_small.tres" id="2_kt374"]
+[ext_resource type="Shape2D" uid="uid://bq38l552jterp" path="res://objects/entities/players/mario/shapes/shape_mario_head.tres" id="3_wm1f2"]
+[ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://objects/entities/players/mario/textures/mario_small.png" id="4_m41gs"]
+[ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_small.res" id="5_uhqkc"]
+[ext_resource type="AnimationLibrary" uid="uid://ca46u8ix81rc0" path="res://objects/entities/players/mario/animations/mario_animations_shapes.res" id="6_diko7"]
+[ext_resource type="PackedScene" uid="uid://cjwp2krmh5qx5" path="res://objects/entities/players/mario/#components/mario_behavior.tscn" id="7_r45j1"]
+[ext_resource type="PackedScene" uid="uid://b755dvluuuu6g" path="res://objects/components/property_updater/property_updater.tscn" id="8_mce8w"]
 
 [node name="MarioSmall" type="Node2D"]
-script = ExtResource("1_87puv")
+script = ExtResource("1_xh10y")
 suit_features = "small"
 metadata/_edit_pinned_properties_ = [&"suit_features"]
 
 [node name="Normal" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
-shape = ExtResource("2_55vlb")
+shape = ExtResource("2_kt374")
 debug_color = Color(0.658824, 0.321569, 1, 0.419608)
 
 [node name="Crouch" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
-shape = ExtResource("2_55vlb")
+shape = ExtResource("2_kt374")
 disabled = true
 debug_color = Color(0.658824, 0.321569, 1, 0.419608)
 
@@ -31,11 +31,11 @@ collision_mask = 118
 metadata/_edit_group_ = true
 
 [node name="BNormal" type="CollisionShape2D" parent="AreaBody"]
-shape = ExtResource("2_55vlb")
+shape = ExtResource("2_kt374")
 debug_color = Color(0.658824, 0.321569, 1, 0.419608)
 
 [node name="BCrouch" type="CollisionShape2D" parent="AreaBody"]
-shape = ExtResource("2_55vlb")
+shape = ExtResource("2_kt374")
 disabled = true
 debug_color = Color(0.658824, 0.321569, 1, 0.419608)
 
@@ -47,18 +47,18 @@ metadata/_edit_group_ = true
 
 [node name="HNormal" type="CollisionShape2D" parent="AreaHead"]
 position = Vector2(0, -14)
-shape = ExtResource("3_yhefb")
+shape = ExtResource("3_wm1f2")
 debug_color = Color(0.878431, 0.345098, 0, 0.419608)
 
 [node name="HCrouch" type="CollisionShape2D" parent="AreaHead"]
 position = Vector2(0, -14)
-shape = ExtResource("3_yhefb")
+shape = ExtResource("3_wm1f2")
 disabled = true
 debug_color = Color(0.878431, 0.345098, 0, 0.419608)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -16)
-texture = ExtResource("2_k3flq")
+texture = ExtResource("4_m41gs")
 hframes = 13
 
 [node name="PosBubble" type="Marker2D" parent="Sprite2D"]
@@ -71,18 +71,18 @@ area_mask = 128
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": ExtResource("4_cym05"),
-"MarioShapes": ExtResource("6_y2fof")
+"": ExtResource("5_uhqkc"),
+"MarioShapes": ExtResource("6_diko7")
 }
 
-[node name="Behavior" parent="." instance=ExtResource("5_7j5f1")]
+[node name="Behavior" parent="." instance=ExtResource("7_r45j1")]
 root_path = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"root_path"]
 
 [node name="AquaUpdater" type="Node" parent="."]
 process_mode = 4
 
-[node name="AquaRoot" parent="AquaUpdater" instance=ExtResource("6_6wrid")]
+[node name="AquaRoot" parent="AquaUpdater" instance=ExtResource("8_mce8w")]
 properties = {
 "gravity": 250.0,
 "max_falling_speed": 150.0
@@ -90,7 +90,7 @@ properties = {
 root_path = NodePath("../../..")
 metadata/_edit_pinned_properties_ = [&"properties", &"root_path"]
 
-[node name="AquaBehavior" parent="AquaUpdater" instance=ExtResource("6_6wrid")]
+[node name="AquaBehavior" parent="AquaUpdater" instance=ExtResource("8_mce8w")]
 properties = {
 "max_running_speed": 175.0,
 "max_walking_speed": 175.0

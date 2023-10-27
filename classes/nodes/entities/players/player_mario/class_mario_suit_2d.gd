@@ -19,6 +19,14 @@ class_name MarioSuit2D extends Node2D
 ## Features of the suit, effects some of the results of [member behavior][br]
 ## Use "," to separate each features and use "_" to take the place if space
 @export var suit_features: String = ""
+@export_group("Death")
+## Death of the mario in such suit
+@export var death: PackedScene = preload("res://objects/entities/players/mario/#death/mario_death.tscn")
+@export_group("Sounds")
+## Sound of taking damage
+@export var sound_hurt: AudioStream = preload("res://assets/sounds/power_down.wav")
+## Sound of death
+@export var sound_death: AudioStream = preload("res://assets/sounds/death.ogg")
 
 ## [Sprite2D] of the suit
 @onready var sprite: Sprite2D = $Sprite2D
@@ -26,6 +34,8 @@ class_name MarioSuit2D extends Node2D
 @onready var animation: AnimationPlayer = $AnimationPlayer
 ## [Component] of the suit that process core codes
 @onready var behavior: Node = $Behavior
+## [Sound2D] of the suit
+@onready var sound: Sound2D = $Sound2D
 
 
 func _ready() -> void:

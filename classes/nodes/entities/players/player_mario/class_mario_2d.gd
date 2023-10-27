@@ -17,8 +17,14 @@ class_name Mario2D extends EntityPlayer2D
 ## If [code]true[/code], the character's appearing animation won't be played.
 ## This is often used at the very beginning of the scene
 @export var suit_no_appear_animation: bool = true
+@export_group("Health")
+## Health point of the player. If zero then the character dies
+@export var hp: int = 1:
+	set = set_hp
 
 var _suit: MarioSuit2D
+
+var _invulnerability: SceneTreeTimer
 
 
 func _ready() -> void:
@@ -27,6 +33,7 @@ func _ready() -> void:
 
 
 #region Suit Behaviors
+## Overrides one in the super class
 func set_character_id(new_character_id: StringName) -> void:
 	super(new_character_id)
 	set_suit(suit_id)
@@ -59,7 +66,7 @@ func set_suit(new_suit_id: StringName) -> void:
 	# Deploys the new suit
 	_suit = psuit
 	await get_tree().process_frame # Await for one frame to delete the rest of previous suit totally.
-	add_child.call_deferred(_suit, true)
+	_add_suit.call_deferred()
 	
 	# Appear animation
 	if suit_no_appear_animation:
@@ -72,16 +79,104 @@ func set_suit(new_suit_id: StringName) -> void:
 ## Gets the suit of the character
 func get_suit() -> MarioSuit2D:
 	return _suit
+
+
+func _add_suit() -> void:
+	add_child(_suit)
 #endregion
 
 
 #region Damage Controls
-## Makes the character hurt
-func hurt() -> void:
-	pass
+## Makes the character hurt [br]
+## tags:
+## [codeblock]
+## bool forced: If true, when the methods is called, the character will get hurt even though he is invulnerable
+##
+## int iterations: Determines the times to operate hurting process
+##
+## bool lose_hp: If true, even though the character will lose his hp regardless of his suit
+##
+## float duration: The duration of invulnerability after the character takes damage
+##
+## bool no_sound: If true, then there is not any sound played in hurting process
+##
+## int hp_loss: Determine how many HPs will an iteration cost
+## [/codeblock]
+func hurt(tags: Dictionary = {}) -> void:
+	if (!&"forced" in tags || tags.forced == false) && is_invulerable():
+		return
+	
+	var iterations: int = 1 if !&"iterations" in tags || !tags.iterations is int || tags.iterations <= 0 else tags.iterations
+	var lose_hp: bool = false if !&"lose_hp" in tags || !tags.lose_hp is bool else tags.lose_hp
+	var invulerable_duration: float = 2.0 if !&"duration" in tags || !tags.duration is float else tags.duration
+	
+	# Hurt operation
+	for i in iterations:
+		if PlayerSuits.get_player_suit(character_id + &"/" + _suit.down_suit_id):
+			# Sound controls
+			if !&"no_sound" in tags || tags.no_sound == true:
+				_suit.sound.play(_suit.sound_hurt, get_tree().current_scene)
+			suit_id = _suit.down_suit_id
+			invulnerable(invulerable_duration)
+		else:
+			lose_hp = true
+		
+		# Losing HP
+		if lose_hp:
+			hp -= 1 if !&"hp_loss" in tags || !tags.hp_loss is int else tags.hp_loss
+
+
+## Advanced version of [method hurt], with more parameters to pass in [br]
+## [param forced_lose_hp] will make the player lose an HP directly
+func hurt_custom(times: int = 1, forced_lose_hp: bool = false, forced_hurt: bool = false) -> void:
+	if times <= 0:
+		times = 1
+	
+	for i in times:
+		hurt({
+			forced = forced_hurt,
+			lose_hp = forced_lose_hp,
+			no_sound = false if i < times - 1 else true
+		})
 
 
 ## Makes the character die
-func die() -> void:
-	pass
+func die(_tags: Dictionary = {}) -> void:
+	if _suit.death:
+		var d := _suit.death.instantiate() as Node2D
+		if d:
+			add_sibling(d)
+			d.global_transform = global_transform
+			d.sound.stream = _suit.sound_death
+	queue_free()
+
+
+## Makes the player invulnerable for [param duration] seconds [br]
+## [b]Note:[/b] If the method is called during the invulerability, the duration will be freshed
+func invulnerable(duration: float = 2.0) -> void:
+	_invulnerability = get_tree().create_timer(duration, false)
+	Effects2D.flash(self, duration)
+	await _invulnerability.timeout
+	_invulnerability = null
+
+
+## Returns [code]true[/code] if the character is invulnerable
+func is_invulerable() -> bool:
+	return _invulnerability != null
+#endregion
+
+
+#region Setters & Getters
+func set_hp(value: int) -> void:
+	# HP++
+	if value > hp:
+		invulnerable(1)
+	# HP--
+	elif value < hp:
+		invulnerable(3)
+	hp = value
+	# Check if hp is lower than 0, if so, then makes the player die
+	if hp <= 0:
+		_invulnerability = null
+		die()
 #endregion

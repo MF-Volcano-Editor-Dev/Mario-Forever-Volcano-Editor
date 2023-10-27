@@ -8,7 +8,3 @@ class_name Process
 ## And if in [method Node._physics_process], then return _physics_process()'s
 static func get_delta(node: Node) -> float:
 	return node.get_physics_process_delta_time() if Engine.is_in_physics_frame() else node.get_process_delta_time()
-
-
-static func boost_fps() -> float:
-	var fps: int = Engine.get_frames_per_second()

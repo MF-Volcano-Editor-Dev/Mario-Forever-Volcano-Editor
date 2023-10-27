@@ -24,6 +24,9 @@ static func unregister(id: int) -> void:
 		return
 	
 	_players[id] = null
+	
+	if !_players.is_empty():
+		_players.sort_custom(PlayersManager._sort_by_id)
 #endregion
 
 
@@ -32,22 +35,20 @@ static func get_player(id: int) -> EntityPlayer2D:
 	if id < 0 || id > _players.size() - 1:
 		return null
 	
-	var player := _players[id]
-	if !is_instance_valid(player):
-		return null
+	for i: EntityPlayer2D in _players:
+		if is_instance_valid(i) && i.id == id:
+			return i
 	
-	return player
+	return null
 
 
 static func get_all_available_players() -> Array[EntityPlayer2D]:
-	var result: Array[EntityPlayer2D] = _players.duplicate()
-	result.sort_custom(PlayersManager._sort_and_check)
+	var result: Array[EntityPlayer2D] = []
 	
-	for i in result.size():
-		var ins: EntityPlayer2D = result.pop_back()
-		if is_instance_valid(ins):
-			result.append(ins)
-			break
+	for i: EntityPlayer2D in _players:
+		if !is_instance_valid(i):
+			continue
+		result.append(i)
 	
 	return result
 
