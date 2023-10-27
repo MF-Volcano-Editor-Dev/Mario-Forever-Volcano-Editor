@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Game="*res://singletons/scripts/Game.gd"
 PlayerSuits="*res://singletons/nodes/PlayerSuits.tscn"
 
 [display]

@@ -1,5 +1,10 @@
 extends Node
 
+## A Singleton that manages the suits of each character
+##
+## [b]Note:[/b] the format of [member players_suit_list] should be:[br]
+## &"character_id/suit_id" : preload(your_suit.tscn)
+
 @export var player_suits_list: Dictionary= {
 	&"mario/small": preload("res://objects/entities/players/mario/suits/mario_small.tscn"),
 	&"mario/big": preload("res://objects/entities/players/mario/suits/mario_big.tscn"),

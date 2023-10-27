@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=9 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_7g6er"]
+[ext_resource type="Script" path="res://classes/nodes/cameras/class_camera_player_2d.gd" id="2_8a6sl"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_climbable_2d.gd" id="3_0625b"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_fluid_2d.gd" id="4_suopq"]
 [ext_resource type="PackedScene" uid="uid://b3ds2052h0bx7" path="res://objects/entities/#effects/sprays/spray_water.tscn" id="5_td137"]
@@ -14,9 +15,21 @@ radius = 128.0
 
 [node name="Level" type="Node2D"]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_left = 0
+limit_top = 0
+limit_right = 9600
+limit_bottom = 480
+editor_draw_limits = true
+script = ExtResource("2_8a6sl")
+
 [node name="Mario" parent="." instance=ExtResource("1_p1j5j")]
 position = Vector2(272, 400)
 suit_id = &"big"
+suit_no_appear_animation = null
+id = null
+character_id = null
+direction = null
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_7g6er")

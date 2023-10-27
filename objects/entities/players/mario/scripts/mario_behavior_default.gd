@@ -37,7 +37,7 @@ extends Component
 @export var sound_jump: AudioStream = preload("res://assets/sounds/jump.wav")
 @export var sound_swim: AudioStream = preload("res://assets/sounds/swim.wav")
 @export var sound_hurt: AudioStream = preload("res://assets/sounds/power_down.wav")
-@export var sound_death: AudioStream = preload("res://assets/sounds/player_death.ogg")
+@export var sound_death: AudioStream = preload("res://assets/sounds/death.ogg")
 
 var mario: Mario2D ## Fast access to [member Component.root] casted to [Mario2D]
 

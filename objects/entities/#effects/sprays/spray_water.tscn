@@ -113,7 +113,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"default",
-"speed": 25.0
+"speed": 35.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ithgj"]

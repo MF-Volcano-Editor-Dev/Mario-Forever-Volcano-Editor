@@ -22,6 +22,7 @@ var _suit: MarioSuit2D
 
 
 func _ready() -> void:
+	PlayersManager.register(self)
 	set_suit(suit_id)
 
 

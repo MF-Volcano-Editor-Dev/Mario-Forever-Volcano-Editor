@@ -12,12 +12,13 @@ func _ready() -> void:
 	
 	_player.state_machine.state_removed.connect(
 		func(state: StringName) -> void:
-			_removed_crouching = true
-			
-			for i in 10:
-				await get_tree().process_frame
-			
-			_removed_crouching = false
+			if state == &"crouching":
+				_removed_crouching = true
+				
+				for i in 10:
+					await get_tree().process_frame
+				
+				_removed_crouching = false
 	)
 
 
