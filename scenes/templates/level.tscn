@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=11 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_7g6er"]
@@ -12,6 +12,22 @@ size = Vector2(192, 208)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ti2n4"]
 radius = 128.0
+
+[sub_resource type="GDScript" id="GDScript_qsqdp"]
+script/source = "extends Area2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	body_entered.connect(
+		func(body: Node2D) -> void:
+			if body is Mario2D:
+				body.hurt()
+	)
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mqf3a"]
+radius = 32.0
 
 [node name="Level" type="Node2D"]
 
@@ -51,3 +67,13 @@ metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
 shape = SubResource("CircleShape2D_ti2n4")
+
+[node name="Area2D3" type="Area2D" parent="."]
+position = Vector2(416, 168)
+collision_layer = 64
+script = SubResource("GDScript_qsqdp")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D3"]
+shape = SubResource("CircleShape2D_mqf3a")
+debug_color = Color(0.972549, 0.172549, 0, 0.419608)

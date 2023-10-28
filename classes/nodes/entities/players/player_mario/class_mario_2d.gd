@@ -123,20 +123,6 @@ func hurt(tags: Dictionary = {}) -> void:
 			hp -= 1 if !&"hp_loss" in tags || !tags.hp_loss is int else tags.hp_loss
 
 
-## Advanced version of [method hurt], with more parameters to pass in [br]
-## [param forced_lose_hp] will make the player lose an HP directly
-func hurt_custom(times: int = 1, forced_lose_hp: bool = false, forced_hurt: bool = false) -> void:
-	if times <= 0:
-		times = 1
-	
-	for i in times:
-		hurt({
-			forced = forced_hurt,
-			lose_hp = forced_lose_hp,
-			no_sound = false if i < times - 1 else true
-		})
-
-
 ## Makes the character die
 func die(_tags: Dictionary = {}) -> void:
 	if _suit.death:
