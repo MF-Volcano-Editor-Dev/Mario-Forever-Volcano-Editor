@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bcx8bqwibpjxc" path="res://objects/entities/players/mario/textures/mario_dead.png" id="2_677ew"]
 
 [node name="MarioDeath" type="Node2D"]
+z_index = 24
 script = ExtResource("1_kgqll")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

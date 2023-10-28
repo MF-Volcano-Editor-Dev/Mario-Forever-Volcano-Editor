@@ -32,6 +32,8 @@ class_name MarioSuit2D extends Node2D
 @onready var sprite: Sprite2D = $Sprite2D
 ## [AnimationPlayer] of the suit to control displaying of [member sprite]
 @onready var animation: AnimationPlayer = $AnimationPlayer
+## [AnimationPlayer] of the suit to control shapes
+@onready var shapes_controller: AnimationPlayer = $AnimationShape
 ## [Component] of the suit that process core codes
 @onready var behavior: Node = $Behavior
 ## [Sound2D] of the suit

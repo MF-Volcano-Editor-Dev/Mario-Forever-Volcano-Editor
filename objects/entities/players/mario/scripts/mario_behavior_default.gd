@@ -50,6 +50,7 @@ var _jumped: bool
 var _jumping: bool # True when holding jumping key
 var _jumped_already: bool # True when not close jumping and holding jumping key, prevent from continuous jump by holding the key
 var _running: bool
+var _climbed: bool
 
 # These are written as variables because they are set each frame
 var _jumpable_when_crouching: bool
@@ -59,11 +60,10 @@ var _crouchable_in_small_suit: bool
 @onready var suit: MarioSuit2D = $".."
 @onready var sprite: Sprite2D = $"../Sprite2D"
 @onready var animation: AnimationPlayer = $"../AnimationPlayer"
+@onready var shapes_controller: AnimationPlayer = $"../AnimationShape"
 @onready var sound: Sound2D = $"../Sound2D"
 @onready var aqua_root: Node = $"../AquaUpdater/AquaRoot"
 @onready var aqua_behavior: Node = $"../AquaUpdater/AquaBehavior"
-@onready var body: Area2D = $"../AreaBody"
-@onready var head: Area2D = $"../AreaHead"
 
 
 #region Main methods
@@ -75,12 +75,13 @@ func _ready() -> void:
 	
 	# Animations
 	animation.animation_finished.connect(_on_animation_swim_reset)
+	shapes_controller.play.call_deferred(&"RESET")
 	
 	# Detections
-	body.area_entered.connect(_on_body_area_entered)
-	body.area_exited.connect(_on_body_area_exited)
-	head.area_entered.connect(_on_head_area_entered)
-	head.area_exited.connect(_on_head_area_exited)
+	mario.body.area_entered.connect(_on_body_entered_area)
+	mario.body.area_exited.connect(_on_body_exited_area)
+	mario.head.area_entered.connect(_on_head_entered_area)
+	mario.head.area_exited.connect(_on_head_exited_area)
 
 
 func _process(delta: float) -> void:
@@ -129,9 +130,10 @@ func _control_state_process() -> void:
 	_jumped = Input.is_action_just_pressed(_get_key_input(key_inputs.jump))
 	_jumping = Input.is_action_pressed(_get_key_input(key_inputs.jump))
 	_running = Input.is_action_pressed(_get_key_input(key_inputs.run))
+	_climbed = Input.is_action_just_pressed(_get_key_input(key_inputs.up))
 	
 	# Climbing
-	if _up_down < 0 && _is_climbable && !mario.state_machine.is_state(&"climbing"):
+	if _is_climbable && _climbed && !mario.state_machine.is_state(&"climbing"):
 		mario.state_machine.set_state(&"climbing")
 		_jumped_already = false
 
@@ -248,10 +250,10 @@ func _movement_crouching_process() -> void:
 	if on_floor_down && crouchable:
 		if !mario.state_machine.is_state(&"crouching"):
 			mario.state_machine.set_state(&"crouching")
-			animation.play.call_deferred(&"MarioShapes/crouch")
+			shapes_controller.play.call_deferred(&"crouch")
 	elif mario.state_machine.is_state(&"crouching"):
 		mario.state_machine.remove_state(&"crouching")
-		animation.play.call_deferred(&"MarioShapes/normal")
+		shapes_controller.play.call_deferred(&"RESET")
 
 
 #region Test for Movement
@@ -273,7 +275,6 @@ func _reset_jumping() -> void:
 	if !_jumping && (mario.velocity.y > 0 || mario.is_on_floor()):
 		_jumped_already = false
 #endregion
-
 #endregion
 
 
@@ -314,52 +315,52 @@ func _on_animation_swim_reset(anim_name: StringName) -> void:
 #endregion
 
 
-#region Body Detections
-func _on_body_area_entered(area: Area2D) -> void:
+#region Detections
+#region Body's
+func _on_body_entered_area(area: Area2D) -> void:
 	# AreaClimbable2D
 	if area is AreaClimbable2D:
-		if !_is_climbable && !_jumping:
+		if !_is_climbable:
 			_is_climbable = true
-	
 	# AreaFluid2D
-	if area is AreaFluid2D:
+	elif area is AreaFluid2D:
 		if area.fluid_id == &"water" && !mario.state_machine.is_state(&"underwater"):
 			mario.state_machine.set_state(&"underwater")
 			aqua_root.update_from_component()
 			aqua_behavior.update_from_component()
 
 
-func _on_body_area_exited(area: Area2D) -> void:
+func _on_body_exited_area(area: Area2D) -> void:
 	# AreaClimbable2D
 	if area is AreaClimbable2D:
 		if _is_climbable:
 			_is_climbable = false
 		if mario.state_machine.is_state(&"climbing"):
 			mario.state_machine.remove_state(&"climbing")
-	
 	# AreaFluid2D
-	if area is AreaFluid2D:
-		if area.fluid_id == &"water" && mario.state_machine.is_state(&"underwater"):
+	elif area is AreaFluid2D:
+		if mario.state_machine.is_state(&"underwater"):
 			mario.state_machine.remove_state(&"underwater")
 			aqua_root.update_from_extracted_value()
 			aqua_behavior.update_from_extracted_value()
+	
 #endregion
 
 
-#region Area Detections
-func _on_head_area_entered(area: Area2D) -> void:
+#region Head's
+func _on_head_entered_area(area: Area2D) -> void:
 	# AreaFluid2D
 	if area is AreaFluid2D:
 		if area.fluid_id == &"water" && mario.state_machine.is_state(&"underwater_jumpout"):
 			mario.state_machine.remove_state(&"underwater_jumpout")
 
 
-func _on_head_area_exited(area: Area2D) -> void:
+func _on_head_exited_area(area: Area2D) -> void:
+	# AreaFluid2D
 	if area is AreaFluid2D:
-		if area.fluid_id == &"water" && !mario.state_machine.is_state(&"underwater_jumpout"):
+		if !mario.state_machine.is_state(&"underwater_jumpout"):
 			mario.state_machine.set_state(&"underwater_jumpout")
 #endregion
-
 #endregion
 
 

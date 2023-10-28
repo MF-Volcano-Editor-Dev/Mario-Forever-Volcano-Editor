@@ -40,7 +40,7 @@ editor_draw_limits = true
 script = ExtResource("2_8a6sl")
 
 [node name="Mario" parent="." instance=ExtResource("1_p1j5j")]
-position = Vector2(272, 400)
+position = Vector2(272, 304)
 suit_id = &"big"
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -69,7 +69,7 @@ metadata/_edit_group_ = true
 shape = SubResource("CircleShape2D_ti2n4")
 
 [node name="Area2D3" type="Area2D" parent="."]
-position = Vector2(416, 168)
+position = Vector2(136, 112)
 script = SubResource("GDScript_afkmx")
 metadata/_edit_group_ = true
 

@@ -1,12 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://ce8s22xbaifvj"]
+[gd_scene load_steps=8 format=3 uid="uid://ce8s22xbaifvj"]
 
 [ext_resource type="PackedScene" uid="uid://bvq8x1atfxyaq" path="res://objects/entities/players/mario/#suits/mario_small.tscn" id="1_kcx6m"]
-[ext_resource type="Shape2D" uid="uid://bik3uyy457c12" path="res://objects/entities/players/mario/shapes/shape_mario_big.tres" id="2_3nplf"]
-[ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario_small.tres" id="2_3pn4p"]
 [ext_resource type="Texture2D" uid="uid://d2amp1pvo4bgo" path="res://objects/entities/players/mario/textures/mario_super.png" id="2_bq5g0"]
+[ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario.tres" id="2_ssoyc"]
 [ext_resource type="Script" path="res://objects/entities/players/mario/scripts/mario_stuck_head.gd" id="4_kekdm"]
 [ext_resource type="AnimationLibrary" uid="uid://cyjjpsbcss3c2" path="res://objects/entities/players/mario/animations/mario_animations_big.res" id="4_r0ort"]
-[ext_resource type="AnimationLibrary" uid="uid://ca46u8ix81rc0" path="res://objects/entities/players/mario/animations/mario_animations_shapes.res" id="7_d6ge6"]
+[ext_resource type="AnimationLibrary" uid="uid://iroj22njmjkw" path="res://objects/entities/players/mario/animations/mario_shapes_big.res" id="6_vw258"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jpf4f"]
 size = Vector2(16, 24)
@@ -17,29 +16,12 @@ down_suit_id = &"small"
 suit_features = ""
 metadata/_edit_pinned_properties_ = [&"suit_id", &"down_suit_id", &"suit_features"]
 
-[node name="Normal" parent="." index="0"]
-position = Vector2(0, -12)
-shape = ExtResource("2_3nplf")
-metadata/_edit_pinned_properties_ = [&"shape", &"position"]
+[node name="Shape" parent="." index="0"]
+position = Vector2(0, 2)
+shape = ExtResource("2_ssoyc")
+metadata/_edit_pinned_properties_ = [&"position", &"shape"]
 
-[node name="Crouch" parent="." index="1"]
-shape = ExtResource("2_3pn4p")
-metadata/_edit_pinned_properties_ = [&"shape"]
-
-[node name="BNormal" parent="AreaBody" index="0"]
-position = Vector2(0, -14)
-shape = ExtResource("2_3nplf")
-metadata/_edit_pinned_properties_ = [&"shape", &"position"]
-
-[node name="BCrouch" parent="AreaBody" index="1"]
-shape = ExtResource("2_3pn4p")
-metadata/_edit_pinned_properties_ = [&"shape"]
-
-[node name="HNormal" parent="AreaHead" index="0"]
-position = Vector2(0, -43)
-metadata/_edit_pinned_properties_ = [&"position"]
-
-[node name="AreaStuckHead" type="Area2D" parent="." index="4"]
+[node name="AreaStuckHead" type="Area2D" parent="." index="3"]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("4_kekdm")
@@ -50,18 +32,22 @@ position = Vector2(0, -28)
 shape = SubResource("RectangleShape2D_jpf4f")
 debug_color = Color(0.717647, 0.760784, 0.882353, 0.419608)
 
-[node name="Sprite2D" parent="." index="5"]
+[node name="Sprite2D" parent="." index="4"]
 texture = ExtResource("2_bq5g0")
-frame = 1
 metadata/_edit_pinned_properties_ = [&"texture"]
 
 [node name="PosBubble" parent="Sprite2D" index="0"]
-position = Vector2(4, -3)
+position = Vector2(4, -6)
 metadata/_edit_pinned_properties_ = [&"position"]
 
-[node name="AnimationPlayer" parent="." index="7"]
+[node name="AnimationPlayer" parent="." index="6"]
 libraries = {
-"": ExtResource("4_r0ort"),
-"MarioShapes": ExtResource("7_d6ge6")
+"": ExtResource("4_r0ort")
+}
+metadata/_edit_pinned_properties_ = [&"libraries"]
+
+[node name="AnimationShape" parent="." index="7"]
+libraries = {
+"": ExtResource("6_vw258")
 }
 metadata/_edit_pinned_properties_ = [&"libraries"]

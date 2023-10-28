@@ -23,8 +23,11 @@ class_name Mario2D extends EntityPlayer2D
 	set = set_hp
 
 var _suit: MarioSuit2D
-
 var _invulnerability: SceneTreeTimer
+
+@onready var shape: CollisionShape2D = $Shape
+@onready var body: Area2D = $AreaBody
+@onready var head: Area2D = $AreaHead
 
 
 func _ready() -> void:
@@ -63,9 +66,13 @@ func set_suit(new_suit_id: StringName) -> void:
 		printerr("No such suit %s!" % [psuit])
 		return
 	
-	# Deploys the new suit
+	# Replace the old suit with a new one
 	_suit = psuit
-	await get_tree().process_frame # Await for one frame to delete the rest of previous suit totally.
+	
+	# Await for one frame to delete the rest of previous suit totally.
+	# To make the suit immediately installed at the beginning of the game,
+	# a limitational variable should be implemented
+	await get_tree().process_frame
 	_add_suit.call_deferred()
 	
 	# Appear animation
@@ -112,7 +119,8 @@ func hurt(tags: Dictionary = {}) -> void:
 	
 	# Hurt operation
 	for i in iterations:
-		if PlayerSuits.get_player_suit(character_id + &"/" + _suit.down_suit_id):
+		var pid: StringName = PlayerSuits.get_player_suit_id(character_id, _suit.down_suit_id)
+		if PlayerSuits.get_player_suit(pid):
 			# Sound controls
 			if !&"no_sound" in tags || tags.no_sound == true:
 				_suit.sound.play(_suit.sound_hurt, get_tree().current_scene)
@@ -145,9 +153,15 @@ func die(_tags: Dictionary = {}) -> void:
 	if _suit.death:
 		var d := _suit.death.instantiate() as Node2D
 		if d:
+			var tree: SceneTree = get_tree()
 			add_sibling(d)
 			d.global_transform = global_transform
 			d.sound.stream = _suit.sound_death
+			d.player_death_finished.connect(
+				func() -> void:
+					tree.reload_current_scene()
+			)
+	PlayersManager.unregister(id)
 	queue_free()
 
 

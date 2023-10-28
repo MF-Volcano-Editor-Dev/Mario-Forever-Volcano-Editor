@@ -6,9 +6,12 @@ class_name CameraPlayer2D extends Camera2D
 
 
 func _process(_delta: float) -> void:
+	# Delayed for one process frame to make sure the camera
+	# focus on the players' average global position accurately
 	await get_tree().process_frame
 	
-	if PlayersManager.get_all_available_players().is_empty():
+	var cgpos: Vector2 = PlayersManager.get_average_global_position(self)
+	if cgpos == Vector2.INF:
 		return
 	
-	global_position = PlayersManager.get_average_global_position()
+	global_position = cgpos

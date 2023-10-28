@@ -16,7 +16,6 @@ static func register(player: EntityPlayer2D) -> void:
 		return
 	
 	_players.append(player)
-	_players.sort_custom(PlayersManager._sort_by_id)
 
 
 static func unregister(id: int) -> void:
@@ -24,9 +23,6 @@ static func unregister(id: int) -> void:
 		return
 	
 	_players[id] = null
-	
-	if !_players.is_empty():
-		_players.sort_custom(PlayersManager._sort_by_id)
 #endregion
 
 
@@ -63,10 +59,15 @@ static func get_last_player() -> EntityPlayer2D:
 
 
 #region Player Properties
-static func get_average_global_position() -> Vector2:
+static func get_average_global_position(camera: Camera2D = null) -> Vector2:
 	var players := get_all_available_players()
-	var gpos := Vector2.ZERO
+	if players.is_empty():
+		if is_instance_valid(camera):
+			return camera.global_position
+		else:
+			return Vector2(NAN, NAN)
 	
+	var gpos := Vector2.ZERO
 	for i: EntityPlayer2D in players:
 		gpos += i.global_position
 	
@@ -108,16 +109,4 @@ static func remove_all_players() -> void:
 		if !i.is_inside_tree():
 			continue
 		i.get_parent().remove_child.call_deferred(i)
-#endregion
-
-
-#region Private Methods
-static func _sort_by_id(a: EntityPlayer2D, b: EntityPlayer2D) -> bool:
-	if a.id == b.id:
-		b.id += 1
-	return a.id < b.id
-
-
-static func _sort_and_check(a: EntityPlayer2D, b: EntityPlayer2D) -> bool:
-	return is_instance_valid(a) && !is_instance_valid(b)
 #endregion
