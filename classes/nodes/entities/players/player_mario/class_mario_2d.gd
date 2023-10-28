@@ -103,23 +103,23 @@ func hurt(tags: Dictionary = {}) -> void:
 	if (!&"forced" in tags || tags.forced == false) && is_invulerable():
 		return
 	
-	var iterations: int = 1 if !&"iterations" in tags || !tags.iterations is int || tags.iterations <= 0 else tags.iterations
-	var lose_hp: bool = false if !&"lose_hp" in tags || !tags.lose_hp is bool else tags.lose_hp
-	var invulerable_duration: float = 2.0 if !&"duration" in tags || !tags.duration is float else tags.duration
+	var itr: int = 1 if !&"iterations" in tags || !tags.iterations is int || tags.iterations <= 0 else tags.iterations # Iterations
+	var lshp: bool = false if !&"lose_hp" in tags || !tags.lose_hp is bool else tags.lose_hp # Lose HPs
+	var ivdr: float = 2.0 if !&"duration" in tags || !tags.duration is float else tags.duration # Invulnerability duration
 	
 	# Hurt operation
-	for i in iterations:
+	for i in itr:
 		if !_suit.down_suit_id.is_empty() && _suit.down_suit_id in _suit_ids:
 			# Sound controls
 			if !&"no_sound" in tags || tags.no_sound == true:
 				_suit.sound.play(_suit.sound_hurt, get_tree().current_scene)
 			suit_id = _suit.down_suit_id
-			invulnerable(invulerable_duration)
+			invulnerable(ivdr)
 		else:
-			lose_hp = true
+			lshp = true
 		
 		# Losing HP
-		if lose_hp:
+		if lshp:
 			hp -= 1 if !&"hp_loss" in tags || !tags.hp_loss is int else tags.hp_loss
 
 
@@ -158,7 +158,10 @@ func die(_tags: Dictionary = {}) -> void:
 ## [b]Note:[/b] If the method is called during the invulerability, the duration will be freshed
 func invulnerable(duration: float = 2.0) -> void:
 	_invulnerability = get_tree().create_timer(duration, false)
+	
 	Effects2D.flash(self, duration)
+	
+	# Clear the reference after the timer is over
 	await _invulnerability.timeout
 	_invulnerability = null
 
