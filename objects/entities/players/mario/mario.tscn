@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bv26woxthkhv6"]
+[gd_scene load_steps=6 format=3 uid="uid://bv26woxthkhv6"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_2d.gd" id="1_5eyu0"]
-[ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://objects/entities/players/mario/textures/mario_small.png" id="2_mkrgm"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario.tres" id="2_tbmub"]
 [ext_resource type="Shape2D" uid="uid://bq38l552jterp" path="res://objects/entities/players/mario/shapes/shape_mario_head.tres" id="3_tilld"]
+[ext_resource type="PackedScene" uid="uid://bvq8x1atfxyaq" path="res://objects/entities/players/mario/#suits/mario_small.tscn" id="4_sn5la"]
+[ext_resource type="PackedScene" uid="uid://ce8s22xbaifvj" path="res://objects/entities/players/mario/#suits/mario_big.tscn" id="5_58ckd"]
 
 [node name="Mario" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
 gravity = 2500.0
@@ -37,7 +38,9 @@ position = Vector2(0, -14)
 shape = ExtResource("3_tilld")
 debug_color = Color(0, 0.647059, 0.247059, 0.419608)
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -16)
-texture = ExtResource("2_mkrgm")
-hframes = 13
+[node name="MarioSmall" parent="." instance=ExtResource("4_sn5la")]
+process_mode = 4
+
+[node name="MarioBig" parent="." instance=ExtResource("5_58ckd")]
+process_mode = 4
+visible = false

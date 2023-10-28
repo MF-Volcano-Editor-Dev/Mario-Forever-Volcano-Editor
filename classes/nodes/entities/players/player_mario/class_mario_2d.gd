@@ -22,6 +22,8 @@ class_name Mario2D extends EntityPlayer2D
 @export var hp: int = 1:
 	set = set_hp
 
+var _suit_ids: Array[StringName]
+
 var _suit: MarioSuit2D
 var _invulnerability: SceneTreeTimer
 
@@ -54,42 +56,30 @@ func set_suit(new_suit_id: StringName) -> void:
 	if !is_node_ready():
 		return
 	
-	# Removes previous suit
+	_suit = null
 	for i: Node in get_children():
-		if !i.is_in_group(&"#mario_component_fixed"):
-			i.queue_free()
-	
-	# Prepares and check new suit
-	var pid: StringName = PlayerSuits.get_player_suit_id(character_id, new_suit_id)
-	var psuit: MarioSuit2D = PlayerSuits.get_player_suit(pid)
-	if !psuit:
-		printerr("No such suit %s!" % [psuit])
-		return
-	
-	# Replace the old suit with a new one
-	_suit = psuit
-	
-	# Await for one frame to delete the rest of previous suit totally.
-	# To make the suit immediately installed at the beginning of the game,
-	# a limitational variable should be implemented
-	await get_tree().process_frame
-	_add_suit.call_deferred()
+		if !i is MarioSuit2D:
+			continue
+		elif i.suit_id == suit_id:
+			_suit = i
+			i.visible = true
+			i.process_mode = PROCESS_MODE_INHERIT
+		else:
+			i.visible = false
+			i.process_mode = PROCESS_MODE_DISABLED
+		if !i.suit_id in _suit_ids:
+			_suit_ids.append(i.suit_id)
 	
 	# Appear animation
 	if suit_no_appear_animation:
 		suit_no_appear_animation = false
 	else:
-		await _suit.ready # Here must wait for the ready to make sure the suit has been totally deployed
 		_suit.appear()
 
 
 ## Gets the suit of the character
 func get_suit() -> MarioSuit2D:
 	return _suit
-
-
-func _add_suit() -> void:
-	add_child(_suit)
 #endregion
 
 
@@ -119,8 +109,7 @@ func hurt(tags: Dictionary = {}) -> void:
 	
 	# Hurt operation
 	for i in iterations:
-		var pid: StringName = PlayerSuits.get_player_suit_id(character_id, _suit.down_suit_id)
-		if PlayerSuits.get_player_suit(pid):
+		if !_suit.down_suit_id.is_empty() && _suit.down_suit_id in _suit_ids:
 			# Sound controls
 			if !&"no_sound" in tags || tags.no_sound == true:
 				_suit.sound.play(_suit.sound_hurt, get_tree().current_scene)

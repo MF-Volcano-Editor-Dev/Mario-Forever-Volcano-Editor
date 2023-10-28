@@ -40,6 +40,7 @@ extends Component
 
 var mario: Mario2D ## Fast access to [member Component.root] casted to [Mario2D]
 
+var _start_animations: bool # Used to defer the animation process for 1 frame at the beginning of the game
 var _pos: Vector2
 var _is_climbable: bool
 
@@ -78,6 +79,7 @@ func _ready() -> void:
 	shapes_controller.play.call_deferred(&"RESET")
 	
 	# Detections
+	await mario.ready
 	mario.body.area_entered.connect(_on_body_entered_area)
 	mario.body.area_exited.connect(_on_body_exited_area)
 	mario.head.area_entered.connect(_on_head_entered_area)
@@ -96,7 +98,9 @@ func _process(delta: float) -> void:
 		_movement_x_process(delta)
 		_movement_y_process(delta)
 	# Animations
-	_animation_process(delta)
+	if _start_animations:
+		_animation_process(delta)
+	_start_animations = true
 
 
 func _physics_process(delta: float) -> void:
@@ -318,6 +322,9 @@ func _on_animation_swim_reset(anim_name: StringName) -> void:
 #region Detections
 #region Body's
 func _on_body_entered_area(area: Area2D) -> void:
+	if !suit.is_current():
+		return
+	
 	# AreaClimbable2D
 	if area is AreaClimbable2D:
 		if !_is_climbable:
@@ -331,6 +338,9 @@ func _on_body_entered_area(area: Area2D) -> void:
 
 
 func _on_body_exited_area(area: Area2D) -> void:
+	if !suit.is_current():
+		return
+	
 	# AreaClimbable2D
 	if area is AreaClimbable2D:
 		if _is_climbable:
@@ -349,6 +359,9 @@ func _on_body_exited_area(area: Area2D) -> void:
 
 #region Head's
 func _on_head_entered_area(area: Area2D) -> void:
+	if !suit.is_current():
+		return
+	
 	# AreaFluid2D
 	if area is AreaFluid2D:
 		if area.fluid_id == &"water" && mario.state_machine.is_state(&"underwater_jumpout"):
@@ -356,6 +369,9 @@ func _on_head_entered_area(area: Area2D) -> void:
 
 
 func _on_head_exited_area(area: Area2D) -> void:
+	if !suit.is_current():
+		return
+	
 	# AreaFluid2D
 	if area is AreaFluid2D:
 		if !mario.state_machine.is_state(&"underwater_jumpout"):

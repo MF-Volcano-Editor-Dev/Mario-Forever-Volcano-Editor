@@ -6,10 +6,6 @@ class_name MarioSuit2D extends Node2D
 # #mario_suit_owned
 
 @export_group("General")
-## [member EntityBody2D.character_id] of the character [br]
-## [b]Note:[/b] This is used for suit registeration, and MUST keep the same
-## as one in the character you are looking for
-@export var character_id: StringName = &"mario"
 ## Id of the suit, also used in [member Mario2D][br]
 ## [b]Note:[/b] This is used for suit registeration, see [member Mario2D.suit_id]
 @export var suit_id: StringName = &"small"
@@ -42,9 +38,13 @@ class_name MarioSuit2D extends Node2D
 
 func _ready() -> void:
 	for i: Node in get_children():
-		if i.is_in_group(&"#mario_suit_owned"):
+		if i.is_in_group(&"#mario_shapes"):
+			i.queue_free()
 			continue
-		i.reparent.call_deferred(get_parent())
+	
+	var player := get_player()
+	if player:
+		shapes_controller.root_node = shapes_controller.get_path_to(player)
 
 
 #region Animations
@@ -61,4 +61,10 @@ func appear(duration: float = 1.0) -> void:
 func get_player() -> Mario2D:
 	var player: Mario2D = get_parent()
 	return player if is_instance_valid(player) else null
+
+
+## Returns [code]true[/code] if the suit is current
+func is_current() -> bool:
+	var player: Mario2D = get_parent()
+	return player && player.suit_id == suit_id
 #endregion

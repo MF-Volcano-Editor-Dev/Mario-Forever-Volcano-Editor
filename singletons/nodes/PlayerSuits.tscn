@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://b2vriv3u48i0"]
-
-[ext_resource type="Script" path="res://singletons/scripts/PlayerSuits.gd" id="1_n51ai"]
-
-[node name="PlayerSuits" type="Node"]
-script = ExtResource("1_n51ai")

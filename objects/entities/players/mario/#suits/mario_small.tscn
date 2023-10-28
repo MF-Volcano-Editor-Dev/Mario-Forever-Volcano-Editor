@@ -14,11 +14,11 @@ script = ExtResource("1_xh10y")
 suit_features = "small"
 metadata/_edit_pinned_properties_ = [&"suit_features"]
 
-[node name="Shape" type="CollisionShape2D" parent="." groups=["#mario_suit_owned"]]
+[node name="Shape" type="CollisionShape2D" parent="." groups=["#mario_shapes"]]
 position = Vector2(0, 2)
 shape = ExtResource("2_ody4w")
 
-[node name="AreaBody" type="Area2D" parent="." groups=["#mario_suit_owned"]]
+[node name="AreaBody" type="Area2D" parent="." groups=["#mario_shapes"]]
 collision_mask = 118
 
 [node name="BShape" type="CollisionShape2D" parent="AreaBody"]
@@ -26,7 +26,7 @@ position = Vector2(0, 2)
 shape = ExtResource("2_ody4w")
 debug_color = Color(1, 0, 0.0980392, 0.419608)
 
-[node name="AreaHead" type="Area2D" parent="." groups=["#mario_suit_owned"]]
+[node name="AreaHead" type="Area2D" parent="." groups=["#mario_shapes"]]
 collision_layer = 0
 collision_mask = 66
 
