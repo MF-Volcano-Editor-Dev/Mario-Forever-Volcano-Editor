@@ -31,7 +31,7 @@ func _ready() -> void:
 	
 	match inout:
 		true:
-			for i in 32:
+			for i in 128:
 				global_position += down
 				caster.force_shapecast_update()
 				
@@ -39,7 +39,7 @@ func _ready() -> void:
 					global_position -= down
 					return
 		false:
-			for i in 32:
+			for i in 128:
 				global_position -= down
 				caster.force_shapecast_update()
 				
