@@ -76,6 +76,7 @@ metadata/_edit_pinned_properties_ = [&"properties", &"root_path"]
 
 [node name="AquaBehavior" parent="AquaUpdater" instance=ExtResource("8_mce8w")]
 properties = {
+"deceleration_overspeed": 425.0,
 "max_running_speed": 175.0,
 "max_walking_speed": 175.0
 }

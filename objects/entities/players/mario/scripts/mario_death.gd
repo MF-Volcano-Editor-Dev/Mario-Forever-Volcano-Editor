@@ -19,6 +19,8 @@ var _velocity: Vector2
 
 
 func _ready() -> void:
+	player_death_finished.connect(EventsManager.game_failed_process.bind(get_tree()))
+	
 	sound.play.call_deferred()
 	
 	set_process(false)
@@ -29,6 +31,7 @@ func _ready() -> void:
 	
 	await get_tree().create_timer(emission_await).timeout
 	player_death_finished.emit()
+	queue_free()
 
 
 func _process(delta: float) -> void:

@@ -25,6 +25,8 @@ extends Component
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var acceleration: float = 312.5
 ## Deceleration
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration: float = 312.5
+## Deceleration when the speed is greater than [member max_walking_speed](not running) or [member max_running_speed](running)
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration_overspeed: float = 312.5
 ## Deceleration when crouching
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration_crouching: float = 312.5
 ## Deceleration when crouching with arrows pressed
@@ -105,6 +107,7 @@ func _ready() -> void:
 	# Await for readiness of mario for safety of initialization
 	if !mario.is_node_ready():
 		await mario.ready
+	mario.suit_changed.connect(_on_mario_suit_changed)
 	mario.body.area_entered.connect(_on_body_entered_area)
 	mario.body.area_exited.connect(_on_body_exited_area)
 	mario.head.area_entered.connect(_on_head_entered_area)
@@ -210,10 +213,23 @@ func _movement_x_process(delta: float) -> void:
 		mario.velocity.x = initial_walking_speed * mario.direction
 	# Acceleration
 	elif _left_right * signf(mario.velocity.x) > 0:
+		var isrn: bool = _is_running() # Is running
 		var cw: bool = _walkable_when_crouching && mario.state_machine.is_state(&"crouching") # Crouchwalk
 		var wf: float = 0.1 if cw else 1.0 # Walking factor
-		var ms: float = (max_running_speed if _is_running() else max_walking_speed) * wf # Max speed
-		_accelerate(ms, acceleration * delta)
+		var ms: float = (max_running_speed if isrn else max_walking_speed) * wf # Max speed
+		
+		# Set state for users to detect
+		if isrn:
+			mario.state_machine.set_state(&"running")
+		else:
+			mario.state_machine.remove_state(&"running")
+		
+		# Execute acceleration
+		if abs(mario.velocity.x) < ms:
+			_accelerate(ms, acceleration * delta)
+		# Deceleration if the velocity is greater than max speed
+		elif abs(mario.velocity.x) > ms:
+			_accelerate(ms, deceleration_overspeed * delta)
 	# Turning back
 	elif _left_right * signf(mario.velocity.x) < 0:
 		_accelerate(0, turning_aceleration * delta)
@@ -372,6 +388,21 @@ func _on_animation_swim_reset(anim_name: StringName) -> void:
 #endregion
 
 
+#region Suit changed
+func _on_mario_suit_changed(to: StringName) -> void:
+	if to != suit.suit_id:
+		return
+	
+	# Pass the status-owned property
+	if mario.state_machine.is_state(&"underwater"):
+		aqua_root.update_from_component()
+		aqua_behavior.update_from_component()
+	else:
+		aqua_root.update_from_extracted_value()
+		aqua_behavior.update_from_extracted_value()
+#endregion
+
+
 #region Detections
 #region Body's
 func _on_body_entered_area(area: Area2D) -> void:
@@ -406,7 +437,6 @@ func _on_body_exited_area(area: Area2D) -> void:
 			mario.state_machine.remove_state(&"underwater")
 			aqua_root.update_from_extracted_value()
 			aqua_behavior.update_from_extracted_value()
-	
 #endregion
 
 

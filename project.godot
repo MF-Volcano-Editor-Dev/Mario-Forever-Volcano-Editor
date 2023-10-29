@@ -41,6 +41,7 @@ enabled=PackedStringArray("res://addons/abfi/plugin.cfg")
 control/player/jumpable_when_crouching=false
 control/player/crouchable_in_small_suit=false
 control/player/walkable_when_crouching=false
+data/player/default_lives=4
 
 [input]
 

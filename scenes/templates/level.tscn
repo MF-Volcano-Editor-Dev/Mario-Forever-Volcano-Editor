@@ -1,5 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=12 format=3 uid="uid://xm2gptsn2yh8"]
 
+[ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/uis/huds/hud_in_level/hud_in_level.tscn" id="1_4kitr"]
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_7g6er"]
 [ext_resource type="Script" path="res://classes/nodes/cameras/class_camera_player_2d.gd" id="2_8a6sl"]
@@ -10,8 +11,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6qa1y"]
 size = Vector2(192, 208)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ti2n4"]
-radius = 128.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yw5we"]
+size = Vector2(640, 224)
 
 [sub_resource type="GDScript" id="GDScript_qsqdp"]
 script/source = "extends Area2D
@@ -30,6 +31,8 @@ func _ready() -> void:
 radius = 32.0
 
 [node name="Level" type="Node2D"]
+
+[node name="HudInLevel" parent="." instance=ExtResource("1_4kitr")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
 limit_left = 0
@@ -66,10 +69,11 @@ spray = ExtResource("5_td137")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
-shape = SubResource("CircleShape2D_ti2n4")
+position = Vector2(224, -24)
+shape = SubResource("RectangleShape2D_yw5we")
 
 [node name="Area2D3" type="Area2D" parent="."]
-position = Vector2(416, 168)
+position = Vector2(896, 160)
 collision_layer = 64
 script = SubResource("GDScript_qsqdp")
 metadata/_edit_group_ = true

@@ -6,6 +6,9 @@ class_name Mario2D extends EntityPlayer2D
 
 # "#mario_component_fixed"
 
+## Emitted when the [member suit_id] gets changed
+signal suit_changed(to: StringName)
+
 @export_group("Suit")
 ## Name of current suit
 ## [b]Note:[/b] changing this method will automatically change
@@ -75,6 +78,8 @@ func set_suit(new_suit_id: StringName) -> void:
 		suit_no_appear_animation = false
 	else:
 		_suit.appear()
+	
+	suit_changed.emit(suit_id)
 
 
 ## Gets the suit of the character
@@ -128,14 +133,9 @@ func die(_tags: Dictionary = {}) -> void:
 	if _suit.death:
 		var d := _suit.death.instantiate() as Node2D
 		if d:
-			var tree: SceneTree = get_tree()
 			add_sibling(d)
 			d.global_transform = global_transform
 			d.sound.stream = _suit.sound_death
-			d.player_death_finished.connect(
-				func() -> void:
-					tree.reload_current_scene()
-			)
 	PlayersManager.unregister(id)
 	queue_free()
 

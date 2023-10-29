@@ -1,7 +1,7 @@
 [gd_scene load_steps=20 format=3 uid="uid://b3ds2052h0bx7"]
 
 [ext_resource type="Texture2D" uid="uid://c423k4ml3k66f" path="res://objects/entities/#effects/sprays/textures/spray_water.png" id="1_5wy50"]
-[ext_resource type="Script" path="res://objects/entities/#effects/sprays/spray.gd" id="2_al0ny"]
+[ext_resource type="Script" path="res://objects/entities/#effects/sprays/scripts/spray.gd" id="2_m5s1v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_70pw5"]
 atlas = ExtResource("1_5wy50")
@@ -123,7 +123,7 @@ radius = 64.0
 sprite_frames = SubResource("SpriteFrames_dqk4t")
 autoplay = "default"
 offset = Vector2(0, -8)
-script = ExtResource("2_al0ny")
+script = ExtResource("2_m5s1v")
 target_fluid_id = &"water"
 metadata/_edit_pinned_properties_ = [&"target_fluid_id"]
 
