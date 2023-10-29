@@ -25,6 +25,10 @@ extends Component
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var acceleration: float = 312.5
 ## Deceleration
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration: float = 312.5
+## Deceleration when crouching
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration_crouching: float = 312.5
+## Deceleration when crouching with arrows pressed
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration_crouching_moving: float = 125
 ## Turning acceleration/deceleration
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var turning_aceleration: float = 1250
 ## Minimum of the walking speed, better to keep it 0 [br]
@@ -193,8 +197,12 @@ func _movement_x_process(delta: float) -> void:
 		return
 	
 	# Deceleration
-	if _is_decelerating():
-		_accelerate(min_speed, deceleration * delta)
+	var isdc: int = _is_decelerating() # Is deceleration
+	var dc: float = deceleration if isdc == 1 else \
+		deceleration_crouching if isdc == 2 else \
+		deceleration_crouching_moving # Deceleration
+	if isdc:
+		_accelerate(min_speed, dc * delta)
 		return
 	# Initial speed
 	if _left_right != 0 && mario.velocity.x == 0:
@@ -298,10 +306,18 @@ func _movement_climbing_physics_process(delta: float) -> void:
 
 
 #region Test for Movement
-func _is_decelerating() -> bool:
+func _is_decelerating() -> int:
 	var dc: bool = _left_right == 0 # Decelerating
 	var cronly: bool = mario.state_machine.is_state(&"crouching") && !_walkable_when_crouching # Crouching only
-	return dc || cronly
+	
+	if dc:
+		return 1
+	elif cronly:
+		if !_left_right:
+			return 2
+		else:
+			return 3
+	return 0
 
 
 func _is_running() -> bool:
