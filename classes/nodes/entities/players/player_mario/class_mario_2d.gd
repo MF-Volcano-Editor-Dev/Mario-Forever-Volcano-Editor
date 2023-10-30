@@ -133,9 +133,12 @@ func die(_tags: Dictionary = {}) -> void:
 	if _suit.death:
 		var d := _suit.death.instantiate() as Node2D
 		if d:
+			# Here it's not allowed to use call_deferred() 
+			# since there is some node to be initialized with @onready
 			add_sibling(d)
 			d.global_transform = global_transform
 			d.sound.stream = _suit.sound_death
+	
 	PlayersManager.unregister(id)
 	queue_free()
 

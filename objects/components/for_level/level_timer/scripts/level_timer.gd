@@ -33,6 +33,11 @@ var _has_warned: bool
 
 
 func _ready() -> void:
+	EventsManager.signals.players_all_dead.connect(
+		func() -> void:
+			interval.paused = true
+	)
+	
 	interval.wait_time = time_down_unit_tick
 	interval.timeout.connect(_time_down)
 	

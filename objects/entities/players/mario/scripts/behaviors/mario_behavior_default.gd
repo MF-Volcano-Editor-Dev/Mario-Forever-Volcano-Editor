@@ -123,7 +123,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	# States & Controls
 	_general_states_process()
-	_control_state_process()
+	_control_states_process()
+	_action_states_process()
 	
 	# Movement
 	if mario.state_machine.is_state(&"climbing"):
@@ -151,6 +152,7 @@ func _physics_process(delta: float) -> void:
 #endregion
 
 
+#region States Controls
 func _general_states_process() -> void:
 	# States from global settings
 	_jumpable_when_crouching = ProjectSettings.get_setting("game/control/player/jumpable_when_crouching", false)
@@ -159,7 +161,7 @@ func _general_states_process() -> void:
 
 
 #region Controls
-func _control_state_process() -> void:
+func _control_states_process() -> void:
 	# Basic controls
 	_left_right = int(Input.get_axis(_get_key_input(key_left), _get_key_input(key_right)))
 	_up_down = int(Input.get_axis(_get_key_input(key_up), _get_key_input(key_down)))
@@ -167,15 +169,20 @@ func _control_state_process() -> void:
 	_jumping = Input.is_action_pressed(_get_key_input(key_jump))
 	_running = Input.is_action_pressed(_get_key_input(key_run))
 	_climbed = Input.is_action_just_pressed(_get_key_input(key_climb))
-	
-	# Climbing
-	if _climbed && !mario.state_machine.is_state(&"climbing") && mario.state_machine.is_state(&"is_climbable"):
-		mario.state_machine.set_state(&"climbing")
-		_jumped_already = false
 
 
 func _get_key_input(key_name: StringName) -> StringName:
 	return key_name + StringName(str(mario.id))
+#endregion
+
+
+#region Action
+func _action_states_process() -> void:
+	# Climbing
+	if _climbed && !mario.state_machine.is_state(&"climbing") && mario.state_machine.is_state(&"is_climbable"):
+		mario.state_machine.set_state(&"climbing")
+		_jumped_already = false
+#endregion
 #endregion
 
 
@@ -255,7 +262,7 @@ func _movement_y_process(delta: float) -> void:
 	var cr: bool = mario.state_machine.is_state(&"crouching") # Crouching
 	var jpb: bool = (_jumpable_when_crouching && cr) || !cr # Jumpable
 	
-	_reset_jumping()
+	_reset_jumping_already()
 	# Underwater (Swimming)
 	if uw:
 		if _jumped:
@@ -269,8 +276,6 @@ func _movement_y_process(delta: float) -> void:
 				mario.jump(swimming_speed)
 			
 			_jumped_already = true
-			animation.stop()
-			animation.play(&"swim")
 		
 		# Underwater peak swimming speed
 		var swp: float = -abs(swimming_peak_speed)
@@ -350,7 +355,7 @@ func _is_jumpable() -> bool:
 	return _jumping && !_jumped_already
 
 
-func _reset_jumping() -> void:
+func _reset_jumping_already() -> void:
 	if !_jumping && (mario.velocity.y > 0 || mario.is_on_floor()):
 		_jumped_already = false
 #endregion
@@ -365,6 +370,7 @@ func _animation_process(delta: float) -> void:
 	if animation.current_animation in [&"appear", &"attack"]:
 		return
 	
+	# Climbing
 	if mario.state_machine.is_state(&"climbing"):
 		animation.play(&"climb")
 		animation.speed_scale = 0.0 if mario.velocity.is_zero_approx() else 1.0
@@ -372,17 +378,25 @@ func _animation_process(delta: float) -> void:
 		sprite.flip_h = false
 		
 		if mario.is_on_floor():
+			# Crouching
 			if mario.state_machine.is_state(&"crouching"):
 				animation.play(&"crouch")
+			# Idle
 			elif is_zero_approx(snappedf(_pos_delta.length_squared(), 0.01)):
 				animation.play(&"RESET")
+			# Walking
 			else:
 				animation.play(&"walk")
 				animation.speed_scale = clampf(absf(mario.velocity.x) * delta * 0.67, 0, 5)
+		# Swimming
 		elif mario.state_machine.is_state(&"underwater"):
+			if _jumped: # Reset swimming animation when the jumping key is pressed
+				animation.stop()
 			animation.play(&"swim")
+		# Jumping
 		elif mario.velocity.y < 0:
 			animation.play(&"jump")
+		# Falling
 		else:
 			animation.play(&"fall")
 
@@ -399,7 +413,11 @@ func _on_mario_suit_changed(to: StringName) -> void:
 	if to != suit.suit_id:
 		return
 	
-	# Pass the status-owned property
+	# Make the following properties keep the same
+	# performances even if the current suit is changed
+	# If no such codes, for example, when the character is
+	# underwater, the property in underwater will be incorrect
+	# when he changes to other suits.
 	if mario.state_machine.is_state(&"underwater"):
 		aqua_root.update_from_component()
 		aqua_behavior.update_from_component()
@@ -417,6 +435,9 @@ func _on_body_entered_area(area: Area2D) -> void:
 	
 	# AreaClimbable2D
 	if area is AreaClimbable2D:
+		# Use a state to store the climbable state, and when
+		# the climbing key is pressed, the player will
+		# climb on the climable object
 		if !mario.state_machine.is_state(&"is_climbable"):
 			mario.state_machine.set_state(&"is_climbable")
 	# AreaFluid2D

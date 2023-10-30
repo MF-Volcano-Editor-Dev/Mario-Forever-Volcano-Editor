@@ -1,5 +1,9 @@
 extends Node2D
 
+## Emitted when the player death is started
+signal player_death_started
+
+## Emitted when the player death is finished
 signal player_death_finished
 
 @export_category("Player Death")
@@ -19,7 +23,15 @@ var _velocity: Vector2
 
 
 func _ready() -> void:
+	player_death_started.connect(EventsManager.game_death_process)
 	player_death_finished.connect(EventsManager.game_failed_process.bind(get_tree()))
+	
+	# Await for one process frame to make the character
+	# body freed and unregistered so that some methods
+	# can work as expected
+	await get_tree().process_frame
+	
+	player_death_started.emit()
 	
 	sound.play.call_deferred()
 	
