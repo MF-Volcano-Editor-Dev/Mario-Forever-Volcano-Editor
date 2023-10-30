@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bv26woxthkhv6"]
+[gd_scene load_steps=7 format=3 uid="uid://bv26woxthkhv6"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_2d.gd" id="1_5eyu0"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario.tres" id="2_tbmub"]
 [ext_resource type="Shape2D" uid="uid://bq38l552jterp" path="res://objects/entities/players/mario/shapes/shape_mario_head.tres" id="3_tilld"]
 [ext_resource type="PackedScene" uid="uid://bvq8x1atfxyaq" path="res://objects/entities/players/mario/#suits/mario_small.tscn" id="4_sn5la"]
 [ext_resource type="PackedScene" uid="uid://ce8s22xbaifvj" path="res://objects/entities/players/mario/#suits/mario_big.tscn" id="5_58ckd"]
+[ext_resource type="PackedScene" uid="uid://b1yixmaqbghc1" path="res://objects/entities/players/mario/#suits/mario_fireball.tscn" id="6_c83lr"]
 
 [node name="Mario" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
 gravity = 2500.0
@@ -42,5 +43,9 @@ debug_color = Color(0, 0.647059, 0.247059, 0.419608)
 process_mode = 4
 
 [node name="MarioBig" parent="." instance=ExtResource("5_58ckd")]
+process_mode = 4
+visible = false
+
+[node name="MarioFireball" parent="." instance=ExtResource("6_c83lr")]
 process_mode = 4
 visible = false

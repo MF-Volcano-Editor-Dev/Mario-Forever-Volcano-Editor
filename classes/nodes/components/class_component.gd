@@ -5,9 +5,10 @@ class_name Component extends Node
 ##
 ##
 
-
+## [NodePath] to the root node
 @export var root_path: NodePath
 
+## Root node in [Node] type by [member root_path] from the component
 var root: Node
 
 

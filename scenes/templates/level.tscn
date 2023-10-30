@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://xm2gptsn2yh8"]
 
-[ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/uis/huds/hud_in_level/hud_in_level.tscn" id="1_4kitr"]
+[ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/components/for_level/level_huds/level_hud.tscn" id="1_4kitr"]
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_7g6er"]
 [ext_resource type="Script" path="res://classes/nodes/cameras/class_camera_player_2d.gd" id="2_8a6sl"]
@@ -33,11 +33,9 @@ radius = 32.0
 
 [node name="Level" type="Node2D"]
 
-[node name="HudInLevel" parent="." instance=ExtResource("1_4kitr")]
+[node name="LevelHUD" parent="." instance=ExtResource("1_4kitr")]
 
 [node name="LevelTimer" parent="." instance=ExtResource("2_cd7it")]
-rest_time = 120
-time_down_unit = 30
 
 [node name="Camera2D" type="Camera2D" parent="."]
 limit_left = 0
@@ -49,7 +47,7 @@ script = ExtResource("2_8a6sl")
 
 [node name="Mario" parent="." instance=ExtResource("1_p1j5j")]
 position = Vector2(48, 400)
-suit_id = &"big"
+suit_id = &"fireball"
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_7g6er")

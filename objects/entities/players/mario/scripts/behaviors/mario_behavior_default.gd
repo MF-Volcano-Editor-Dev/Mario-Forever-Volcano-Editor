@@ -8,15 +8,21 @@ extends Component
 ## See project settings -> input for more details [br]
 ## [b]Note:[/b] Acutally, the key input is <key_name> + <[member EntityPlayer2D.id]>.
 ## For exaple: the left key, if the player's id is 0, is actually [code]&"left0"[/code]
-@export var key_inputs: Dictionary = {
-	left = &"left",
-	right = &"right",
-	up = &"up",
-	down = &"down",
-	jump = &"jump",
-	run = &"run",
-	climb = &"up"
-}
+@export_group("Key Inputs")
+## Left key
+@export var key_left: StringName = &"left"
+## Right key
+@export var key_right: StringName = &"right"
+## Up key
+@export var key_up: StringName = &"up"
+## Down key
+@export var key_down: StringName = &"down"
+## Key of controlling jumping
+@export var key_jump: StringName = &"jump"
+## Key of controlling running
+@export var key_run: StringName = &"run"
+## Key of controlling climbing
+@export var key_climb: StringName = &"up"
 @export_group("Movement")
 @export_subgroup("Walking")
 ## Initial walking speed
@@ -155,12 +161,12 @@ func _general_states_process() -> void:
 #region Controls
 func _control_state_process() -> void:
 	# Basic controls
-	_left_right = int(Input.get_axis(_get_key_input(key_inputs.left), _get_key_input(key_inputs.right)))
-	_up_down = int(Input.get_axis(_get_key_input(key_inputs.up), _get_key_input(key_inputs.down)))
-	_jumped = Input.is_action_just_pressed(_get_key_input(key_inputs.jump))
-	_jumping = Input.is_action_pressed(_get_key_input(key_inputs.jump))
-	_running = Input.is_action_pressed(_get_key_input(key_inputs.run))
-	_climbed = Input.is_action_just_pressed(_get_key_input(key_inputs.climb))
+	_left_right = int(Input.get_axis(_get_key_input(key_left), _get_key_input(key_right)))
+	_up_down = int(Input.get_axis(_get_key_input(key_up), _get_key_input(key_down)))
+	_jumped = Input.is_action_just_pressed(_get_key_input(key_jump))
+	_jumping = Input.is_action_pressed(_get_key_input(key_jump))
+	_running = Input.is_action_pressed(_get_key_input(key_run))
+	_climbed = Input.is_action_just_pressed(_get_key_input(key_climb))
 	
 	# Climbing
 	if _climbed && !mario.state_machine.is_state(&"climbing") && mario.state_machine.is_state(&"is_climbable"):

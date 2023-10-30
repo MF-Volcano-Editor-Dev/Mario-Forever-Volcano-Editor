@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cjwp2krmh5qx5"]
 
-[ext_resource type="Script" path="res://objects/entities/players/mario/scripts/mario_behavior_default.gd" id="1_xjl3t"]
+[ext_resource type="Script" path="res://objects/entities/players/mario/scripts/behaviors/mario_behavior_default.gd" id="1_xjl3t"]
 
 [node name="Behavior" type="Node"]
 script = ExtResource("1_xjl3t")

@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://b1yixmaqbghc1"]
+
+[ext_resource type="PackedScene" uid="uid://ce8s22xbaifvj" path="res://objects/entities/players/mario/#suits/mario_big.tscn" id="1_7obrh"]
+[ext_resource type="Texture2D" uid="uid://bqljw565ywlho" path="res://objects/entities/players/mario/textures/mario_fireball.png" id="2_qqul5"]
+[ext_resource type="AnimationLibrary" uid="uid://h282hxx3cser" path="res://objects/entities/players/mario/animations/mario_animations_powerful.res" id="3_odwo2"]
+[ext_resource type="Script" path="res://objects/entities/players/mario/scripts/behaviors/mario_behavior_shootable.gd" id="4_ih858"]
+[ext_resource type="AudioStream" uid="uid://c4wx7vkqy1cd4" path="res://assets/sounds/shoot.wav" id="5_qwa4a"]
+
+[node name="MarioFireball" instance=ExtResource("1_7obrh")]
+suit_id = &"fireball"
+down_suit_id = &"big"
+metadata/_edit_pinned_properties_ = [&"suit_id", &"down_suit_id"]
+
+[node name="Sprite2D" parent="." index="4"]
+texture = ExtResource("2_qqul5")
+hframes = 12
+frame = 0
+metadata/_edit_pinned_properties_ = [&"texture", &"hframes"]
+
+[node name="PosAttack" type="Marker2D" parent="Sprite2D" index="1"]
+position = Vector2(6, -10)
+gizmo_extents = 7.0
+
+[node name="AnimationPlayer" parent="." index="6"]
+libraries = {
+"": ExtResource("3_odwo2")
+}
+
+[node name="Behavior" parent="." index="8"]
+script = ExtResource("4_ih858")
+key_attack = &"fire"
+projectile = null
+projectile_max_amount = 2
+shooting_id = &"projectile"
+sound_attack = ExtResource("5_qwa4a")
