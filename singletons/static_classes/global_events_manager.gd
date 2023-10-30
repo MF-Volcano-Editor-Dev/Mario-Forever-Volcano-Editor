@@ -4,10 +4,13 @@ class_name EventsManager
 ##
 ##
 
+## Access to the signals list of the class
 static var signals: SignalsManager = SignalsManager.new()
 
 
+## Signals list of [EventsManager]
 class SignalsManager:
+	## Emitted when the game over is happening
 	signal game_over
 
 

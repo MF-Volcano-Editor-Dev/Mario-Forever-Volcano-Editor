@@ -41,7 +41,6 @@ debug_color = Color(0, 0.639216, 0.34902, 0.419608)
 position = Vector2(0, -16)
 texture = ExtResource("4_m41gs")
 hframes = 13
-frame = 5
 metadata/_edit_group_ = true
 
 [node name="PosBubble" type="Marker2D" parent="Sprite2D"]

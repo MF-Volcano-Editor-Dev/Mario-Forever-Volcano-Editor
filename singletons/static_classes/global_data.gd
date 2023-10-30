@@ -4,9 +4,11 @@ class_name Data
 ##
 ##
 
+## Access to the signals list of the class
 static var signals: SignalsManager = SignalsManager.new()
 
 
+## Signals list of [Data]
 class SignalsManager:
 	## Emitted when the [member player_coins] is euqal to [member player_max_coins]
 	signal player_coins_reached_max
@@ -53,6 +55,7 @@ static var player_scores: int:
 
 
 #region Functions of Players' Data
+## Called when the data should be initialized
 static func data_init_signal_emit() -> void:
 	player_lives = player_lives
 	player_coins = player_coins

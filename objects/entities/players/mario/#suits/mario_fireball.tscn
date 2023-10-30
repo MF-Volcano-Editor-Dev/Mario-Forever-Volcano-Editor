@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1yixmaqbghc1"]
+[gd_scene load_steps=7 format=3 uid="uid://b1yixmaqbghc1"]
 
 [ext_resource type="PackedScene" uid="uid://ce8s22xbaifvj" path="res://objects/entities/players/mario/#suits/mario_big.tscn" id="1_7obrh"]
 [ext_resource type="Texture2D" uid="uid://bqljw565ywlho" path="res://objects/entities/players/mario/textures/mario_fireball.png" id="2_qqul5"]
 [ext_resource type="AnimationLibrary" uid="uid://h282hxx3cser" path="res://objects/entities/players/mario/animations/mario_animations_powerful.res" id="3_odwo2"]
 [ext_resource type="Script" path="res://objects/entities/players/mario/scripts/behaviors/mario_behavior_shootable.gd" id="4_ih858"]
 [ext_resource type="AudioStream" uid="uid://c4wx7vkqy1cd4" path="res://assets/sounds/shoot.wav" id="5_qwa4a"]
+[ext_resource type="PackedScene" uid="uid://btu33kenxiu17" path="res://objects/entities/players/mario/#components/mario_projectile_initializer.tscn" id="6_ekqf8"]
 
 [node name="MarioFireball" instance=ExtResource("1_7obrh")]
 suit_id = &"fireball"
@@ -33,3 +34,7 @@ projectile = null
 projectile_max_amount = 2
 shooting_id = &"projectile"
 sound_attack = ExtResource("5_qwa4a")
+
+[node name="MarioProjectileInitializer" parent="Behavior" index="0" instance=ExtResource("6_ekqf8")]
+
+[connection signal="projectile_shot" from="Behavior" to="Behavior/MarioProjectileInitializer" method="initialize_projectile"]
