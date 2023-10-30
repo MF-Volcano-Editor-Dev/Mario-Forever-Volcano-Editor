@@ -6,6 +6,9 @@ extends CanvasLayer
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+	
 	Data.signals.player_data_changed.connect(
 		func(data: StringName, value: int) -> void:
 			match data:

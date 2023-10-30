@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=13 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/uis/huds/hud_in_level/hud_in_level.tscn" id="1_4kitr"]
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_7g6er"]
 [ext_resource type="Script" path="res://classes/nodes/cameras/class_camera_player_2d.gd" id="2_8a6sl"]
+[ext_resource type="PackedScene" uid="uid://devmwslkf4fe2" path="res://objects/components/for_level/level_timer/level_timer.tscn" id="2_cd7it"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_climbable_2d.gd" id="3_0625b"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_fluid_2d.gd" id="4_suopq"]
 [ext_resource type="PackedScene" uid="uid://b3ds2052h0bx7" path="res://objects/entities/#effects/sprays/spray_water.tscn" id="5_td137"]
@@ -33,6 +34,10 @@ radius = 32.0
 [node name="Level" type="Node2D"]
 
 [node name="HudInLevel" parent="." instance=ExtResource("1_4kitr")]
+
+[node name="LevelTimer" parent="." instance=ExtResource("2_cd7it")]
+rest_time = 120
+time_down_unit = 30
 
 [node name="Camera2D" type="Camera2D" parent="."]
 limit_left = 0
