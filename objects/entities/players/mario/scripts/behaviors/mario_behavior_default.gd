@@ -3,7 +3,7 @@ extends Component
 @export_category("Mario Behaviors")
 ## Override the properties for [Mario2D][br]
 ## [b]Note:[/b] The properties should be written in NodePath-style with [String] type
-@export var override_properties: Dictionary = {}
+@export var override_player_properties: Dictionary = {}
 ## Names of key inputs [br]
 ## See project settings -> input for more details [br]
 ## [b]Note:[/b] Acutally, the key input is <key_name> + <[member EntityPlayer2D.id]>.
@@ -412,6 +412,10 @@ func _on_animation_swim_reset(anim_name: StringName) -> void:
 func _on_mario_suit_changed(to: StringName) -> void:
 	if to != suit.suit_id:
 		return
+	
+	# Override properties
+	for i in override_player_properties:
+		mario.set_indexed(i, override_player_properties[i])
 	
 	# Make the following properties keep the same
 	# performances even if the current suit is changed

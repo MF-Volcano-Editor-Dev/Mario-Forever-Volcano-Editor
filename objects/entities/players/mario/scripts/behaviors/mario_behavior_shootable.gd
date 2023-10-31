@@ -39,17 +39,21 @@ func _shooting_process() -> void:
 		return
 	
 	# Instantiate projectile
-	var prj := projectile.instantiate() as Node2D
-	if !prj:
+	var prj := projectile.instantiate()
+	if !prj is Node2D:
+		prj.queue_free()
 		return
 	
+	prj = prj as Node2D
 	var prjgp: StringName = mario.character_id + str(mario.id) + prj.name
-	if get_tree().get_nodes_in_group(prjgp).size() > projectile_max_amount:
+	if get_tree().get_nodes_in_group(prjgp).size() >= projectile_max_amount:
 		prj.queue_free() # Bear in mind to remove unnecessary node in memory!
 		return
 	
 	mario.add_sibling.call_deferred(prj)
-	prj.global_transform = pos_attack.global_transform
+	prj.global_transform = mario.global_transform # Do NOT pass pos_attack.global_transform for the projectile due to the minus scale.x
+	prj.global_position = pos_attack.global_position # This is to reset the global position to the marker's overriding mario's
+	prj.add_to_group(prjgp)
 	projectile_shot.emit(mario, prj)
 	
 	sound.play(sound_attack)

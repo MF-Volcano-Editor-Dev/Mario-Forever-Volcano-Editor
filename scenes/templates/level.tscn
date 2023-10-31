@@ -1,10 +1,10 @@
 [gd_scene load_steps=13 format=3 uid="uid://xm2gptsn2yh8"]
 
-[ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/components/for_level/level_huds/level_hud.tscn" id="1_4kitr"]
+[ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/components/-for_level/level_huds/level_hud.tscn" id="1_4kitr"]
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_7g6er"]
 [ext_resource type="Script" path="res://classes/nodes/cameras/class_camera_player_2d.gd" id="2_8a6sl"]
-[ext_resource type="PackedScene" uid="uid://devmwslkf4fe2" path="res://objects/components/for_level/level_timer/level_timer.tscn" id="2_cd7it"]
+[ext_resource type="PackedScene" uid="uid://devmwslkf4fe2" path="res://objects/components/-for_level/level_timer/level_timer.tscn" id="2_cd7it"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_climbable_2d.gd" id="3_0625b"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_fluid_2d.gd" id="4_suopq"]
 [ext_resource type="PackedScene" uid="uid://b3ds2052h0bx7" path="res://objects/entities/#effects/sprays/spray_water.tscn" id="5_td137"]
@@ -52,7 +52,7 @@ suit_id = &"fireball"
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_7g6er")
 format = 2
-layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851978, 65537, 0, 851979, 65537, 0, 851981, 65537, 0, 851982, 65537, 0, 851983, 65537, 0, 851984, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 524297, 131073, 0, 524298, 131073, 0, 524299, 131073, 0, 524300, 131073, 0, 524301, 131073, 0, 524302, 131073, 0, 524303, 131073, 0, 524304, 131073, 0, 589839, 131073, 0, 589838, 131073, 0, 589837, 131073, 0, 589836, 131073, 0, 589835, 131073, 0, 589834, 131073, 0, 393216, 131073, 0, 393217, 131073, 0, 393218, 131073, 0, 393219, 131073, 0, 393220, 131073, 0, 393221, 131073, 0, 393222, 131073, 0, 655372, 65537, 0, 655371, 65537, 0, 655373, 65537, 0)
+layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851979, 65537, 0, 851981, 65537, 0, 851983, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 524297, 131073, 0, 524298, 131073, 0, 524299, 131073, 0, 524300, 131073, 0, 524301, 131073, 0, 524302, 131073, 0, 524303, 131073, 0, 524304, 131073, 0, 589839, 131073, 0, 589838, 131073, 0, 589837, 131073, 0, 589836, 131073, 0, 589835, 131073, 0, 589834, 131073, 0, 393216, 131073, 0, 393217, 131073, 0, 393218, 131073, 0, 393219, 131073, 0, 393220, 131073, 0, 393221, 131073, 0, 393222, 131073, 0, 655372, 65537, 0, 655371, 65537, 0, 655373, 65537, 0, 851978, 65537, 0, 851982, 65537, 0, 851984, 65537, 0)
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(120, 128)

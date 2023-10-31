@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b1yixmaqbghc1"]
+[gd_scene load_steps=8 format=3 uid="uid://b1yixmaqbghc1"]
 
 [ext_resource type="PackedScene" uid="uid://ce8s22xbaifvj" path="res://objects/entities/players/mario/#suits/mario_big.tscn" id="1_7obrh"]
 [ext_resource type="Texture2D" uid="uid://bqljw565ywlho" path="res://objects/entities/players/mario/textures/mario_fireball.png" id="2_qqul5"]
 [ext_resource type="AnimationLibrary" uid="uid://h282hxx3cser" path="res://objects/entities/players/mario/animations/mario_animations_powerful.res" id="3_odwo2"]
 [ext_resource type="Script" path="res://objects/entities/players/mario/scripts/behaviors/mario_behavior_shootable.gd" id="4_ih858"]
+[ext_resource type="PackedScene" uid="uid://duaodttdyuc3w" path="res://objects/entities/#projectiles/bouncy_balls/fireball.tscn" id="5_cvm76"]
 [ext_resource type="AudioStream" uid="uid://c4wx7vkqy1cd4" path="res://assets/sounds/shoot.wav" id="5_qwa4a"]
 [ext_resource type="PackedScene" uid="uid://btu33kenxiu17" path="res://objects/entities/players/mario/#components/mario_projectile_initializer.tscn" id="6_ekqf8"]
 
@@ -15,7 +16,6 @@ metadata/_edit_pinned_properties_ = [&"suit_id", &"down_suit_id"]
 [node name="Sprite2D" parent="." index="4"]
 texture = ExtResource("2_qqul5")
 hframes = 12
-frame = 0
 metadata/_edit_pinned_properties_ = [&"texture", &"hframes"]
 
 [node name="PosAttack" type="Marker2D" parent="Sprite2D" index="1"]
@@ -30,11 +30,15 @@ libraries = {
 [node name="Behavior" parent="." index="8"]
 script = ExtResource("4_ih858")
 key_attack = &"fire"
-projectile = null
+projectile = ExtResource("5_cvm76")
 projectile_max_amount = 2
-shooting_id = &"projectile"
+shooting_id = &"fireball"
 sound_attack = ExtResource("5_qwa4a")
+metadata/_edit_pinned_properties_ = [&"projectile", &"shooting_id"]
 
 [node name="MarioProjectileInitializer" parent="Behavior" index="0" instance=ExtResource("6_ekqf8")]
+velocity_value = Vector2(406.25, 0)
+gravity_property_name = &""
+metadata/_edit_pinned_properties_ = [&"gravity_property_name", &"velocity_value"]
 
 [connection signal="projectile_shot" from="Behavior" to="Behavior/MarioProjectileInitializer" method="initialize_projectile"]

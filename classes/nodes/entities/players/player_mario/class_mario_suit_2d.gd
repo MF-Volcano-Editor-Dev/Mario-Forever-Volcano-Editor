@@ -3,7 +3,7 @@ class_name MarioSuit2D extends Node2D
 ## A kind of component only used for [Mario2D] to provide
 ## fast-modifible module for the character
 
-# #mario_suit_owned
+# #mario_shapes
 
 @export_group("General")
 ## Id of the suit, also used in [member Mario2D][br]

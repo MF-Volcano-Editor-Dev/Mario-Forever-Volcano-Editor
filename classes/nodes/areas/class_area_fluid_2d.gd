@@ -26,9 +26,11 @@ func create_spray(body: CollisionObject2D, p_transform: Transform2D) -> void:
 	if !spray:
 		return
 	
-	var s := spray.instantiate() as Node2D
-	if !s:
+	var s := spray.instantiate()
+	if !s is Node2D:
+		s.queue_free()
 		return
-	body.add_sibling.call_deferred(s)
 	
+	s = s as Node2D
+	body.add_sibling.call_deferred(s)
 	s.global_transform = p_transform

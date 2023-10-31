@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://xtgdsan01iix"]
+
+[ext_resource type="Script" path="res://objects/components/transformatic/scripts/rotation_controller.gd" id="1_67jar"]
+
+[node name="RotationController" type="Node"]
+script = ExtResource("1_67jar")
