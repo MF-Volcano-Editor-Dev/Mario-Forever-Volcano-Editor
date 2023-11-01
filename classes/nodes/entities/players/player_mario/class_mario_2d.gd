@@ -33,6 +33,7 @@ var _invulnerability: SceneTreeTimer
 @onready var shape: CollisionShape2D = $Shape
 @onready var body: Area2D = $AreaBody
 @onready var head: Area2D = $AreaHead
+@onready var attack_receiver: Node = $AreaBody/AttackReceiver
 
 
 func _ready() -> void:

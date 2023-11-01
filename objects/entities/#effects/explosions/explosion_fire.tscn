@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://blrfy7o1fjev"]
+
+[ext_resource type="Texture2D" uid="uid://8puc5jsvmdjc" path="res://objects/entities/#effects/explosions/textures/explosion_fire.png" id="1_xc4dc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ael6x"]
+atlas = ExtResource("1_xc4dc")
+region = Rect2(0, 0, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcmpt"]
+atlas = ExtResource("1_xc4dc")
+region = Rect2(36, 0, 36, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxwuu"]
+atlas = ExtResource("1_xc4dc")
+region = Rect2(72, 0, 36, 36)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_tjw8r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ael6x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lcmpt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxwuu")
+}],
+"loop": false,
+"name": &"default",
+"speed": 40.0
+}]
+
+[node name="ExplosionFire" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_tjw8r")
+autoplay = "default"
+
+[connection signal="animation_finished" from="." to="." method="queue_free"]

@@ -4,6 +4,7 @@ extends VisibleOnScreenNotifier2D
 signal stayed_out_of_border
 
 @export_category("Visibility On Screen Emitter")
+## Options to decided from which edge(s) of border will [signal stayed_out_of_border] be emitted
 @export_flags("Left", "Right", "Top", "Bottom") var detected_screen_borders: int
 
 @onready var root: Node2D = get_parent()

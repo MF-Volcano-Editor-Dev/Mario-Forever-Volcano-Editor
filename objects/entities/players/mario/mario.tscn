@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_2d.gd" id="1_5eyu0"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario.tres" id="2_tbmub"]
-[ext_resource type="Script" path="res://objects/components/attacking_related/scripts/attack_receiver.gd" id="3_lynn4"]
+[ext_resource type="PackedScene" uid="uid://cb1b6rn7idshp" path="res://objects/components/attacking_related/attack_receiver.tscn" id="3_a82e8"]
 [ext_resource type="Shape2D" uid="uid://bq38l552jterp" path="res://objects/entities/players/mario/shapes/shape_mario_head.tres" id="3_tilld"]
 [ext_resource type="PackedScene" uid="uid://bvq8x1atfxyaq" path="res://objects/entities/players/mario/#suits/mario_small.tscn" id="4_sn5la"]
 [ext_resource type="PackedScene" uid="uid://ce8s22xbaifvj" path="res://objects/entities/players/mario/#suits/mario_big.tscn" id="5_58ckd"]
@@ -30,8 +30,10 @@ position = Vector2(0, 2)
 shape = ExtResource("2_tbmub")
 debug_color = Color(1, 0.00392157, 0.105882, 0.419608)
 
-[node name="AttackReceiver" type="Node" parent="AreaBody"]
-script = ExtResource("3_lynn4")
+[node name="AttackReceiver" parent="AreaBody" instance=ExtResource("3_a82e8")]
+filter_features = Array[StringName]([&"player_bullet"])
+filter_feature_mode = 1
+metadata/_edit_pinned_properties_ = [&"filter_feature_mode", &"filter_features"]
 
 [node name="AreaHead" type="Area2D" parent="." groups=["#mario_component_fixed"]]
 collision_layer = 0

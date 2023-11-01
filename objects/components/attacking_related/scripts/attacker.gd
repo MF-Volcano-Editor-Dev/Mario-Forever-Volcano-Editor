@@ -1,9 +1,12 @@
 extends Component
 
-## Emitted when the callback is done
-signal done_receiver_callback
+## Emitted when hitting the receiver
+signal hit_receiver(receiver: Component)
 
-## Temporary reference to attack receiver class
+## Emitted when the receiver send callback
+signal receiver_called_back(receiver: Component)
+
+## Temporary reference to attack_receiver.gd
 const AttackReceiver: Script = preload("./attack_receiver.gd")
 
 @export_category("Attacker")
@@ -23,6 +26,7 @@ func _ready() -> void:
 
 func _act_with_attack_receiver(area: Area2D) -> void:
 	for i: Node in area.get_children():
-		if !i is AttackReceiver:
-			continue
-		i.receive_attacker(self)
+		if i is AttackReceiver:
+			hit_receiver.emit(i)
+			i._receive_attacker(self)
+			break

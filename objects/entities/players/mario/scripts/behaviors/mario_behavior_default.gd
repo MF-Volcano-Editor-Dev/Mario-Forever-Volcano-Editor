@@ -113,11 +113,13 @@ func _ready() -> void:
 	# Await for readiness of mario for safety of initialization
 	if !mario.is_node_ready():
 		await mario.ready
-	mario.suit_changed.connect(_on_mario_suit_changed)
+	
 	mario.body.area_entered.connect(_on_body_entered_area)
 	mario.body.area_exited.connect(_on_body_exited_area)
 	mario.head.area_entered.connect(_on_head_entered_area)
 	mario.head.area_exited.connect(_on_head_exited_area)
+	mario.attack_receiver.received_attacker.connect(_on_getting_damage)
+	mario.suit_changed.connect(_on_mario_suit_changed)
 
 
 func _process(delta: float) -> void:
@@ -408,10 +410,13 @@ func _on_animation_swim_reset(anim_name: StringName) -> void:
 #endregion
 
 
-#region Suit changed
+#region Suit Changed
 func _on_mario_suit_changed(to: StringName) -> void:
 	if to != suit.suit_id:
 		return
+	
+	# Set attacker activity
+	mario.attack_receiver.process_mode = PROCESS_MODE_INHERIT
 	
 	# Override properties
 	for i in override_player_properties:
@@ -491,6 +496,17 @@ func _on_head_exited_area(area: Area2D) -> void:
 		if !mario.state_machine.is_state(&"underwater_jumpout"):
 			mario.state_machine.set_state(&"underwater_jumpout")
 #endregion
+#endregion
+
+
+#region Damage
+func _on_getting_damage(attacker: Component, receiver: Component) -> void:
+	if mario.suit_id != suit.suit_id:
+		return
+	
+	if &"enemy_bullet" in attacker.attacker_features:
+		mario.hurt()
+		receiver.send_call_back()
 #endregion
 
 

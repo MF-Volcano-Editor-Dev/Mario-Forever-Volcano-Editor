@@ -5,6 +5,7 @@ enum Options {
 	NORMALIZED
 }
 
+@export_category("Scale Controller")
 @export var accordance_node: Node
 @export_group("Accordances")
 @export var scale_x_accordance: String

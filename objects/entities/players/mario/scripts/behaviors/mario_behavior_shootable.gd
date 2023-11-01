@@ -3,6 +3,8 @@ extends "res://objects/entities/players/mario/scripts/behaviors/mario_behavior_d
 ## Emitted when a projectile is shot or thrown
 signal projectile_shot(player: Mario2D, projectile: Node2D)
 
+const Attacker: Script = preload("res://objects/components/attacking_related/scripts/attacker.gd")
+
 @export_category("Mario Behavior Shootable")
 @export_group("Key Inputs")
 ## Key of controlling attacking
@@ -54,6 +56,11 @@ func _shooting_process() -> void:
 	prj.global_transform = mario.global_transform # Do NOT pass pos_attack.global_transform for the projectile due to the minus scale.x
 	prj.global_position = pos_attack.global_position # This is to reset the global position to the marker's overriding mario's
 	prj.add_to_group(prjgp)
+	
+	var attacker := Process.iterate_get_child(prj, Attacker)
+	if attacker:
+		attacker.attacker_features.append(&"player_bullet")
+	
 	projectile_shot.emit(mario, prj)
 	
 	sound.play(sound_attack)

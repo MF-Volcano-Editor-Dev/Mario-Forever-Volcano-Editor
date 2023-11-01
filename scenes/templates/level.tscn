@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=14 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/components/-for_level/level_huds/level_hud.tscn" id="1_4kitr"]
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_climbable_2d.gd" id="3_0625b"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_fluid_2d.gd" id="4_suopq"]
 [ext_resource type="PackedScene" uid="uid://b3ds2052h0bx7" path="res://objects/entities/#effects/sprays/spray_water.tscn" id="5_td137"]
+[ext_resource type="PackedScene" uid="uid://duaodttdyuc3w" path="res://objects/entities/#projectiles/bouncy_balls/fireball.tscn" id="9_3c2fh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6qa1y"]
 size = Vector2(192, 208)
@@ -47,6 +48,7 @@ script = ExtResource("2_8a6sl")
 
 [node name="Mario" parent="." instance=ExtResource("1_p1j5j")]
 position = Vector2(48, 400)
+up_direction = Vector2(-0.499999, -0.866026)
 suit_id = &"fireball"
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -84,3 +86,14 @@ metadata/_edit_group_ = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D3"]
 shape = SubResource("CircleShape2D_mqf3a")
 debug_color = Color(0.972549, 0.172549, 0, 0.419608)
+
+[node name="Fireball" parent="." instance=ExtResource("9_3c2fh")]
+velocity = Vector2(-400, 0)
+global_velocity = Vector2(-400, 0)
+position = Vector2(360, 376)
+velocity = Vector2(-400, 0)
+
+[node name="Attacker" parent="Fireball/Area2D" index="1"]
+attacker_features = Array[StringName]([&"enemy_bullet"])
+
+[editable path="Fireball"]
