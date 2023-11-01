@@ -34,7 +34,7 @@ projectile = ExtResource("5_cvm76")
 projectile_max_amount = 2
 shooting_id = &"fireball"
 sound_attack = ExtResource("5_qwa4a")
-metadata/_edit_pinned_properties_ = [&"projectile", &"shooting_id"]
+metadata/_edit_pinned_properties_ = [&"projectile", &"shooting_id", &"script"]
 
 [node name="MarioProjectileInitializer" parent="Behavior" index="0" instance=ExtResource("6_ekqf8")]
 velocity_value = Vector2(406.25, 0)

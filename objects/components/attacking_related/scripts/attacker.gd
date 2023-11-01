@@ -1,5 +1,13 @@
 extends Component
 
+## Attack processor for an [Area2D], you need an [const AttackReceiver] component for those [Area2D]s
+## who are able to receive the attacker when the area collides with them
+##
+## List of values available in [member attacker_features]: [br]
+## * player_bullet: Bullet thrown by [b]player[/b] [br]
+## * enemy_bullet: Bullet thrown by [b]enemy[/b] [br]
+## * player_bullet_pvp: <PlayerID>: Bullet thrown by [b]player[/b] with [u]specific player id[/u] (WIP) [br]
+
 ## Emitted when hitting the receiver
 signal hit_receiver(receiver: Component)
 
@@ -12,6 +20,7 @@ const AttackReceiver: Script = preload("./attack_receiver.gd")
 @export_category("Attacker")
 ## Id of the attacker
 @export var attacker_id: StringName
+## Features of attacker, see the list above
 @export var attacker_features: Array[StringName]
 
 

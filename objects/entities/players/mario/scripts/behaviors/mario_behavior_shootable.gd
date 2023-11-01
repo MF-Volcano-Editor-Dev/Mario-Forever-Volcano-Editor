@@ -13,7 +13,7 @@ const Attacker: Script = preload("res://objects/components/attacking_related/scr
 ## Projectile to be shot or thrown
 @export var projectile: PackedScene
 ## Maximum of projectiles able to be shot or thrown
-@export_range(0, 20, 1, "suffix:x") var projectile_max_amount: int = 2
+@export_range(0, 32, 1, "suffix:x") var projectile_max_amount: int = 2
 ## ID of the projectile [br]
 ## [b]Note:[/b] This is used to make the projectiles in the same group to be
 ## controlled and limited by [member projectile_max_amount], and if you

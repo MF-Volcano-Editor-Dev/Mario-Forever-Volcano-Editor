@@ -12,10 +12,11 @@ signal stayed_out_of_border
 
 func _ready() -> void:
 	visible = true
-	screen_exited.connect(_detection_process)
+	screen_entered.connect(set_process.bind(false))
+	screen_exited.connect(set_process.bind(true))
 
 
-func _detection_process() -> void:
+func _process(_delta: float) -> void:
 	var left: bool = detected_screen_borders & 0b0001 == 0b0001
 	var right: bool = detected_screen_borders & 0b0010 == 0b0010
 	var top: bool = detected_screen_borders & 0b01000 == 0b0100

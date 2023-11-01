@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://duaodttdyuc3w"]
+[gd_scene load_steps=9 format=3 uid="uid://duaodttdyuc3w"]
 
 [ext_resource type="Texture2D" uid="uid://d22algs2f3jie" path="res://objects/entities/#projectiles/bouncy_balls/textures/fireball.png" id="1_cvbqh"]
 [ext_resource type="Script" path="res://objects/entities/#projectiles/bouncy_balls/scripts/bouncy_balls.gd" id="1_mhxtf"]
-[ext_resource type="PackedScene" uid="uid://cqoo3f3wxx65x" path="res://objects/components/transformatic/scale_controller.tscn" id="2_76ql4"]
-[ext_resource type="PackedScene" uid="uid://xtgdsan01iix" path="res://objects/components/transformatic/rotation_controller.tscn" id="2_j5gqn"]
 [ext_resource type="PackedScene" uid="uid://blrprhoebns4y" path="res://objects/components/attacking_related/attacker.tscn" id="2_wh3xr"]
 [ext_resource type="PackedScene" uid="uid://bj0eef13ohuuk" path="res://objects/components/visibility_on_screen_emitter/visibility_on_screen_emitter.tscn" id="3_71exo"]
+[ext_resource type="Script" path="res://scripts/node2d/rotate_and_scale/rotate_and_scale.gd" id="5_ru6gc"]
 [ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/components/effect_creator/effect_creator.tscn" id="6_st12a"]
 [ext_resource type="PackedScene" uid="uid://blrfy7o1fjev" path="res://objects/entities/#effects/explosions/explosion_fire.tscn" id="8_hkovg"]
 
@@ -41,18 +40,14 @@ visible = false
 detected_screen_borders = 11
 metadata/_edit_pinned_properties_ = [&"detected_screen_borders"]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." node_paths=PackedStringArray("accordance")]
 texture = ExtResource("1_cvbqh")
-
-[node name="ScaleController" parent="Sprite2D" node_paths=PackedStringArray("accordance_node") instance=ExtResource("2_76ql4")]
-accordance_node = NodePath("../..")
+script = ExtResource("5_ru6gc")
+accordance = NodePath("..")
 scale_x_accordance = "velocity:x"
-metadata/_edit_pinned_properties_ = [&"scale_x_accordance", &"accordance_node"]
-
-[node name="RotationController" parent="Sprite2D" instance=ExtResource("2_j5gqn")]
 rotation_speed = 562.5
-rotation_direction_accordance = 1
-metadata/_edit_pinned_properties_ = [&"rotation_speed", &"rotation_direction_accordance"]
+rotation_direction_accordance = "velocity:x"
+metadata/_edit_pinned_properties_ = [&"accordance", &"rotation_speed", &"rotation_direction_accordance"]
 
 [node name="EffectCreator" parent="." instance=ExtResource("6_st12a")]
 gizmo_extents = 4.0

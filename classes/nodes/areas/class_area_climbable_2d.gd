@@ -4,5 +4,3 @@ class_name AreaClimbable2D extends Area2D
 ##
 ## This class is designed for [EntityPlayer2D] and set the [member EntityPlayer2D.state_machine]
 ## of the player, especially for [Mario2D]
-
-@export var climbable: bool = true
