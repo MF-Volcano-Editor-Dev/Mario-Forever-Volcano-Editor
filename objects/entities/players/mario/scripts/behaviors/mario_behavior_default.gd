@@ -1,5 +1,7 @@
 extends Component
 
+const EnemyBody: Script = preload("res://objects/components/enemy_related/scripts/enemy_body_hazzard.gd")
+
 @export_category("Mario Behaviors")
 ## Override the properties for [Mario2D][br]
 ## [b]Note:[/b] The properties should be written in NodePath-style with [String] type
@@ -140,6 +142,9 @@ func _process(delta: float) -> void:
 	if _start_animations:
 		_animation_process(delta)
 	_start_animations = true
+	
+	# Detection
+	_body_detection_process()
 
 
 func _physics_process(delta: float) -> void:
@@ -473,6 +478,30 @@ func _on_body_exited_area(area: Area2D) -> void:
 			mario.state_machine.remove_state(&"underwater")
 			aqua_root.update_from_extracted_value()
 			aqua_behavior.update_from_extracted_value()
+
+
+func _body_detection_process() -> void:
+	for i: Area2D in mario.body.get_overlapping_areas():
+		var enemy: EnemyBody = null
+		
+		for j: Node in i.get_children():
+			if j is EnemyBody:
+				enemy = j
+				break
+		
+		if enemy:
+			var result := enemy._detect_body(mario.velocity * get_physics_process_delta_time())
+			if result.is_empty():
+				return
+			elif &"success" in result:
+				if result.success:
+					if _jumping && &"jumping_speed_high" in result:
+						mario.jump(result.jumping_speed_high)
+					elif !_jumping && &"jumping_speed_low" in result:
+						mario.jump(result.jumping_speed_low)
+				else:
+					mario.hurt(result.tags if &"tags" in result else {})
+			break
 #endregion
 
 

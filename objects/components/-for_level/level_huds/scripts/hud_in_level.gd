@@ -3,6 +3,8 @@ extends CanvasLayer
 @onready var lives: Label = $Frame/LivesX
 @onready var scores: Label = $Frame/LivesX/Scores
 @onready var coins: Label = $Frame/CoinsX/Coins
+@onready var game_over: Label = $Frame/GameOver
+@onready var sound_game_over: AudioStreamPlayer = $SoundGameOver
 
 
 func _ready() -> void:
@@ -21,4 +23,11 @@ func _ready() -> void:
 				&"player_coins":
 					coins.text = str(value)
 	, CONNECT_DEFERRED)
+	
+	EventsManager.signals.game_over.connect(
+		func() -> void:
+			game_over.visible = true
+			sound_game_over.play()
+	)
+	
 	Data.data_init_signal_emit()

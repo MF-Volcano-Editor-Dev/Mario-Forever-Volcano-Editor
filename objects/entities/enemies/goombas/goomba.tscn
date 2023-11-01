@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://bsk7rwrwav6ym"]
+
+[ext_resource type="Script" path="res://scripts/entity_bodies_2d/general_moving_body.gd" id="1_26oad"]
+[ext_resource type="Texture2D" uid="uid://by3uk7jcvyall" path="res://objects/entities/enemies/goombas/textures/goomba.png" id="1_kfcy0"]
+[ext_resource type="PackedScene" uid="uid://cb1b6rn7idshp" path="res://objects/components/attacking_related/attack_receiver.tscn" id="2_of23v"]
+[ext_resource type="PackedScene" uid="uid://cr78xayjmo18a" path="res://objects/components/enemy_related/enemy_attacked.tscn" id="3_8eb7v"]
+[ext_resource type="PackedScene" uid="uid://b452cgnosh3xd" path="res://objects/components/enemy_related/enemy_body_stompable.tscn" id="4_bo2eb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_raq80"]
+size = Vector2(32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n0s6f"]
+atlas = ExtResource("1_kfcy0")
+region = Rect2(0, 0, 31, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jgnb"]
+atlas = ExtResource("1_kfcy0")
+region = Rect2(31, 0, 31, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5j0u7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n0s6f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1jgnb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Goomba" type="EntityBody2D"]
+velocity = Vector2(50, 0)
+global_velocity = Vector2(50, 0)
+gravity = 1250.0
+collision_layer = 4
+collision_mask = 8
+velocity = Vector2(50, 0)
+script = ExtResource("1_26oad")
+initial_moving_direction = 1
+metadata/_edit_pinned_properties_ = [&"initial_moving_direction"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_raq80")
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_raq80")
+debug_color = Color(1, 0, 0.129412, 0.419608)
+
+[node name="AttackReceiver" parent="Area2D" instance=ExtResource("2_of23v")]
+
+[node name="EnemyAttacked" parent="Area2D/AttackReceiver" instance=ExtResource("3_8eb7v")]
+
+[node name="EnemyBody" parent="Area2D" instance=ExtResource("4_bo2eb")]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_5j0u7")
+autoplay = "default"
+
+[connection signal="collided_wall" from="." to="." method="turn_x"]

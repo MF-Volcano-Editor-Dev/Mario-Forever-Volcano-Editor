@@ -55,6 +55,21 @@ static func get_first_player() -> EntityPlayer2D:
 
 static func get_last_player() -> EntityPlayer2D:
 	return get_player(-1)
+
+
+static func get_nearest_player(to: Vector2) -> EntityPlayer2D:
+	var plys := get_all_available_players()
+	if plys.is_empty():
+		return null
+	
+	var pos: Array[float] = []
+	
+	for i: EntityPlayer2D in plys:
+		pos.append((i.global_position - to).length_squared())
+	var nr: float = pos.min()
+	
+	return plys[pos.find(nr)]
+	
 #endregion
 
 

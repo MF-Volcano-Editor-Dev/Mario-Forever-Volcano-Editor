@@ -1,6 +1,6 @@
 extends Component
 
-## Attack processor for an [Area2D], you need an [const AttackReceiver] component for those [Area2D]s
+## Attack processor for an [Area2D], you need an [constant AttackReceiver] component for those [Area2D]s
 ## who are able to receive the attacker when the area collides with them
 ##
 ## List of values available in [member attacker_features]: [br]

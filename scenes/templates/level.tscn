@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=14 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/components/-for_level/level_huds/level_hud.tscn" id="1_4kitr"]
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
@@ -8,25 +8,14 @@
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_climbable_2d.gd" id="3_0625b"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_fluid_2d.gd" id="4_suopq"]
 [ext_resource type="PackedScene" uid="uid://b3ds2052h0bx7" path="res://objects/entities/#effects/sprays/spray_water.tscn" id="5_td137"]
+[ext_resource type="PackedScene" uid="uid://2efrbr4mehhu" path="res://objects/components/enemy_related/enemy_body_hazzard.tscn" id="9_30qnq"]
+[ext_resource type="PackedScene" uid="uid://bsk7rwrwav6ym" path="res://objects/entities/enemies/goombas/goomba.tscn" id="9_j8t7j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6qa1y"]
 size = Vector2(192, 208)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yw5we"]
 size = Vector2(640, 224)
-
-[sub_resource type="GDScript" id="GDScript_qsqdp"]
-script/source = "extends Area2D
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	body_entered.connect(
-		func(body: Node2D) -> void:
-			if body is Mario2D:
-				body.hurt()
-	)
-"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mqf3a"]
 radius = 32.0
@@ -79,9 +68,13 @@ shape = SubResource("RectangleShape2D_yw5we")
 [node name="Area2D3" type="Area2D" parent="."]
 position = Vector2(896, 160)
 collision_layer = 64
-script = SubResource("GDScript_qsqdp")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D3"]
 shape = SubResource("CircleShape2D_mqf3a")
 debug_color = Color(0.972549, 0.172549, 0, 0.419608)
+
+[node name="EnemyBodyHazzard" parent="Area2D3" instance=ExtResource("9_30qnq")]
+
+[node name="Goomba" parent="." instance=ExtResource("9_j8t7j")]
+position = Vector2(176, 400)

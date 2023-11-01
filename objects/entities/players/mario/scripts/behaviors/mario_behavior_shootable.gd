@@ -1,4 +1,4 @@
-extends "res://objects/entities/players/mario/scripts/behaviors/mario_behavior_default.gd"
+extends "./mario_behavior_default.gd"
 
 ## Emitted when a projectile is shot or thrown
 signal projectile_shot(player: Mario2D, projectile: Node2D)
