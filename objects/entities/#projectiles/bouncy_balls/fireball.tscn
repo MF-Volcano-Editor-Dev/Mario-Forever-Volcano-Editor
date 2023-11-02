@@ -2,10 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://d22algs2f3jie" path="res://objects/entities/#projectiles/bouncy_balls/textures/fireball.png" id="1_cvbqh"]
 [ext_resource type="Script" path="res://objects/entities/#projectiles/bouncy_balls/scripts/bouncy_balls.gd" id="1_mhxtf"]
-[ext_resource type="PackedScene" uid="uid://blrprhoebns4y" path="res://objects/components/attacking_related/attacker.tscn" id="2_wh3xr"]
-[ext_resource type="PackedScene" uid="uid://bj0eef13ohuuk" path="res://objects/components/visibility_on_screen_emitter/visibility_on_screen_emitter.tscn" id="3_71exo"]
+[ext_resource type="PackedScene" uid="uid://blrprhoebns4y" path="res://objects/#components/attacking_related/attacker.tscn" id="2_wh3xr"]
+[ext_resource type="PackedScene" uid="uid://bj0eef13ohuuk" path="res://objects/#components/visibility_on_screen_emitter/visibility_on_screen_emitter.tscn" id="3_71exo"]
 [ext_resource type="Script" path="res://scripts/node2d/rotate_and_scale/rotate_and_scale.gd" id="5_ru6gc"]
-[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/components/effect_creator/effect_creator.tscn" id="6_st12a"]
+[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/effect_creator/effect_creator.tscn" id="6_st12a"]
 [ext_resource type="PackedScene" uid="uid://blrfy7o1fjev" path="res://objects/entities/#effects/explosions/explosion_fire.tscn" id="8_hkovg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v54hu"]
@@ -54,16 +54,10 @@ gizmo_extents = 4.0
 effect = ExtResource("8_hkovg")
 metadata/_edit_pinned_properties_ = [&"effect"]
 
-[node name="Destroyer" type="Timer" parent="."]
-wait_time = 10.0
-one_shot = true
-autostart = true
-
+[connection signal="ball_destroy" from="." to="." method="queue_free"]
+[connection signal="ball_destroy" from="." to="EffectCreator" method="create_effect"]
 [connection signal="collided_ceiling" from="." to="." method="destroy"]
 [connection signal="collided_floor" from="." to="." method="bounce_floor"]
 [connection signal="collided_wall" from="." to="." method="destroy"]
-[connection signal="projectile_destroy" from="." to="." method="queue_free"]
-[connection signal="projectile_destroy" from="." to="EffectCreator" method="create_effect"]
 [connection signal="receiver_called_back" from="Area2D/Attacker" to="." method="destroy" unbinds=1]
 [connection signal="stayed_out_of_border" from="VisibilityOnScreenEmitter" to="." method="queue_free"]
-[connection signal="timeout" from="Destroyer" to="." method="destroy"]

@@ -1,13 +1,20 @@
-[gd_scene load_steps=10 format=3 uid="uid://bsk7rwrwav6ym"]
+[gd_scene load_steps=15 format=3 uid="uid://bsk7rwrwav6ym"]
 
 [ext_resource type="Script" path="res://scripts/entity_bodies_2d/general_moving_body.gd" id="1_26oad"]
 [ext_resource type="Texture2D" uid="uid://by3uk7jcvyall" path="res://objects/entities/enemies/goombas/textures/goomba.png" id="1_kfcy0"]
-[ext_resource type="PackedScene" uid="uid://cb1b6rn7idshp" path="res://objects/components/attacking_related/attack_receiver.tscn" id="2_of23v"]
-[ext_resource type="PackedScene" uid="uid://cr78xayjmo18a" path="res://objects/components/enemy_related/enemy_attacked.tscn" id="3_8eb7v"]
-[ext_resource type="PackedScene" uid="uid://b452cgnosh3xd" path="res://objects/components/enemy_related/enemy_body_stompable.tscn" id="4_bo2eb"]
+[ext_resource type="PackedScene" uid="uid://d1fmdqb4xt82a" path="res://objects/#components/solid_detector/solid_detector.tscn" id="2_bpjd0"]
+[ext_resource type="PackedScene" uid="uid://cb1b6rn7idshp" path="res://objects/#components/attacking_related/attack_receiver.tscn" id="2_of23v"]
+[ext_resource type="PackedScene" uid="uid://cr78xayjmo18a" path="res://objects/#components/enemy_related/enemy_attacked.tscn" id="3_8eb7v"]
+[ext_resource type="PackedScene" uid="uid://b452cgnosh3xd" path="res://objects/#components/enemy_related/enemy_body_stompable.tscn" id="4_bo2eb"]
+[ext_resource type="PackedScene" uid="uid://dsxq1dbcgqp2v" path="res://objects/entities/enemies/#components/enemy_stomped_processor.tscn" id="6_716jj"]
+[ext_resource type="Texture2D" uid="uid://dij5eb35hukl4" path="res://objects/entities/enemies/goombas/textures/goomba_stomped.png" id="6_viwje"]
+[ext_resource type="PackedScene" uid="uid://d2yn6nm302yg1" path="res://objects/#components/scores_lives_adder/scores_lives_adder.tscn" id="9_sj2j0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_raq80"]
 size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nwdqj"]
+size = Vector2(32, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n0s6f"]
 atlas = ExtResource("1_kfcy0")
@@ -46,6 +53,13 @@ metadata/_edit_pinned_properties_ = [&"initial_moving_direction"]
 visible = false
 shape = SubResource("RectangleShape2D_raq80")
 
+[node name="CollisionShape2DStomped" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_nwdqj")
+disabled = true
+debug_color = Color(0.105882, 0.647059, 0, 0.419608)
+
 [node name="Area2D" type="Area2D" parent="."]
 visible = false
 collision_layer = 4
@@ -55,14 +69,48 @@ collision_mask = 5
 shape = SubResource("RectangleShape2D_raq80")
 debug_color = Color(1, 0, 0.129412, 0.419608)
 
+[node name="SolidDetector" parent="Area2D" instance=ExtResource("2_bpjd0")]
+root_path = NodePath("..")
+
 [node name="AttackReceiver" parent="Area2D" instance=ExtResource("2_of23v")]
+filter_features = Array[StringName]([&"enemy_bullet"])
+metadata/_edit_pinned_properties_ = [&"filter_features"]
 
 [node name="EnemyAttacked" parent="Area2D/AttackReceiver" instance=ExtResource("3_8eb7v")]
 
-[node name="EnemyBody" parent="Area2D" instance=ExtResource("4_bo2eb")]
+[node name="EnemyBodyStompable" parent="Area2D" instance=ExtResource("4_bo2eb")]
+root_path = NodePath("..")
+metadata/_edit_pinned_properties_ = [&"root_path"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_5j0u7")
 autoplay = "default"
 
+[node name="SpriteDead" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("6_viwje")
+offset = Vector2(0.5, 0)
+
+[node name="Sound2D" type="Sound2D" parent="."]
+
+[node name="StompedProcessor" parent="." node_paths=PackedStringArray("sound") instance=ExtResource("6_716jj")]
+sound = NodePath("../Sound2D")
+root_path = NodePath("..")
+metadata/_edit_pinned_properties_ = [&"root_path", &"sound"]
+
+[node name="ScoresLivesAdder" parent="." instance=ExtResource("9_sj2j0")]
+scores = 100
+metadata/_edit_pinned_properties_ = [&"scores"]
+
 [connection signal="collided_wall" from="." to="." method="turn_x"]
+[connection signal="detected_solid_body" from="Area2D/SolidDetector" to="." method="turn_x"]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="CollisionShape2D" method="queue_free"]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="Area2D" method="queue_free"]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="AnimatedSprite2D" method="queue_free"]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="SpriteDead" method="show"]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="StompedProcessor" method="disappear"]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="StompedProcessor" method="play_stomping_sound"]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="ScoresLivesAdder" method="add_score"]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="." method="set_indexed" binds= [NodePath("velocity:x"), 0.0]]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="CollisionShape2DStomped" method="set_deferred" binds= [&"disabled", false]]
+[connection signal="disappeared" from="StompedProcessor" to="." method="queue_free"]

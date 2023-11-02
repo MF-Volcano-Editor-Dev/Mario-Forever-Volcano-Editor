@@ -5,17 +5,16 @@ extends EntityBody2D
 
 
 func _ready() -> void:
-	if velocity.x:
-		if initial_moving_direction > 0:
-			var npl := PlayersManager.get_nearest_player(global_position)
-			if !npl:
-				return
-			
-			var ppos: float = (global_transform.basis_xform(npl.global_position))[initial_moving_direction - 1]
-			var pos: float = global_transform.affine_inverse().basis_xform(global_position)[initial_moving_direction - 1]
-			
-			if ppos - pos:
-				velocity[initial_moving_direction - 1] *= signf(ppos - pos)
+	if velocity.x && initial_moving_direction > 0:
+		var npl := PlayersManager.get_nearest_player(global_position)
+		if !npl:
+			return
+		
+		var ppos: float = (global_transform.affine_inverse().basis_xform(npl.global_position))[initial_moving_direction - 1]
+		var pos: float = global_transform.affine_inverse().basis_xform(global_position)[initial_moving_direction - 1]
+		
+		if ppos - pos:
+			velocity[initial_moving_direction - 1] *= signf(ppos - pos)
 
 
 func _physics_process(_delta: float) -> void:

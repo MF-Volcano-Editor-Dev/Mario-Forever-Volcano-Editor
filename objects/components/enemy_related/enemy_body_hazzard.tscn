@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://2efrbr4mehhu"]
-
-[ext_resource type="Script" path="res://objects/components/enemy_related/scripts/enemy_body_hazzard.gd" id="1_se5b2"]
-
-[node name="EnemyBodyHazzard" type="Node"]
-script = ExtResource("1_se5b2")

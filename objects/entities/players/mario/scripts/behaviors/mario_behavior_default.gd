@@ -1,7 +1,5 @@
 extends Component
 
-const EnemyBody: Script = preload("res://objects/components/enemy_related/scripts/enemy_body_hazzard.gd")
-
 @export_category("Mario Behaviors")
 ## Override the properties for [Mario2D][br]
 ## [b]Note:[/b] The properties should be written in NodePath-style with [String] type
@@ -482,18 +480,16 @@ func _on_body_exited_area(area: Area2D) -> void:
 
 func _body_detection_process() -> void:
 	for i: Area2D in mario.body.get_overlapping_areas():
-		var enemy: EnemyBody = null
+		var enemy: Classes.EnemyBody = null
 		
 		for j: Node in i.get_children():
-			if j is EnemyBody:
+			if j is Classes.EnemyBody:
 				enemy = j
 				break
 		
 		if enemy:
-			var result := enemy._detect_body(mario.velocity * get_physics_process_delta_time())
-			if result.is_empty():
-				return
-			elif &"success" in result:
+			var result := enemy._detect_body(mario, mario.velocity * get_physics_process_delta_time())
+			if &"success" in result:
 				if result.success:
 					if _jumping && &"jumping_speed_high" in result:
 						mario.jump(result.jumping_speed_high)

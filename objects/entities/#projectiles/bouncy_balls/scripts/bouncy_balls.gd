@@ -1,13 +1,17 @@
 extends EntityBody2D
 
 ## Emitted when the projectile is to be destroyed
-signal projectile_destroy
+signal ball_destroy
 
 @export_category("Bouncy Ball")
 ## Jumping speed
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var jumping_speed: float = 250
 ## Bouncing times
-@export_range(0, 50, 1, "suffix:times") var bouncing_wall_times: int
+@export_range(0, 50, 1, "suffix:times") var bouncing_times: int = 12:
+	set(value):
+		bouncing_times = clampi(value, 0, 50)
+		if bouncing_times <= 0:
+			destroy()
 
 
 func _physics_process(_delta: float) -> void:
@@ -16,16 +20,13 @@ func _physics_process(_delta: float) -> void:
 
 func bounce_floor() -> void:
 	jump(jumping_speed)
+	bouncing_times -= 1
 
 
 func bounce_wall() -> void:
 	turn_x()
-	
-	bouncing_wall_times -= 1
-	if bouncing_wall_times <= 0:
-		destroy()
+	bouncing_times -= 1
 
 
 func destroy() -> void:
-	projectile_destroy.emit()
-	queue_free()
+	ball_destroy.emit()

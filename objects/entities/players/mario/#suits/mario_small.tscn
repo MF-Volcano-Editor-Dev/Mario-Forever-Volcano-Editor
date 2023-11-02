@@ -7,7 +7,7 @@
 [ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_small.res" id="5_uhqkc"]
 [ext_resource type="AnimationLibrary" uid="uid://bfdws2coy4660" path="res://objects/entities/players/mario/animations/mario_shapes_small.res" id="6_4c35d"]
 [ext_resource type="PackedScene" uid="uid://cjwp2krmh5qx5" path="res://objects/entities/players/mario/#components/mario_behavior.tscn" id="7_r45j1"]
-[ext_resource type="PackedScene" uid="uid://b755dvluuuu6g" path="res://objects/components/property_updater/property_updater.tscn" id="8_mce8w"]
+[ext_resource type="PackedScene" uid="uid://b755dvluuuu6g" path="res://objects/#components/property_updater/property_updater.tscn" id="8_mce8w"]
 
 [node name="MarioSmall" type="Node2D"]
 script = ExtResource("1_xh10y")
@@ -67,6 +67,7 @@ root_path = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"root_path"]
 
 [node name="AquaUpdater" type="Node" parent="."]
+process_mode = 4
 
 [node name="AquaRoot" parent="AquaUpdater" instance=ExtResource("8_mce8w")]
 properties = {

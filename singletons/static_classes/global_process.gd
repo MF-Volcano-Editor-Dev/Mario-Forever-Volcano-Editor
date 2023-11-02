@@ -10,11 +10,18 @@ static func get_delta(node: Node) -> float:
 	return node.get_physics_process_delta_time() if Engine.is_in_physics_frame() else node.get_process_delta_time()
 
 
+static func get_child(from: Node, type: Object) -> Node:
+	for i: Node in from.get_children():
+		if is_instance_of(i, type):
+			return i
+	return null
+
+
 ## Iterate nodes and find one including their multilevel children
-static func iterate_get_child(from: Node, type: Object) -> Node:
+static func get_child_iterate(from: Node, type: Object) -> Node:
 	for i: Node in from.get_children():
 		if is_instance_of(i, type):
 			return i
 		elif i.get_child_count():
-			return iterate_get_child(i, type)
+			return get_child_iterate(i, type)
 	return null

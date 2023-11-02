@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1fmdqb4xt82a"]
+
+[ext_resource type="Script" path="res://objects/#components/solid_detector/scripts/solid_detector.gd" id="1_krxw5"]
+
+[node name="SolidDetector" type="Node"]
+script = ExtResource("1_krxw5")
+root_path = null

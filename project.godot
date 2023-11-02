@@ -36,6 +36,10 @@ project/assembly_name="Mario Forever - Thunder Editor Refactored"
 
 enabled=PackedStringArray("res://addons/abfi/plugin.cfg")
 
+[filesystem]
+
+import/blender/enabled=false
+
 [game]
 
 control/player/jumpable_when_crouching=false
