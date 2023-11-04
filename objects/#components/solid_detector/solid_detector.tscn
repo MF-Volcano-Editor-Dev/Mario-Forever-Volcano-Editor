@@ -3,5 +3,5 @@
 [ext_resource type="Script" path="res://objects/#components/solid_detector/scripts/solid_detector.gd" id="1_krxw5"]
 
 [node name="SolidDetector" type="Node"]
+process_mode = 4
 script = ExtResource("1_krxw5")
-root_path = null

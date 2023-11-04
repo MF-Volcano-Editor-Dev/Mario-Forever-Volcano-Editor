@@ -10,7 +10,7 @@ extends Node2D
 @export var scale_y_accordance: String
 @export var scale_y_basis: float = 1.0
 @export_group("Rotation")
-@export_range(-18000, 18000, 0.001, "suffix:°/s²") var rotation_speed: float
+@export_range(-18000, 18000, 0.001, "suffix:°/s") var rotation_speed: float
 @export var rotation_direction_accordance: String
 
 var _scale: Array = [1.0, 1.0]

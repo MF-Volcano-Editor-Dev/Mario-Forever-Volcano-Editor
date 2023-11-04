@@ -54,7 +54,7 @@ func time_warning() -> void:
 	
 	if sound_warning:
 		sound.stream = sound_warning
-		sound.play()
+		sound.play_sound()
 	
 	animation_player.play(&"warning")
 	await animation_player.animation_finished

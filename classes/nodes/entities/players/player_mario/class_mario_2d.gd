@@ -118,7 +118,7 @@ func hurt(tags: Dictionary = {}) -> void:
 		if !_suit.down_suit_id.is_empty() && _suit.down_suit_id in _suit_ids:
 			# Sound controls
 			if !&"no_sound" in tags || tags.no_sound == true:
-				_suit.sound.play(_suit.sound_hurt, get_tree().current_scene)
+				_suit.sound.play_sound(_suit.sound_hurt, get_tree().current_scene)
 			suit_id = _suit.down_suit_id
 			invulnerable(ivdr)
 		else:

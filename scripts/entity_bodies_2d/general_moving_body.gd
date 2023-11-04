@@ -1,7 +1,7 @@
 extends EntityBody2D
 
 @export_category("General Moving Body")
-@export_enum("None", "Look at Player X") var initial_moving_direction: int
+@export_enum("None", "Look at Player") var initial_moving_direction: int
 
 
 func _ready() -> void:

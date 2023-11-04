@@ -268,7 +268,7 @@ func _movement_y_process(delta: float) -> void:
 	# Underwater (Swimming)
 	if uw:
 		if _jumped:
-			sound.play(sound_swim)
+			sound.play_sound(sound_swim)
 			
 			# Jumping out of water
 			if uwjo:
@@ -281,12 +281,15 @@ func _movement_y_process(delta: float) -> void:
 		
 		# Underwater peak swimming speed
 		var swp: float = -abs(swimming_peak_speed)
-		if !uwjo && mario.velocity.y < swp:
-			mario.velocity.y = lerpf(mario.velocity.y, swp, 0.1)
+		if !uwjo && mario.global_velocity.project(mario.up_direction).length_squared() > swp ** 2:
+			var r: float = mario.up_direction.angle() + PI/2
+			var v: Vector2 = mario.global_velocity.rotated(-r)
+			v.y = lerpf(v.y, swp, 8 * delta)
+			mario.global_velocity = v.rotated(r)
 	# Non-underwater (Jumping)
 	else:
 		if _is_jumpable() && jpb && mario.is_on_floor():
-			sound.play(sound_jump)
+			sound.play_sound(sound_jump)
 			mario.jump(initial_jumping_speed)
 			_jumped_already = true
 		
@@ -317,7 +320,7 @@ func _movement_climb_process() -> void:
 	# Jumping from climbing
 	if _is_jumpable() && _up_down >= 0:
 		_jumped_already = true
-		sound.play(sound_jump)
+		sound.play_sound(sound_jump)
 		mario.jump(initial_jumping_speed)
 		mario.state_machine.remove_state(&"climbing")
 
@@ -522,7 +525,7 @@ func _on_head_exited_area(area: Area2D) -> void:
 
 
 #region Damage
-func _on_getting_damage(attacker: Component, receiver: Component) -> void:
+func _on_getting_damage(attacker: Classes.Attacker, receiver: Classes.AttackReceiver) -> void:
 	if mario.suit_id != suit.suit_id:
 		return
 	

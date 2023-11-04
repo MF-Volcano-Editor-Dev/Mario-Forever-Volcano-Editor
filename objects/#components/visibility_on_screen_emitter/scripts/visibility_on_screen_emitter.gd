@@ -6,12 +6,14 @@ signal stayed_out_of_border
 @export_category("Visibility On Screen Emitter")
 ## Options to decided from which edge(s) of border will [signal stayed_out_of_border] be emitted
 @export_flags("Left", "Right", "Top", "Bottom") var detected_screen_borders: int
+## If [code]true[/code], the detector won't work at start
+@export var start_initially: bool = true
 
 @onready var root: Node2D = get_parent()
 
 
 func _ready() -> void:
-	visible = true
+	visible = start_initially
 	screen_entered.connect(set_process.bind(false))
 	screen_exited.connect(set_process.bind(true))
 

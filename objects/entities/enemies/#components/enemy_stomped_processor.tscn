@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dsxq1dbcgqp2v"]
-
-[ext_resource type="Script" path="res://objects/entities/enemies/#components/scripts/enemy_stomped_processor.gd" id="1_3bge8"]
-
-[node name="StompedProcessor" type="Node"]
-process_mode = 4
-script = ExtResource("1_3bge8")

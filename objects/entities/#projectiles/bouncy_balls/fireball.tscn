@@ -37,11 +37,6 @@ attacker_id = &"fireball"
 root_path = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"attacker_id", &"root_path"]
 
-[node name="VisibilityOnScreenEmitter" parent="." instance=ExtResource("3_71exo")]
-visible = false
-detected_screen_borders = 11
-metadata/_edit_pinned_properties_ = [&"detected_screen_borders"]
-
 [node name="Sprite2D" type="Sprite2D" parent="." node_paths=PackedStringArray("accordance")]
 texture = ExtResource("1_cvbqh")
 script = ExtResource("5_ru6gc")
@@ -56,9 +51,15 @@ gizmo_extents = 4.0
 effect = ExtResource("8_hkovg")
 metadata/_edit_pinned_properties_ = [&"effect"]
 
+[node name="VisibilityOnScreenEmitter" parent="." instance=ExtResource("3_71exo")]
+visible = false
+detected_screen_borders = 11
+metadata/_edit_pinned_properties_ = [&"detected_screen_borders"]
+
 [connection signal="ball_destroy" from="." to="." method="queue_free"]
 [connection signal="ball_destroy" from="." to="EffectCreator" method="create_effect"]
 [connection signal="collided_ceiling" from="." to="." method="destroy"]
 [connection signal="collided_floor" from="." to="." method="bounce_floor"]
 [connection signal="collided_wall" from="." to="." method="destroy"]
+[connection signal="receiver_called_back" from="Area2D/Attacker" to="." method="destroy" unbinds=1]
 [connection signal="stayed_out_of_border" from="VisibilityOnScreenEmitter" to="." method="queue_free"]

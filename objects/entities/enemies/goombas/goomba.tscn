@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bsk7rwrwav6ym"]
+[gd_scene load_steps=17 format=3 uid="uid://bsk7rwrwav6ym"]
 
 [ext_resource type="Script" path="res://scripts/entity_bodies_2d/general_moving_body.gd" id="1_26oad"]
 [ext_resource type="Texture2D" uid="uid://by3uk7jcvyall" path="res://objects/entities/enemies/goombas/textures/goomba.png" id="1_kfcy0"]
@@ -6,14 +6,16 @@
 [ext_resource type="PackedScene" uid="uid://cb1b6rn7idshp" path="res://objects/#components/attacking_related/attack_receiver.tscn" id="2_of23v"]
 [ext_resource type="PackedScene" uid="uid://cr78xayjmo18a" path="res://objects/#components/enemy_related/enemy_attacked.tscn" id="3_8eb7v"]
 [ext_resource type="PackedScene" uid="uid://b452cgnosh3xd" path="res://objects/#components/enemy_related/enemy_body_stompable.tscn" id="4_bo2eb"]
-[ext_resource type="PackedScene" uid="uid://dsxq1dbcgqp2v" path="res://objects/entities/enemies/#components/enemy_stomped_processor.tscn" id="6_716jj"]
 [ext_resource type="Texture2D" uid="uid://dij5eb35hukl4" path="res://objects/entities/enemies/goombas/textures/goomba_stomped.png" id="6_viwje"]
+[ext_resource type="PackedScene" uid="uid://bctq6853hh07i" path="res://objects/#components/visibility_on_screen_emitter/visibility_on_screen_emitter_enabler.tscn" id="8_xvipk"]
+[ext_resource type="PackedScene" uid="uid://c0kspboe18low" path="res://objects/entities/enemies/#components/goomba_stomped.tscn" id="9_dbatl"]
 [ext_resource type="PackedScene" uid="uid://d2yn6nm302yg1" path="res://objects/#components/scores_lives_adder/scores_lives_adder.tscn" id="9_sj2j0"]
+[ext_resource type="PackedScene" uid="uid://c2s65oa186pwg" path="res://objects/entities/enemies/#components/goomba_killed.tscn" id="10_hpj35"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_raq80"]
 size = Vector2(32, 32)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nwdqj"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3q6qv"]
 size = Vector2(32, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n0s6f"]
@@ -38,7 +40,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Goomba" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
+[node name="Goomba" type="EntityBody2D"]
 speed = 50.0
 gravity = 1250.0
 collision_layer = 4
@@ -54,9 +56,9 @@ shape = SubResource("RectangleShape2D_raq80")
 [node name="CollisionShape2DStomped" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(0, 8)
-shape = SubResource("RectangleShape2D_nwdqj")
+shape = SubResource("RectangleShape2D_3q6qv")
 disabled = true
-debug_color = Color(0.105882, 0.647059, 0, 0.419608)
+debug_color = Color(0, 0.643137, 0.282353, 0.419608)
 
 [node name="Area2D" type="Area2D" parent="."]
 visible = false
@@ -68,11 +70,11 @@ shape = SubResource("RectangleShape2D_raq80")
 debug_color = Color(1, 0, 0.129412, 0.419608)
 
 [node name="SolidDetector" parent="Area2D" instance=ExtResource("2_bpjd0")]
-root_path = NodePath("..")
 
 [node name="AttackReceiver" parent="Area2D" instance=ExtResource("2_of23v")]
 filter_features = Array[StringName]([&"enemy_bullet"])
-metadata/_edit_pinned_properties_ = [&"filter_features"]
+send_call_back_signal = true
+metadata/_edit_pinned_properties_ = [&"filter_features", &"send_call_back_signal"]
 
 [node name="EnemyAttacked" parent="Area2D/AttackReceiver" instance=ExtResource("3_8eb7v")]
 
@@ -90,11 +92,28 @@ texture = ExtResource("6_viwje")
 offset = Vector2(0.5, 0)
 
 [node name="Sound2D" type="Sound2D" parent="."]
+bus = &"Sound"
+area_mask = 128
 
-[node name="StompedProcessor" parent="." node_paths=PackedStringArray("sound") instance=ExtResource("6_716jj")]
-sound = NodePath("../Sound2D")
-root_path = NodePath("..")
-metadata/_edit_pinned_properties_ = [&"root_path", &"sound"]
+[node name="VisibilityOnScreenEmitterEnabler" parent="." instance=ExtResource("8_xvipk")]
+visible = false
+rect = Rect2(-16, -16, 32, 32)
+detected_screen_borders = 8
+metadata/_edit_pinned_properties_ = [&"rect", &"detected_screen_borders"]
+
+[node name="GoombaStomped" parent="." node_paths=PackedStringArray("sound_player") instance=ExtResource("9_dbatl")]
+sound_player = NodePath("../Sound2D")
+metadata/_edit_pinned_properties_ = [&"sound_player"]
+
+[node name="GoombaKilled" parent="." node_paths=PackedStringArray("sprite", "sound_player") instance=ExtResource("10_hpj35")]
+global_velocity = {
+"accordance": "global_velocity",
+"max_value": 300.0,
+"min_value": 150.0
+}
+sprite = NodePath("../AnimatedSprite2D")
+sound_player = NodePath("../Sound2D")
+metadata/_edit_pinned_properties_ = [&"sound_player", &"global_velocity", &"sprite"]
 
 [node name="ScoresLivesAdder" parent="." instance=ExtResource("9_sj2j0")]
 scores = 100
@@ -102,13 +121,26 @@ metadata/_edit_pinned_properties_ = [&"scores"]
 
 [connection signal="collided_wall" from="." to="." method="turn_wall"]
 [connection signal="detected_solid_body" from="Area2D/SolidDetector" to="." method="turn_wall"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="CollisionShape2D" method="queue_free"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="Area2D" method="queue_free"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="AnimatedSprite2D" method="queue_free"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="SpriteDead" method="show"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="StompedProcessor" method="disappear"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="StompedProcessor" method="play_stomping_sound"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="ScoresLivesAdder" method="add_score"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="." method="set_indexed" binds= [NodePath("speed"), 0.0]]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="CollisionShape2DStomped" method="set_deferred" binds= [&"disabled", false]]
-[connection signal="disappeared" from="StompedProcessor" to="." method="queue_free"]
+[connection signal="killing_succeeded" from="Area2D/AttackReceiver/EnemyAttacked" to="GoombaKilled" method="killed"]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="GoombaStomped" method="disappear"]
+[connection signal="stayed_out_of_border" from="VisibilityOnScreenEmitterEnabler" to="GoombaKilled" method="killed_to_destroy"]
+[connection signal="disappear_ended" from="GoombaStomped" to="." method="queue_free"]
+[connection signal="disappear_started" from="GoombaStomped" to="CollisionShape2D" method="queue_free"]
+[connection signal="disappear_started" from="GoombaStomped" to="Area2D" method="queue_free"]
+[connection signal="disappear_started" from="GoombaStomped" to="AnimatedSprite2D" method="queue_free"]
+[connection signal="disappear_started" from="GoombaStomped" to="SpriteDead" method="show"]
+[connection signal="disappear_started" from="GoombaStomped" to="VisibilityOnScreenEmitterEnabler" method="queue_free"]
+[connection signal="disappear_started" from="GoombaStomped" to="ScoresLivesAdder" method="add_score"]
+[connection signal="disappear_started" from="GoombaStomped" to="." method="set_speed" binds= [0.0]]
+[connection signal="disappear_started" from="GoombaStomped" to="CollisionShape2DStomped" method="set_deferred" binds= [&"disabled", false]]
+[connection signal="got_killed" from="GoombaKilled" to="CollisionShape2D" method="queue_free"]
+[connection signal="got_killed" from="GoombaKilled" to="CollisionShape2DStomped" method="queue_free"]
+[connection signal="got_killed" from="GoombaKilled" to="Area2D" method="queue_free"]
+[connection signal="got_killed" from="GoombaKilled" to="AnimatedSprite2D" method="stop"]
+[connection signal="got_killed" from="GoombaKilled" to="SpriteDead" method="queue_free"]
+[connection signal="got_killed" from="GoombaKilled" to="VisibilityOnScreenEmitterEnabler" method="show"]
+[connection signal="got_killed" from="GoombaKilled" to="GoombaStomped" method="queue_free"]
+[connection signal="got_killed" from="GoombaKilled" to="." method="set_gravity" binds= [250.0]]
+[connection signal="got_killed" from="GoombaKilled" to="." method="set_speed" binds= [0.0]]
+[connection signal="got_killed" from="GoombaKilled" to="." method="set_autobody" binds= [false]]
+[connection signal="got_killed_no_combo" from="GoombaKilled" to="ScoresLivesAdder" method="add_score"]

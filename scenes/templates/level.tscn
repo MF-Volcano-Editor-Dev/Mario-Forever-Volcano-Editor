@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=13 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/#attachments/level_huds/level_hud.tscn" id="1_4kitr"]
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_climbable_2d.gd" id="3_0625b"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_fluid_2d.gd" id="4_suopq"]
 [ext_resource type="PackedScene" uid="uid://b3ds2052h0bx7" path="res://objects/entities/#effects/sprays/spray_water.tscn" id="5_td137"]
+[ext_resource type="PackedScene" uid="uid://bsk7rwrwav6ym" path="res://objects/entities/enemies/goombas/goomba.tscn" id="9_k6lx7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6qa1y"]
 size = Vector2(192, 208)
@@ -40,7 +41,7 @@ suit_id = &"fireball"
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_7g6er")
 format = 2
-layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851979, 65537, 0, 851981, 65537, 0, 851983, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 851978, 65537, 0, 851982, 65537, 0, 851984, 65537, 0, 983039, 65537, 0, 917503, 65537, 0, 851967, 65537, 0, 786431, 65537, 0, 720895, 65537, 0, 655359, 65537, 0, 589823, 65537, 0, 524287, 65537, 0, 458751, 65537, 0, 786449, 65537, 0, 720913, 65537, 0, 655377, 65537, 0, 589841, 65537, 0, 262161, 65537, 0, 327697, 65537, 0, 196625, 65537, 0)
+layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851979, 65537, 0, 851981, 65537, 0, 851983, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 851978, 65537, 0, 851982, 65537, 0, 851984, 65537, 0, 983039, 65537, 0, 917503, 65537, 0, 851967, 65537, 0, 786431, 65537, 0, 720895, 65537, 0, 655359, 65537, 0, 589823, 65537, 0, 524287, 65537, 0, 458751, 65537, 0, 786449, 65537, 0, 720913, 65537, 0, 655377, 65537, 0, 589841, 65537, 0, 262161, 65537, 0, 327697, 65537, 0, 196625, 65537, 0, 524305, 65537, 0)
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(928, 296)
@@ -53,13 +54,15 @@ shape = SubResource("RectangleShape2D_6qa1y")
 debug_color = Color(0, 0.647059, 0.2, 0.419608)
 
 [node name="Area2D2" type="Area2D" parent="."]
-position = Vector2(160, 200)
-collision_layer = 64
+position = Vector2(160, 232)
+collision_layer = 192
 collision_mask = 5
 gravity_space_override = 3
 gravity = 98.0
 linear_damp_space_override = 3
 linear_damp = 2.0
+audio_bus_override = true
+audio_bus_name = &"SoundCave"
 script = ExtResource("4_suopq")
 fluid_id = &"water"
 spray = ExtResource("5_td137")
@@ -82,3 +85,9 @@ metadata/_edit_group_ = true
 position = Vector2(64, 80)
 shape = SubResource("RectangleShape2D_xj6hh")
 debug_color = Color(0.658824, 0.517647, 0, 0.419608)
+
+[node name="Goomba" parent="." instance=ExtResource("9_k6lx7")]
+position = Vector2(240, 400)
+
+[node name="Goomba2" parent="." instance=ExtResource("9_k6lx7")]
+position = Vector2(304, 400)

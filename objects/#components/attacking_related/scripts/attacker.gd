@@ -7,6 +7,7 @@ extends Component
 ## * player_bullet: Bullet thrown by [b]player[/b] [br]
 ## * enemy_bullet: Bullet thrown by [b]enemy[/b] [br]
 ## * player_bullet_pvp: <PlayerID>: Bullet thrown by [b]player[/b] with [u]specific player id[/u] (WIP) [br]
+## * ice_freezing: Bullet that will make an enemy frozen (WIP)(Needs ice-flower module) [br]
 
 ## Emitted when hitting the receiver
 signal hit_receiver(receiver: Classes.AttackReceiver)
