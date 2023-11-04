@@ -24,7 +24,7 @@ func bounce_floor() -> void:
 
 
 func bounce_wall() -> void:
-	turn_x()
+	turn_wall()
 	bouncing_times -= 1
 
 

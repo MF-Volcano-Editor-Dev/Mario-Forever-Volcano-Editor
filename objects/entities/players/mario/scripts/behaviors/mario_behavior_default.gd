@@ -133,7 +133,7 @@ func _process(delta: float) -> void:
 		_movement_climb_process()
 	else:
 		_movement_crouching_process()
-		_movement_x_process(delta)
+		_movement_x_process()
 		_movement_y_process(delta)
 	
 	# Animations
@@ -192,10 +192,6 @@ func _action_states_process() -> void:
 
 
 #region Movements
-func _accelerate(to: float, acce_with_delta: float) -> void:
-	mario.velocity.x = move_toward(mario.velocity.x, to * mario.direction, acce_with_delta)
-
-
 func _movement_crouching_process() -> void:
 	if mario.state_machine.is_state(&"no_crouching"):
 		return
@@ -213,7 +209,7 @@ func _movement_crouching_process() -> void:
 		shapes_controller.play.call_deferred(&"RESET")
 
 
-func _movement_x_process(delta: float) -> void:
+func _movement_x_process() -> void:
 	if mario.state_machine.is_state(&"no_walking"):
 		return
 	
@@ -223,18 +219,19 @@ func _movement_x_process(delta: float) -> void:
 		deceleration_crouching if isdc == 2 else \
 		deceleration_crouching_moving # Deceleration
 	if isdc:
-		_accelerate(min_speed, dc * delta)
+		mario.accelerate_speed(dc, min_speed)
 		return
+	
 	# Initial speed
-	if _left_right != 0 && mario.velocity.x == 0:
+	if _left_right != 0 && mario.speed == 0:
 		mario.direction = _left_right
-		mario.velocity.x = initial_walking_speed * mario.direction
+		mario.speed = initial_walking_speed * mario.direction
 	# Acceleration
-	elif _left_right * signf(mario.velocity.x) > 0:
+	elif _left_right * signf(mario.speed) > 0:
 		var isrn: bool = _is_running() # Is running
 		var cw: bool = _walkable_when_crouching && mario.state_machine.is_state(&"crouching") # Crouchwalk
 		var wf: float = 0.1 if cw else 1.0 # Walking factor
-		var ms: float = (max_running_speed if isrn else max_walking_speed) * wf # Max speed
+		var ms: float = (max_running_speed if isrn else max_walking_speed) * wf * mario.direction # Max speed
 		
 		# Set state for users to detect
 		if isrn:
@@ -243,17 +240,17 @@ func _movement_x_process(delta: float) -> void:
 			mario.state_machine.remove_state(&"running")
 		
 		# Execute acceleration
-		if abs(mario.velocity.x) < ms:
-			_accelerate(ms, acceleration * delta)
+		if abs(mario.speed) < abs(ms):
+			mario.accelerate_speed(acceleration, ms)
 		# Deceleration if the velocity is greater than max speed
-		elif abs(mario.velocity.x) > ms:
-			_accelerate(ms, deceleration_overspeed * delta)
+		elif abs(mario.speed) > abs(ms):
+			mario.accelerate_speed(deceleration_overspeed, ms)
 	# Turning back
-	elif _left_right * signf(mario.velocity.x) < 0:
-		_accelerate(0, turning_aceleration * delta)
+	elif _left_right * signf(mario.speed) < 0:
+		mario.accelerate_speed(turning_aceleration, 0)
 		mario.state_machine.set_state(&"turning")
 		
-		if is_zero_approx(mario.velocity.x):
+		if mario.speed == 0:
 			mario.direction *= -1
 			mario.state_machine.remove_state(&"turning")
 
@@ -294,8 +291,8 @@ func _movement_y_process(delta: float) -> void:
 			_jumped_already = true
 		
 		# Jumping acceleration
-		if _jumping && mario.velocity.y < 0 && !mario.is_on_floor():
-			var jac: float = jumping_acceleration_dynamic if absf(mario.velocity.x) > 31.25 else jumping_acceleration_static
+		if _jumping && mario.is_leaving_ground() && !mario.is_on_floor():
+			var jac: float = jumping_acceleration_dynamic if absf(mario.speed) > 31.25 else jumping_acceleration_static
 			mario.jump(jac * delta, true)
 
 
@@ -387,19 +384,19 @@ func _animation_process(delta: float) -> void:
 			if mario.state_machine.is_state(&"crouching"):
 				animation.play(&"crouch")
 			# Idle
-			elif is_zero_approx(snappedf(_pos_delta.length_squared(), 0.01)):
+			elif mario.is_on_wall() || is_zero_approx(_pos_delta.length_squared()):
 				animation.play(&"RESET")
 			# Walking
 			else:
 				animation.play(&"walk")
-				animation.speed_scale = clampf(absf(mario.velocity.x) * delta * 0.67, 0, 5)
+				animation.speed_scale = clampf(absf(mario.speed) * delta * 0.67, 0, 5)
 		# Swimming
 		elif mario.state_machine.is_state(&"underwater"):
 			if _jumped: # Reset swimming animation when the jumping key is pressed
 				animation.stop()
 			animation.play(&"swim")
 		# Jumping
-		elif mario.velocity.y < 0:
+		elif mario.is_leaving_ground():
 			animation.play(&"jump")
 		# Falling
 		else:

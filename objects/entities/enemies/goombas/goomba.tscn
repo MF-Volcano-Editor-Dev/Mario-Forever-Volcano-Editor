@@ -38,13 +38,11 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Goomba" type="EntityBody2D"]
-velocity = Vector2(50, 0)
-global_velocity = Vector2(50, 0)
+[node name="Goomba" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
+speed = 50.0
 gravity = 1250.0
 collision_layer = 4
 collision_mask = 8
-velocity = Vector2(50, 0)
 script = ExtResource("1_26oad")
 initial_moving_direction = 1
 metadata/_edit_pinned_properties_ = [&"initial_moving_direction"]
@@ -102,8 +100,8 @@ metadata/_edit_pinned_properties_ = [&"root_path", &"sound"]
 scores = 100
 metadata/_edit_pinned_properties_ = [&"scores"]
 
-[connection signal="collided_wall" from="." to="." method="turn_x"]
-[connection signal="detected_solid_body" from="Area2D/SolidDetector" to="." method="turn_x"]
+[connection signal="collided_wall" from="." to="." method="turn_wall"]
+[connection signal="detected_solid_body" from="Area2D/SolidDetector" to="." method="turn_wall"]
 [connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="CollisionShape2D" method="queue_free"]
 [connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="Area2D" method="queue_free"]
 [connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="AnimatedSprite2D" method="queue_free"]
@@ -111,6 +109,6 @@ metadata/_edit_pinned_properties_ = [&"scores"]
 [connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="StompedProcessor" method="disappear"]
 [connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="StompedProcessor" method="play_stomping_sound"]
 [connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="ScoresLivesAdder" method="add_score"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="." method="set_indexed" binds= [NodePath("velocity:x"), 0.0]]
+[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="." method="set_indexed" binds= [NodePath("speed"), 0.0]]
 [connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="CollisionShape2DStomped" method="set_deferred" binds= [&"disabled", false]]
 [connection signal="disappeared" from="StompedProcessor" to="." method="queue_free"]

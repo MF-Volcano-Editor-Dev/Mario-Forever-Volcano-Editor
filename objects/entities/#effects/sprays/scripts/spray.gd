@@ -39,7 +39,7 @@ func _ready() -> void:
 					global_position -= down
 					return
 		false:
-			for i in 128:
+			for i in 16:
 				global_position -= down
 				caster.force_shapecast_update()
 				

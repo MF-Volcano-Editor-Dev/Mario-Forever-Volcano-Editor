@@ -11,6 +11,7 @@ func _ready() -> void:
 	# Area entering and exiting
 	area_entered.connect(_spray_trigger)
 	area_exited.connect(_spray_trigger)
+	
 	# Body entering and exiting
 	body_entered.connect(_spray_trigger)
 	body_exited.connect(_spray_trigger)

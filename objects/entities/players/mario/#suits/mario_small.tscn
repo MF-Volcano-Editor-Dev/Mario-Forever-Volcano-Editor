@@ -71,7 +71,6 @@ process_mode = 4
 
 [node name="AquaRoot" parent="AquaUpdater" instance=ExtResource("8_mce8w")]
 properties = {
-"gravity": 250.0,
 "max_falling_speed": 150.0
 }
 root_path = NodePath("../../..")

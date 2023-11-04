@@ -41,7 +41,7 @@ func update_scale_accordance() -> void:
 		accordance.get_indexed(scale_y_accordance),
 	]
 	for i in _scale.size():
-		_scale[i] = signf(_scale[i]) if _scale[i] is float || _scale[i] is int else 1.0
+		_scale[i] = signf(_scale[i]) if (_scale[i] is float || _scale[i] is int) && _scale[i] != 0 else 1.0
 
 
 func update_rotation_direction_accordance() -> void:
