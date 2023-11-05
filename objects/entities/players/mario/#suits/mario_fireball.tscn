@@ -41,7 +41,6 @@ velocity_value = Vector2(406.25, 0)
 gravity_property_name = &""
 metadata/_edit_pinned_properties_ = [&"gravity_property_name", &"velocity_value"]
 
-[node name="AquaUpdater" parent="." index="9"]
-process_mode = 0
+[node name="AquaUpdater" type="Node" parent="." index="9"]
 
 [connection signal="projectile_shot" from="Behavior" to="Behavior/MarioProjectileInitializer" method="initialize_projectile"]

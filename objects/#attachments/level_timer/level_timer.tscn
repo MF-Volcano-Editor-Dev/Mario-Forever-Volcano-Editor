@@ -41,6 +41,9 @@ _data = {
 }
 
 [node name="LevelTimer" type="CanvasLayer"]
+editor_description = "Drag this under the level node, and this will make level await for scoring when the level is being finished
+If there's no need for time limit for a level, please remove this from the stage.
+"
 layer = 10
 script = ExtResource("1_yt640")
 

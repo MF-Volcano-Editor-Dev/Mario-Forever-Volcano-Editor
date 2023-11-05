@@ -14,7 +14,6 @@ signal stage_finished(with_players: Array[EntityPlayer2D])
 @export var scene_after_finish: PackedScene
 
 var _after_finish_wait_nodes: Array[Node]
-var _music_player: AudioStream
 
 
 func _enter_tree() -> void:

@@ -494,7 +494,7 @@ func _body_detection_process() -> void:
 				break
 		
 		if enemy:
-			var result := enemy._detect_body(mario, mario.velocity * get_physics_process_delta_time())
+			var result := enemy._detect_body(mario, mario.global_velocity * get_physics_process_delta_time())
 			if &"success" in result:
 				if result.success:
 					if _jumping && &"jumping_speed_high" in result:

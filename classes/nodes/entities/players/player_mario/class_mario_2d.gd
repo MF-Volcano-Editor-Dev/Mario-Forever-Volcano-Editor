@@ -25,6 +25,7 @@ signal suit_changed(to: StringName)
 @export var hp: int = 1:
 	set = set_hp
 
+var _suit_refs: Array[MarioSuit2D]
 var _suit_ids: Array[StringName]
 
 var _suit: MarioSuit2D
@@ -37,7 +38,17 @@ var _invulnerability: SceneTreeTimer
 
 
 func _ready() -> void:
+	# Register player
 	PlayersManager.register(self)
+	
+	# Register suits
+	for i: Node in get_children():
+		if !i is MarioSuit2D || i in _suit_refs:
+			continue
+		_suit_refs.append(i)
+		_suit_ids.append(i.suit_id)
+	
+	# Set initial suit
 	set_suit(suit_id)
 
 
@@ -61,7 +72,7 @@ func set_suit(new_suit_id: StringName) -> void:
 		return
 	
 	_suit = null
-	for i: Node in get_children():
+	for i: MarioSuit2D in _suit_refs:
 		if !i is MarioSuit2D:
 			continue
 		elif i.suit_id == suit_id:
@@ -71,8 +82,6 @@ func set_suit(new_suit_id: StringName) -> void:
 		else:
 			i.visible = false
 			i.process_mode = PROCESS_MODE_DISABLED
-		if !i.suit_id in _suit_ids:
-			_suit_ids.append(i.suit_id)
 	
 	# Appear animation
 	if suit_no_appear_animation:

@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://j2jtsd3mcv0g"]
+
+[ext_resource type="Script" path="res://objects/#attachments/level_view/camera/scripts/level_camera.gd" id="1_oo8vt"]
+
+[node name="LevelCamera" type="Camera2D"]
+editor_description = "Drag this under the level node.
+This will automatically locate to the average position of players. If there is only one player, then the global position of him/her"
+limit_left = 0
+limit_top = 0
+limit_right = 9600
+limit_bottom = 480
+editor_draw_limits = true
+script = ExtResource("1_oo8vt")
+
+[node name="CameraArea" type="Area2D" parent="."]
+top_level = true
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CameraArea"]
+debug_color = Color(0.486275, 0, 0.505882, 0.160784)

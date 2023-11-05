@@ -1,13 +1,14 @@
-[gd_scene load_steps=14 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=15 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/#attachments/level_huds/level_hud.tscn" id="1_4kitr"]
 [ext_resource type="Script" path="res://classes/nodes/stages/stage.gd" id="1_n7yi6"]
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_7g6er"]
-[ext_resource type="Script" path="res://classes/nodes/cameras/class_camera_player_2d.gd" id="2_8a6sl"]
 [ext_resource type="PackedScene" uid="uid://devmwslkf4fe2" path="res://objects/#attachments/level_timer/level_timer.tscn" id="2_cd7it"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_climbable_2d.gd" id="3_0625b"]
+[ext_resource type="PackedScene" uid="uid://j2jtsd3mcv0g" path="res://objects/#attachments/level_view/camera/level_camera.tscn" id="4_psf7j"]
 [ext_resource type="Script" path="res://classes/nodes/areas/class_area_fluid_2d.gd" id="4_suopq"]
+[ext_resource type="PackedScene" uid="uid://dqyb07p315tkl" path="res://objects/#attachments/level_view/border/level_death_line.tscn" id="5_5rawl"]
 [ext_resource type="PackedScene" uid="uid://b3ds2052h0bx7" path="res://objects/entities/#effects/sprays/spray_water.tscn" id="5_td137"]
 [ext_resource type="PackedScene" uid="uid://bsk7rwrwav6ym" path="res://objects/entities/enemies/goombas/goomba.tscn" id="9_k6lx7"]
 
@@ -27,23 +28,24 @@ script = ExtResource("1_n7yi6")
 
 [node name="LevelTimer" parent="." instance=ExtResource("2_cd7it")]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-limit_left = 0
-limit_top = 0
-limit_right = 9600
-limit_bottom = 480
-editor_draw_limits = true
-script = ExtResource("2_8a6sl")
+[node name="LevelDeathLine" parent="." instance=ExtResource("5_5rawl")]
+
+[node name="LevelCamera" parent="." instance=ExtResource("4_psf7j")]
+limit_right = 640
+
+[node name="LevelCamera2" parent="." instance=ExtResource("4_psf7j")]
+enabled = false
+limit_left = 640
+smooth_when_entering = true
 
 [node name="Mario" parent="." instance=ExtResource("1_p1j5j")]
-position = Vector2(64, 400)
-rotation = -6.28318
+position = Vector2(48, 400)
 suit_id = &"fireball"
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_7g6er")
 format = 2
-layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851979, 65537, 0, 851981, 65537, 0, 851983, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 851978, 65537, 0, 851982, 65537, 0, 851984, 65537, 0, 983039, 65537, 0, 917503, 65537, 0, 851967, 65537, 0, 786431, 65537, 0, 720895, 65537, 0, 655359, 65537, 0, 589823, 65537, 0, 524287, 65537, 0, 458751, 65537, 0, 786449, 65537, 0, 720913, 65537, 0, 655377, 65537, 0, 589841, 65537, 0, 262161, 65537, 0, 327697, 65537, 0, 196625, 65537, 0, 524305, 65537, 0)
+layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851979, 65537, 0, 851981, 65537, 0, 851983, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 851982, 65537, 0, 851984, 65537, 0, 983039, 65537, 0, 917503, 65537, 0, 851967, 65537, 0, 786431, 65537, 0, 720895, 65537, 0, 655359, 65537, 0, 589823, 65537, 0, 524287, 65537, 0, 458751, 65537, 0, 786449, 65537, 0, 720913, 65537, 0, 655377, 65537, 0, 589841, 65537, 0, 262161, 65537, 0, 327697, 65537, 0, 196625, 65537, 0, 524305, 65537, 0, 524306, 65537, 0, 524307, 65537, 0, 851988, 65537, 0, 851989, 65537, 0, 851990, 65537, 0, 851991, 65537, 0, 851992, 65537, 0, 851993, 65537, 0, 851994, 65537, 0, 851995, 65537, 0, 917524, 65537, 1, 917525, 65537, 1, 917526, 65537, 1, 917527, 65537, 1, 917528, 65537, 1, 917529, 65537, 1, 917530, 65537, 1, 917531, 65537, 1, 851997, 65537, 0, 851999, 65537, 0, 852001, 65537, 0, 852003, 65537, 0, 852005, 65537, 0, 852007, 65537, 0, 917533, 65537, 1, 917535, 65537, 1, 917537, 65537, 1, 917539, 65537, 1, 917541, 65537, 1, 917543, 65537, 1)
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(704, 264)
@@ -75,7 +77,7 @@ position = Vector2(160, -24)
 shape = SubResource("RectangleShape2D_yw5we")
 
 [node name="Area2D4" type="Area2D" parent="."]
-position = Vector2(640, 192)
+position = Vector2(984, 560)
 collision_layer = 0
 collision_mask = 5
 gravity_space_override = 3
@@ -89,13 +91,4 @@ shape = SubResource("RectangleShape2D_xj6hh")
 debug_color = Color(0.658824, 0.517647, 0, 0.419608)
 
 [node name="Goomba" parent="." instance=ExtResource("9_k6lx7")]
-position = Vector2(240, 400)
-
-[node name="Goomba2" parent="." instance=ExtResource("9_k6lx7")]
-position = Vector2(304, 400)
-
-[node name="Goomba3" parent="." instance=ExtResource("9_k6lx7")]
-position = Vector2(368, 400)
-
-[node name="Goomba4" parent="." instance=ExtResource("9_k6lx7")]
-position = Vector2(496, 400)
+position = Vector2(464, 400)

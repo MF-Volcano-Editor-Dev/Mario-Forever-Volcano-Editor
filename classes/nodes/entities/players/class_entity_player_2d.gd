@@ -23,6 +23,11 @@ signal got_death
 ## make a new character
 @export var character_id: StringName = &"mario":
 	set = set_character_id
+## If [code]true[/code], the player will be active and processible
+@export var active: bool = true:
+	set(value):
+		active = value
+		process_mode = PROCESS_MODE_INHERIT if active else PROCESS_MODE_DISABLED
 @export_group("Information")
 ## Name of the player to display in the game. This can be edited
 ## When a game user wants to show a personal name

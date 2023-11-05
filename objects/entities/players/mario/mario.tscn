@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ce8s22xbaifvj" path="res://objects/entities/players/mario/#suits/mario_big.tscn" id="5_58ckd"]
 [ext_resource type="PackedScene" uid="uid://b1yixmaqbghc1" path="res://objects/entities/players/mario/#suits/mario_fireball.tscn" id="6_c83lr"]
 
-[node name="Mario" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
+[node name="Mario" type="EntityBody2D"]
 gravity = 2500.0
 max_falling_speed = 500.0
 collision_mask = 2
@@ -21,7 +21,7 @@ metadata/_edit_pinned_properties_ = [&"nickname"]
 position = Vector2(0, 2)
 shape = ExtResource("2_tbmub")
 
-[node name="AreaBody" type="Area2D" parent="." groups=["#mario_component_fixed"]]
+[node name="AreaBody" type="Area2D" parent="." groups=["#fluid_spray_triggerible", "#mario_component_fixed"]]
 collision_mask = 118
 metadata/_edit_group_ = true
 

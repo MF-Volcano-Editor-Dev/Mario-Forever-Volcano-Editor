@@ -13,13 +13,13 @@ signal stomped_failed
 		down_direction = value
 		if down_direction:
 			down_direction = down_direction.normalized()
-@export var offset: Vector2 = Vector2(0, -4)
+@export var inner_offset: Vector2 = Vector2(0, -1)
 @export_group("Returns")
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var jumping_speed_low: float = 400
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var jumping_speed_high: float = 650
 
 
-func _detect_body(body: Node2D, pre_offset: Vector2 = Vector2.ZERO) -> Dictionary:
+func _detect_body(body: Node2D, global_offset: Vector2 = Vector2.ZERO) -> Dictionary:
 	var result: Dictionary = {}
 	
 	if disabled || _delay || !root is Node2D:
@@ -31,7 +31,7 @@ func _detect_body(body: Node2D, pre_offset: Vector2 = Vector2.ZERO) -> Dictionar
 			_delay = null
 	)
 	
-	var dtl: Vector2 = (pre_offset + offset).rotated(root.global_rotation)
+	var dtl: Vector2 = global_offset + inner_offset.rotated(root.global_rotation)
 	result = {
 		success = snapped(down_direction.rotated(root.global_rotation).dot(dtl), 0.001) > 0,
 		enemy_body = self,

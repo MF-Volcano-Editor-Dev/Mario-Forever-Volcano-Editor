@@ -15,11 +15,16 @@ signal hit_receiver(receiver: Classes.AttackReceiver)
 ## Emitted when the receiver send callback
 signal receiver_called_back(receiver: Classes.AttackReceiver)
 
+## Emitted when the body of receiver send callback
+signal receiver_body_called_back(body: Node)
+
 @export_category("Attacker")
 ## Id of the attacker
 @export var attacker_id: StringName
 ## Features of attacker, see the list above
 @export var attacker_features: Array[StringName]
+## Damage of the attacker
+@export_range(0, 1, 0.01, "or_greater", "hide_slider", "suffix:♥") var attacker_damage: float = 1
 ## Mode of detection [br]
 ## [b]Note:[/b] The "Per Frame" mode is a performance consumer, so be careful if you want to shift to this mode
 @export_enum("Once", "Per Frame") var attack_process_mode: int

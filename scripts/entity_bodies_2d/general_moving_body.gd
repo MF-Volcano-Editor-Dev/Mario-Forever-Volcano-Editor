@@ -5,6 +5,7 @@ extends EntityBody2D
 
 
 func _ready() -> void:
+	await get_tree().physics_frame
 	if speed && initial_moving_direction == 1:
 		var npl := PlayersManager.get_nearest_player(global_position)
 		if !npl:

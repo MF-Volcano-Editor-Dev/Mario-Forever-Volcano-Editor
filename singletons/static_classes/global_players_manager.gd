@@ -74,19 +74,48 @@ static func get_nearest_player(to: Vector2) -> EntityPlayer2D:
 
 
 #region Player Properties
+## Returns a series of global positions of available players
+static func get_availabe_players_position() -> PackedVector2Array:
+	var rst: PackedVector2Array = []
+	
+	for i: EntityPlayer2D in get_all_available_players():
+		rst.append(i.global_position)
+	
+	return rst
+
+## Returns average global postion of all players
 static func get_average_global_position(camera: Camera2D = null) -> Vector2:
 	var pls := get_all_available_players()
 	if pls.is_empty():
 		if is_instance_valid(camera):
 			return camera.global_position
-		else:
-			return Vector2(NAN, NAN)
+		return Vector2.INF
 	
 	var gpos := Vector2.ZERO
 	for i: EntityPlayer2D in pls:
 		gpos += i.global_position
 	
 	return gpos / float(pls.size())
+
+## Mix of [method get_availabe_players_position] and [get_average_global_position] [br]
+## There are two keys for the returned [Dictionary]: [br]
+## [param average]: Average global position of each player valid [br]
+## [param individual]: A series global positions of all players accessible
+static func get_average_and_individual_global_position() -> Dictionary:
+	var rst: Dictionary = {
+		average = Vector2.INF,
+		individual = PackedVector2Array()
+	}
+	
+	var pls := get_all_available_players()
+	if !pls.is_empty():
+		rst.average = Vector2.ZERO
+		for i: EntityPlayer2D in pls:
+			rst.average += i.global_position
+			rst.individual.append(i.global_position)
+		rst.average = rst.average / float(pls.size())
+	
+	return rst
 #endregion
 
 

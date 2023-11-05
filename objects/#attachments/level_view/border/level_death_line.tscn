@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqyb07p315tkl"]
+
+[ext_resource type="Script" path="res://objects/#attachments/level_view/border/scripts/level_death_area.gd" id="1_qaag6"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_q37df"]
+normal = Vector2(0, 1)
+
+[node name="LevelDeathLine" type="CanvasLayer"]
+editor_description = "Notes:
+1. DO MAKE SURE the `layer` is the same as one where the player is, default layer of 2D is 0.
+2. The shape of \"DeathLine\" is [WorldBorder2D], so there's no worry about detection error.
+
+To edit the height of death line:
+1. Tick on <Make children editable>.
+2. Drag the \"DeathLine\" child node to a position where you expect it to be."
+layer = 0
+visible = false
+script = ExtResource("1_qaag6")
+
+[node name="DeathArea" type="Area2D" parent="."]
+position = Vector2(0, 528)
+collision_layer = 0
+monitorable = false
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DeathArea"]
+rotation = 3.14159
+shape = SubResource("WorldBoundaryShape2D_q37df")
