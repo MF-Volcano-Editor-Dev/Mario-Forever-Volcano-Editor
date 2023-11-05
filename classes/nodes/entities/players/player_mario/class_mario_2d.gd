@@ -106,7 +106,7 @@ func get_suit() -> MarioSuit2D:
 ## int hp_loss: Determine how many HPs will an iteration cost
 ## [/codeblock]
 func hurt(tags: Dictionary = {}) -> void:
-	if (!&"forced" in tags || tags.forced == false) && is_invulerable():
+	if state_machine.is_state(&"no_hurt") || (!&"forced" in tags || tags.forced == false) && is_invulerable():
 		return
 	
 	var itr: int = 1 if !&"iterations" in tags || !tags.iterations is int || tags.iterations <= 0 else tags.iterations # Iterations
@@ -131,6 +131,9 @@ func hurt(tags: Dictionary = {}) -> void:
 
 ## Makes the character die
 func die(_tags: Dictionary = {}) -> void:
+	if state_machine.is_state(&"no_death"):
+		return
+	
 	if _suit.death:
 		var d := _suit.death.instantiate()
 		if !d is Node2D:

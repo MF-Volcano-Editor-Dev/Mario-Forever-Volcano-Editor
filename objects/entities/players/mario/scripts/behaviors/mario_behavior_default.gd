@@ -171,13 +171,15 @@ func _general_states_process() -> void:
 
 #region Controls
 func _control_states_process() -> void:
+	var ctrlable := !mario.state_machine.is_state(&"control_ignored") # Controllable
+	
 	# Basic controls
-	_left_right = int(Input.get_axis(_get_key_input(key_left), _get_key_input(key_right)))
-	_up_down = int(Input.get_axis(_get_key_input(key_up), _get_key_input(key_down)))
-	_jumped = Input.is_action_just_pressed(_get_key_input(key_jump))
-	_jumping = Input.is_action_pressed(_get_key_input(key_jump))
-	_running = Input.is_action_pressed(_get_key_input(key_run))
-	_climbed = Input.is_action_just_pressed(_get_key_input(key_climb))
+	_left_right = int(Input.get_axis(_get_key_input(key_left), _get_key_input(key_right))) if ctrlable else 0
+	_up_down = int(Input.get_axis(_get_key_input(key_up), _get_key_input(key_down))) if ctrlable else 0
+	_jumped = Input.is_action_just_pressed(_get_key_input(key_jump)) if ctrlable else false
+	_jumping = Input.is_action_pressed(_get_key_input(key_jump)) if ctrlable else false
+	_running = Input.is_action_pressed(_get_key_input(key_run)) if ctrlable else false
+	_climbed = Input.is_action_just_pressed(_get_key_input(key_climb)) if ctrlable else false
 
 
 func _get_key_input(key_name: StringName) -> StringName:
