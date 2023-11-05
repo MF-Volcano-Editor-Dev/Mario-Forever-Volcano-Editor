@@ -139,10 +139,10 @@ func die(_tags: Dictionary = {}) -> void:
 		
 		d = d as Node2D
 		if d:
-			# Here it's not allowed to use call_deferred() 
+			# Here it's not allowed to use call_deferred() on add_sibling()
 			# since there is some node to be initialized with @onready
-			add_sibling(d)
 			d.global_transform = global_transform
+			add_sibling(d)
 			d.sound.stream = _suit.sound_death
 	
 	PlayersManager.unregister(id)

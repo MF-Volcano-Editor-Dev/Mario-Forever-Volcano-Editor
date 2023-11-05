@@ -74,5 +74,6 @@ func blocked(_attacker: Classes.Attacker) -> void:
 
 
 func killed_to_destroy() -> void:
-	if _is_killed:
-		root.queue_free()
+	if !_is_killed:
+		return
+	root.queue_free()

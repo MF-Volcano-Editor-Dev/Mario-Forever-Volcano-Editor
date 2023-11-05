@@ -59,12 +59,12 @@ func appear(duration: float = 1.0) -> void:
 #region Setters & Getters
 ## Returns the [Mario2D] linking to this suit
 func get_player() -> Mario2D:
-	var pl: Mario2D = get_parent()
+	var pl := get_parent() as Mario2D
 	return pl if is_instance_valid(pl) else null
 
 
 ## Returns [code]true[/code] if the suit is current
 func is_current() -> bool:
-	var pl: Mario2D = get_parent()
+	var pl := get_parent() as Mario2D
 	return pl && pl.suit_id == suit_id
 #endregion

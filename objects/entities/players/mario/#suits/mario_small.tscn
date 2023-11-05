@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvq8x1atfxyaq"]
+[gd_scene load_steps=8 format=3 uid="uid://bvq8x1atfxyaq"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_suit_2d.gd" id="1_xh10y"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario.tres" id="2_ody4w"]
@@ -7,7 +7,6 @@
 [ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_small.res" id="5_uhqkc"]
 [ext_resource type="AnimationLibrary" uid="uid://bfdws2coy4660" path="res://objects/entities/players/mario/animations/mario_shapes_small.res" id="6_4c35d"]
 [ext_resource type="PackedScene" uid="uid://cjwp2krmh5qx5" path="res://objects/entities/players/mario/#components/mario_behavior.tscn" id="7_r45j1"]
-[ext_resource type="PackedScene" uid="uid://b755dvluuuu6g" path="res://objects/#components/property_updater/property_updater.tscn" id="8_mce8w"]
 
 [node name="MarioSmall" type="Node2D"]
 script = ExtResource("1_xh10y")
@@ -65,22 +64,3 @@ libraries = {
 [node name="Behavior" parent="." instance=ExtResource("7_r45j1")]
 root_path = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"root_path"]
-
-[node name="AquaUpdater" type="Node" parent="."]
-process_mode = 4
-
-[node name="AquaRoot" parent="AquaUpdater" instance=ExtResource("8_mce8w")]
-properties = {
-"max_falling_speed": 150.0
-}
-root_path = NodePath("../../..")
-metadata/_edit_pinned_properties_ = [&"properties", &"root_path"]
-
-[node name="AquaBehavior" parent="AquaUpdater" instance=ExtResource("8_mce8w")]
-properties = {
-"deceleration_overspeed": 425.0,
-"max_running_speed": 175.0,
-"max_walking_speed": 175.0
-}
-root_path = NodePath("../../Behavior")
-metadata/_edit_pinned_properties_ = [&"properties", &"root_path"]

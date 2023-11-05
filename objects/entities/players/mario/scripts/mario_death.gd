@@ -33,7 +33,7 @@ func _ready() -> void:
 	
 	player_death_started.emit()
 	
-	sound.play_sound.call_deferred()
+	sound.play.call_deferred()
 	
 	set_process(false)
 	await get_tree().create_timer(0.5).timeout

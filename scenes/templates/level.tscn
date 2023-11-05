@@ -1,6 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=14 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/#attachments/level_huds/level_hud.tscn" id="1_4kitr"]
+[ext_resource type="Script" path="res://classes/nodes/stages/stage.gd" id="1_n7yi6"]
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_7g6er"]
 [ext_resource type="Script" path="res://classes/nodes/cameras/class_camera_player_2d.gd" id="2_8a6sl"]
@@ -20,6 +21,7 @@ size = Vector2(512, 224)
 size = Vector2(256, 288)
 
 [node name="Level" type="Node2D"]
+script = ExtResource("1_n7yi6")
 
 [node name="LevelHUD" parent="." instance=ExtResource("1_4kitr")]
 
@@ -44,7 +46,7 @@ format = 2
 layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851979, 65537, 0, 851981, 65537, 0, 851983, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 851978, 65537, 0, 851982, 65537, 0, 851984, 65537, 0, 983039, 65537, 0, 917503, 65537, 0, 851967, 65537, 0, 786431, 65537, 0, 720895, 65537, 0, 655359, 65537, 0, 589823, 65537, 0, 524287, 65537, 0, 458751, 65537, 0, 786449, 65537, 0, 720913, 65537, 0, 655377, 65537, 0, 589841, 65537, 0, 262161, 65537, 0, 327697, 65537, 0, 196625, 65537, 0, 524305, 65537, 0)
 
 [node name="Area2D" type="Area2D" parent="."]
-position = Vector2(928, 296)
+position = Vector2(704, 264)
 collision_layer = 32
 script = ExtResource("3_0625b")
 metadata/_edit_group_ = true
@@ -91,3 +93,9 @@ position = Vector2(240, 400)
 
 [node name="Goomba2" parent="." instance=ExtResource("9_k6lx7")]
 position = Vector2(304, 400)
+
+[node name="Goomba3" parent="." instance=ExtResource("9_k6lx7")]
+position = Vector2(368, 400)
+
+[node name="Goomba4" parent="." instance=ExtResource("9_k6lx7")]
+position = Vector2(496, 400)

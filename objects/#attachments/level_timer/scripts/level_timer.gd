@@ -33,10 +33,16 @@ var _has_warned: bool
 
 
 func _ready() -> void:
+	# Connect signal
 	EventsManager.signals.players_all_dead.connect(
 		func() -> void:
 			interval.paused = true
 	)
+	
+	# Add a thing to do in todo list after finish of current level
+	var crl := get_tree().current_scene
+	if crl is Stage:
+		crl.add_node_to_wait_finish(self)
 	
 	interval.wait_time = time_down_unit_tick
 	interval.timeout.connect(_time_down)
@@ -54,7 +60,7 @@ func time_warning() -> void:
 	
 	if sound_warning:
 		sound.stream = sound_warning
-		sound.play_sound()
+		sound.play()
 	
 	animation_player.play(&"warning")
 	await animation_player.animation_finished

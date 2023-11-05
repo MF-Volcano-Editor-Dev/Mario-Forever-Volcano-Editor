@@ -13,7 +13,7 @@ signal stomped_failed
 		down_direction = value
 		if down_direction:
 			down_direction = down_direction.normalized()
-@export var offset: Vector2
+@export var offset: Vector2 = Vector2(0, -4)
 @export_group("Returns")
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var jumping_speed_low: float = 400
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var jumping_speed_high: float = 650

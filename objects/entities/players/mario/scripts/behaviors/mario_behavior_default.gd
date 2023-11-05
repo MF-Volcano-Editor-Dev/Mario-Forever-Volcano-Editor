@@ -26,43 +26,49 @@ extends Component
 @export_group("Movement")
 @export_subgroup("Walking")
 ## Initial walking speed
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var initial_walking_speed: float = 50
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_walking_speed: float = 50
 ## Acceleration
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var acceleration: float = 312.5
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var acceleration: float = 312.5
 ## Deceleration
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration: float = 312.5
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var deceleration: float = 312.5
 ## Deceleration when the speed is greater than [member max_walking_speed](not running) or [member max_running_speed](running)
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration_overspeed: float = 312.5
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var deceleration_overspeed: float = 312.5
 ## Deceleration when crouching
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration_crouching: float = 312.5
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var deceleration_crouching: float = 312.5
 ## Deceleration when crouching with arrows pressed
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var deceleration_crouching_moving: float = 125
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var deceleration_crouching_moving: float = 125
 ## Turning acceleration/deceleration
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var turning_aceleration: float = 1250
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var turning_aceleration: float = 1250
 ## Minimum of the walking speed, better to keep it 0 [br]
 ## [b]Note:[/b] A value greater than 0 will lead to non-stopping of the player after he finishes deceleration
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var min_speed: float
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var min_speed: float
 ## Maximum of the walking speed in non-running state
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var max_walking_speed: float = 175
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var max_walking_speed: float = 175
 ## Maximum of the walking speed in running state
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var max_running_speed: float = 350
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var max_running_speed: float = 350
 @export_subgroup("Jumping")
 ## Initial jumping speed
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var initial_jumping_speed: float = 700
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_jumping_speed: float = 700
 ## Jumping acceleration when the jumping key is held and the player IS NOT walking
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var jumping_acceleration_static: float = 1000
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var jumping_acceleration_static: float = 1000
 ## Jumping acceleration when the jumping key is held and the player IS walking
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s²") var jumping_acceleration_dynamic: float = 1250
-@export_subgroup("Swimming")
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var jumping_acceleration_dynamic: float = 1250
+@export_subgroup("Underwater")
 ## Swimming speed under the surface of water
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var swimming_speed: float = 150
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var swimming_speed: float = 150
 ## Swimming speed near the surface of water
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var swimming_jumping_speed: float = 450
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var swimming_jumping_speed: float = 450
 ## Peak speed of swimming speed
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var swimming_peak_speed: float = 150
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var swimming_peak_speed: float = 150
+## Maximum of falling speed underwater
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var underwater_max_falling_speed: float = 150
+## Maximum of overspeed deceleration speed underwater
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var underwater_deceleration_overspeed: float = 425
+## Maximum of walking speed underwater
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var underwater_max_walking_speed: float = 175
 @export_subgroup("Climbing")
 ## Moving speed when climbing
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix: px/s") var climbing_speed: float = 150
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var climbing_speed: float = 150
 @export_group("Behavior Sounds", "sound_")
 ## Jumping sound
 @export var sound_jump: AudioStream = preload("res://assets/sounds/jump.wav")
@@ -94,8 +100,6 @@ var _crouchable_in_small_suit: bool
 @onready var animation: AnimationPlayer = $"../AnimationPlayer"
 @onready var shapes_controller: AnimationPlayer = $"../AnimationShape"
 @onready var sound: Sound2D = $"../Sound2D"
-@onready var aqua_root: Node = $"../AquaUpdater/AquaRoot"
-@onready var aqua_behavior: Node = $"../AquaUpdater/AquaBehavior"
 
 
 #region Main methods
@@ -326,6 +330,10 @@ func _movement_climb_process() -> void:
 
 
 func _movement_climbing_physics_process(delta: float) -> void:
+	var gr := mario.get_gravity_rotation_angle()
+	if !is_equal_approx(mario.global_rotation, gr):
+		mario.global_rotation = lerp_angle(mario.global_rotation, gr, 22.5 * delta)
+	
 	var c := mario.move_and_collide(mario.global_velocity * delta)
 	if c: 
 		mario.global_velocity = mario.global_velocity.slide(c.get_normal())
@@ -431,11 +439,9 @@ func _on_mario_suit_changed(to: StringName) -> void:
 	# underwater, the property in underwater will be incorrect
 	# when he changes to other suits.
 	if mario.state_machine.is_state(&"underwater"):
-		aqua_root.update_from_component()
-		aqua_behavior.update_from_component()
+		_change_underwater(true)
 	else:
-		aqua_root.update_from_extracted_value()
-		aqua_behavior.update_from_extracted_value()
+		_change_underwater(false)
 #endregion
 
 
@@ -456,8 +462,7 @@ func _on_body_entered_area(area: Area2D) -> void:
 	elif area is AreaFluid2D:
 		if area.fluid_id == &"water" && !mario.state_machine.is_state(&"underwater"):
 			mario.state_machine.set_state(&"underwater")
-			aqua_root.update_from_component()
-			aqua_behavior.update_from_component()
+			_change_underwater(true)
 
 
 func _on_body_exited_area(area: Area2D) -> void:
@@ -474,8 +479,7 @@ func _on_body_exited_area(area: Area2D) -> void:
 	elif area is AreaFluid2D:
 		if mario.state_machine.is_state(&"underwater"):
 			mario.state_machine.remove_state(&"underwater")
-			aqua_root.update_from_extracted_value()
-			aqua_behavior.update_from_extracted_value()
+			_change_underwater(false)
 
 
 func _body_detection_process() -> void:
@@ -521,6 +525,24 @@ func _on_head_exited_area(area: Area2D) -> void:
 		if !mario.state_machine.is_state(&"underwater_jumpout"):
 			mario.state_machine.set_state(&"underwater_jumpout")
 #endregion
+#endregion
+
+#region Underwater
+func _change_underwater(underwater: bool) -> void:
+	if underwater:
+		mario.set_meta(&"max_falling_speed", mario.max_falling_speed)
+		mario.set_meta(&"max_walking_speed", max_walking_speed)
+		mario.set_meta(&"max_running_speed", max_running_speed)
+		mario.set_meta(&"deceleration_overspeed", deceleration_overspeed)
+		mario.max_falling_speed = underwater_max_falling_speed
+		max_walking_speed = underwater_max_walking_speed
+		max_running_speed = underwater_max_walking_speed
+		deceleration_overspeed = underwater_deceleration_overspeed
+	else:
+		mario.max_falling_speed = mario.get_meta(&"max_falling_speed", mario.max_falling_speed)
+		max_walking_speed = mario.get_meta(&"max_walking_speed", max_walking_speed)
+		max_running_speed = mario.get_meta(&"max_running_speed", max_running_speed)
+		deceleration_overspeed = mario.get_meta(&"deceleration_overspeed", deceleration_overspeed)
 #endregion
 
 
