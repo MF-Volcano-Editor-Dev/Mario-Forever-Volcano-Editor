@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgdbpyosontm2"]
+
+[ext_resource type="Script" path="res://objects/entities/enemies/#components/scripts/enemy_health.gd" id="1_haom3"]
+
+[node name="EnemyHeath" type="Node"]
+process_mode = 4
+script = ExtResource("1_haom3")

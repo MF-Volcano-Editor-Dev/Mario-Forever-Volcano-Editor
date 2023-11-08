@@ -23,7 +23,7 @@ extends Component
 @export var key_run: StringName = &"run"
 ## Key of controlling climbing
 @export var key_climb: StringName = &"up"
-@export_group("Movement")
+@export_group("Physics")
 @export_subgroup("Walking")
 ## Initial walking speed
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_walking_speed: float = 50
@@ -60,12 +60,6 @@ extends Component
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var swimming_jumping_speed: float = 450
 ## Peak speed of swimming speed
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var swimming_peak_speed: float = 150
-## Maximum of falling speed underwater
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var underwater_max_falling_speed: float = 150
-## Maximum of overspeed deceleration speed underwater
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var underwater_deceleration_overspeed: float = 425
-## Maximum of walking speed underwater
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var underwater_max_walking_speed: float = 175
 @export_subgroup("Climbing")
 ## Moving speed when climbing
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var climbing_speed: float = 150
@@ -98,7 +92,6 @@ var _crouchable_in_small_suit: bool
 @onready var suit: MarioSuit2D = $".."
 @onready var sprite: Sprite2D = $"../Sprite2D"
 @onready var animation: AnimationPlayer = $"../AnimationPlayer"
-@onready var shapes_controller: AnimationPlayer = $"../AnimationShape"
 @onready var sound: Sound2D = $"../Sound2D"
 
 
@@ -111,17 +104,13 @@ func _ready() -> void:
 	
 	# Animations
 	animation.animation_finished.connect(_on_animation_swim_reset)
-	shapes_controller.play.call_deferred(&"RESET")
 	
 	# Detections
 	# Await for readiness of mario for safety of initialization
 	if !mario.is_node_ready():
 		await mario.ready
 	
-	mario.body.area_entered.connect(_on_body_entered_area)
-	mario.body.area_exited.connect(_on_body_exited_area)
-	mario.head.area_entered.connect(_on_head_entered_area)
-	mario.head.area_exited.connect(_on_head_exited_area)
+	mario.set_shape_state(suit.shape_lib_name, &"RESET")
 	mario.attack_receiver.received_attacker.connect(_on_getting_damage)
 	mario.suit_changed.connect(_on_mario_suit_changed)
 
@@ -146,6 +135,7 @@ func _process(delta: float) -> void:
 	_start_animations = true
 	
 	# Detection
+	_head_detection_process()
 	_body_detection_process()
 
 
@@ -161,7 +151,7 @@ func _physics_process(delta: float) -> void:
 #endregion
 
 
-#region States Controls
+#region Processes
 func _general_states_process() -> void:
 	# States from global settings
 	_jumpable_when_crouching = ProjectSettings.get_setting("game/control/player/jumpable_when_crouching", false)
@@ -194,6 +184,11 @@ func _action_states_process() -> void:
 		mario.state_machine.set_state(&"climbing")
 		_jumped_already = false
 #endregion
+
+#region Physics data process
+func _phyiscs_data_process() -> void:
+	pass
+#endregion
 #endregion
 
 
@@ -209,10 +204,10 @@ func _movement_crouching_process() -> void:
 	if ofd && crbl:
 		if !mario.state_machine.is_state(&"crouching"):
 			mario.state_machine.set_state(&"crouching")
-			shapes_controller.play.call_deferred(&"crouch")
+			mario.set_shape_state(suit.shape_lib_name, &"crouch")
 	elif mario.state_machine.is_state(&"crouching"):
 		mario.state_machine.remove_state(&"crouching")
-		shapes_controller.play.call_deferred(&"RESET")
+		mario.set_shape_state(suit.shape_lib_name, &"RESET")
 
 
 func _movement_x_process() -> void:
@@ -234,7 +229,7 @@ func _movement_x_process() -> void:
 		mario.speed = initial_walking_speed * mario.direction
 	# Acceleration
 	elif _left_right * signf(mario.speed) > 0:
-		var isrn: bool = _is_running() # Is running
+		var isrn: bool = _is_running() && !mario.state_machine.is_state(&"underwater") # Is running
 		var cw: bool = _walkable_when_crouching && mario.state_machine.is_state(&"crouching") # Crouchwalk
 		var wf: float = 0.1 if cw else 1.0 # Walking factor
 		var ms: float = (max_running_speed if isrn else max_walking_speed) * wf * mario.direction # Max speed
@@ -322,6 +317,7 @@ func _movement_climb_process() -> void:
 	
 	# Velocity
 	mario.velocity = (Vector2(_left_right, _up_down).normalized() if _left_right || _up_down else Vector2.ZERO) * climbing_speed
+	mario.speed = 0
 	
 	# Jumping from climbing
 	if _is_jumpable() && _up_down >= 0:
@@ -440,52 +436,28 @@ func _on_mario_suit_changed(to: StringName) -> void:
 	# If no such codes, for example, when the character is
 	# underwater, the property in underwater will be incorrect
 	# when he changes to other suits.
-	if mario.state_machine.is_state(&"underwater"):
-		_change_underwater(true)
-	else:
-		_change_underwater(false)
 #endregion
 
 
 #region Detections
 #region Body's
-func _on_body_entered_area(area: Area2D) -> void:
-	if !suit.is_current():
-		return
-	
-	# AreaClimbable2D
-	if area is AreaClimbable2D:
-		# Use a state to store the climbable state, and when
-		# the climbing key is pressed, the player will
-		# climb on the climable object
-		if !mario.state_machine.is_state(&"is_climbable"):
-			mario.state_machine.set_state(&"is_climbable")
-	# AreaFluid2D
-	elif area is AreaFluid2D:
-		if area.fluid_id == &"water" && !mario.state_machine.is_state(&"underwater"):
-			mario.state_machine.set_state(&"underwater")
-			_change_underwater(true)
-
-
-func _on_body_exited_area(area: Area2D) -> void:
-	if !suit.is_current():
-		return
-	
-	# AreaClimbable2D
-	if area is AreaClimbable2D:
-		if mario.state_machine.is_state(&"is_climbable"):
-			mario.state_machine.remove_state(&"is_climbable")
-		if mario.state_machine.is_state(&"climbing"):
-			mario.state_machine.remove_state(&"climbing")
-	# AreaFluid2D
-	elif area is AreaFluid2D:
-		if mario.state_machine.is_state(&"underwater"):
-			mario.state_machine.remove_state(&"underwater")
-			_change_underwater(false)
-
-
 func _body_detection_process() -> void:
-	for i: Area2D in mario.body.get_overlapping_areas():
+	var ova := mario.body.get_overlapping_areas()
+	if ova.is_empty():
+		mario.state_machine.remove_multiple_states([&"underwater", &"is_climbable", &"climbing"])
+		return
+	
+	for i: Area2D in ova:
+		# AreaFluid2D
+		if i is AreaFluid2D && &"swimmable" in i.fluid_features:
+			mario.state_machine.set_state(&"underwater")
+			continue
+		# AreaClimbable2D
+		if i is AreaClimbable2D:
+			mario.state_machine.set_state(&"is_climbable")
+			continue
+		
+		# Touching Enemies
 		var enemy: Classes.EnemyBody = null
 		
 		for j: Node in i.get_children():
@@ -508,43 +480,19 @@ func _body_detection_process() -> void:
 
 
 #region Head's
-func _on_head_entered_area(area: Area2D) -> void:
-	if !suit.is_current():
+func _head_detection_process() -> void:
+	var ova := mario.head.get_overlapping_areas()
+	if ova.is_empty():
+		mario.state_machine.set_state(&"underwater_jumpout")
 		return
 	
-	# AreaFluid2D
-	if area is AreaFluid2D:
-		if area.fluid_id == &"water" && mario.state_machine.is_state(&"underwater_jumpout"):
+	for i: Area2D in ova:
+		if i is AreaFluid2D && &"swimmable" in i.fluid_features:
 			mario.state_machine.remove_state(&"underwater_jumpout")
-
-
-func _on_head_exited_area(area: Area2D) -> void:
-	if !suit.is_current():
-		return
-	
-	# AreaFluid2D
-	if area is AreaFluid2D:
-		if !mario.state_machine.is_state(&"underwater_jumpout"):
-			mario.state_machine.set_state(&"underwater_jumpout")
 #endregion
 #endregion
 
 #region Underwater
-func _change_underwater(underwater: bool) -> void:
-	if underwater:
-		mario.set_meta(&"max_falling_speed", mario.max_falling_speed)
-		mario.set_meta(&"max_walking_speed", max_walking_speed)
-		mario.set_meta(&"max_running_speed", max_running_speed)
-		mario.set_meta(&"deceleration_overspeed", deceleration_overspeed)
-		mario.max_falling_speed = underwater_max_falling_speed
-		max_walking_speed = underwater_max_walking_speed
-		max_running_speed = underwater_max_walking_speed
-		deceleration_overspeed = underwater_deceleration_overspeed
-	else:
-		mario.max_falling_speed = mario.get_meta(&"max_falling_speed", mario.max_falling_speed)
-		max_walking_speed = mario.get_meta(&"max_walking_speed", max_walking_speed)
-		max_running_speed = mario.get_meta(&"max_running_speed", max_running_speed)
-		deceleration_overspeed = mario.get_meta(&"deceleration_overspeed", deceleration_overspeed)
 #endregion
 
 

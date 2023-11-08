@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://ce8s22xbaifvj"]
+[gd_scene load_steps=7 format=3 uid="uid://ce8s22xbaifvj"]
 
 [ext_resource type="PackedScene" uid="uid://bvq8x1atfxyaq" path="res://objects/entities/players/mario/#suits/mario_small.tscn" id="1_kcx6m"]
 [ext_resource type="Texture2D" uid="uid://d2amp1pvo4bgo" path="res://objects/entities/players/mario/textures/mario_super.png" id="2_bq5g0"]
-[ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario.tres" id="2_ssoyc"]
 [ext_resource type="Script" path="res://objects/entities/players/mario/scripts/mario_stuck_head.gd" id="4_kekdm"]
 [ext_resource type="AnimationLibrary" uid="uid://cyjjpsbcss3c2" path="res://objects/entities/players/mario/animations/mario_animations_big.res" id="4_r0ort"]
 [ext_resource type="AnimationLibrary" uid="uid://iroj22njmjkw" path="res://objects/entities/players/mario/animations/mario_shapes_big.res" id="6_vw258"]
@@ -14,22 +13,11 @@ size = Vector2(16, 24)
 suit_id = &"big"
 down_suit_id = &"small"
 suit_features = ""
-metadata/_edit_pinned_properties_ = [&"suit_id", &"down_suit_id", &"suit_features"]
+shape_lib_name = &"big"
+shape_lib = ExtResource("6_vw258")
+metadata/_edit_pinned_properties_ = [&"suit_id", &"down_suit_id", &"suit_features", &"shape_lib_name", &"shape_lib"]
 
-[node name="Shape" parent="." index="0"]
-position = Vector2(0, -12)
-scale = Vector2(1, 2)
-shape = ExtResource("2_ssoyc")
-metadata/_edit_pinned_properties_ = [&"position", &"shape"]
-
-[node name="BShape" parent="AreaBody" index="0"]
-position = Vector2(0, -12)
-scale = Vector2(1, 2)
-
-[node name="HShape" parent="AreaHead" index="0"]
-position = Vector2(0, -42)
-
-[node name="AreaStuckHead" type="Area2D" parent="." index="3"]
+[node name="AreaStuckHead" type="Area2D" parent="." index="0"]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("4_kekdm")
@@ -40,7 +28,7 @@ position = Vector2(0, -28)
 shape = SubResource("RectangleShape2D_jpf4f")
 debug_color = Color(0.717647, 0.760784, 0.882353, 0.419608)
 
-[node name="Sprite2D" parent="." index="4"]
+[node name="Sprite2D" parent="." index="1"]
 texture = ExtResource("2_bq5g0")
 metadata/_edit_pinned_properties_ = [&"texture"]
 
@@ -48,14 +36,8 @@ metadata/_edit_pinned_properties_ = [&"texture"]
 position = Vector2(4, -6)
 metadata/_edit_pinned_properties_ = [&"position"]
 
-[node name="AnimationPlayer" parent="." index="6"]
+[node name="AnimationPlayer" parent="." index="3"]
 libraries = {
 "": ExtResource("4_r0ort")
-}
-metadata/_edit_pinned_properties_ = [&"libraries"]
-
-[node name="AnimationShape" parent="." index="7"]
-libraries = {
-"": ExtResource("6_vw258")
 }
 metadata/_edit_pinned_properties_ = [&"libraries"]

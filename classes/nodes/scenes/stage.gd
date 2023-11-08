@@ -1,11 +1,11 @@
-class_name Stage extends Node2D
+class_name Stage extends GameRoom
 
 ## Class used for stages
 ##
 ##
 
 ## Emitted when the level is finished
-signal stage_finished(with_players: Array[EntityPlayer2D])
+signal stage_finished
 
 @export_group("Finish")
 @export var finishing_music: AudioStream = preload("res://assets/musics/core/level_complete.ogg")
@@ -13,24 +13,25 @@ signal stage_finished(with_players: Array[EntityPlayer2D])
 ## Scene to go after the stage finished is emitted
 @export var scene_after_finish: PackedScene
 
-var _after_finish_wait_nodes: Array[Node]
+
+var _after_finish_wait_nodes: Array[Object]
 
 
 func _enter_tree() -> void:
-	EventsManager.signals.level_finished.connect(_on_level_finished.unbind(1))
+	EventsManager.signals.level_finished.connect(_on_level_finished)
 
 
 #region Todo List after Finish
-func add_node_to_wait_finish(node: Node) -> void:
-	if node in _after_finish_wait_nodes:
+func add_object_to_wait_finish(object: Object) -> void:
+	if object in _after_finish_wait_nodes:
 		return
-	_after_finish_wait_nodes.append(node)
+	_after_finish_wait_nodes.append(object)
 
 
-func remove_node_to_wait_finish(node: Node) -> void:
-	if !node in _after_finish_wait_nodes:
+func remove_object_to_wait_finish(object: Object) -> void:
+	if !object in _after_finish_wait_nodes:
 		return
-	_after_finish_wait_nodes.erase(node)
+	_after_finish_wait_nodes.erase(object)
 #endregion
 
 
@@ -57,6 +58,9 @@ func _on_level_finished() -> void:
 	if scene_after_finish:
 		for j: EntityPlayer2D in players:
 			j.state_machine.remove_multiple_states([&"no_hurt", &"control_ignored"])
-		get_tree().change_scene_to_packed(scene_after_finish)
+		
+		await get_tree().process_frame
+		
+		get_tree().change_scene_to_packed.call_deferred(scene_after_finish)
 	else:
 		printerr("[Scene Jumping Error] The scene to be warped to is invalid or not set yet!")

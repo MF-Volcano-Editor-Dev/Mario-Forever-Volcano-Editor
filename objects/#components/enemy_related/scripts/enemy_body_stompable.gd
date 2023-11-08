@@ -17,6 +17,9 @@ signal stomped_failed
 @export_group("Returns")
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var jumping_speed_low: float = 400
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var jumping_speed_high: float = 650
+@export_group("Sounds", "sound_")
+@export var sound_player: Sound2D
+@export var sound_stomped: AudioStream = preload("res://assets/sounds/stomp.wav")
 
 
 func _detect_body(body: Node2D, global_offset: Vector2 = Vector2.ZERO) -> Dictionary:
@@ -42,6 +45,9 @@ func _detect_body(body: Node2D, global_offset: Vector2 = Vector2.ZERO) -> Dictio
 	
 	touched_stomper.emit(body)
 	if result.success:
+		if sound_player:
+			sound_player.play_sound(sound_stomped, get_tree().current_scene)
+		
 		stomped_successful.emit()
 	else:
 		stomped_failed.emit()

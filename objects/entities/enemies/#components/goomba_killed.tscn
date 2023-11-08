@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2s65oa186pwg"]
-
-[ext_resource type="Script" path="res://objects/entities/enemies/#components/scripts/goomba_killed.gd" id="1_haom3"]
-
-[node name="GoombaKilled" type="Node"]
-process_mode = 4
-script = ExtResource("1_haom3")

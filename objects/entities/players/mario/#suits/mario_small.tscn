@@ -1,8 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvq8x1atfxyaq"]
+[gd_scene load_steps=6 format=3 uid="uid://bvq8x1atfxyaq"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_suit_2d.gd" id="1_xh10y"]
-[ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario.tres" id="2_ody4w"]
-[ext_resource type="Shape2D" uid="uid://bq38l552jterp" path="res://objects/entities/players/mario/shapes/shape_mario_head.tres" id="3_wm1f2"]
 [ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://objects/entities/players/mario/textures/mario_small.png" id="4_m41gs"]
 [ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_small.res" id="5_uhqkc"]
 [ext_resource type="AnimationLibrary" uid="uid://bfdws2coy4660" path="res://objects/entities/players/mario/animations/mario_shapes_small.res" id="6_4c35d"]
@@ -11,30 +9,9 @@
 [node name="MarioSmall" type="Node2D"]
 script = ExtResource("1_xh10y")
 suit_features = "small"
-metadata/_edit_pinned_properties_ = [&"suit_features"]
-
-[node name="Shape" type="CollisionShape2D" parent="." groups=["#mario_shapes"]]
-position = Vector2(0, 2)
-shape = ExtResource("2_ody4w")
-
-[node name="AreaBody" type="Area2D" parent="." groups=["#mario_shapes"]]
-collision_mask = 118
-metadata/_edit_group_ = true
-
-[node name="BShape" type="CollisionShape2D" parent="AreaBody"]
-position = Vector2(0, 2)
-shape = ExtResource("2_ody4w")
-debug_color = Color(1, 0, 0.0980392, 0.419608)
-
-[node name="AreaHead" type="Area2D" parent="." groups=["#mario_shapes"]]
-collision_layer = 0
-collision_mask = 66
-metadata/_edit_group_ = true
-
-[node name="HShape" type="CollisionShape2D" parent="AreaHead"]
-position = Vector2(0, -14)
-shape = ExtResource("3_wm1f2")
-debug_color = Color(0, 0.639216, 0.34902, 0.419608)
+shape_lib_name = &"small"
+shape_lib = ExtResource("6_4c35d")
+metadata/_edit_pinned_properties_ = [&"suit_features", &"shape_lib", &"shape_lib_name"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -16)
@@ -53,12 +30,6 @@ area_mask = 128
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": ExtResource("5_uhqkc")
-}
-
-[node name="AnimationShape" type="AnimationPlayer" parent="."]
-callback_mode_method = 1
-libraries = {
-"": ExtResource("6_4c35d")
 }
 
 [node name="Behavior" parent="." instance=ExtResource("7_r45j1")]

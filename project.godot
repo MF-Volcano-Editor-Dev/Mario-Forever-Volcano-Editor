@@ -37,6 +37,18 @@ project/assembly_name="Mario Forever - Thunder Editor Refactored"
 
 enabled=PackedStringArray("res://addons/abfi/plugin.cfg")
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "blue",
+"res://classes/": "green",
+"res://gdextension/": "red",
+"res://objects/#attachments/": "yellow",
+"res://objects/#components/": "yellow",
+"res://objects/entities/#effects/": "yellow",
+"res://objects/entities/#projectiles/": "yellow"
+}
+
 [filesystem]
 
 import/blender/enabled=false

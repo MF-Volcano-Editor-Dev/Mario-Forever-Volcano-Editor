@@ -42,7 +42,7 @@ func _ready() -> void:
 	# Add a thing to do in todo list after finish of current level
 	var crl := get_tree().current_scene
 	if crl is Stage:
-		crl.add_node_to_wait_finish(self)
+		crl.add_object_to_wait_finish(self)
 	
 	interval.wait_time = time_down_unit_tick
 	interval.timeout.connect(_time_down)

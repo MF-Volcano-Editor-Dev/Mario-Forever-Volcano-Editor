@@ -35,6 +35,7 @@ var _invulnerability: SceneTreeTimer
 @onready var body: Area2D = $AreaBody
 @onready var head: Area2D = $AreaHead
 @onready var attack_receiver: Node = $AreaBody/AttackReceiver
+@onready var shape_controller: AnimationPlayer = $AnimationShape
 
 
 func _ready() -> void:
@@ -79,6 +80,8 @@ func set_suit(new_suit_id: StringName) -> void:
 			_suit = i
 			i.visible = true
 			i.process_mode = PROCESS_MODE_INHERIT
+			add_shape_lib(i.shape_lib_name, i.shape_lib)
+			set_shape_state(i.shape_lib_name, &"RESET")
 		else:
 			i.visible = false
 			i.process_mode = PROCESS_MODE_DISABLED
@@ -192,4 +195,27 @@ func set_hp(value: int) -> void:
 	if hp <= 0:
 		_invulnerability = null
 		die()
+#endregion
+
+
+#region Meta Control
+## Sets [member shape_controller]'s animation library, which can provide a set of shape states for
+## the shapes of the character
+func add_shape_lib(shape_lib_name: StringName, shape_lib: AnimationLibrary, override: bool = false) -> void:
+	if shape_lib_name.is_empty() || shape_controller.get_animation_library(shape_lib_name) == shape_lib:
+		return
+	if override:
+		shape_controller.remove_animation_library(shape_lib_name)
+	if !shape_controller.has_animation_library(shape_lib_name):
+		shape_controller.add_animation_library(shape_lib_name, shape_lib)
+
+
+## Sets [member shape_controller]'s current animation to make a shape state work [br]
+## [b]Note:[/b] It should be mentioned that [code]&"RESET"[/code] is the name of default state
+func set_shape_state(shape_lib_name: StringName, shape_state: StringName) -> void:
+	var st := shape_lib_name + &"/" + shape_state
+	if !shape_controller.has_animation(st):
+		printerr("No such shape state \"lib: %s; state: %s\" found!" % [shape_lib_name, shape_state])
+		return
+	shape_controller.play.call_deferred(st)
 #endregion

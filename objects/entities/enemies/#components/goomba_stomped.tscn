@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c0kspboe18low"]
-
-[ext_resource type="Script" path="res://objects/entities/enemies/#components/scripts/goomba_stomped.gd" id="1_mp635"]
-
-[node name="GoombaStomped" type="Node"]
-process_mode = 4
-script = ExtResource("1_mp635")

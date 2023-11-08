@@ -1,18 +1,31 @@
-class_name AreaFluid2D extends Area2D
+class_name AreaFluid2D extends EntityArea2D
 
 # "#fluid_spray_triggerible"
 
 @export var fluid_id: StringName
+@export var fluid_features: Array[StringName]
 @export_group("Fluid Spray")
 @export var spray: PackedScene
 
+var _in_fluid_body: Array[Area2D]
+
 
 func _ready() -> void:
-	area_entered.connect(_spray_trigger_area)
-	area_exited.connect(_spray_trigger_area)
+	await get_tree().physics_frame
+	area_entered.connect(_spray_trigger_area.bind(true))
+	area_exited.connect(_spray_trigger_area.bind(false))
 
 
-func _spray_trigger_area(area: Node2D) -> void:
+func _spray_trigger_area(area: Node2D, is_entering: bool) -> void:
+	if is_entering:
+		if area in _in_fluid_body:
+			return
+		_in_fluid_body.append(area)
+	else:
+		if !area in _in_fluid_body:
+			return
+		_in_fluid_body.erase(area)
+	
 	var bd := area.get_parent()
 	if bd is Node2D && area.is_in_group(&"#fluid_spray_triggerible"):
 		create_spray(bd, Transform2D(0, bd.global_scale, bd.global_skew, bd.global_position))

@@ -15,6 +15,11 @@ class_name MarioSuit2D extends Node2D
 ## Features of the suit, effects some of the results of [member behavior][br]
 ## Use "," to separate each features and use "_" to take the place if space
 @export var suit_features: String = ""
+@export_group("Shape Lib")
+## Name of the suit's shape lib
+@export var shape_lib_name: StringName
+## [AnimationLibrary] that the [member shape_lib_name] refers to
+@export var shape_lib: AnimationLibrary
 @export_group("Death")
 ## Death of the mario in such suit
 @export var death: PackedScene = preload("res://objects/entities/players/mario/#death/mario_death.tscn")
@@ -28,23 +33,10 @@ class_name MarioSuit2D extends Node2D
 @onready var sprite: Sprite2D = $Sprite2D
 ## [AnimationPlayer] of the suit to control displaying of [member sprite]
 @onready var animation: AnimationPlayer = $AnimationPlayer
-## [AnimationPlayer] of the suit to control shapes
-@onready var shapes_controller: AnimationPlayer = $AnimationShape
 ## [Component] of the suit that process core codes
 @onready var behavior: Node = $Behavior
 ## [Sound2D] of the suit
 @onready var sound: Sound2D = $Sound2D
-
-
-func _ready() -> void:
-	for i: Node in get_children():
-		if i.is_in_group(&"#mario_shapes"):
-			i.queue_free()
-			continue
-	
-	var pl := get_player()
-	if pl:
-		shapes_controller.root_node = shapes_controller.get_path_to(pl)
 
 
 #region Animations

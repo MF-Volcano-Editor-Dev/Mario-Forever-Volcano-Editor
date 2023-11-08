@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://icxdhk34ejjt"]
+
+[ext_resource type="PackedScene" uid="uid://bptebimy6opi" path="res://objects/entities/enemies/#deaths/enemy_stomped.tscn" id="1_150ip"]
+[ext_resource type="Texture2D" uid="uid://dij5eb35hukl4" path="res://objects/entities/enemies/goombas/textures/goomba_stomped.png" id="2_7s14w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kkrcc"]
+size = Vector2(32, 16)
+
+[node name="EnemyStomped" instance=ExtResource("1_150ip")]
+
+[node name="CollisionShape2D" parent="." index="0"]
+visible = false
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_kkrcc")
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="1"]
+texture = ExtResource("2_7s14w")
+offset = Vector2(0.5, 0)
+
+[connection signal="disappeared" from="." to="." method="queue_free"]

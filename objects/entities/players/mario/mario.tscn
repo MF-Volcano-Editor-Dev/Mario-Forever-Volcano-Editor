@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bv26woxthkhv6"]
+[gd_scene load_steps=10 format=3 uid="uid://bv26woxthkhv6"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_2d.gd" id="1_5eyu0"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario.tres" id="2_tbmub"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://bvq8x1atfxyaq" path="res://objects/entities/players/mario/#suits/mario_small.tscn" id="4_sn5la"]
 [ext_resource type="PackedScene" uid="uid://ce8s22xbaifvj" path="res://objects/entities/players/mario/#suits/mario_big.tscn" id="5_58ckd"]
 [ext_resource type="PackedScene" uid="uid://b1yixmaqbghc1" path="res://objects/entities/players/mario/#suits/mario_fireball.tscn" id="6_c83lr"]
+[ext_resource type="AnimationLibrary" uid="uid://bfdws2coy4660" path="res://objects/entities/players/mario/animations/mario_shapes_small.res" id="8_7hmts"]
+[ext_resource type="AnimationLibrary" uid="uid://iroj22njmjkw" path="res://objects/entities/players/mario/animations/mario_shapes_big.res" id="8_kqcy4"]
 
 [node name="Mario" type="EntityBody2D"]
 gravity = 2500.0
@@ -55,3 +57,9 @@ visible = false
 [node name="MarioFireball" parent="." instance=ExtResource("6_c83lr")]
 process_mode = 4
 visible = false
+
+[node name="AnimationShape" type="AnimationPlayer" parent="."]
+libraries = {
+"big": ExtResource("8_kqcy4"),
+"small": ExtResource("8_7hmts")
+}

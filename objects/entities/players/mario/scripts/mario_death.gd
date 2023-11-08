@@ -58,5 +58,6 @@ func _process(delta: float) -> void:
 
 
 func _fall_rotate() -> void:
+	var r := global_rotation
 	_tw = create_tween().set_trans(Tween.TRANS_SINE)
-	_tw.tween_property(sprite, ^"global_rotation", PI, 0.2)
+	_tw.tween_property(sprite, ^"global_rotation", r + PI, 0.2)

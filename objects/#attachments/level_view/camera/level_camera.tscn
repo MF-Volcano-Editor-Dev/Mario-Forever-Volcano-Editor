@@ -13,6 +13,7 @@ editor_draw_limits = true
 script = ExtResource("1_oo8vt")
 
 [node name="CameraArea" type="Area2D" parent="."]
+visible = false
 top_level = true
 collision_layer = 0
 monitorable = false
