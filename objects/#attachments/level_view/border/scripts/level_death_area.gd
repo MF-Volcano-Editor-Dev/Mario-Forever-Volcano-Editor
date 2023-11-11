@@ -4,6 +4,7 @@ signal player_fell_to_death(player: EntityPlayer2D)
 
 @export_category("Death Area")
 @export var death_detection_margin: float = 48
+@export var dyable_after_level_finished: bool = true
 
 
 func _process(_delta: float) -> void:
@@ -12,12 +13,11 @@ func _process(_delta: float) -> void:
 		return
 	
 	for i: EntityPlayer2D in pls:
+		if !dyable_after_level_finished && i.state_machine.is_state(&"level_finished"):
+			continue
+		
 		var rect := i.get_viewport_rect()
 		var vpos := i.get_global_transform_with_canvas().get_origin()
-		
-		#if !rect.has_point(vpos):
-			#continue
-		
 		var angl := i.get_gravity_vector().angle()
 		var die := false
 		

@@ -8,4 +8,5 @@ const EnemyAttackReceiver := preload("res://objects/#components/enemy_related/sc
 const EnemyBody := preload("res://objects/#components/enemy_related/scripts/enemy_body.gd")
 const HealthComponent := preload("res://objects/#components/health_component/scripts/health_component.gd")
 const PropertyUpdater := preload("res://objects/#components/property_updater/scripts/property_updater.gd")
+const ScoresLivesAdder := preload("res://objects/#components/scores_lives_adder/scripts/scores_lives_adder.gd")
 const SolidDetector := preload("res://objects/#components/solid_detector/scripts/solid_detector.gd")

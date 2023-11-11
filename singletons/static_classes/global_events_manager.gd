@@ -46,4 +46,4 @@ static func game_failed_process(tree: SceneTree) -> void:
 
 
 static func level_finish() -> void:
-	signals.stage_finished.emit()
+	signals.level_finished.emit()

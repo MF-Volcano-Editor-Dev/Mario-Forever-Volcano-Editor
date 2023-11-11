@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://h4mp4qqyai41"]
+
+[ext_resource type="Texture2D" uid="uid://cky5yj23clhgq" path="res://objects/entities/core/goal/#components/textures/goal_gate_detector.png" id="1_bh4nq"]
+[ext_resource type="Script" path="res://objects/entities/core/goal/#components/scripts/goal_gate_detector.gd" id="2_rquhf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yt0um"]
+atlas = ExtResource("1_bh4nq")
+region = Rect2(0, 0, 31, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o7rv2"]
+atlas = ExtResource("1_bh4nq")
+region = Rect2(0, 32, 31, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cv8ti"]
+atlas = ExtResource("1_bh4nq")
+region = Rect2(0, 64, 31, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hjg74"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yt0um")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o7rv2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cv8ti")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o7rv2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 30.0
+}]
+
+[node name="GoalGateDetector" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_hjg74")
+autoplay = "default"
+script = ExtResource("2_rquhf")
