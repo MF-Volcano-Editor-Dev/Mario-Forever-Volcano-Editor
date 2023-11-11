@@ -3,7 +3,6 @@ class_name AreaFluid2D extends EntityArea2D
 # #fluid_spray_triggerible
 
 @export var fluid_id: StringName
-@export var fluid_features: Array[StringName]
 @export_group("Fluid Spray")
 @export var spray: PackedScene
 

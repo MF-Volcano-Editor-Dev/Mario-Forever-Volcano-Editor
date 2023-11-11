@@ -17,15 +17,18 @@ collision_layer = 0
 monitorable = false
 
 [node name="Border" type="CollisionShape2D" parent="Area2D"]
+visible = false
 rotation = 1.57079
 shape = SubResource("WorldBoundaryShape2D_yq15q")
 disabled = true
 
 [node name="Rect" type="CollisionShape2D" parent="Area2D"]
+visible = false
 shape = SubResource("RectangleShape2D_yday4")
 disabled = true
 
 [node name="GateLeft" type="Sprite2D" parent="."]
+z_index = -10
 position = Vector2(-32, -144)
 texture = ExtResource("2_4foup")
 

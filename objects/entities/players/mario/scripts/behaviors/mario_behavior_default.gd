@@ -443,19 +443,25 @@ func _on_mario_suit_changed(to: StringName) -> void:
 #region Body's
 func _body_detection_process() -> void:
 	var ova := mario.body.get_overlapping_areas()
-	if ova.is_empty():
-		mario.state_machine.remove_multiple_states([&"underwater", &"is_climbable", &"climbing"])
-		return
+	var adpr := [0, 0]
 	
 	for i: Area2D in ova:
-		# AreaFluid2D
-		if i is AreaFluid2D && &"swimmable" in i.fluid_features:
-			mario.state_machine.set_state(&"underwater")
-			continue
-		# AreaClimbable2D
-		if i is AreaClimbable2D:
-			mario.state_machine.set_state(&"is_climbable")
-			continue
+		# Fluid
+		if i is AreaFluid2D && i.is_in_group(&"#player_swimmable"):
+			adpr[0] += 1
+		# Climable Area
+		if i.is_in_group(&"#player_climbable"):
+			adpr[1] += 1
+	
+	if adpr[0]:
+		mario.state_machine.set_state(&"underwater")
+	else:
+		mario.state_machine.remove_state(&"underwater")
+	if adpr[1]:
+		mario.state_machine.set_state(&"is_climbable")
+	else:
+		mario.state_machine.remove_multiple_states([&"is_climbable", &"climbing"])
+	
 	
 	# Touching Enemies
 	for j: Node in ova:
@@ -483,13 +489,17 @@ func _body_detection_process() -> void:
 #region Head's
 func _head_detection_process() -> void:
 	var ova := mario.head.get_overlapping_areas()
-	if ova.is_empty():
-		mario.state_machine.set_state(&"underwater_jumpout")
-		return
+	var adpr := [0]
 	
 	for i: Area2D in ova:
-		if i is AreaFluid2D && &"swimmable" in i.fluid_features:
-			mario.state_machine.remove_state(&"underwater_jumpout")
+		# Fluid
+		if i is AreaFluid2D && i.is_in_group(&"#player_swimmable"):
+			adpr[0] += 1
+	
+	if adpr[0]:
+		mario.state_machine.remove_state(&"underwater_jumpout")
+	else:
+		mario.state_machine.set_state(&"underwater_jumpout")
 #endregion
 #endregion
 
