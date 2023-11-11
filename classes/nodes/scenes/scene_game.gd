@@ -1,4 +1,4 @@
-class_name GameRoom extends Node
+class_name SceneGame extends Node
 
 ## Abstract class used for game rooms
 ## 

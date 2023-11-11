@@ -1,9 +1,9 @@
 extends Node
 
+signal player_fell_to_death(player: EntityPlayer2D)
+
 @export_category("Death Area")
 @export var death_detection_margin: float = 48
-@export_group("Player Death")
-@export var player_death_tags: Dictionary
 
 
 func _process(_delta: float) -> void:
@@ -31,4 +31,5 @@ func _process(_delta: float) -> void:
 			die = true
 		
 		if die:
-			i.die(player_death_tags)
+			player_fell_to_death.emit(i)
+			i.die()

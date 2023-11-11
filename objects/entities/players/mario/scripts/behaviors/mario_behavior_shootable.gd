@@ -53,7 +53,8 @@ func _shooting_process() -> void:
 	
 	var attacker: Classes.Attacker = Process.get_child_iterate(prj, Classes.Attacker)
 	if attacker:
-		attacker.attacker_features.append(&"player_bullet")
+		attacker.ignore_thrower_area(mario.body)
+		attacker.attacker_features.append(&"player")
 	
 	projectile_shot.emit(mario, prj)
 	

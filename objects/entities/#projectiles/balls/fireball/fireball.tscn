@@ -1,29 +1,29 @@
 [gd_scene load_steps=9 format=3 uid="uid://duaodttdyuc3w"]
 
-[ext_resource type="Texture2D" uid="uid://d22algs2f3jie" path="res://objects/entities/#projectiles/bouncy_balls/textures/fireball.png" id="1_cvbqh"]
-[ext_resource type="Script" path="res://objects/entities/#projectiles/bouncy_balls/scripts/bouncy_balls.gd" id="1_mhxtf"]
-[ext_resource type="PackedScene" uid="uid://blrprhoebns4y" path="res://objects/#components/attacking_related/attacker.tscn" id="2_wh3xr"]
-[ext_resource type="PackedScene" uid="uid://bj0eef13ohuuk" path="res://objects/#components/visibility_on_screen_emitter/visibility_on_screen_emitter.tscn" id="3_71exo"]
-[ext_resource type="Script" path="res://scripts/node2d/rotate_and_scale/rotate_and_scale.gd" id="5_ru6gc"]
-[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/effect_creator/effect_creator.tscn" id="6_st12a"]
-[ext_resource type="PackedScene" uid="uid://blrfy7o1fjev" path="res://objects/entities/#effects/explosions/explosion_fire.tscn" id="8_hkovg"]
+[ext_resource type="Script" path="res://objects/entities/#projectiles/balls/fireball/scripts/bouncy_balls.gd" id="1_mffmj"]
+[ext_resource type="PackedScene" uid="uid://blrprhoebns4y" path="res://objects/#components/attacking_related/attacker.tscn" id="2_s754l"]
+[ext_resource type="Texture2D" uid="uid://d22algs2f3jie" path="res://objects/entities/#projectiles/balls/fireball/textures/fireball.png" id="3_68ea6"]
+[ext_resource type="Script" path="res://scripts/node2d/rotate_and_scale/rotate_and_scale.gd" id="4_6xjg7"]
+[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/effect_creator/effect_creator.tscn" id="5_f8ste"]
+[ext_resource type="PackedScene" uid="uid://blrfy7o1fjev" path="res://objects/entities/#effects/explosions/explosion_fire.tscn" id="6_w2fji"]
+[ext_resource type="PackedScene" uid="uid://bj0eef13ohuuk" path="res://objects/#components/visibility_on_screen_emitter/visibility_on_screen_emitter.tscn" id="7_xgc24"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v54hu"]
 radius = 8.0
 
-[node name="Fireball" type="EntityBody2D"]
+[node name="Fireball" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
 damp_mode = true
 autobody = false
 gravity = 1250.0
 collision_layer = 4
 collision_mask = 8
-script = ExtResource("1_mhxtf")
+script = ExtResource("1_mffmj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource("CircleShape2D_v54hu")
 
-[node name="Area2D" type="Area2D" parent="." groups=["#fluid_spray_triggerible"]]
+[node name="Area2D" type="Area2D" parent="."]
 visible = false
 collision_layer = 4
 collision_mask = 37
@@ -32,26 +32,26 @@ collision_mask = 37
 shape = SubResource("CircleShape2D_v54hu")
 debug_color = Color(0.956863, 0.211765, 0, 0.419608)
 
-[node name="Attacker" parent="Area2D" instance=ExtResource("2_wh3xr")]
+[node name="Attacker" parent="Area2D" instance=ExtResource("2_s754l")]
 attacker_id = &"fireball"
 root_path = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"attacker_id", &"root_path"]
 
 [node name="Sprite2D" type="Sprite2D" parent="." node_paths=PackedStringArray("accordance")]
-texture = ExtResource("1_cvbqh")
-script = ExtResource("5_ru6gc")
+texture = ExtResource("3_68ea6")
+script = ExtResource("4_6xjg7")
 accordance = NodePath("..")
 scale_x_accordance = "velocity:x"
 rotation_speed = 562.5
 rotation_direction_accordance = "velocity:x"
 metadata/_edit_pinned_properties_ = [&"accordance", &"rotation_speed", &"rotation_direction_accordance"]
 
-[node name="EffectCreator" parent="." instance=ExtResource("6_st12a")]
+[node name="EffectCreator" parent="." instance=ExtResource("5_f8ste")]
 gizmo_extents = 4.0
-effect = ExtResource("8_hkovg")
+effect = ExtResource("6_w2fji")
 metadata/_edit_pinned_properties_ = [&"effect"]
 
-[node name="VisibilityOnScreenEmitter" parent="." instance=ExtResource("3_71exo")]
+[node name="VisibilityOnScreenEmitter" parent="." instance=ExtResource("7_xgc24")]
 visible = false
 detected_screen_borders = 11
 metadata/_edit_pinned_properties_ = [&"detected_screen_borders"]

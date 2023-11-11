@@ -29,6 +29,7 @@ signal receiver_body_called_back(body: Node)
 ## [b]Note:[/b] The "Per Frame" mode is a performance consumer, so be careful if you want to shift to this mode
 @export_enum("Once", "Per Frame") var attack_process_mode: int
 
+var _ignored_thrower_areas: Array[Area2D]
 var _attack_receivers: Array[Classes.AttackReceiver]
 
 
@@ -37,9 +38,6 @@ func _ready() -> void:
 	
 	if !root is Area2D:
 		return
-	
-	set_process(false)
-	set_physics_process(false)
 	
 	root.area_entered.connect(_act_with_attack_receiver)
 	root.area_exited.connect(_remove_attack_receiver)
@@ -53,6 +51,12 @@ func _process(_delta: float) -> void:
 		_act_with_receiver(i)
 
 
+func ignore_thrower_area(thrower_area: Area2D) -> void:
+	if thrower_area in _ignored_thrower_areas:
+		return
+	_ignored_thrower_areas.append(thrower_area)
+
+
 func _act_with_receiver(receiver: Classes.AttackReceiver) -> void:
 	hit_receiver.emit(receiver)
 	receiver._receive_attacker(self)
@@ -61,6 +65,9 @@ func _act_with_receiver(receiver: Classes.AttackReceiver) -> void:
 func _act_with_attack_receiver(area: Area2D) -> void:
 	if area == root:
 		return
+	elif area in _ignored_thrower_areas:
+		_ignored_thrower_areas.erase(area)
+		return
 	
 	var atrc: Classes.AttackReceiver = Process.get_child(area, Classes.AttackReceiver)
 	if !atrc:
@@ -68,11 +75,8 @@ func _act_with_attack_receiver(area: Area2D) -> void:
 	
 	if attack_process_mode == 0:
 		_act_with_receiver(atrc)
-	else:
-		if !is_processing():
-			set_process(true)
-		if !atrc in _attack_receivers:
-			_attack_receivers.append(atrc)
+	elif !atrc in _attack_receivers:
+		_attack_receivers.append(atrc)
 
 
 func _remove_attack_receiver(area: Area2D) -> void:

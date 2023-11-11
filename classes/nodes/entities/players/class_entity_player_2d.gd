@@ -8,6 +8,7 @@ class_name EntityPlayer2D extends EntityBody2D
 
 ## Emitted when the player gets hurt
 signal got_hurt
+
 ## Emitted when the player gets death
 signal got_death
 
@@ -68,13 +69,13 @@ func disable() -> void:
 ## Abstract method to make the player hurt [br]
 ## [b]Note 1:[/b] Sometimes you need to emit the signal [signal got_hurt]
 ## [b]Note 2:[/b] Sometimes you are required to check the list for [param _tags] in child classes
-func hurt(_tags: Dictionary = {}) -> void:
+func hurt() -> void:
 	pass
 
 ## Abstract method to make the player die [br]
 ## [b]Note 1:[/b] Sometimes you need to emit the signal [signal got_death]
 ## [b]Note 2:[/b] Sometimes you are required to check the list for [param _tags] in child classes
-func die(_tags: Dictionary = {}) -> void:
+func die() -> void:
 	pass
 #endregion
 

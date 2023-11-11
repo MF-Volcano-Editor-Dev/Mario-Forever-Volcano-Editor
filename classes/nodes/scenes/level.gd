@@ -1,4 +1,4 @@
-class_name Stage extends GameRoom
+class_name Level extends SceneGame
 
 ## Class used for stages
 ##
@@ -22,12 +22,14 @@ func _enter_tree() -> void:
 
 
 #region Todo List after Finish
+## Add an object to the finish process await list
 func add_object_to_wait_finish(object: Object) -> void:
 	if object in _after_finish_wait_nodes:
 		return
 	_after_finish_wait_nodes.append(object)
 
 
+## Remove an object from the finish process await list
 func remove_object_to_wait_finish(object: Object) -> void:
 	if !object in _after_finish_wait_nodes:
 		return
@@ -36,13 +38,12 @@ func remove_object_to_wait_finish(object: Object) -> void:
 
 
 func _on_level_finished() -> void:
-	# Players
+	# Locks players status
 	var players := PlayersManager.get_all_available_players()
-	
 	for i: EntityPlayer2D in players:
 		i.state_machine.set_multiple_states([&"no_hurt", &"control_ignored"])
 	
-	# Music
+	# Plays finishing music
 	var music: AudioStreamPlayer = AudioStreamPlayer.new()
 	music.stream = finishing_music
 	music.bus = &"Music"
@@ -50,17 +51,22 @@ func _on_level_finished() -> void:
 	music.play()
 	music.finished.connect(music.queue_free)
 	
+	# Delay for seconds to make sure the music is done perfectly
 	await get_tree().create_timer(finish_process_delay, false).timeout
 	
+	# Await for the objecs that blocks the process in the list
 	while !_after_finish_wait_nodes.is_empty():
 		await get_tree().process_frame
 	
 	if scene_after_finish:
+		# Remove player nodes from the tree first
 		for j: EntityPlayer2D in players:
 			j.state_machine.remove_multiple_states([&"no_hurt", &"control_ignored"])
+		PlayersManager.remove_all_players()
 		
-		await get_tree().process_frame
+		await get_tree().process_frame # Here delay for 1 frame to ensure every player is removed completely and safely
 		
+		# Change the scene
 		get_tree().change_scene_to_packed.call_deferred(scene_after_finish)
 	else:
-		printerr("[Scene Jumping Error] The scene to be warped to is invalid or not set yet!")
+		printerr("[Scene Changing Error] The scene to be warped to is invalid or not set yet!")

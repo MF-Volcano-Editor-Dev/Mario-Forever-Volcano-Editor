@@ -14,6 +14,7 @@ enum FilterModes {
 
 ## Temporary reference to attacker.gd
 @export_category("Attack Receiver")
+@export var disabled: bool
 @export_group("Filter")
 @export_subgroup("IDs")
 ## Filters the attackers with ids listed in this property
@@ -25,12 +26,13 @@ enum FilterModes {
 @export var filter_features: Array[StringName]
 ## [enum FilterModes] of [member filter_features]:[br]
 @export var filter_feature_mode: FilterModes = FilterModes.EXCLUDE
-@export_group("Call Back")
-@export var send_call_back_signal: bool
 
 
 # Called by attacker
 func _receive_attacker(attacker: Classes.Attacker) -> void:
+	if disabled:
+		return
+	
 	match filter_id_mode:
 		FilterModes.INCLUDE when !attacker.attacker_id in filter_ids:
 			return
@@ -45,6 +47,4 @@ func _receive_attacker(attacker: Classes.Attacker) -> void:
 				return
 	
 	received_attacker.emit(attacker, self)
-	
-	if send_call_back_signal:
-		attacker.receiver_called_back.emit(self)
+	attacker.receiver_called_back.emit(self)

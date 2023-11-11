@@ -37,9 +37,6 @@ debug_color = Color(1, 0.00392157, 0.105882, 0.419608)
 filter_features = Array[StringName]([&"player"])
 metadata/_edit_pinned_properties_ = [&"filter_features"]
 
-[node name="HealthComponent" parent="AreaBody" instance=ExtResource("8_lkckb")]
-root_path = NodePath("../..")
-
 [node name="AreaHead" type="Area2D" parent="." groups=["#mario_component_fixed"]]
 collision_layer = 0
 collision_mask = 66
@@ -60,6 +57,9 @@ visible = false
 [node name="MarioFireball" parent="." instance=ExtResource("6_c83lr")]
 process_mode = 4
 visible = false
+
+[node name="HealthComponent" parent="." instance=ExtResource("8_lkckb")]
+health = 3.0
 
 [node name="AnimationShape" type="AnimationPlayer" parent="."]
 libraries = {

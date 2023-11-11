@@ -45,8 +45,13 @@ folder_colors={
 "res://gdextension/": "red",
 "res://objects/#attachments/": "yellow",
 "res://objects/#components/": "yellow",
+"res://objects/#components/health_component/": "yellow",
 "res://objects/entities/#effects/": "yellow",
-"res://objects/entities/#projectiles/": "yellow"
+"res://objects/entities/#projectiles/": "yellow",
+"res://objects/entities/core/goal/#components/": "yellow",
+"res://objects/entities/enemies/#components/": "yellow",
+"res://objects/entities/enemies/#deaths/": "yellow",
+"res://objects/entities/enemies/goombas/#components/": "yellow"
 }
 
 [filesystem]

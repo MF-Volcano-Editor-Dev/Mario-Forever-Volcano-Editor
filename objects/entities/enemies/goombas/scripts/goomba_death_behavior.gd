@@ -8,8 +8,8 @@ signal killed_process_done
 
 @export_category("Goomba Death Process")
 @export_group("Killed")
-@export var goomba_stomped: PackedScene = preload("../goomba_stomped.tscn")
-@export var goomba_killed: PackedScene = preload("../goomba_death.tscn")
+@export var goomba_stomped: PackedScene = preload("../#components/goomba_stomped.tscn")
+@export var goomba_killed: PackedScene = preload("../#components/goomba_death.tscn")
 
 @onready var goomba: EntityBody2D = get_parent()
 @onready var body: Area2D = $"../Area2D"

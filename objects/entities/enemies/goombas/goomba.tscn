@@ -1,12 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://bsk7rwrwav6ym"]
+[gd_scene load_steps=16 format=3 uid="uid://bsk7rwrwav6ym"]
 
 [ext_resource type="Script" path="res://scripts/entity_bodies_2d/general_moving_body.gd" id="1_26oad"]
 [ext_resource type="Texture2D" uid="uid://by3uk7jcvyall" path="res://objects/entities/enemies/goombas/textures/goomba.png" id="1_kfcy0"]
 [ext_resource type="PackedScene" uid="uid://d1fmdqb4xt82a" path="res://objects/#components/solid_detector/solid_detector.tscn" id="2_bpjd0"]
-[ext_resource type="PackedScene" uid="uid://cb1b6rn7idshp" path="res://objects/#components/attacking_related/attack_receiver.tscn" id="2_of23v"]
-[ext_resource type="PackedScene" uid="uid://cr78xayjmo18a" path="res://objects/#components/enemy_related/enemy_attacked.tscn" id="3_8eb7v"]
+[ext_resource type="PackedScene" uid="uid://cr78xayjmo18a" path="res://objects/#components/enemy_related/enemy_attack_receiver.tscn" id="3_xloyj"]
 [ext_resource type="PackedScene" uid="uid://b452cgnosh3xd" path="res://objects/#components/enemy_related/enemy_body_stompable.tscn" id="4_bo2eb"]
-[ext_resource type="PackedScene" uid="uid://dgdbpyosontm2" path="res://objects/entities/enemies/#components/enemy_health.tscn" id="6_qs8qk"]
+[ext_resource type="PackedScene" uid="uid://dgdbpyosontm2" path="res://objects/#components/enemy_related/enemy_attacked.tscn" id="6_nvi2c"]
 [ext_resource type="Texture2D" uid="uid://dij5eb35hukl4" path="res://objects/entities/enemies/goombas/textures/goomba_stomped.png" id="6_viwje"]
 [ext_resource type="PackedScene" uid="uid://d2yn6nm302yg1" path="res://objects/#components/scores_lives_adder/scores_lives_adder.tscn" id="9_sj2j0"]
 [ext_resource type="Script" path="res://scripts/node2d/visible_on_screen/hidden_visible_on_screen.gd" id="9_xksmv"]
@@ -49,7 +48,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Goomba" type="EntityBody2D"]
+[node name="Goomba" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
 speed = 50.0
 gravity = 1250.0
 collision_layer = 4
@@ -62,7 +61,7 @@ metadata/_edit_pinned_properties_ = [&"initial_moving_direction"]
 visible = false
 shape = SubResource("RectangleShape2D_raq80")
 
-[node name="Area2D" type="Area2D" parent="." groups=["#fluid_spray_triggerible"]]
+[node name="Area2D" type="Area2D" parent="."]
 visible = false
 collision_layer = 4
 collision_mask = 5
@@ -73,19 +72,17 @@ debug_color = Color(1, 0, 0.129412, 0.419608)
 
 [node name="SolidDetector" parent="Area2D" instance=ExtResource("2_bpjd0")]
 
-[node name="AttackReceiver" parent="Area2D" instance=ExtResource("2_of23v")]
-filter_features = Array[StringName]([&"enemy_bullet"])
-send_call_back_signal = true
-metadata/_edit_pinned_properties_ = [&"filter_features", &"send_call_back_signal"]
-
-[node name="EnemyAttacked" parent="Area2D/AttackReceiver" instance=ExtResource("3_8eb7v")]
+[node name="EnemyAttackReceiver" parent="Area2D" instance=ExtResource("3_xloyj")]
+filter_features = Array[StringName]([&"player"])
+filter_feature_mode = 0
+metadata/_edit_pinned_properties_ = [&"filter_feature_mode", &"filter_features"]
 
 [node name="EnemyBodyStompable" parent="Area2D" node_paths=PackedStringArray("sound_player") instance=ExtResource("4_bo2eb")]
 sound_player = NodePath("../../Sound2D")
 root_path = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"root_path", &"sound_player"]
 
-[node name="EnemyHealth" parent="Area2D" node_paths=PackedStringArray("sound_player") instance=ExtResource("6_qs8qk")]
+[node name="EnemyAttacked" parent="Area2D" node_paths=PackedStringArray("sound_player") instance=ExtResource("6_nvi2c")]
 sound_player = NodePath("../../Sound2D")
 root_path = NodePath("../..")
 metadata/_edit_pinned_properties_ = [&"sound_player"]
@@ -113,10 +110,10 @@ metadata/_edit_pinned_properties_ = [&"scores"]
 
 [connection signal="collided_wall" from="." to="." method="turn_wall"]
 [connection signal="detected_solid_body" from="Area2D/SolidDetector" to="." method="turn_wall"]
-[connection signal="killing_succeeded" from="Area2D/AttackReceiver/EnemyAttacked" to="Area2D/EnemyHealth" method="killed"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="GombaDeathBehavior" method="stomped_process"]
-[connection signal="stomped_successful" from="Area2D/EnemyBodyStompable" to="ScoresLivesAdder" method="add_score"]
-[connection signal="got_killed" from="Area2D/EnemyHealth" to="GombaDeathBehavior" method="killed_process"]
-[connection signal="got_killed_no_combo" from="Area2D/EnemyHealth" to="ScoresLivesAdder" method="add_score"]
+[connection signal="killing_succeeded" from="Area2D/EnemyAttackReceiver" to="Area2D/EnemyAttacked" method="killed"]
+[connection signal="stomped_to_death" from="Area2D/EnemyBodyStompable" to="GombaDeathBehavior" method="stomped_process"]
+[connection signal="stomped_to_death" from="Area2D/EnemyBodyStompable" to="ScoresLivesAdder" method="add_score"]
+[connection signal="attacked_to_death" from="Area2D/EnemyAttacked" to="GombaDeathBehavior" method="killed_process"]
+[connection signal="attacked_to_death_no_combo" from="Area2D/EnemyAttacked" to="ScoresLivesAdder" method="add_score"]
 [connection signal="killed_process_done" from="GombaDeathBehavior" to="." method="queue_free"]
 [connection signal="stomped_process_done" from="GombaDeathBehavior" to="." method="queue_free"]

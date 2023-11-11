@@ -111,7 +111,7 @@ func _ready() -> void:
 		await mario.ready
 	
 	mario.set_shape_state(suit.shape_lib_name, &"RESET")
-	mario.attack_receiver.received_attacker.connect(_on_getting_damage)
+	mario.attack_receiver.received_attacker.connect(_on_getting_damage.unbind(1))
 	mario.suit_changed.connect(_on_mario_suit_changed)
 
 
@@ -456,25 +456,26 @@ func _body_detection_process() -> void:
 		if i is AreaClimbable2D:
 			mario.state_machine.set_state(&"is_climbable")
 			continue
-		
-		# Touching Enemies
+	
+	# Touching Enemies
+	for j: Node in ova:
 		var enemy: Classes.EnemyBody = null
-		
-		for j: Node in i.get_children():
-			if j is Classes.EnemyBody:
-				enemy = j
+		for k: Node in j.get_children():
+			if k is Classes.EnemyBody:
+				enemy = k
 				break
 		
+		# Stomping enemy
 		if enemy:
 			var result := enemy._detect_body(mario, mario.global_velocity * get_physics_process_delta_time())
-			if &"success" in result:
-				if result.success:
+			if &"stomped" in result:
+				if result.stomped:
 					if _jumping && &"jumping_speed_high" in result:
 						mario.jump(result.jumping_speed_high)
 					elif !_jumping && &"jumping_speed_low" in result:
 						mario.jump(result.jumping_speed_low)
 				else:
-					mario.hurt(result.tags if &"tags" in result else {})
+					mario.hurt()
 			break
 #endregion
 
@@ -497,13 +498,12 @@ func _head_detection_process() -> void:
 
 
 #region Damage
-func _on_getting_damage(attacker: Classes.Attacker, receiver: Classes.AttackReceiver) -> void:
+func _on_getting_damage(attacker: Classes.Attacker) -> void:
 	if mario.suit_id != suit.suit_id:
 		return
 	
-	if &"enemy_bullet" in attacker.attacker_features:
+	if &"enemy" in attacker.attacker_features:
 		mario.hurt()
-		receiver.send_call_back()
 #endregion
 
 

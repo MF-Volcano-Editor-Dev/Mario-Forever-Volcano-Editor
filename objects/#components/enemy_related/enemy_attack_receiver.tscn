@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cr78xayjmo18a"]
+
+[ext_resource type="PackedScene" uid="uid://cb1b6rn7idshp" path="res://objects/#components/attacking_related/attack_receiver.tscn" id="1_2mk0p"]
+[ext_resource type="Script" path="res://objects/#components/enemy_related/scripts/enemy_attack_receiver.gd" id="1_2qx14"]
+
+[node name="EnemyAttackReceiver" instance=ExtResource("1_2mk0p")]
+script = ExtResource("1_2qx14")
+disabled = false
+block_for_ids = Array[StringName]([])
+block_for_features = Array[StringName]([])
+metadata/_edit_pinned_properties_ = [&"script"]

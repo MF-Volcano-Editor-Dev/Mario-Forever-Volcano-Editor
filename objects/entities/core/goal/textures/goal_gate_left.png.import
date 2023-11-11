@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d22algs2f3jie"
-path="res://.godot/imported/fireball.png-4920c109f84b7170d07a57bfa8c054fa.ctex"
+uid="uid://df56a4rdy2mfl"
+path="res://.godot/imported/goal_gate_left.png-47a4e50763d2f1b134a905e8511534d9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://objects/entities/#projectiles/bouncy_balls/textures/fireball.png"
-dest_files=["res://.godot/imported/fireball.png-4920c109f84b7170d07a57bfa8c054fa.ctex"]
+source_file="res://objects/entities/core/goal/textures/goal_gate_left.png"
+dest_files=["res://.godot/imported/goal_gate_left.png-47a4e50763d2f1b134a905e8511534d9.ctex"]
 
 [params]
 

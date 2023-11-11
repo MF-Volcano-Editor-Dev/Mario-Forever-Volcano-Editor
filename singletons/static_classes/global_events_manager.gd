@@ -17,7 +17,7 @@ class SignalsManager:
 	signal game_over
 	
 	## Emitted when the level is finished
-	signal level_finished(players: Array[EntityPlayer2D])
+	signal level_finished
 
 
 ## Called to check if all players are dead, and emit [signal EventsManager.SignalsManager.players_all_dead]
@@ -45,5 +45,5 @@ static func game_failed_process(tree: SceneTree) -> void:
 			signals.game_over.emit()
 
 
-static func level_finish(players: Array[EntityPlayer2D] = []) -> void:
-	signals.stage_finished.emit(players)
+static func level_finish() -> void:
+	signals.stage_finished.emit()

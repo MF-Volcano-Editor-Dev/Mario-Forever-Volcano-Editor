@@ -4,7 +4,10 @@ class_name Mario2D extends EntityPlayer2D
 ##
 ##
 
-# "#mario_component_fixed"
+# #mario_component_fixed
+
+## Emitted when the player gets damage with health lost
+signal lost_health(amount: float)
 
 ## Emitted when the [member suit_id] gets changed
 signal suit_changed(to: StringName)
@@ -20,10 +23,6 @@ signal suit_changed(to: StringName)
 ## If [code]true[/code], the character's appearing animation won't be played.
 ## This is often used at the very beginning of the scene
 @export var suit_no_appear_animation: bool = true
-@export_group("Health")
-## Health point of the player. If zero then the character dies
-@export var hp: int = 1:
-	set = set_hp
 
 var _suit_refs: Array[MarioSuit2D]
 var _suit_ids: Array[StringName]
@@ -36,6 +35,7 @@ var _invulnerability: SceneTreeTimer
 @onready var head: Area2D = $AreaHead
 @onready var attack_receiver: Node = $AreaBody/AttackReceiver
 @onready var shape_controller: AnimationPlayer = $AnimationShape
+@onready var health: Classes.HealthComponent = $AreaBody/HealthComponent
 
 
 func _ready() -> void:
@@ -81,7 +81,7 @@ func set_suit(new_suit_id: StringName) -> void:
 			i.visible = true
 			i.process_mode = PROCESS_MODE_INHERIT
 			add_shape_lib(i.shape_lib_name, i.shape_lib)
-			set_shape_state(i.shape_lib_name, &"RESET")
+			set_shape_state.call_deferred(i.shape_lib_name, &"RESET")
 		else:
 			i.visible = false
 			i.process_mode = PROCESS_MODE_DISABLED
@@ -117,19 +117,19 @@ func get_suit() -> MarioSuit2D:
 ##
 ## int hp_loss: Determine how many HPs will an iteration cost
 ## [/codeblock]
-func hurt(tags: Dictionary = {}) -> void:
-	if state_machine.is_state(&"no_hurt") || (!&"forced" in tags || tags.forced == false) && is_invulerable():
+func hurt() -> void:
+	if state_machine.is_state(&"no_hurt") || (get_meta(&"@@hurt_forced", false) && is_invulerable()):
 		return
 	
-	var itr: int = 1 if !&"iterations" in tags || !tags.iterations is int || tags.iterations <= 0 else tags.iterations # Iterations
-	var lshp: bool = false if !&"lose_hp" in tags || !tags.lose_hp is bool else tags.lose_hp # Lose HPs
-	var ivdr: float = 2.0 if !&"duration" in tags || !tags.duration is float else tags.duration # Invulnerability duration
+	var itr: int = get_meta(&"@@hurt_iterations", 1) # Iterations
+	var lshp: bool = get_meta(&"@@hurt_force_lose_health", false) # Lose HPs
+	var ivdr: float = get_meta(&"@@hurt_invulerability_duration", 2.0) # Invulnerability duration
 	
 	# Hurt operation
 	for i in itr:
 		if !_suit.down_suit_id.is_empty() && _suit.down_suit_id in _suit_ids:
 			# Sound controls
-			if !&"no_sound" in tags || tags.no_sound == true:
+			if get_meta(&"@@hurt_sound", true):
 				_suit.sound.play_sound(_suit.sound_hurt, get_tree().current_scene)
 			suit_id = _suit.down_suit_id
 			invulnerable(ivdr)
@@ -138,15 +138,42 @@ func hurt(tags: Dictionary = {}) -> void:
 		
 		# Losing HP
 		if lshp:
-			hp -= 1 if !&"hp_loss" in tags || !tags.hp_loss is int else tags.hp_loss
+			var dmg: float = get_meta(&"@@hurt_damage", 1.0)
+			lost_health.emit(dmg)
+			health.sub_health(dmg)
+			
+			if health.health > 0:
+				if get_meta(&"@@hurt_sound", true):
+					_suit.sound.play_sound(_suit.sound_hurt, get_tree().current_scene)
+				
+				invulnerable(ivdr)
+				
+				var tw := create_tween().set_loops(10).set_trans(Tween.TRANS_SINE).set_parallel(true)
+				var g := modulate.g
+				var b := modulate.b
+				tw.tween_property(self, "modulate:g", 0.1, 0.05)
+				tw.tween_property(self, "modulate:b", 0.1, 0.05)
+				tw.chain().tween_property(self, "modulate:g", g, 0.05)
+				tw.chain().tween_property(self, "modulate:b", b, 0.05)
+			else:
+				_invulnerability = null
+				die()
+	
+	# Remove meta tags
+	remove_meta(&"@@hurt_forced")
+	remove_meta(&"@@hurt_iterations")
+	remove_meta(&"@@hurt_force_lose_health")
+	remove_meta(&"@@hurt_invulerability_duration")
+	remove_meta(&"@@hurt_sound")
+	remove_meta(&"@@hurt_damage")
 
 
 ## Makes the character die
-func die(_tags: Dictionary = {}) -> void:
+func die() -> void:
 	if state_machine.is_state(&"no_death"):
 		return
 	
-	if _suit.death:
+	if get_meta(&"@@death_with_body", true) && _suit.death:
 		var d := _suit.death.instantiate()
 		if !d is Node2D:
 			d.queue_free()
@@ -159,6 +186,8 @@ func die(_tags: Dictionary = {}) -> void:
 			d.global_transform = global_transform
 			add_sibling(d)
 			d.sound.stream = _suit.sound_death
+	
+	remove_meta(&"@@death_with_body")
 	
 	PlayersManager.unregister(id)
 	queue_free()
@@ -179,22 +208,6 @@ func invulnerable(duration: float = 2.0) -> void:
 ## Returns [code]true[/code] if the character is invulnerable
 func is_invulerable() -> bool:
 	return _invulnerability != null
-#endregion
-
-
-#region Setters & Getters
-func set_hp(value: int) -> void:
-	# HP++
-	if value > hp:
-		invulnerable(1)
-	# HP--
-	elif value < hp:
-		invulnerable(3)
-	hp = value
-	# Check if hp is lower than 0, if so, then makes the player die
-	if hp <= 0:
-		_invulnerability = null
-		die()
 #endregion
 
 

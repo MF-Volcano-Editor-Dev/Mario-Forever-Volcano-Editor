@@ -46,4 +46,4 @@ func update_scale_accordance() -> void:
 
 func update_rotation_direction_accordance() -> void:
 	_rotation_direction = accordance.get_indexed(rotation_direction_accordance)
-	_rotation_direction = signf(_rotation_direction) if _rotation_direction is float || _rotation_direction is int else 1.0
+	_rotation_direction = signf(_rotation_direction) if (_rotation_direction is float && _rotation_direction != 0) || _rotation_direction is int else 1.0
