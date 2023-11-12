@@ -23,8 +23,8 @@ var _velocity: Vector2
 
 
 func _ready() -> void:
-	player_death_started.connect(EventsManager.game_death_process)
-	player_death_finished.connect(EventsManager.game_failed_process.bind(get_tree()))
+	player_death_started.connect(EventsManager.player_all_death_detect)
+	player_death_finished.connect(EventsManager.player_all_death_process.bind(get_tree()))
 	
 	# Await for one process frame to make the character
 	# body freed and unregistered so that some methods

@@ -6,7 +6,7 @@ const GoalGate := preload("../../scripts/goal_gate.gd")
 @export_group("Physics")
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_speed: float = 300
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_speed_randomizer: float = 100
-@export_range(-18000, 18000, 0.001, "suffix:°/s") var rotation_speed: float = 750
+@export_range(-18000, 18000, 0.001, "suffix:°/s") var rotation_speed: float = 1000
 @export_group("Scores")
 @export var scores: Array[int] = [100, 200, 500, 1000, 2000, 5000, 10000]
 

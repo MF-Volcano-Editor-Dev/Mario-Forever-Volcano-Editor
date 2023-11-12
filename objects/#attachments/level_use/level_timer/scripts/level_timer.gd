@@ -14,13 +14,18 @@ signal timer_over
 ## Rest time of the level
 @export_range(0, 86400, 1, "suffix:ut") var rest_time: int = 360:
 	set = set_rest_time
-## Time that makes the system warning
-@export_range(0, 86400, 1, "suffix:ut") var warning_time: int = 100
-## By how many units will each count down decrease
-@export_range(0, 100, 1, "suffix:ut") var time_down_unit: int = 1
+@export_subgroup("Counting")
+@export_enum("Down: 1", "Up: -1") var time_changing_mode: int = 1
+## By how many units will the count changes
+@export_range(0, 100, 1, "suffix:ut") var time_change_unit: int = 1
 ## By how many seconds will each count down pause [br]
 ## [b]Note:[/b] This is a unit tick of timer changes, or "ut" in short
-@export_range(0, 3600, 0.01, "suffix:s") var time_down_unit_tick: float = 0.5
+@export_range(0, 3600, 0.01, "suffix:s") var time_change_unit_tick: float = 0.5
+@export_subgroup("Warning")
+## If [code]true[/code], the warning system will be disabled
+@export var warning_disabled: bool
+## Time that makes the system warning
+@export_range(0, 86400, 1, "suffix:ut") var warning_time: int = 100
 @export_group("Scoring")
 ## [member time_down_unit] when scoring
 @export_range(0, 100, 1, "suffix:ut") var time_down_unit_scoring: int = 15
@@ -45,22 +50,28 @@ var _has_warned: bool
 
 
 func _ready() -> void:
-	# Connect signal
-	var pause: Callable = func() -> void:
-		interval.paused = true
-	EventsManager.signals.players_all_dead.connect(pause)
+	# Process of all death of players
+	EventsManager.signals.players_all_dead.connect(
+		func() -> void:
+			interval.paused = true
+			
+			if current_level:
+				current_level.stop_finishing_music()
+	)
 	
 	# Set timer down unit
-	interval.wait_time = time_down_unit_tick
+	interval.wait_time = time_change_unit_tick
 	interval.timeout.connect(_time_down)
 	
-	# Add a thing to do in todo list after finish of current level
+	# Level finishing
+	# Add the timer into await list after finish of current level
+	# to block the level from fast finishing without scoring
 	if current_level:
 		current_level.add_object_to_wait_finish(self)
 		
 		EventsManager.signals.level_finished.connect(
 			func() -> void:
-				pause.call()
+				interval.paused = true
 				_scoring = true
 				
 				await current_level.stage_to_be_finished
@@ -75,7 +86,7 @@ func _ready() -> void:
 
 #region Timer Managements
 func _time_down() -> void:
-	rest_time -= time_down_unit_scoring if _scoring else time_down_unit
+	rest_time -= time_down_unit_scoring if _scoring else time_change_unit * time_changing_mode
 
 
 func _time_warning() -> void:
@@ -122,7 +133,7 @@ func set_rest_time(value: int) -> void:
 			_time_scoring(rest_time - to)
 		# Time warning
 		else:
-			if to <= warning_time:
+			if to <= warning_time && warning_disabled:
 				_time_warning()
 			# Time's up
 			if to == 0:

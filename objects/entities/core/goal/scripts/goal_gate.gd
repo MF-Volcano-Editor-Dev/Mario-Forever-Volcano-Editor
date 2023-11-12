@@ -1,6 +1,7 @@
 extends Node2D
 
 const GoalGatePole := preload("../#components/scripts/goal_gate_pole.gd")
+const GoalPlayerWalking := preload("./goal_player_walking.gd")
 
 @export_category("Goal Gate")
 @export_enum("Left: -1", "Right: 1") var direction: int = -1:
@@ -9,7 +10,7 @@ const GoalGatePole := preload("../#components/scripts/goal_gate_pole.gd")
 		if direction == 0:
 			direction = [-1, 1].pick_random()
 @export var detection_rect: bool = true
-@export var goal_walking_finished_line: Node
+@export var goal_player_walking: Node
 
 @onready var components: Node2D = $Components
 @onready var area_global: Area2D = $Components/Area2D
@@ -27,7 +28,7 @@ func _ready() -> void:
 	shape_border.set_deferred(&"disabled", detection_rect)
 	shape_rect.set_deferred(&"disabled", !detection_rect)
 	
-	area_global.body_entered.connect(player_touch_goal)
+	area_global.body_entered.connect(_on_player_touched_goal)
 	components.scale.x *= -direction
 	
 	if components.scale.x < 0:
@@ -49,6 +50,9 @@ func player_touch_goal(body: Node2D, from_pole: bool = false) -> void:
 		goal_gate_pole.scores_lives_adder.add_score()
 	
 	EventsManager.level_finish()
+	
+	if goal_player_walking is GoalPlayerWalking:
+		goal_player_walking.add_player(body)
 
 
 # Called by the pole "_on_player_touched_pole()"
@@ -68,3 +72,9 @@ func pole_scores(scores: Array[int]) -> void:
 		animation_pole.queue_free()
 		break
 
+
+
+func _on_player_touched_goal(body: Node2D) -> void:
+	if !body is EntityPlayer2D || !body.is_on_floor():
+		return
+	player_touch_goal(body, false)

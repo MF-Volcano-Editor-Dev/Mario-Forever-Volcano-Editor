@@ -4,8 +4,10 @@
 [ext_resource type="Script" path="res://objects/#components/enemy_related/scripts/enemy_attack_receiver.gd" id="1_2qx14"]
 
 [node name="EnemyAttackReceiver" instance=ExtResource("1_2mk0p")]
+editor_description = "Please attach this node under an Area2D
+This node will receive the information from other's Attacker under its Area2D, so please ensure there is an Attacker under the other's Area2D!
+Also, this will emit signals according to the attacker, and it's recommended to use this node together with an EnemyAttacked"
 script = ExtResource("1_2qx14")
-disabled = false
 block_for_ids = Array[StringName]([])
 block_for_features = Array[StringName]([])
-metadata/_edit_pinned_properties_ = [&"script"]
+metadata/_edit_pinned_properties_ = [&"script", &"editor_description"]

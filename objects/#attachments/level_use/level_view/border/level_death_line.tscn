@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dqyb07p315tkl"]
 
-[ext_resource type="Script" path="res://objects/#attachments/level_view/border/scripts/level_death_area.gd" id="1_qaag6"]
+[ext_resource type="Script" path="res://objects/#attachments/level_use/level_view/border/scripts/level_death_area.gd" id="1_qaag6"]
 
 [node name="LevelDeathLine" type="Node"]
 editor_description = "Notes:

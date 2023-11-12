@@ -4,4 +4,6 @@
 
 [node name="AttackReceiver" type="Node"]
 process_mode = 4
+editor_description = "Please attach this node under an Area2D
+This node will receive the information from other's Attacker under its Area2D, so please ensure there is an Attacker under the other's Area2D!"
 script = ExtResource("1_hghlx")

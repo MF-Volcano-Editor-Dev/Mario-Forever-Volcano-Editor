@@ -4,4 +4,5 @@
 
 [node name="EnemyAttacked" type="Node"]
 process_mode = 4
+editor_description = "This will process the damage from the attacker, and it's recommended to use this node together with an EnemyAttackReceiver"
 script = ExtResource("1_gl2x1")

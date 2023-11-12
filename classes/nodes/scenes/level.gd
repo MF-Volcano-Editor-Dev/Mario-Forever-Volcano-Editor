@@ -16,6 +16,7 @@ signal stage_finished
 ## Scene to go after the stage finished is emitted
 @export var scene_after_finish: PackedScene
 
+var _finish_music_player: AudioStreamPlayer
 
 var _after_finish_wait_nodes: Array[Object]
 
@@ -40,19 +41,34 @@ func remove_object_to_wait_finish(object: Object) -> void:
 #endregion
 
 
+
+#region Level Finishing
+## Play finishing music
+func play_finishing_music() -> void:
+	_finish_music_player = AudioStreamPlayer.new()
+	_finish_music_player.stream = finishing_music
+	_finish_music_player.bus = &"Music"
+	add_child(_finish_music_player)
+	_finish_music_player.play()
+	_finish_music_player.finished.connect(_finish_music_player.queue_free)
+
+
+## Stop finishing music
+func stop_finishing_music() -> void:
+	if !_finish_music_player:
+		return
+	_finish_music_player.queue_free()
+
+
 func _on_level_finished() -> void:
 	# Locks players status
 	var players := PlayersManager.get_all_available_players()
 	for i: EntityPlayer2D in players:
+		i.state_machine.clear_all_states()
 		i.state_machine.set_multiple_states([&"no_hurt", &"control_ignored", &"level_finished"])
 	
 	# Plays finishing music
-	var music: AudioStreamPlayer = AudioStreamPlayer.new()
-	music.stream = finishing_music
-	music.bus = &"Music"
-	add_child(music)
-	music.play()
-	music.finished.connect(music.queue_free)
+	play_finishing_music()
 	
 	# Delay for seconds to make sure the music is done perfectly
 	await get_tree().create_timer(finish_process_delay, false).timeout
@@ -62,6 +78,7 @@ func _on_level_finished() -> void:
 	while !_after_finish_wait_nodes.is_empty():
 		await get_tree().process_frame
 	
+	# Try changing the scene
 	if scene_after_finish:
 		# Remove player nodes from the tree first
 		for j: EntityPlayer2D in players:
@@ -73,3 +90,4 @@ func _on_level_finished() -> void:
 		printerr("[Scene Changing Error] The scene to be warped to is invalid or not set yet!")
 	
 	stage_finished.emit()
+#endregion

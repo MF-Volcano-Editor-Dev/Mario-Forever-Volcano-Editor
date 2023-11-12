@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://devmwslkf4fe2"]
 
-[ext_resource type="Script" path="res://objects/#attachments/level_timer/scripts/level_timer.gd" id="1_yt640"]
-[ext_resource type="LabelSettings" uid="uid://psvkk7on4wd" path="res://objects/#attachments/level_huds/themes/hud_theme.tres" id="2_jifop"]
-[ext_resource type="Script" path="res://objects/#attachments/level_timer/scripts/level_timer_kill_all.gd" id="3_l7rko"]
+[ext_resource type="Script" path="res://objects/#attachments/level_use/level_timer/scripts/level_timer.gd" id="1_yt640"]
+[ext_resource type="LabelSettings" uid="uid://psvkk7on4wd" path="res://objects/#attachments/level_use/level_huds/themes/hud_theme.tres" id="2_jifop"]
+[ext_resource type="Script" path="res://objects/#attachments/level_use/level_timer/scripts/level_timer_kill_all.gd" id="3_l7rko"]
 
 [sub_resource type="Animation" id="Animation_fvpck"]
 length = 0.001

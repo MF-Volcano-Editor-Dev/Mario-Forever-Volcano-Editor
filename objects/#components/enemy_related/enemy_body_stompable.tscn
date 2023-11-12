@@ -4,4 +4,6 @@
 
 [node name="EnemyBodyStompable" type="Node"]
 process_mode = 4
+editor_description = "A player will detect if an Area2D has this node, so please ensure this node is under the Area2D.
+With this node, a player will get hurt when he fails stomping the Area2D under which this node is attached."
 script = ExtResource("1_coegu")

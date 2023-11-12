@@ -39,6 +39,19 @@ var _invulnerability: SceneTreeTimer
 
 
 func _ready() -> void:
+	# Replace player with existing one if the player
+	# is cached
+	var pl := PlayersManager.get_player(id)
+	if pl:
+		visible = false
+		
+		pl.global_transform = global_transform
+		PlayersManager.add_player(id, get_parent())
+		
+		queue_free()
+		
+		return
+	
 	# Register player
 	PlayersManager.register(self)
 	
