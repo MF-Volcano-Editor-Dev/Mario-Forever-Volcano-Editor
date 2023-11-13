@@ -31,7 +31,7 @@ func _process(delta: float) -> void:
 
 
 func _shooting_process() -> void:
-	if !mario.is_node_ready() || !projectile || !Input.is_action_just_pressed(_get_key_input(key_attack)) || mario.state_machine.is_multiple_states_any([&"climbing", &"crouching"]):
+	if !mario.is_node_ready() || !projectile || !Input.is_action_just_pressed(_get_key_input(key_attack)) || mario.state_machine.is_multiple_states_any([&"climbing", &"crouching", &"control_ignored"]):
 		return
 	
 	# Instantiate projectile

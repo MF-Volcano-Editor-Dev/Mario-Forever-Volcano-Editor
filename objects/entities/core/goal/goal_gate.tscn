@@ -56,6 +56,7 @@ script = ExtResource("1_s7ymn")
 metadata/_edit_group_ = true
 
 [node name="Area2D" type="Area2D" parent="Components"]
+visible = false
 collision_layer = 0
 monitorable = false
 metadata/_edit_group_ = true

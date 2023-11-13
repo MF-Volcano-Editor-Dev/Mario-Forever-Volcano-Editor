@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cm7b44s7rgoi2"]
+
+[ext_resource type="Script" path="res://objects/#components/block_hitter/scripts/block_hitter.gd" id="1_k4c14"]
+
+[node name="BlockHitter" type="Node"]
+process_mode = 4
+editor_description = "This node should be attached under a Node2D, while an Area2D is extremely recommended
+This node is used to be detected by hittable blocks"
+script = ExtResource("1_k4c14")
