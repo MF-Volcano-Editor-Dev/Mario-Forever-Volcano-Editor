@@ -1,88 +1,38 @@
-[gd_scene load_steps=16 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=10 format=3 uid="uid://xm2gptsn2yh8"]
 
-[ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/#attachments/level_use/level_huds/level_hud.tscn" id="1_4kitr"]
 [ext_resource type="Script" path="res://classes/nodes/scenes/level.gd" id="1_n7yi6"]
-[ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="1_p1j5j"]
-[ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_7g6er"]
-[ext_resource type="PackedScene" uid="uid://devmwslkf4fe2" path="res://objects/#attachments/level_use/level_timer/level_timer.tscn" id="2_cd7it"]
-[ext_resource type="PackedScene" uid="uid://j2jtsd3mcv0g" path="res://objects/#attachments/level_use/level_view/camera/level_camera.tscn" id="4_psf7j"]
-[ext_resource type="Script" path="res://classes/nodes/areas/class_area_fluid_2d.gd" id="4_suopq"]
-[ext_resource type="PackedScene" uid="uid://dqyb07p315tkl" path="res://objects/#attachments/level_use/level_view/border/level_death_line.tscn" id="5_5rawl"]
-[ext_resource type="PackedScene" uid="uid://b3ds2052h0bx7" path="res://objects/entities/#effects/sprays/spray_water.tscn" id="5_td137"]
-[ext_resource type="PackedScene" uid="uid://bt8rlpqkw3iy0" path="res://objects/entities/core/goal/goal_gate.tscn" id="11_3id27"]
-[ext_resource type="PackedScene" uid="uid://dvm0thhsf25ps" path="res://objects/entities/core/goal/goal_player_walking.tscn" id="11_djix6"]
-[ext_resource type="PackedScene" uid="uid://c7td81ydps6xl" path="res://objects/entities/bonuses/blocks/question_block.tscn" id="12_7me3x"]
+[ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/#attachments/level_use/level_huds/level_hud.tscn" id="2_woqqe"]
+[ext_resource type="PackedScene" uid="uid://devmwslkf4fe2" path="res://objects/#attachments/level_use/level_timer/level_timer.tscn" id="3_r3b6w"]
+[ext_resource type="PackedScene" uid="uid://dqyb07p315tkl" path="res://objects/#attachments/level_use/level_view/border/level_death_line.tscn" id="4_ry64c"]
+[ext_resource type="PackedScene" uid="uid://j2jtsd3mcv0g" path="res://objects/#attachments/level_use/level_view/camera/level_camera.tscn" id="5_l14dc"]
+[ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="6_un4yr"]
+[ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="7_7u4rv"]
+[ext_resource type="PackedScene" uid="uid://c7td81ydps6xl" path="res://objects/entities/bonuses/blocks/question_block.tscn" id="8_0x1pn"]
+[ext_resource type="Script" path="res://scenes/templates/ParallaxBackground.gd" id="9_xwexd"]
 
-[sub_resource type="GDScript" id="GDScript_e8vb7"]
-script/source = "class_name AreaClimbable2D extends Area2D
-
-## Class of instances that allows [EntityPlayer2D] to climb on
-##
-## This class is designed for [EntityPlayer2D] and set the [member EntityPlayer2D.state_machine]
-## of the player, especially for [Mario2D]
-"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ln26i"]
-size = Vector2(192, 208)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_88v8a"]
-size = Vector2(192, 224)
-
-[node name="Level" type="Node"]
+[node name="Level" type="Node2D"]
 script = ExtResource("1_n7yi6")
 
-[node name="LevelHUD" parent="." instance=ExtResource("1_4kitr")]
+[node name="LevelHUD" parent="." instance=ExtResource("2_woqqe")]
 
-[node name="LevelTimer" parent="." instance=ExtResource("2_cd7it")]
+[node name="LevelTimer" parent="." instance=ExtResource("3_r3b6w")]
 
-[node name="LevelDeathLine" parent="." instance=ExtResource("5_5rawl")]
+[node name="LevelDeathLine" parent="." instance=ExtResource("4_ry64c")]
 
-[node name="LevelCamera" parent="." instance=ExtResource("4_psf7j")]
+[node name="LevelCamera" parent="." instance=ExtResource("5_l14dc")]
 
 [node name="TileMap" type="TileMap" parent="."]
-tile_set = ExtResource("2_7g6er")
+tile_set = ExtResource("6_un4yr")
 format = 2
-layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851979, 65537, 0, 851981, 65537, 0, 851983, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917510, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 851982, 65537, 0, 851984, 65537, 0, 983039, 65537, 0, 917503, 65537, 0, 851967, 65537, 0, 786431, 65537, 0, 720895, 65537, 0, 655359, 65537, 0, 589823, 65537, 0, 851988, 65537, 0, 851989, 65537, 0, 851990, 65537, 0, 851991, 65537, 0, 851992, 65537, 0, 851993, 65537, 0, 851994, 65537, 0, 851995, 65537, 0, 917524, 65537, 1, 917525, 65537, 1, 917526, 65537, 1, 917527, 65537, 1, 917528, 65537, 1, 917529, 65537, 1, 917530, 65537, 1, 917531, 65537, 1, 851997, 65537, 0, 851999, 65537, 0, 852001, 65537, 0, 852003, 65537, 0, 852005, 65537, 0, 852007, 65537, 0, 917533, 65537, 1, 917535, 65537, 1, 917537, 65537, 1, 917539, 65537, 1, 917541, 65537, 1, 917543, 65537, 1, 65535, 65537, 0, 131071, 65537, 0, 196607, 65537, 0, 262143, 65537, 0, 327679, 65537, 0, 393215, 65537, 0, 458751, 65537, 0, 524287, 65537, 0, 393220, 65537, 0, 393218, 65537, 0, 393216, 65537, 0, 393221, 65537, 0, 393222, 65537, 0, 393223, 65537, 0, 393224, 65537, 0, 327688, 65537, 0, 393219, 65537, 0, 393217, 65537, 0, 851996, 65537, 0, 851998, 65537, 0, 852000, 65537, 0, 852002, 65537, 0, 852004, 65537, 0, 852006, 65537, 0, 786471, 65537, 0, 720935, 65537, 0, 458791, 65537, 0, 524327, 65537, 0, 589863, 65537, 0, 655399, 65537, 0)
+layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851978, 65537, 0, 851979, 65537, 0, 851980, 65537, 0, 851981, 65537, 0, 851982, 65537, 0, 851983, 65537, 0, 851984, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917510, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 917524, 65537, 1, 917525, 65537, 1, 917526, 65537, 1, 917527, 65537, 1, 917528, 65537, 1, 917529, 65537, 1, 851988, 65537, 0, 851989, 65537, 0, 851990, 65537, 0, 851991, 65537, 0, 851992, 65537, 0, 851993, 65537, 0, 983039, 65537, 0, 917503, 65537, 0, 851967, 65537, 0, 786431, 65537, 0, 720895, 65537, 0, 655359, 65537, 0, 589823, 65537, 0, 524287, 65537, 0, 458751, 65537, 0, 393215, 65537, 0, 327679, 65537, 0, 262143, 65537, 0, 196607, 65537, 0, 131071, 65537, 0, 65535, 65537, 0)
 
-[node name="Mario" parent="." instance=ExtResource("1_p1j5j")]
-position = Vector2(48, 400)
+[node name="Mario" parent="." instance=ExtResource("7_7u4rv")]
+position = Vector2(80, 400)
 suit_id = &"fireball"
 
-[node name="Area2D" type="Area2D" parent="." groups=["#player_climbable"]]
-position = Vector2(408, 120)
-collision_layer = 32
-script = SubResource("GDScript_e8vb7")
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("RectangleShape2D_ln26i")
-debug_color = Color(0, 0.647059, 0.2, 0.419608)
-
-[node name="Area2D2" type="EntityArea2D" parent="." groups=["#player_swimmable"]]
-max_falling_speed_ratio = 0.333
-process_physics_priority = -1
-position = Vector2(600, 104)
-collision_layer = 192
-collision_mask = 37
-gravity_space_override = 3
-gravity = 98.0
-linear_damp_space_override = 3
-linear_damp = 2.0
-script = ExtResource("4_suopq")
-fluid_id = &"water"
-spray = ExtResource("5_td137")
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
-position = Vector2(0, -24)
-shape = SubResource("RectangleShape2D_88v8a")
-
-[node name="GoalGate" parent="." node_paths=PackedStringArray("goal_player_walking") instance=ExtResource("11_3id27")]
-position = Vector2(1168, 416)
-goal_player_walking = NodePath("../GoalPlayerWalking")
-
-[node name="GoalPlayerWalking" parent="." instance=ExtResource("11_djix6")]
-
-[node name="QuestionBlock" parent="." instance=ExtResource("12_7me3x")]
-position = Vector2(48, 336)
+[node name="QuestionBlock" parent="." instance=ExtResource("8_0x1pn")]
+position = Vector2(112, 336)
 transparent = true
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("9_xwexd")

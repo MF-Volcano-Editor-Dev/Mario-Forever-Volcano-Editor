@@ -89,10 +89,9 @@ var _jumpable_when_crouching: bool
 var _walkable_when_crouching: bool
 var _crouchable_in_small_suit: bool
 
-@onready var suit: MarioSuit2D = $".."
+@onready var suit: Classes.MarioSuit2D = $".."
 @onready var sprite: Sprite2D = $"../Sprite2D"
 @onready var animation: AnimationPlayer = $"../AnimationPlayer"
-@onready var sound: Sound2D = $"../Sound2D"
 
 
 #region Main methods
@@ -100,7 +99,7 @@ func _ready() -> void:
 	super()
 	
 	# Set root
-	mario = (root as MarioSuit2D).get_player()
+	mario = (root as Classes.MarioSuit2D).get_player()
 	
 	# Animations
 	animation.animation_finished.connect(_on_animation_swim_reset)
@@ -269,7 +268,7 @@ func _movement_y_process(delta: float) -> void:
 	# Underwater (Swimming)
 	if uw:
 		if _jumped:
-			sound.play_sound(sound_swim)
+			Sound.play_sound_2d(mario, sound_swim)
 			
 			# Jumping out of water
 			if uwjo:
@@ -290,7 +289,7 @@ func _movement_y_process(delta: float) -> void:
 	# Non-underwater (Jumping)
 	else:
 		if _is_jumpable() && jpb && mario.is_on_floor():
-			sound.play_sound(sound_jump)
+			Sound.play_sound_2d(mario, sound_jump)
 			mario.jump(initial_jumping_speed)
 			_jumped_already = true
 		
@@ -322,7 +321,7 @@ func _movement_climb_process() -> void:
 	# Jumping from climbing
 	if _is_jumpable() && _up_down >= 0:
 		_jumped_already = true
-		sound.play_sound(sound_jump)
+		Sound.play_sound_2d(mario, sound_jump)
 		mario.jump(initial_jumping_speed)
 		mario.state_machine.remove_state(&"climbing")
 

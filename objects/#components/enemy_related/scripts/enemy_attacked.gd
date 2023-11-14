@@ -15,7 +15,6 @@ signal attack_blocked
 
 @export_category("Enemy Attacked")
 @export_group("Sounds", "sound_")
-@export var sound_player: Sound2D
 @export var sound_blocked: AudioStream = preload("res://assets/sounds/bump.wav")
 @export var sound_hurt: AudioStream = preload("res://assets/sounds/kick.wav")
 @export var sound_killed: AudioStream = preload("res://assets/sounds/kick.wav")
@@ -46,18 +45,17 @@ func killed(attacker: Classes.Attacker) -> void:
 
 
 func blocked(_attacker: Classes.Attacker) -> void:
-	if sound_player:
-		sound_player.play_sound(sound_blocked, get_tree().current_scene)
+	Sound.play_sound_2d(root, sound_blocked)
 	attack_blocked.emit()
 
 
 func _health_zero(combo: bool) -> void:
 	if health <= 0:
-		if !combo && sound_player:
-			sound_player.play_sound(sound_killed, get_tree().current_scene)
+		if !combo:
+			Sound.play_sound_2d(root, sound_killed)
 		
 		attacked_to_death.emit()
 		if !combo:
 			attacked_to_death_no_combo.emit()
-	elif sound_player:
-		sound_player.play_sound(sound_hurt)
+	else:
+		Sound.play_sound_2d(root, sound_hurt)

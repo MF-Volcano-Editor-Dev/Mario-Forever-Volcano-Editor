@@ -58,5 +58,5 @@ func _shooting_process() -> void:
 	
 	projectile_shot.emit(mario, prj)
 	
-	sound.play_sound(sound_attack)
+	Sound.play_sound(mario, sound_attack)
 	animation.play(&"attack")

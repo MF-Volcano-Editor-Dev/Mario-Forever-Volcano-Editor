@@ -4,7 +4,7 @@ var _player: Mario2D
 var _removed_crouching: bool
 
 
-@onready var suit: MarioSuit2D = get_parent()
+@onready var suit: Classes.MarioSuit2D = get_parent()
 
 
 func _ready() -> void:

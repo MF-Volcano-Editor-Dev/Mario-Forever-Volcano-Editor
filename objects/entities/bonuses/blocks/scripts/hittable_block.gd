@@ -19,12 +19,8 @@ signal got_hit_top(by_area: Node2D)
 	set(value):
 		up_direction = value.normalized()
 @export_group("Detector")
-## Detector node
-@export var detector: Area2D
 ## Received types from [constant Classes.BlockHitter]
 @export var hitter_types: Array[StringName]
-@export_group("Sprite")
-@export var sprite: Node2D
 @export_group("Visibility")
 ## If [code]true[/code], the node will not be able to collide with any
 ## body, nor can the body be seen
@@ -41,17 +37,41 @@ signal got_hit_top(by_area: Node2D)
 			sprite.visible = false
 		collision_layer = 0
 		collision_mask = 0
+@export_group("Sounds", "sound_")
+@export var sound_hit: AudioStream
 
+@onready var sprite: Node2D = Process.get_child_in_group(self, "#sprite") as Node2D
 @onready var sprite_pos: Vector2 = sprite.position if sprite else Vector2.ZERO
-@onready var visiblility: float = sprite.visible if sprite else true
+@onready var visiblility: bool = sprite.visible if sprite else true
 @onready var col_layer: int = collision_layer
 @onready var col_mask: int = collision_mask
 
 
-func _ready() -> void:
-	# Collision signals
-	if detector:
-		detector.area_entered.connect(_on_area_hit_block)
+## Called by [constant Classes.BlockHitter]
+func block_got_hit(area: Area2D, by: Classes.BlockHitter, direction: Vector2 = Vector2.ZERO) -> void:
+	if !area || !by:
+		return
+	
+	# Filter out-of-range hitters
+	var in_target: int = 0
+	for i: StringName in by.hitter_targets:
+		if !i in hitter_types:
+			continue
+		in_target += 1
+	if !in_target:
+		return
+	
+	Sound.play_sound_2d(self, sound_hit)
+	
+	var dot := get_hitting_direction_dot_up(area) if !direction else direction.dot(up_direction.rotated(global_rotation))
+	var diag := cos(PI/4)
+	
+	if dot > diag:
+		got_hit_bottom.emit(area)
+	elif dot <= diag && dot >= -diag:
+		got_hit_side.emit(area)
+	else:
+		got_hit_top.emit(area)
 
 
 ## Restore the block from being transparent
@@ -92,26 +112,10 @@ func hit_animation(by_area: Area2D) -> void:
 
 
 #region Getters
-func get_area_hitting_direction(by_area: Area2D) -> Vector2:
+func get_area_hitting_direction(by_area: Node2D) -> Vector2:
 	return (global_position - by_area.global_position).normalized()
 
 
-func get_hitting_direction_dot_up(by_area: Area2D) -> float:
+func get_hitting_direction_dot_up(by_area: Node2D) -> float:
 	return get_area_hitting_direction(by_area).dot(up_direction.rotated(global_rotation))
 #endregion
-
-
-func _on_area_hit_block(area: Area2D) -> void:
-	var bh: Classes.BlockHitter = Process.get_child(area, Classes.BlockHitter) as Classes.BlockHitter
-	if !bh || !bh.hitter_type in hitter_types:
-		return
-	
-	var dot := get_hitting_direction_dot_up(area)
-	var diag := cos(PI/4)
-	
-	if dot > diag:
-		got_hit_bottom.emit(area)
-	elif dot <= diag && dot >= -diag:
-		got_hit_side.emit(area)
-	else:
-		got_hit_top.emit(area)

@@ -118,8 +118,4 @@ libraries = {
 "": SubResource("AnimationLibrary_kjeky")
 }
 
-[node name="Sound" type="AudioStreamPlayer" parent="."]
-max_polyphony = 16
-bus = &"Sound"
-
 [connection signal="timer_over" from="." to="KillsAllPlayer" method="time_up_kill_all_players"]

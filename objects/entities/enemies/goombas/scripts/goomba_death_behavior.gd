@@ -14,7 +14,6 @@ signal killed_process_done
 @onready var goomba: EntityBody2D = get_parent()
 @onready var body: Area2D = $"../Area2D"
 @onready var animated_sprite: AnimatedSprite2D = $"../AnimatedSprite2D"
-@onready var sound: Sound2D = $"../Sound2D"
 
 
 func stomped_process() -> void:

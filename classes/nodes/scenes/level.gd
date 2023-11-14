@@ -11,7 +11,7 @@ signal stage_to_be_finished
 signal stage_finished
 
 @export_group("Finish")
-@export var finishing_music: AudioStream = preload("res://assets/musics/core/level_complete.ogg")
+@export var finishing_music: AudioStream = preload("res://assets/sounds/level_complete.ogg")
 @export_range(0, 10, 0.001, "suffix:s") var finish_process_delay: float = 8
 ## Scene to go after the stage finished is emitted
 @export var scene_after_finish: PackedScene
@@ -45,17 +45,12 @@ func remove_object_to_wait_finish(object: Object) -> void:
 #region Level Finishing
 ## Play finishing music
 func play_finishing_music() -> void:
-	_finish_music_player = AudioStreamPlayer.new()
-	_finish_music_player.stream = finishing_music
-	_finish_music_player.bus = &"Music"
-	add_child(_finish_music_player)
-	_finish_music_player.play()
-	_finish_music_player.finished.connect(_finish_music_player.queue_free)
+	_finish_music_player = Sound.play_sound(self, finishing_music)
 
 
 ## Stop finishing music
 func stop_finishing_music() -> void:
-	if !_finish_music_player:
+	if !is_instance_valid(_finish_music_player):
 		return
 	_finish_music_player.queue_free()
 

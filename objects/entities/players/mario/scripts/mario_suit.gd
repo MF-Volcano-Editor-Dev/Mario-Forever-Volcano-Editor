@@ -1,4 +1,4 @@
-class_name MarioSuit2D extends Node2D
+extends Node2D
 
 ## A kind of component only used for [Mario2D] to provide
 ## fast-modifible module for the character
@@ -35,8 +35,6 @@ class_name MarioSuit2D extends Node2D
 @onready var animation: AnimationPlayer = $AnimationPlayer
 ## [Component] of the suit that process core codes
 @onready var behavior: Node = $Behavior
-## [Sound2D] of the suit
-@onready var sound: Sound2D = $Sound2D
 
 
 #region Animations

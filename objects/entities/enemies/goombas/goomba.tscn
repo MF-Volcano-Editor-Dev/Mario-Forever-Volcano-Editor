@@ -77,23 +77,16 @@ filter_features = Array[StringName]([&"player"])
 filter_feature_mode = 0
 metadata/_edit_pinned_properties_ = [&"filter_feature_mode", &"filter_features"]
 
-[node name="EnemyBodyStompable" parent="Area2D" node_paths=PackedStringArray("sound_player") instance=ExtResource("4_bo2eb")]
-sound_player = NodePath("../../Sound2D")
+[node name="EnemyBodyStompable" parent="Area2D" instance=ExtResource("4_bo2eb")]
 root_path = NodePath("..")
-metadata/_edit_pinned_properties_ = [&"root_path", &"sound_player"]
+metadata/_edit_pinned_properties_ = [&"root_path"]
 
-[node name="EnemyAttacked" parent="Area2D" node_paths=PackedStringArray("sound_player") instance=ExtResource("6_nvi2c")]
-sound_player = NodePath("../../Sound2D")
+[node name="EnemyAttacked" parent="Area2D" instance=ExtResource("6_nvi2c")]
 root_path = NodePath("../..")
-metadata/_edit_pinned_properties_ = [&"sound_player"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_5j0u7")
 autoplay = "default"
-
-[node name="Sound2D" type="Sound2D" parent="."]
-bus = &"Sound"
-area_mask = 128
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
 visible = false

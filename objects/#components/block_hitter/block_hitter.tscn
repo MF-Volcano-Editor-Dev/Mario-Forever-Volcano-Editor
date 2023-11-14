@@ -3,7 +3,9 @@
 [ext_resource type="Script" path="res://objects/#components/block_hitter/scripts/block_hitter.gd" id="1_k4c14"]
 
 [node name="BlockHitter" type="Node"]
-process_mode = 4
-editor_description = "This node should be attached under a Node2D, while an Area2D is extremely recommended
-This node is used to be detected by hittable blocks"
+process_priority = -1
+editor_description = "This node should be attached under an Area2D
+This node is used to detect if the Area2D has hit any HittableBlock and do some interactions with it
+
+NOTE: This will automatically connect root's `area_entered` signal to a certain method in the script of the node!"
 script = ExtResource("1_k4c14")

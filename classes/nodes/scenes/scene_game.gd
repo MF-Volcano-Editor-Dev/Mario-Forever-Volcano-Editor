@@ -1,4 +1,4 @@
-class_name SceneGame extends Node
+class_name SceneGame extends Node2D
 
 ## Abstract class used for game rooms
 ## 

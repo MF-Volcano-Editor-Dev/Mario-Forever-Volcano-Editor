@@ -13,12 +13,13 @@ signal player_death_finished
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var max_falling_speed: float = 500
 @export_group("General")
 @export_range(0, 12, 0.01, "suffix:s") var emission_await: float = 4
+@export_group("Sound", "sound_")
+@export var sound_death: AudioStream = preload("res://assets/sounds/death.ogg")
 
 var _tw: Tween
 var _fall_rot: bool
 var _velocity: Vector2
 
-@onready var sound: AudioStreamPlayer = $Sound
 @onready var sprite: Sprite2D = $Sprite2D
 
 
@@ -33,7 +34,7 @@ func _ready() -> void:
 	
 	player_death_started.emit()
 	
-	sound.play.call_deferred()
+	Sound.play_sound(self, sound_death)
 	
 	set_process(false)
 	await get_tree().create_timer(0.5).timeout

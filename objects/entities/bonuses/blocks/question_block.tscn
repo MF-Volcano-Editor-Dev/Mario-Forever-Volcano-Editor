@@ -56,15 +56,12 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="QuestionBlock" type="AnimatableBody2D" node_paths=PackedStringArray("sound_player", "detector", "sprite")]
+[node name="QuestionBlock" type="AnimatableBody2D"]
 collision_layer = 10
 collision_mask = 0
 script = ExtResource("1_gwydu")
-sound_player = NodePath("Sound2D")
-detector = NodePath("Area2D")
 hitter_types = Array[StringName]([&"question"])
-sprite = NodePath("AnimatedSprite2D")
-metadata/_edit_pinned_properties_ = [&"detector", &"hitter_types", &"sprite", &"sound_player"]
+metadata/_edit_pinned_properties_ = [&"hitter_types"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -74,20 +71,18 @@ debug_color = Color(0.729412, 0.47451, 0, 0.419608)
 [node name="Area2D" type="Area2D" parent="."]
 visible = false
 collision_layer = 10
-collision_mask = 101
+collision_mask = 96
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_jfmgp")
 debug_color = Color(1, 0, 0.12549, 0.419608)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." groups=["#sprite"]]
 sprite_frames = SubResource("SpriteFrames_uw5oy")
 autoplay = "default"
 
 [node name="Question" type="Sprite2D" parent="AnimatedSprite2D"]
 texture = ExtResource("3_y6wka")
-
-[node name="Sound2D" type="Sound2D" parent="."]
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
 visible = false

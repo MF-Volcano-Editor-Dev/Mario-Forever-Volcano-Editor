@@ -4,8 +4,6 @@ class_name Mario2D extends EntityPlayer2D
 ##
 ##
 
-# #mario_component_fixed
-
 ## Emitted when the player gets damage with health lost
 signal lost_health(amount: float)
 
@@ -24,10 +22,10 @@ signal suit_changed(to: StringName)
 ## This is often used at the very beginning of the scene
 @export var suit_no_appear_animation: bool = true
 
-var _suit_refs: Array[MarioSuit2D]
+var _suit_refs: Array[Classes.MarioSuit2D]
 var _suit_ids: Array[StringName]
 
-var _suit: MarioSuit2D
+var _suit: Classes.MarioSuit2D
 var _invulnerability: SceneTreeTimer
 
 @onready var shape: CollisionShape2D = $Shape
@@ -49,7 +47,6 @@ func _ready() -> void:
 		PlayersManager.add_player(id, get_parent())
 		
 		queue_free()
-		
 		return
 	
 	# Register player
@@ -57,7 +54,7 @@ func _ready() -> void:
 	
 	# Register suits
 	for i: Node in get_children():
-		if !i is MarioSuit2D || i in _suit_refs:
+		if !i is Classes.MarioSuit2D || i in _suit_refs:
 			continue
 		_suit_refs.append(i)
 		_suit_ids.append(i.suit_id)
@@ -86,10 +83,8 @@ func set_suit(new_suit_id: StringName) -> void:
 		return
 	
 	_suit = null
-	for i: MarioSuit2D in _suit_refs:
-		if !i is MarioSuit2D:
-			continue
-		elif i.suit_id == suit_id:
+	for i: Classes.MarioSuit2D in _suit_refs:
+		if i.suit_id == suit_id:
 			_suit = i
 			i.visible = true
 			i.process_mode = PROCESS_MODE_INHERIT
@@ -109,7 +104,7 @@ func set_suit(new_suit_id: StringName) -> void:
 
 
 ## Gets the suit of the character
-func get_suit() -> MarioSuit2D:
+func get_suit() -> Classes.MarioSuit2D:
 	return _suit
 #endregion
 
@@ -143,7 +138,7 @@ func hurt() -> void:
 		if !_suit.down_suit_id.is_empty() && _suit.down_suit_id in _suit_ids:
 			# Sound controls
 			if get_meta(&"@@hurt_sound", true):
-				_suit.sound.play_sound(_suit.sound_hurt, get_tree().current_scene)
+				Sound.play_sound_2d(self, _suit.sound_hurt)
 			suit_id = _suit.down_suit_id
 			invulnerable(ivdr)
 		else:
@@ -157,7 +152,7 @@ func hurt() -> void:
 			
 			if health.health > 0:
 				if get_meta(&"@@hurt_sound", true):
-					_suit.sound.play_sound(_suit.sound_hurt, get_tree().current_scene)
+					Sound.play_sound_2d(self, _suit.sound_hurt)
 				
 				invulnerable(ivdr)
 				
@@ -197,8 +192,8 @@ func die() -> void:
 			# Here it's not allowed to use call_deferred() on add_sibling()
 			# since there is some node to be initialized with @onready
 			d.global_transform = global_transform
+			d.sound_death = _suit.sound_death
 			add_sibling(d)
-			d.sound.stream = _suit.sound_death
 	
 	remove_meta(&"@@death_with_body")
 	

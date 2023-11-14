@@ -1,10 +1,14 @@
 extends CanvasLayer
 
+@export_category("Level HUD")
+@export_group("Sounds", "sound_")
+## Sound of game over
+@export var sound_game_over: AudioStream = preload("res://assets/sounds/game_over.ogg")
+
 @onready var lives: Label = $Frame/LivesX
 @onready var scores: Label = $Frame/LivesX/Scores
 @onready var coins: Label = $Frame/CoinsX/Coins
 @onready var game_over: Label = $Frame/GameOver
-@onready var sound_game_over: AudioStreamPlayer = $SoundGameOver
 
 
 func _ready() -> void:
@@ -27,7 +31,7 @@ func _ready() -> void:
 	EventsManager.signals.game_over.connect(
 		func() -> void:
 			game_over.visible = true
-			sound_game_over.play()
+			Sound.play_sound(self, sound_game_over)
 	)
 	
 	Data.data_init_signal_emit()

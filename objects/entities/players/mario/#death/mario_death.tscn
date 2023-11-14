@@ -9,7 +9,3 @@ script = ExtResource("1_kgqll")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_677ew")
-
-[node name="Sound" type="AudioStreamPlayer" parent="."]
-autoplay = true
-bus = &"Sound"

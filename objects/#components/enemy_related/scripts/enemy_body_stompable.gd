@@ -21,7 +21,6 @@ signal stomped_to_death
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var jumping_speed_low: float = 400
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var jumping_speed_high: float = 650
 @export_group("Sounds", "sound_")
-@export var sound_player: Sound2D
 @export var sound_stomped: AudioStream = preload("res://assets/sounds/stomp.wav")
 
 
@@ -49,8 +48,7 @@ func _detect_body(body: Node2D, global_offset: Vector2 = Vector2.ZERO) -> Dictio
 	
 	# Stomping process
 	if result.stomped:
-		if sound_player:
-			sound_player.play_sound(sound_stomped, get_tree().current_scene)
+		Sound.play_sound_2d(root, sound_stomped)
 		
 		stomped_successfully.emit()
 		

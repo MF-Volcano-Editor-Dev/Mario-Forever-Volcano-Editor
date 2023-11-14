@@ -46,7 +46,6 @@ var _has_warned: bool
 @onready var times: Label = $Frame/Container/Times
 @onready var time_up: Label = $Frame/TimeUp
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var sound: AudioStreamPlayer = $Sound
 
 
 func _ready() -> void:
@@ -98,8 +97,7 @@ func _time_warning() -> void:
 	_has_warned = true
 	
 	if sound_warning:
-		sound.stream = sound_warning
-		sound.play()
+		Sound.play_sound(self, sound_warning)
 	
 	animation_player.play(&"warning")
 	await animation_player.animation_finished
@@ -111,8 +109,7 @@ func _time_scoring(amount: int) -> void:
 	_scoring_count += 1
 	if _scoring_count > 3:
 		_scoring_count = 0
-		sound.stream = sound_scoring
-		sound.play()
+		Sound.play_sound(self, sound_scoring)
 	
 	Data.add_scores(amount * time_unit_scores)
 #endregion

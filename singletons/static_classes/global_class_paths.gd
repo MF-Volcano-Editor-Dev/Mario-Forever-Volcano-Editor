@@ -16,4 +16,5 @@ const SolidDetector := preload("res://objects/#components/solid_detector/scripts
 
 
 #region Objects
-const HittableBlock = preload("res://objects/entities/bonuses/blocks/scripts/hittable_block.gd")
+const HittableBlock := preload("res://objects/entities/bonuses/blocks/scripts/hittable_block.gd")
+const MarioSuit2D := preload("res://objects/entities/players/mario/scripts/mario_suit.gd")

@@ -10,6 +10,7 @@ static func get_delta(node: Node) -> float:
 	return node.get_physics_process_delta_time() if Engine.is_in_physics_frame() else node.get_process_delta_time()
 
 
+## Gets a child of [param from] with certain [param type]
 static func get_child(from: Node, type: Object) -> Node:
 	for i: Node in from.get_children():
 		if is_instance_of(i, type):
@@ -24,4 +25,13 @@ static func get_child_iterate(from: Node, type: Object) -> Node:
 			return i
 		elif i.get_child_count():
 			return get_child_iterate(i, type)
+	return null
+
+
+## Get a child of [param from] in certain [param group]
+static func get_child_in_group(from: Node, group: StringName) -> Node:
+	for i: Node in from.get_children():
+		if !i.is_in_group(group):
+			continue
+		return i
 	return null

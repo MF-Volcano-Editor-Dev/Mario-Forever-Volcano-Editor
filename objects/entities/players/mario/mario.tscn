@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bv26woxthkhv6"]
+[gd_scene load_steps=13 format=3 uid="uid://bv26woxthkhv6"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_2d.gd" id="1_5eyu0"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario.tres" id="2_tbmub"]
@@ -12,6 +12,8 @@
 [ext_resource type="AnimationLibrary" uid="uid://iroj22njmjkw" path="res://objects/entities/players/mario/animations/mario_shapes_big.res" id="8_kqcy4"]
 [ext_resource type="PackedScene" uid="uid://cprsxw7scpvfp" path="res://objects/#components/health_component/health_component.tscn" id="8_lkckb"]
 
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e4qon"]
+
 [node name="Mario" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
 gravity = 2500.0
 max_falling_speed = 500.0
@@ -21,11 +23,11 @@ script = ExtResource("1_5eyu0")
 nickname = &"Mario"
 metadata/_edit_pinned_properties_ = [&"nickname"]
 
-[node name="Shape" type="CollisionShape2D" parent="." groups=["#mario_component_fixed"]]
+[node name="Shape" type="CollisionShape2D" parent="."]
 position = Vector2(0, 2)
 shape = ExtResource("2_tbmub")
 
-[node name="AreaBody" type="Area2D" parent="." groups=["#mario_component_fixed"]]
+[node name="AreaBody" type="Area2D" parent="."]
 collision_mask = 118
 metadata/_edit_group_ = true
 
@@ -41,7 +43,7 @@ metadata/_edit_pinned_properties_ = [&"filter_features"]
 [node name="HealthComponent" parent="AreaBody" instance=ExtResource("8_lkckb")]
 root_path = NodePath("../..")
 
-[node name="AreaHead" type="Area2D" parent="." groups=["#mario_component_fixed"]]
+[node name="AreaHead" type="Area2D" parent="."]
 collision_mask = 66
 metadata/_edit_group_ = true
 
@@ -51,7 +53,9 @@ shape = ExtResource("3_tilld")
 debug_color = Color(0, 0.647059, 0.247059, 0.419608)
 
 [node name="BlockHitter" parent="AreaHead" instance=ExtResource("6_tqwri")]
-hitter_type = &"question"
+hitter_targets = Array[StringName]([&"question"])
+hitter_features = Array[StringName]([&"bricks_breaker"])
+metadata/_edit_pinned_properties_ = [&"hitter_targets"]
 
 [node name="MarioSmall" parent="." instance=ExtResource("4_sn5la")]
 process_mode = 4
@@ -66,6 +70,7 @@ visible = false
 
 [node name="AnimationShape" type="AnimationPlayer" parent="."]
 libraries = {
+"": SubResource("AnimationLibrary_e4qon"),
 "big": ExtResource("8_kqcy4"),
 "small": ExtResource("8_7hmts")
 }
