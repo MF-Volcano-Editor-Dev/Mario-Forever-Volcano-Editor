@@ -3,7 +3,7 @@ extends Label
 
 func _ready() -> void:
 	var tw := create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tw.tween_property(self, "position:y", position.y - 96, 1)
+	tw.tween_property(self, "position:y", position.y - 48, 1)
 	tw.tween_interval(1)
 	tw.tween_property(self, "modulate:a", 0, 0.25).set_trans(Tween.TRANS_LINEAR)
 	tw.play()
@@ -13,4 +13,6 @@ func _ready() -> void:
 
 
 func set_display(amount: int) -> void:
-	text = str(amount)
+	text = str(amount if amount >= 0 else abs(amount))
+	if amount < 0:
+		self_modulate = Color.ORANGE_RED

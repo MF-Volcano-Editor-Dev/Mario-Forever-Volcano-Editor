@@ -8,7 +8,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	var dir: int = -get_parent().direction
+	var dir: int = -$"..".direction
 	$"../Components".scale.x = dir
 	$"../Components/GateLeft".scale.x = dir
 	$"../Components/GateRight".scale.x = dir

@@ -46,8 +46,8 @@ func player_touch_goal(body: Node2D, from_pole: bool = false) -> void:
 		area_global.queue_free()
 		goal_gate_pole.area.queue_free()
 		
-		goal_gate_pole.scores_lives_adder.scores = 100
-		goal_gate_pole.scores_lives_adder.add_score()
+		goal_gate_pole.scores_adder.scores = 100
+		goal_gate_pole.scores_adder.add_score()
 	
 	EventsManager.level_finish()
 	
@@ -67,8 +67,8 @@ func pole_scores(scores: Array[int]) -> void:
 		if anmpos < sect.x || anmpos > sect.y:
 			continue
 		
-		goal_gate_pole.scores_lives_adder.scores = scores[i]
-		goal_gate_pole.scores_lives_adder.add_score()
+		goal_gate_pole.scores_adder.scores = scores[i]
+		goal_gate_pole.scores_adder.add_score()
 		animation_pole.queue_free()
 		break
 

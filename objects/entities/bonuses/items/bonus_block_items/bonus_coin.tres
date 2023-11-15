@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BonusBlockItem" load_steps=5 format=3 uid="uid://w23nxqweymlr"]
+
+[ext_resource type="PackedScene" uid="uid://bdap0tgrtlymf" path="res://objects/entities/#effects/coin_effect/coin_hit.tscn" id="1_mlcyd"]
+[ext_resource type="Texture2D" uid="uid://dhvpl7i7dcq2k" path="res://objects/entities/#effects/coin_effect/textures/coin_hit.png" id="2_4yosd"]
+[ext_resource type="Script" path="res://objects/entities/bonuses/blocks/scripts/#resources/bonus_block_item.gd" id="2_ikgy4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5tv0"]
+atlas = ExtResource("2_4yosd")
+region = Rect2(0, 84, 21, 28)
+
+[resource]
+script = ExtResource("2_ikgy4")
+item = ExtResource("1_mlcyd")
+amount = 1
+preview = SubResource("AtlasTexture_y5tv0")

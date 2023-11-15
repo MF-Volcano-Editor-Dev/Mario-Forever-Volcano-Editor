@@ -25,12 +25,12 @@ static func play_sound(node: Node, stream: AudioStream, mode: SoundMode = SoundM
 	var current_scene := node.get_tree().current_scene
 	match mode:
 		SoundMode.SCENIAL:
-			current_scene.add_child(au)
+			current_scene.add_child.call_deferred(au)
 		SoundMode.GLOBAL:
-			current_scene.add_sibling(au)
+			current_scene.add_sibling.call_deferred(au)
 	
 	au.finished.connect(au.queue_free)
-	au.play()
+	au.play.call_deferred()
 	
 	return au
 
@@ -50,12 +50,12 @@ static func play_sound_2d(node_2d: Node2D, stream: AudioStream, mode: SoundMode 
 	var current_scene := node_2d.get_tree().current_scene
 	match mode:
 		SoundMode.SCENIAL:
-			current_scene.add_child(au)
+			current_scene.add_child.call_deferred(au)
 		SoundMode.GLOBAL:
-			current_scene.add_sibling(au)
+			current_scene.add_sibling.call_deferred(au)
 	
 	au.finished.connect(au.queue_free)
-	au.play()
+	au.play.call_deferred()
 	
 	return au
 
@@ -75,11 +75,11 @@ static func play_sound_3d(node_3d: Node3D, stream: AudioStream, mode: SoundMode 
 	var current_scene := node_3d.get_tree().current_scene
 	match mode:
 		SoundMode.SCENIAL:
-			current_scene.add_child(au)
+			current_scene.add_child.call_deferred(au)
 		SoundMode.GLOBAL:
-			current_scene.add_sibling(au)
+			current_scene.add_sibling.call_deferred(au)
 	
 	au.finished.connect(au.queue_free)
-	au.play()
+	au.play.call_deferred()
 	
 	return au

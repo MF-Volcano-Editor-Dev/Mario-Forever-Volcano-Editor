@@ -14,7 +14,7 @@
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_e4qon"]
 
-[node name="Mario" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
+[node name="Mario" type="EntityBody2D"]
 gravity = 2500.0
 max_falling_speed = 500.0
 collision_mask = 2
@@ -27,7 +27,7 @@ metadata/_edit_pinned_properties_ = [&"nickname"]
 position = Vector2(0, 2)
 shape = ExtResource("2_tbmub")
 
-[node name="AreaBody" type="Area2D" parent="."]
+[node name="AreaBody" type="Area2D" parent="." groups=["#fluid_spray_triggerible"]]
 collision_mask = 118
 metadata/_edit_group_ = true
 
@@ -44,7 +44,8 @@ metadata/_edit_pinned_properties_ = [&"filter_features"]
 root_path = NodePath("../..")
 
 [node name="AreaHead" type="Area2D" parent="."]
-collision_mask = 66
+collision_layer = 0
+collision_mask = 70
 metadata/_edit_group_ = true
 
 [node name="HShape" type="CollisionShape2D" parent="AreaHead"]

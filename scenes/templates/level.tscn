@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=11 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="Script" path="res://classes/nodes/scenes/level.gd" id="1_n7yi6"]
 [ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/#attachments/level_use/level_huds/level_hud.tscn" id="2_woqqe"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="7_7u4rv"]
 [ext_resource type="PackedScene" uid="uid://c7td81ydps6xl" path="res://objects/entities/bonuses/blocks/question_block.tscn" id="8_0x1pn"]
 [ext_resource type="Script" path="res://scenes/templates/ParallaxBackground.gd" id="9_xwexd"]
+[ext_resource type="PackedScene" uid="uid://djumoe8p3oqq8" path="res://objects/entities/bonuses/items/coin.tscn" id="10_o851u"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_n7yi6")
@@ -31,8 +32,24 @@ position = Vector2(80, 400)
 suit_id = &"fireball"
 
 [node name="QuestionBlock" parent="." instance=ExtResource("8_0x1pn")]
-position = Vector2(112, 336)
+position = Vector2(64, 304)
+transparent = true
+
+[node name="QuestionBlock2" parent="." instance=ExtResource("8_0x1pn")]
+position = Vector2(96, 304)
 transparent = true
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 script = ExtResource("9_xwexd")
+
+[node name="Coin" parent="." instance=ExtResource("10_o851u")]
+position = Vector2(256, 288)
+
+[node name="Coin2" parent="." instance=ExtResource("10_o851u")]
+position = Vector2(288, 288)
+
+[node name="Coin3" parent="." instance=ExtResource("10_o851u")]
+position = Vector2(320, 288)
+
+[node name="Coin4" parent="." instance=ExtResource("10_o851u")]
+position = Vector2(352, 288)

@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://cr7n0caqd2vxp" path="res://objects/entities/core/goal/#components/textures/goal_gate_pole.png" id="1_5cqhv"]
 [ext_resource type="Script" path="res://objects/entities/core/goal/#components/scripts/goal_gate_pole.gd" id="1_rc6mn"]
-[ext_resource type="PackedScene" uid="uid://d2yn6nm302yg1" path="res://objects/#components/scores_lives_adder/scores_lives_adder.tscn" id="3_wijrk"]
+[ext_resource type="PackedScene" uid="uid://d2yn6nm302yg1" path="res://objects/#components/player_data_adders/scores_adder.tscn" id="3_wijrk"]
 [ext_resource type="PackedScene" uid="uid://bj0eef13ohuuk" path="res://objects/#components/visibility_on_screen_emitter/visibility_on_screen_emitter.tscn" id="4_4ouqm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_14cvt"]
@@ -36,6 +36,6 @@ rect = Rect2(-24, -8, 48, 16)
 detected_screen_borders = 8
 metadata/_edit_pinned_properties_ = [&"detected_screen_borders"]
 
-[node name="ScoresLivesAdder" parent="." instance=ExtResource("3_wijrk")]
+[node name="ScoresAdder" parent="." instance=ExtResource("3_wijrk")]
 
 [connection signal="stayed_out_of_border" from="VisibilityOnScreenEmitter" to="." method="queue_free"]

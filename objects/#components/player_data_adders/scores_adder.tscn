@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2yn6nm302yg1"]
+
+[ext_resource type="Script" path="res://objects/#components/player_data_adders/scripts/scores_adder.gd" id="1_juu48"]
+
+[node name="ScoresAdder" type="Node"]
+process_mode = 4
+script = ExtResource("1_juu48")

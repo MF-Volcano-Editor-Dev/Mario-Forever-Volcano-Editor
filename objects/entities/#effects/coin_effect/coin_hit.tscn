@@ -1,0 +1,67 @@
+[gd_scene load_steps=12 format=3 uid="uid://bdap0tgrtlymf"]
+
+[ext_resource type="Texture2D" uid="uid://dhvpl7i7dcq2k" path="res://objects/entities/#effects/coin_effect/textures/coin_hit.png" id="1_7j73j"]
+[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/effect_creator/effect_creator.tscn" id="1_dgoki"]
+[ext_resource type="Script" path="res://objects/entities/#effects/coin_effect/scripts/coin_hit.gd" id="1_oi36b"]
+[ext_resource type="PackedScene" uid="uid://6mvok06rn8fq" path="res://objects/entities/#effects/explosions/explosion_coin.tscn" id="4_1t02n"]
+[ext_resource type="PackedScene" uid="uid://dpkc0xuier4xx" path="res://objects/#components/player_data_adders/coins_adder.tscn" id="5_mlrb1"]
+[ext_resource type="PackedScene" uid="uid://d2yn6nm302yg1" path="res://objects/#components/player_data_adders/scores_adder.tscn" id="6_g5uva"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sqmt0"]
+atlas = ExtResource("1_7j73j")
+region = Rect2(0, 84, 21, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ax1ip"]
+atlas = ExtResource("1_7j73j")
+region = Rect2(0, 0, 21, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i8beh"]
+atlas = ExtResource("1_7j73j")
+region = Rect2(0, 28, 21, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djdyj"]
+atlas = ExtResource("1_7j73j")
+region = Rect2(0, 56, 21, 28)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ccpr8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sqmt0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ax1ip")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i8beh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_djdyj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="CoinHit" type="Node2D"]
+script = ExtResource("1_oi36b")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ccpr8")
+autoplay = "default"
+
+[node name="EffectCreator" parent="." instance=ExtResource("1_dgoki")]
+visible = false
+effect = ExtResource("4_1t02n")
+metadata/_edit_pinned_properties_ = [&"effect"]
+
+[node name="CoinsAdder" parent="." instance=ExtResource("5_mlrb1")]
+
+[node name="ScoresAdder" parent="." instance=ExtResource("6_g5uva")]
+scores = 200
+metadata/_edit_pinned_properties_ = [&"scores"]
+
+[connection signal="coin_hit_ready" from="." to="CoinsAdder" method="add_coins"]
+[connection signal="coin_hit_started_falling" from="." to="." method="queue_free"]
+[connection signal="coin_hit_started_falling" from="." to="EffectCreator" method="create_effect"]
+[connection signal="coin_hit_started_falling" from="." to="ScoresAdder" method="add_score"]

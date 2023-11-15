@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://duaodttdyuc3w"]
 
-[ext_resource type="Script" path="res://objects/entities/#projectiles/balls/fireball/scripts/bouncy_balls.gd" id="1_mffmj"]
+[ext_resource type="Script" path="res://objects/entities/#projectiles/balls/scripts/bouncy_balls.gd" id="1_mffmj"]
 [ext_resource type="PackedScene" uid="uid://blrprhoebns4y" path="res://objects/#components/attacking_related/attacker.tscn" id="2_s754l"]
-[ext_resource type="Texture2D" uid="uid://d22algs2f3jie" path="res://objects/entities/#projectiles/balls/fireball/textures/fireball.png" id="3_68ea6"]
+[ext_resource type="Texture2D" uid="uid://d22algs2f3jie" path="res://objects/entities/#projectiles/balls/textures/fireball.png" id="3_68ea6"]
 [ext_resource type="Script" path="res://scripts/node2d/rotate_and_scale/rotate_and_scale.gd" id="4_6xjg7"]
 [ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/effect_creator/effect_creator.tscn" id="5_f8ste"]
 [ext_resource type="PackedScene" uid="uid://blrfy7o1fjev" path="res://objects/entities/#effects/explosions/explosion_fire.tscn" id="6_w2fji"]
@@ -11,7 +11,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_v54hu"]
 radius = 8.0
 
-[node name="Fireball" type="EntityBody2D" groups=["#fluid_spray_triggerible"]]
+[node name="Fireball" type="EntityBody2D"]
 damp_mode = true
 autobody = false
 gravity = 1250.0
@@ -23,7 +23,7 @@ script = ExtResource("1_mffmj")
 visible = false
 shape = SubResource("CircleShape2D_v54hu")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." groups=["#fluid_spray_triggerible"]]
 visible = false
 collision_layer = 4
 collision_mask = 37

@@ -35,9 +35,11 @@ static var player_coins: int:
 	set(value):
 		player_total_coins += value - player_coins
 		player_coins = value
-		while value > player_max_coins:
-			value -= player_max_coins
+		
+		while player_coins >= player_max_coins:
+			player_coins -= player_max_coins
 			signals.player_coins_reached_max.emit()
+		
 		signals.player_data_changed.emit(&"player_coins", player_coins)
 
 ## Total accumulation of [member player_coins] [br]

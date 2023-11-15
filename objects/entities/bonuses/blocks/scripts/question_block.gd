@@ -14,10 +14,12 @@ signal item_inserted
 signal item_empty
 
 @export_category("Question Block")
+@export_group("Items")
 ## Items in the block [br]
 ## [b]Caution!:[/b] It's [color=red]NOT ALLOWED[/code] to change this property; instead, if you
 ## want to insert new items, please call [method insert_item]
-@export var items: Array[BonusBlockItem]
+@export var items: Array[BonusBlockItem] = [preload("res://objects/entities/bonuses/items/bonus_block_items/bonus_coin.tres")]
+@export var items_inherit_transform: bool = true
 @export_group("Sounds", "sound_")
 
 var _amount: int
@@ -37,17 +39,30 @@ func hit(by_area: Area2D) -> void:
 		hit_animation(by_area)
 		_test_empty()
 	
-	# Remove invalid items
-	
-	
 	if _test_empty():
 		return
 	
 	hit_animation(by_area)
 	
-	var it := items[0].item.instantiate()
-	add_sibling(it)
+	# Creates item
+	var it := items[0].item.instantiate() as Node2D
+	if !it:
+		it.queue_free()
+		return
+	add_sibling.call_deferred(it)
+	get_parent().move_child.call_deferred(it, get_index() - 1)
+	it.global_position = global_position
 	
+	# Item's inheritance of transform
+	if items_inherit_transform:
+		it.global_transform = global_transform
+	
+	# Get item component
+	var cmp: Classes.ItemComponent = Process.get_child(it, Classes.ItemComponent)
+	if cmp:
+		cmp.hit_item_out()
+	
+	# Add 1 count
 	_amount += 1
 	if _amount >= items[0].amount:
 		_amount = 0 # Restore the amount count

@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://6mvok06rn8fq"]
+
+[ext_resource type="PackedScene" uid="uid://blrfy7o1fjev" path="res://objects/entities/#effects/explosions/explosion_fire.tscn" id="1_jft1i"]
+[ext_resource type="Texture2D" uid="uid://brfqeg0qwfr05" path="res://objects/entities/#effects/explosions/textures/coin_gained.png" id="2_nuajf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wyuqm"]
+atlas = ExtResource("2_nuajf")
+region = Rect2(0, 0, 35, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h2ga2"]
+atlas = ExtResource("2_nuajf")
+region = Rect2(0, 32, 35, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jhecp"]
+atlas = ExtResource("2_nuajf")
+region = Rect2(0, 64, 35, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrv7s"]
+atlas = ExtResource("2_nuajf")
+region = Rect2(0, 96, 35, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i7hjw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wyuqm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h2ga2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jhecp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrv7s")
+}],
+"loop": false,
+"name": &"default",
+"speed": 20.0
+}]
+
+[node name="ExplosionCoin" instance=ExtResource("1_jft1i")]
+sprite_frames = SubResource("SpriteFrames_i7hjw")
+metadata/_edit_pinned_properties_ = [&"sprite_frames"]

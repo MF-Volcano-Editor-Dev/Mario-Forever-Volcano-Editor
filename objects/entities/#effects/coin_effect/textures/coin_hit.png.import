@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d22algs2f3jie"
-path="res://.godot/imported/fireball.png-39dfc2d65f65f4736db823d58e6bad59.ctex"
+uid="uid://dhvpl7i7dcq2k"
+path="res://.godot/imported/coin_hit.png-2da2b6be5c279ff359cb654c99cdffe7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://objects/entities/#projectiles/balls/fireball/textures/fireball.png"
-dest_files=["res://.godot/imported/fireball.png-39dfc2d65f65f4736db823d58e6bad59.ctex"]
+source_file="res://objects/entities/#effects/coin_effect/textures/coin_hit.png"
+dest_files=["res://.godot/imported/coin_hit.png-2da2b6be5c279ff359cb654c99cdffe7.ctex"]
 
 [params]
 

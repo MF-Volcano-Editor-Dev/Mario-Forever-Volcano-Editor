@@ -5,11 +5,13 @@ signal effect_finished
 
 @export_category("Effect Creator")
 @export var effect: PackedScene
+@export_group("Visiblity Inheritance")
+@export_flags("Y Sort Enabled", "Z Index", "Z as Relative") var inheritances: int = 0b110
 
 @onready var root: Node2D = get_parent()
 
 
-func create_effect(times: int = 1, duration: float = 1) -> void:
+func create_effect(times: int = 1, interval: float = 1) -> void:
 	if !effect:
 		return
 	
@@ -20,10 +22,18 @@ func create_effect(times: int = 1, duration: float = 1) -> void:
 			return
 		
 		e = e as Node2D
-		root.add_sibling.call_deferred(e)
+		root.add_sibling(e)
 		e.global_transform = global_transform
 		
-		if times > 1 && duration > 0:
-			await get_tree().create_timer(duration).timeout
+		# Inheritance
+		if inheritances & 0b001 == 0b001:
+			e.y_sort_enabled = y_sort_enabled
+		if inheritances & 0b010 == 0b010:
+			e.z_index = z_index
+		if inheritances & 0b100 == 0b100:
+			e.z_as_relative = z_as_relative
+		
+		if times > 1 && interval > 0:
+			await get_tree().create_timer(interval).timeout
 	
 	effect_finished.emit()

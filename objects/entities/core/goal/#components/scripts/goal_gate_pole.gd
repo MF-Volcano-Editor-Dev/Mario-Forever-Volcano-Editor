@@ -13,7 +13,7 @@ const GoalGate := preload("../../scripts/goal_gate.gd")
 @onready var gate: GoalGate = $"../.."
 @onready var area: Area2D = $Area2D
 @onready var sprite: Sprite2D = $Sprite2D
-@onready var scores_lives_adder: Classes.ScoresLivesAdder = $ScoresLivesAdder
+@onready var scores_adder: Classes.ScoresAdder = $ScoresAdder
 
 var direction: int
 

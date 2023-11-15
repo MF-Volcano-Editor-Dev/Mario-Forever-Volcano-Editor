@@ -111,22 +111,8 @@ func get_suit() -> Classes.MarioSuit2D:
 
 #region Damage Controls
 ## Makes the character hurt [br]
-## tags:
-## [codeblock]
-## bool forced: If true, when the methods is called, the character will get hurt even though he is invulnerable
-##
-## int iterations: Determines the times to operate hurting process
-##
-## bool lose_hp: If true, even though the character will lose his hp regardless of his suit
-##
-## float duration: The duration of invulnerability after the character takes damage
-##
-## bool no_sound: If true, then there is not any sound played in hurting process
-##
-## int hp_loss: Determine how many HPs will an iteration cost
-## [/codeblock]
 func hurt() -> void:
-	if state_machine.is_state(&"no_hurt") || (get_meta(&"@@hurt_forced", false) && is_invulerable()):
+	if state_machine.is_state(&"no_hurt") || (!get_meta(&"@@hurt_forced", false) && is_invulerable()):
 		return
 	
 	var itr: int = get_meta(&"@@hurt_iterations", 1) # Iterations

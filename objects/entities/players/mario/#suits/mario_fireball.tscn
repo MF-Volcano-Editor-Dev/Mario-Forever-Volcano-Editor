@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bqljw565ywlho" path="res://objects/entities/players/mario/textures/mario_fireball.png" id="2_qqul5"]
 [ext_resource type="AnimationLibrary" uid="uid://h282hxx3cser" path="res://objects/entities/players/mario/animations/mario_animations_powerful.res" id="3_odwo2"]
 [ext_resource type="Script" path="res://objects/entities/players/mario/scripts/behaviors/mario_behavior_shootable.gd" id="4_ih858"]
-[ext_resource type="PackedScene" uid="uid://duaodttdyuc3w" path="res://objects/entities/#projectiles/bouncy_balls/fireball.tscn" id="5_cvm76"]
+[ext_resource type="PackedScene" uid="uid://duaodttdyuc3w" path="res://objects/entities/#projectiles/balls/fireball.tscn" id="5_cvm76"]
 [ext_resource type="AudioStream" uid="uid://c4wx7vkqy1cd4" path="res://assets/sounds/shoot.wav" id="5_qwa4a"]
 [ext_resource type="PackedScene" uid="uid://btu33kenxiu17" path="res://objects/entities/players/mario/#components/mario_projectile_initializer.tscn" id="6_ekqf8"]
 
