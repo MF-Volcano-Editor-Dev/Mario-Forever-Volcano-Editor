@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://ce8s22xbaifvj"]
 
 [ext_resource type="PackedScene" uid="uid://bvq8x1atfxyaq" path="res://objects/entities/players/mario/#suits/mario_small.tscn" id="1_kcx6m"]
-[ext_resource type="Texture2D" uid="uid://d2amp1pvo4bgo" path="res://objects/entities/players/mario/textures/mario_super.png" id="2_bq5g0"]
+[ext_resource type="Texture2D" uid="uid://d2amp1pvo4bgo" path="res://objects/entities/players/mario/textures/mario_big.png" id="4_b6od8"]
 [ext_resource type="Script" path="res://objects/entities/players/mario/scripts/mario_stuck_head.gd" id="4_kekdm"]
 [ext_resource type="AnimationLibrary" uid="uid://cyjjpsbcss3c2" path="res://objects/entities/players/mario/animations/mario_animations_big.res" id="4_r0ort"]
 [ext_resource type="AnimationLibrary" uid="uid://iroj22njmjkw" path="res://objects/entities/players/mario/animations/mario_shapes_big.res" id="6_vw258"]
@@ -29,14 +29,14 @@ shape = SubResource("RectangleShape2D_jpf4f")
 debug_color = Color(0.717647, 0.760784, 0.882353, 0.419608)
 
 [node name="Sprite2D" parent="." index="1"]
-texture = ExtResource("2_bq5g0")
+texture = ExtResource("4_b6od8")
 metadata/_edit_pinned_properties_ = [&"texture"]
 
 [node name="PosBubble" parent="Sprite2D" index="0"]
 position = Vector2(4, -6)
 metadata/_edit_pinned_properties_ = [&"position"]
 
-[node name="AnimationPlayer" parent="." index="3"]
+[node name="AnimationPlayer" parent="." index="2"]
 libraries = {
 "": ExtResource("4_r0ort")
 }

@@ -13,12 +13,13 @@ signal got_hit_side(by_area: Node2D)
 ## Emitted when the block gets hit from the top
 signal got_hit_top(by_area: Node2D)
 
+const DIAG := cos(PI/4)
+
 @export_category("Hittable Block")
 ## Decides the collision direction, affected by [member Node2D.global_rotation]
 @export var up_direction: Vector2 = Vector2.UP:
 	set(value):
 		up_direction = value.normalized()
-@export_group("Detector")
 ## Received types from [constant Classes.BlockHitter]
 @export var hitter_types: Array[StringName]
 @export_group("Visibility")
@@ -48,7 +49,7 @@ signal got_hit_top(by_area: Node2D)
 
 
 ## Called by [constant Classes.BlockHitter]
-func block_got_hit(area: Area2D, by: Classes.BlockHitter, direction: Vector2 = Vector2.ZERO) -> void:
+func block_got_hit(area: Area2D, by: Classes.BlockHitter, directions: int = 0b111) -> void:
 	if !area || !by:
 		return
 	
@@ -63,16 +64,14 @@ func block_got_hit(area: Area2D, by: Classes.BlockHitter, direction: Vector2 = V
 	
 	Sound.play_sound_2d(self, sound_hit)
 	
-	var dot := get_hitting_direction_dot_up(area) if !direction else direction.dot(up_direction.rotated(global_rotation))
-	var diag := cos(PI/4)
+	var dot := get_hitting_direction_dot_up(area)
 	
-	if dot > diag:
+	if dot > DIAG && (directions >> (1 - 1)) & 1:
 		got_hit_bottom.emit(area)
-	elif dot <= diag && dot >= -diag:
+	elif dot <= DIAG && dot >= -DIAG && (directions >> (2 - 1)) & 1:
 		got_hit_side.emit(area)
-	else:
+	elif (directions >> (3 - 1)) & 1:
 		got_hit_top.emit(area)
-
 
 ## Restore the block from being transparent
 func restore_from_transparency() -> void:
@@ -92,11 +91,10 @@ func hit_animation(by_area: Area2D) -> void:
 	
 	var dot := get_hitting_direction_dot_up(by_area)
 	var to := Vector2.ZERO
-	var diag := cos(PI/4)
 	
-	if dot > diag:
+	if dot > DIAG:
 		to = Vector2.UP * PIXELS
-	elif dot <= diag && dot >= -diag:
+	elif dot <= DIAG && dot >= -DIAG:
 		var dot_side := get_area_hitting_direction(by_area).dot(-up_direction.orthogonal())
 		if dot_side > 0:
 			to = Vector2.RIGHT * PIXELS
@@ -116,6 +114,6 @@ func get_area_hitting_direction(by_area: Node2D) -> Vector2:
 	return (global_position - by_area.global_position).normalized()
 
 
-func get_hitting_direction_dot_up(by_area: Node2D) -> float:
-	return get_area_hitting_direction(by_area).dot(up_direction.rotated(global_rotation))
+func get_hitting_direction_dot_up(by_area: Node2D, direction: Vector2 = Vector2.ZERO) -> float:
+	return get_area_hitting_direction(by_area).dot(up_direction.rotated(global_rotation)) if !direction else direction.normalized().dot(up_direction.rotated(global_rotation))
 #endregion

@@ -67,6 +67,7 @@ folder_colors={
 "res://objects/entities/#effects/coin_effect/textures/": "green",
 "res://objects/entities/#effects/explosions/scripts/": "green",
 "res://objects/entities/#effects/explosions/textures/": "green",
+"res://objects/entities/#effects/phantom/scripts/": "green",
 "res://objects/entities/#effects/scores_and_lives/scripts/": "green",
 "res://objects/entities/#effects/scores_and_lives/themes/": "green",
 "res://objects/entities/#effects/sprays/scripts/": "green",

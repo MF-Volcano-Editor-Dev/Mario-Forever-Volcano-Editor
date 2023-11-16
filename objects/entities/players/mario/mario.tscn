@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bv26woxthkhv6"]
+[gd_scene load_steps=16 format=3 uid="uid://bv26woxthkhv6"]
 
 [ext_resource type="Script" path="res://classes/nodes/entities/players/player_mario/class_mario_2d.gd" id="1_5eyu0"]
 [ext_resource type="Shape2D" uid="uid://tn4eg0suvft3" path="res://objects/entities/players/mario/shapes/shape_mario.tres" id="2_tbmub"]
@@ -8,9 +8,12 @@
 [ext_resource type="PackedScene" uid="uid://ce8s22xbaifvj" path="res://objects/entities/players/mario/#suits/mario_big.tscn" id="5_58ckd"]
 [ext_resource type="PackedScene" uid="uid://b1yixmaqbghc1" path="res://objects/entities/players/mario/#suits/mario_fireball.tscn" id="6_c83lr"]
 [ext_resource type="PackedScene" uid="uid://cm7b44s7rgoi2" path="res://objects/#components/block_hitter/block_hitter.tscn" id="6_tqwri"]
+[ext_resource type="PackedScene" uid="uid://dey30hchsth23" path="res://objects/entities/players/mario/#components/mario_block_hitter_limitator.tscn" id="7_m1og8"]
 [ext_resource type="AnimationLibrary" uid="uid://bfdws2coy4660" path="res://objects/entities/players/mario/animations/mario_shapes_small.res" id="8_7hmts"]
 [ext_resource type="AnimationLibrary" uid="uid://iroj22njmjkw" path="res://objects/entities/players/mario/animations/mario_shapes_big.res" id="8_kqcy4"]
 [ext_resource type="PackedScene" uid="uid://cprsxw7scpvfp" path="res://objects/#components/health_component/health_component.tscn" id="8_lkckb"]
+[ext_resource type="PackedScene" uid="uid://gf4yt3bc7i2w" path="res://objects/entities/players/mario/#suits/mario_beetroot.tscn" id="10_8lbkt"]
+[ext_resource type="PackedScene" uid="uid://bhwjiut76qsca" path="res://objects/entities/players/mario/#suits/mario_green_lui.tscn" id="11_f7k5a"]
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_e4qon"]
 
@@ -56,7 +59,12 @@ debug_color = Color(0, 0.647059, 0.247059, 0.419608)
 [node name="BlockHitter" parent="AreaHead" instance=ExtResource("6_tqwri")]
 hitter_targets = Array[StringName]([&"question"])
 hitter_features = Array[StringName]([&"bricks_breaker"])
-metadata/_edit_pinned_properties_ = [&"hitter_targets"]
+hittable_directions_from = 1
+metadata/_edit_pinned_properties_ = [&"hitter_targets", &"hitter_features", &"hittable_directions_from"]
+
+[node name="MarioBlockHitterLimitator" parent="AreaHead/BlockHitter" node_paths=PackedStringArray("mario") instance=ExtResource("7_m1og8")]
+mario = NodePath("../../..")
+metadata/_edit_pinned_properties_ = [&"mario"]
 
 [node name="MarioSmall" parent="." instance=ExtResource("4_sn5la")]
 process_mode = 4
@@ -66,6 +74,14 @@ process_mode = 4
 visible = false
 
 [node name="MarioFireball" parent="." instance=ExtResource("6_c83lr")]
+process_mode = 4
+visible = false
+
+[node name="MarioBeetroot" parent="." instance=ExtResource("10_8lbkt")]
+process_mode = 4
+visible = false
+
+[node name="MarioGreenLui" parent="." instance=ExtResource("11_f7k5a")]
 process_mode = 4
 visible = false
 

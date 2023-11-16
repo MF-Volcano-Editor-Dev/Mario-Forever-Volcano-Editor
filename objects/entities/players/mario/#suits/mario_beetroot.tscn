@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://gf4yt3bc7i2w"]
+
+[ext_resource type="PackedScene" uid="uid://b1yixmaqbghc1" path="res://objects/entities/players/mario/#suits/mario_fireball.tscn" id="1_xoe2c"]
+[ext_resource type="Texture2D" uid="uid://lcipgb26336x" path="res://objects/entities/players/mario/textures/mario_beetroot.png" id="2_c21ds"]
+
+[node name="MarioBeetroot" instance=ExtResource("1_xoe2c")]
+suit_id = &"beetroot"
+metadata/_edit_pinned_properties_ = [&"suit_id"]
+
+[node name="Sprite2D" parent="." index="1"]
+texture = ExtResource("2_c21ds")
+metadata/_edit_pinned_properties_ = [&"texture"]

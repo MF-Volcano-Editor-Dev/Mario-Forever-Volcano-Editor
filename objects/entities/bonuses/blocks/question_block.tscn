@@ -90,6 +90,7 @@ rect = Rect2(-16, -16, 32, 32)
 script = ExtResource("5_yuvy8")
 
 [connection signal="got_hit_bottom" from="." to="." method="hit"]
+[connection signal="got_hit_side" from="." to="." method="hit"]
 [connection signal="item_empty" from="." to="AnimatedSprite2D/Question" method="hide"]
 [connection signal="item_empty" from="." to="AnimatedSprite2D" method="play" binds= [&"done"]]
 [connection signal="item_inserted" from="." to="AnimatedSprite2D/Question" method="show"]
