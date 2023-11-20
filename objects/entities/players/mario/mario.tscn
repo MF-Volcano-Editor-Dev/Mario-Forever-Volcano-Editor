@@ -57,7 +57,7 @@ shape = ExtResource("3_tilld")
 debug_color = Color(0, 0.647059, 0.247059, 0.419608)
 
 [node name="BlockHitter" parent="AreaHead" instance=ExtResource("6_tqwri")]
-hitter_targets = Array[StringName]([&"question"])
+hitter_targets = Array[StringName]([&"question", &"bricks"])
 hitter_features = Array[StringName]([&"bricks_breaker"])
 hittable_directions_from = 1
 metadata/_edit_pinned_properties_ = [&"hitter_targets", &"hitter_features", &"hittable_directions_from"]

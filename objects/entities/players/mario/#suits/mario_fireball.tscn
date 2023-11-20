@@ -13,7 +13,7 @@ suit_id = &"fireball"
 down_suit_id = &"big"
 metadata/_edit_pinned_properties_ = [&"suit_id", &"down_suit_id"]
 
-[node name="Sprite2D" parent="." index="0"]
+[node name="Sprite2D" parent="." index="1"]
 texture = ExtResource("2_qqul5")
 hframes = 12
 metadata/_edit_pinned_properties_ = [&"texture", &"hframes"]
@@ -27,7 +27,7 @@ libraries = {
 "": ExtResource("3_odwo2")
 }
 
-[node name="Behavior" parent="." index="4"]
+[node name="Behavior" parent="." index="3"]
 script = ExtResource("4_ih858")
 key_attack = &"fire"
 projectile = ExtResource("5_cvm76")

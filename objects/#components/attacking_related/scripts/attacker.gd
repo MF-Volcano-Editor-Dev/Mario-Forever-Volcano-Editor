@@ -19,6 +19,7 @@ signal receiver_called_back(receiver: Classes.AttackReceiver)
 signal receiver_body_called_back(body: Node)
 
 @export_category("Attacker")
+@export var disabled: bool
 ## Id of the attacker
 @export var attacker_id: StringName
 ## Features of attacker, see the list above
@@ -44,7 +45,7 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	if attack_process_mode != 1:
+	if disabled || attack_process_mode != 1:
 		return
 	
 	for i: Classes.AttackReceiver in _attack_receivers:
@@ -58,12 +59,15 @@ func ignore_thrower_area(thrower_area: Area2D) -> void:
 
 
 func _act_with_receiver(receiver: Classes.AttackReceiver) -> void:
+	if disabled:
+		return
+	
 	hit_receiver.emit(receiver)
 	receiver._receive_attacker(self)
 
 
 func _act_with_attack_receiver(area: Area2D) -> void:
-	if area == root:
+	if disabled || area == root:
 		return
 	elif area in _ignored_thrower_areas:
 		_ignored_thrower_areas.erase(area)

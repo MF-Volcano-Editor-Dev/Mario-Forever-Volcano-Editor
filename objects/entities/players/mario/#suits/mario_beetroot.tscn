@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://gf4yt3bc7i2w"]
+[gd_scene load_steps=4 format=3 uid="uid://gf4yt3bc7i2w"]
 
 [ext_resource type="PackedScene" uid="uid://b1yixmaqbghc1" path="res://objects/entities/players/mario/#suits/mario_fireball.tscn" id="1_xoe2c"]
 [ext_resource type="Texture2D" uid="uid://lcipgb26336x" path="res://objects/entities/players/mario/textures/mario_beetroot.png" id="2_c21ds"]
+[ext_resource type="PackedScene" uid="uid://cf7uecdc8j8yi" path="res://objects/entities/#projectiles/bumpers/beetroot.tscn" id="3_imhpw"]
 
 [node name="MarioBeetroot" instance=ExtResource("1_xoe2c")]
 suit_id = &"beetroot"
@@ -10,3 +11,12 @@ metadata/_edit_pinned_properties_ = [&"suit_id"]
 [node name="Sprite2D" parent="." index="1"]
 texture = ExtResource("2_c21ds")
 metadata/_edit_pinned_properties_ = [&"texture"]
+
+[node name="Behavior" parent="." index="3"]
+projectile = ExtResource("3_imhpw")
+shooting_id = &"beetroot"
+metadata/_edit_pinned_properties_ = [&"projectile", &"shooting_id"]
+
+[node name="MarioProjectileInitializer" parent="Behavior" index="0"]
+velocity_value = Vector2(120, -200)
+metadata/_edit_pinned_properties_ = [&"velocity_value"]

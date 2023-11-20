@@ -1,5 +1,8 @@
 extends Component
 
+## Emitted when the body hits a hittable block
+signal hit_block(block: Classes.HittableBlock)
+
 @export_category("Block Hitter")
 @export var disabled: bool
 ## Hitter's types
@@ -27,3 +30,4 @@ func _on_hit_hittable_block(area: Area2D) -> void:
 	var block := area.get_parent()
 	if block is Classes.HittableBlock:
 		block.block_got_hit(root, self, hittable_directions_from)
+		hit_block.emit(block)

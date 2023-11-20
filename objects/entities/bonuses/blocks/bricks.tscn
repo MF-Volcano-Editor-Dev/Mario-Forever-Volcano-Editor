@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://c2lhj362v10x8"]
+
+[ext_resource type="Script" path="res://objects/entities/bonuses/blocks/scripts/bricks.gd" id="1_hw0nt"]
+[ext_resource type="Texture2D" uid="uid://ywqttprl0bpd" path="res://objects/entities/bonuses/blocks/textures/bricks.png" id="2_xuivh"]
+[ext_resource type="Script" path="res://scripts/node2d/visible_on_screen/hidden_visible_on_screen.gd" id="3_i51bv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kf1g5"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hib2p"]
+size = Vector2(30, 30)
+
+[node name="Bricks" type="AnimatableBody2D"]
+collision_layer = 10
+collision_mask = 0
+script = ExtResource("1_hw0nt")
+hitter_types = Array[StringName]([&"bricks"])
+metadata/_edit_pinned_properties_ = [&"hitter_types"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_kf1g5")
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+collision_layer = 10
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_hib2p")
+debug_color = Color(1, 0, 0.12549, 0.419608)
+
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["#hittable_block_sprite"]]
+texture = ExtResource("2_xuivh")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+visible = false
+rect = Rect2(-16, -16, 32, 32)
+script = ExtResource("3_i51bv")
+
+[connection signal="biricks_got_hit" from="." to="." method="hit_animation"]
+[connection signal="bricks_broken" from="." to="." method="queue_free"]
+[connection signal="bricks_broken" from="." to="." method="bricks_scraps"]
+[connection signal="got_hit_bottom" from="." to="." method="bricks_breaks"]
+[connection signal="got_hit_side" from="." to="." method="bricks_breaks"]
+[connection signal="got_hit_top" from="." to="." method="bricks_breaks"]

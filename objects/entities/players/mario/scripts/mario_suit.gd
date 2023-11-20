@@ -5,6 +5,7 @@ extends Node2D
 
 # #mario_shapes
 
+@export_category("Mario Suit")
 @export_group("General")
 ## Id of the suit, also used in [member Mario2D][br]
 ## [b]Note:[/b] This is used for suit registeration, see [member Mario2D.suit_id]
@@ -14,7 +15,7 @@ extends Node2D
 @export var down_suit_id: StringName = &""
 ## Features of the suit, effects some of the results of [member behavior][br]
 ## Use "," to separate each features and use "_" to take the place if space
-@export var suit_features: String = ""
+@export var suit_features: Array[StringName] = [&""]
 @export_group("Shape Lib")
 ## Name of the suit's shape lib
 @export var shape_lib_name: StringName

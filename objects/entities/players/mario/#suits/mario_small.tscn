@@ -8,7 +8,7 @@
 
 [node name="MarioSmall" type="Node2D"]
 script = ExtResource("1_6xnmu")
-suit_features = "small"
+suit_features = Array[StringName]([&"small", &"bricks_unbreakable"])
 shape_lib_name = &"small"
 shape_lib = ExtResource("6_4c35d")
 metadata/_edit_pinned_properties_ = [&"suit_features", &"shape_lib", &"shape_lib_name"]

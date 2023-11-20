@@ -70,11 +70,15 @@ folder_colors={
 "res://objects/entities/#effects/phantom/scripts/": "green",
 "res://objects/entities/#effects/scores_and_lives/scripts/": "green",
 "res://objects/entities/#effects/scores_and_lives/themes/": "green",
+"res://objects/entities/#effects/scraps/scripts/": "green",
+"res://objects/entities/#effects/scraps/textures/": "green",
 "res://objects/entities/#effects/sprays/scripts/": "green",
 "res://objects/entities/#effects/sprays/textures/": "green",
 "res://objects/entities/#projectiles/": "yellow",
 "res://objects/entities/#projectiles/balls/scripts/": "green",
 "res://objects/entities/#projectiles/balls/textures/": "green",
+"res://objects/entities/#projectiles/bumpers/scripts/": "green",
+"res://objects/entities/#projectiles/bumpers/textures/": "green",
 "res://objects/entities/bonuses/blocks/scripts/": "green",
 "res://objects/entities/bonuses/blocks/scripts/#resources/": "green",
 "res://objects/entities/bonuses/blocks/textures/": "green",
@@ -192,6 +196,5 @@ fire1={
 
 textures/canvas_textures/default_texture_filter=0
 gl_compatibility/driver.windows="opengl3_angle"
-gl_compatibility/driver.macos="opengl3_angle"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

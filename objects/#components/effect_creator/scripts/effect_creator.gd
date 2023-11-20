@@ -26,11 +26,11 @@ func create_effect(times: int = 1, interval: float = 1) -> void:
 		e.global_transform = global_transform
 		
 		# Inheritance
-		if inheritances & 0b001 == 0b001:
+		if (inheritances >> 0) & 1:
 			e.y_sort_enabled = y_sort_enabled
-		if inheritances & 0b010 == 0b010:
+		if (inheritances >> 1) & 1:
 			e.z_index = z_index
-		if inheritances & 0b100 == 0b100:
+		if (inheritances >> 2) & 1:
 			e.z_as_relative = z_as_relative
 		
 		if times > 1 && interval > 0:

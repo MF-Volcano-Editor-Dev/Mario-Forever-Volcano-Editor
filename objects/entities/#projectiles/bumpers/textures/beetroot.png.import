@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqt8tx3d0khlt"
-path="res://.godot/imported/brick_scrap.png-9b8467596c80d0e13c67ef420199fcc4.ctex"
+uid="uid://bckcojvpe6m5l"
+path="res://.godot/imported/beetroot.png-817d7ac0b239148a2be32e17aa67b2b7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://objects/entities/#effects/explosions/textures/brick_scrap.png"
-dest_files=["res://.godot/imported/brick_scrap.png-9b8467596c80d0e13c67ef420199fcc4.ctex"]
+source_file="res://objects/entities/#projectiles/bumpers/textures/beetroot.png"
+dest_files=["res://.godot/imported/beetroot.png-817d7ac0b239148a2be32e17aa67b2b7.ctex"]
 
 [params]
 

@@ -27,11 +27,10 @@ layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970,
 
 [node name="Mario" parent="." instance=ExtResource("7_7u4rv")]
 position = Vector2(80, 400)
+suit_id = &"beetroot"
 
 [node name="QuestionBlock" parent="." instance=ExtResource("8_0x1pn")]
 position = Vector2(144, 304)
-transparent = true
 
 [node name="QuestionBlock2" parent="." instance=ExtResource("8_0x1pn")]
 position = Vector2(176, 304)
-transparent = true

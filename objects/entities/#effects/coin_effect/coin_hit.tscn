@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://bdap0tgrtlymf"]
+[gd_scene load_steps=13 format=3 uid="uid://bdap0tgrtlymf"]
 
 [ext_resource type="Texture2D" uid="uid://dhvpl7i7dcq2k" path="res://objects/entities/#effects/coin_effect/textures/coin_hit.png" id="1_7j73j"]
 [ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/effect_creator/effect_creator.tscn" id="1_dgoki"]
 [ext_resource type="Script" path="res://objects/entities/#effects/coin_effect/scripts/coin_hit.gd" id="1_oi36b"]
 [ext_resource type="PackedScene" uid="uid://6mvok06rn8fq" path="res://objects/entities/#effects/explosions/explosion_coin.tscn" id="4_1t02n"]
 [ext_resource type="PackedScene" uid="uid://dpkc0xuier4xx" path="res://objects/#components/player_data_adders/coins_adder.tscn" id="5_mlrb1"]
+[ext_resource type="PackedScene" uid="uid://c5v1uu38sp0wd" path="res://objects/#components/item_component/item_component.tscn" id="5_wuvs1"]
 [ext_resource type="PackedScene" uid="uid://d2yn6nm302yg1" path="res://objects/#components/player_data_adders/scores_adder.tscn" id="6_g5uva"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sqmt0"]
@@ -55,6 +56,10 @@ visible = false
 effect = ExtResource("4_1t02n")
 metadata/_edit_pinned_properties_ = [&"effect"]
 
+[node name="ItemComponent" parent="." instance=ExtResource("5_wuvs1")]
+sound_item = null
+metadata/_edit_pinned_properties_ = [&"sound_item"]
+
 [node name="CoinsAdder" parent="." instance=ExtResource("5_mlrb1")]
 
 [node name="ScoresAdder" parent="." instance=ExtResource("6_g5uva")]
@@ -65,3 +70,4 @@ metadata/_edit_pinned_properties_ = [&"scores"]
 [connection signal="coin_hit_started_falling" from="." to="." method="queue_free"]
 [connection signal="coin_hit_started_falling" from="." to="EffectCreator" method="create_effect"]
 [connection signal="coin_hit_started_falling" from="." to="ScoresAdder" method="add_score"]
+[connection signal="item_hit_out" from="ItemComponent" to="." method="_on_item_hit_out"]

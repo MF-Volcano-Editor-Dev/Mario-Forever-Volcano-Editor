@@ -1,0 +1,79 @@
+[gd_scene load_steps=11 format=3 uid="uid://cf7uecdc8j8yi"]
+
+[ext_resource type="Script" path="res://objects/entities/#projectiles/bumpers/scripts/bumper.gd" id="1_ica54"]
+[ext_resource type="PackedScene" uid="uid://blrprhoebns4y" path="res://objects/#components/attacking_related/attacker.tscn" id="2_etsno"]
+[ext_resource type="PackedScene" uid="uid://cm7b44s7rgoi2" path="res://objects/#components/block_hitter/block_hitter.tscn" id="3_byuko"]
+[ext_resource type="Script" path="res://objects/entities/#projectiles/bumpers/scripts/beetroot.gd" id="3_vqjtn"]
+[ext_resource type="Texture2D" uid="uid://bckcojvpe6m5l" path="res://objects/entities/#projectiles/bumpers/textures/beetroot.png" id="4_lygfd"]
+[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/effect_creator/effect_creator.tscn" id="5_2f4au"]
+[ext_resource type="PackedScene" uid="uid://blrfy7o1fjev" path="res://objects/entities/#effects/explosions/explosion_fire.tscn" id="6_ep7c6"]
+[ext_resource type="PackedScene" uid="uid://bj0eef13ohuuk" path="res://objects/#components/visibility_on_screen_emitter/visibility_on_screen_emitter.tscn" id="7_bfby1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8vwms"]
+size = Vector2(16, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jq6hu"]
+size = Vector2(20, 28)
+
+[node name="Beetroot" type="EntityBody2D"]
+autobody = false
+gravity = 800.0
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("1_ica54")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_8vwms")
+
+[node name="Area2D" type="Area2D" parent="." groups=["#fluid_spray_triggerible"]]
+visible = false
+collision_layer = 4
+collision_mask = 45
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_jq6hu")
+debug_color = Color(0.956863, 0.211765, 0, 0.419608)
+
+[node name="Attacker" parent="Area2D" instance=ExtResource("2_etsno")]
+attacker_id = &"beetroot"
+attacker_features = Array[StringName]([&"stunner"])
+root_path = NodePath("..")
+metadata/_edit_pinned_properties_ = [&"attacker_id", &"root_path", &"attacker_features"]
+
+[node name="Beetroot" type="Node" parent="Area2D" node_paths=PackedStringArray("beetroot")]
+script = ExtResource("3_vqjtn")
+beetroot = NodePath("../..")
+metadata/_edit_pinned_properties_ = [&"beetroot"]
+
+[node name="BlockHitter" parent="Area2D" instance=ExtResource("3_byuko")]
+hitter_targets = Array[StringName]([&"bricks", &"question"])
+hitter_features = Array[StringName]([&"bricks_breaker"])
+metadata/_edit_pinned_properties_ = [&"hitter_targets", &"hitter_features"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -8)
+texture = ExtResource("4_lygfd")
+
+[node name="EffectCreator" parent="." instance=ExtResource("5_2f4au")]
+gizmo_extents = 4.0
+effect = ExtResource("6_ep7c6")
+metadata/_edit_pinned_properties_ = [&"effect"]
+
+[node name="VisibilityOnScreenEmitter" parent="." instance=ExtResource("7_bfby1")]
+visible = false
+detected_screen_borders = 11
+metadata/_edit_pinned_properties_ = [&"detected_screen_borders"]
+
+[connection signal="collided_ceiling" from="." to="." method="turn_wall"]
+[connection signal="collided_ceiling" from="." to="EffectCreator" method="create_effect"]
+[connection signal="collided_floor" from="." to="." method="turn_wall"]
+[connection signal="collided_floor" from="." to="EffectCreator" method="create_effect"]
+[connection signal="collided_wall" from="." to="." method="turn_wall"]
+[connection signal="collided_wall" from="." to="EffectCreator" method="create_effect"]
+[connection signal="run_out" from="." to="Area2D/Attacker" method="queue_free"]
+[connection signal="run_out" from="." to="Area2D/BlockHitter" method="queue_free"]
+[connection signal="receiver_called_back" from="Area2D/Attacker" to="." method="bump" binds= [false]]
+[connection signal="stayed_out_of_border" from="VisibilityOnScreenEmitter" to="." method="queue_free"]

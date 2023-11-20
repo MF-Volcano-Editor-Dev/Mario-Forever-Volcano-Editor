@@ -20,7 +20,6 @@ signal item_empty
 ## want to insert new items, please call [method insert_item]
 @export var items: Array[BonusBlockItem] = [preload("res://objects/entities/bonuses/items/bonus_block_items/bonus_coin.tres")]
 @export var items_inherit_transform: bool = true
-@export_group("Sounds", "sound_")
 
 var _amount: int
 
@@ -32,7 +31,7 @@ func _ready() -> void:
 
 ## Makes the block got hit, and if no items in the block,
 ## the sprite (AnimatedSprite2D) will play [b]"done"[/b] animation
-func hit(by_area: Area2D) -> void:
+func hit(by_area: Area2D, by: Classes.BlockHitter) -> void:
 	# Restore transparency
 	if transparent:
 		restore_from_transparency()
@@ -60,7 +59,7 @@ func hit(by_area: Area2D) -> void:
 	# Get item component
 	var cmp: Classes.ItemComponent = Process.get_child(it, Classes.ItemComponent)
 	if cmp:
-		cmp.hit_item_out()
+		cmp.hit_item_out.call_deferred(get_hitting_out_direction(by_area, by.hittable_directions_from))
 	
 	# Add 1 count
 	_amount += 1

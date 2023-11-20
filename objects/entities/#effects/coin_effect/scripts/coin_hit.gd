@@ -16,9 +16,7 @@ signal coin_hit_started_falling
 
 
 func _ready() -> void:
-	Sound.play_sound_2d(self, sound_coin)
-	
-	coin_hit_ready.emit()
+	_on_item_hit_out(Vector2.ZERO)
 
 
 func _process(delta: float) -> void:
@@ -27,3 +25,12 @@ func _process(delta: float) -> void:
 	
 	if speed_y > 0:
 		coin_hit_started_falling.emit()
+
+
+func _on_item_hit_out(hitting_direction: Vector2) -> void:
+	Sound.play_sound_2d(self, sound_coin)
+	
+	if hitting_direction:
+		global_rotation += hitting_direction.rotated(PI/2).angle()
+	
+	coin_hit_ready.emit()
