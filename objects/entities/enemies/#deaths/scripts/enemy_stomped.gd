@@ -12,7 +12,7 @@ func _ready() -> void:
 		await get_tree().create_timer(disappear_delay, false).timeout
 		
 		var tw: Tween = create_tween().set_trans(Tween.TRANS_SINE)
-		tw.tween_property(self, "modulate:a", 0, 0.25)
+		tw.tween_property(self, ^"modulate:a", 0, 0.25)
 		
 		await tw.finished
 		

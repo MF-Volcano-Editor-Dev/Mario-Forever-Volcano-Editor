@@ -3,7 +3,8 @@ extends Component
 ## Emitted when the solid detection succeeds and both solid bodies are face-to-face
 signal detected_solid_body
 
-var _direction: int
+@export_category("Solid Detector")
+@export var solid_group: StringName
 
 
 func _ready() -> void:
@@ -22,7 +23,6 @@ func _body_solid_detect(area: Area2D) -> void:
 	for i: Node in area.get_children():
 		if i == self:
 			continue
-		elif i is Classes.SolidDetector:
-			if i._direction * _direction <= 0:
-				detected_solid_body.emit()
+		elif i is Classes.SolidDetector && i.solid_group == solid_group:
+			detected_solid_body.emit()
 			break

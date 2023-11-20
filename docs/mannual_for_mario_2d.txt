@@ -1,0 +1,46 @@
+About animations in AnimationShape in Mario's scene:
+	There is only two libraries for the animation player AnimationShape:
+	> small: Animations to control shapes in small-sized suits
+	> big: Animations to control ones in grown-sized suits
+	--------------------------------------------------------------------
+	In each library, only two animations exists there:
+	> RESET: To control shapes when Mario is NOT crouching
+	> crouch: To control shapes when Mario IS crouching down
+	--------------------------------------------------------------------
+	An AnimationPlayer is used to control properties of a node or nodes in the dock of the editor, providing direct visual access to them in the track(s) of a property, which makes freshmen easier to edit these properties in different states of an object
+============================================================================
+About MarioSuit2D's `suit_feature`:
+	> small: 
+		With this feature, mario will NOT be able to crouch via pressing down. If the project setting "game/control/player/crouchable_in_small_suit" is true, mario will be able to crouch down in this suit
+	> bricks_unbreakable:
+		With this feature, mario will NOT be able to break bricks blocks
+============================================================================
+States in Mario2D's `state_machine`:
+	> no_hurt:
+		Mario will NOT be able to get any hurt, which means that `hurt()` method will lead to call-to-return calling
+	> no_death:
+		Mario will NOT be able to go to death when `die()` is called
+	> no_crouching:
+		Mario will NOT be able to crouch down
+	> no_walking:
+		Mario will NOT be able to walk
+	> no_jumping:
+		Mario will NOT be able to jump or swim
+	> is_climbable:
+		When the action "climbing" gets pressed, mario will climb on an object
+	> climbing:
+		Mario is climbing
+	> underwater:
+		Mario is underwater, also meaning that mario is able to swim
+	> underwater_jumpout:
+		While Mario is underwater, if the head is out of the surface of it, he can jump out of the liquid
+	> control_ignored:
+		Every control will be ignored, this is useful when mario has completed a level or is entering and exiting from a pipe warping
+	> level_finished:
+		Mario has finished the level
+============================================================================
+About adding and removing an extra suit for Mario:
+	1. Make a suit component. MarioSmall in Mario can be a good template for you, or you can extend an inheritance from it
+	2. After the completion of the suit you made, drag it under the node Mario
+	3. Set the `process_mode` to "Disabled" and disable its visibility
+	4. If you want to remove the extra suits, just select and delete them

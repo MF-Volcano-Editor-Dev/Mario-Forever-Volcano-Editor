@@ -1,5 +1,8 @@
 extends EntityBody2D
 
+## Emitted when the body bumps
+signal bumped
+
 ## Emitted when the bumping times runs out
 signal run_out
 
@@ -9,6 +12,10 @@ signal run_out
 		bumping_times = clampi(value, 0, 50)
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var bumping_bouncing_speed: float = 300
 @export_range(1, 20, 0.001, "or_greater", "suffix:s") var duration: float = 10
+@export_group("Physics")
+@export_subgroup("Bouncing Damp", "bouncing_damp_")
+@export var bouncing_damp: bool
+@export_range(0, 10, 0.001, "suffix:x") var bouncing_damp_factor: float = 0.8
 @export_group("Sounds", "sound_")
 @export var sound_bumping: AudioStream = preload("res://assets/sounds/stun.wav")
 
@@ -18,7 +25,7 @@ func _ready() -> void:
 	collided_ceiling.connect(bump)
 	collided_wall.connect(bump)
 	
-	get_tree().create_timer(duration).timeout.connect(
+	get_tree().create_timer(duration, false).timeout.connect(
 		func() -> void:
 			var tw := create_tween()
 			tw.tween_property(self, ^"modulate:a", 0, 0.25)
@@ -43,3 +50,8 @@ func bump(sound: bool = true) -> void:
 		jump(bumping_bouncing_speed)
 	elif is_on_ceiling():
 		velocity.y = 0
+	
+	if bouncing_damp:
+		velocity.x *= bouncing_damp_factor
+	
+	bumped.emit()

@@ -24,9 +24,9 @@ shape = SubResource("CircleShape2D_t77gg")
 texture = ExtResource("2_lo4rt")
 script = ExtResource("1_3484a")
 accordance = NodePath("..")
+rotation_direction_path = "velocity:x"
 rotation_speed = 600.0
-rotation_direction_accordance = "velocity:x"
-metadata/_edit_pinned_properties_ = [&"accordance", &"rotation_speed", &"rotation_direction_accordance"]
+metadata/_edit_pinned_properties_ = [&"accordance", &"rotation_speed", &"rotation_direction_path"]
 
 [node name="VisibilityOnScreenEmitter" parent="." instance=ExtResource("3_3uyu6")]
 visible = false

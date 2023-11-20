@@ -19,10 +19,10 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	var left: bool = detected_screen_borders & 0b0001 == 0b0001
-	var right: bool = detected_screen_borders & 0b0010 == 0b0010
-	var top: bool = detected_screen_borders & 0b01000 == 0b0100
-	var bottom: bool = detected_screen_borders & 0b1000 == 0b1000
+	var left: bool = bool(detected_screen_borders >> 0 & 1)
+	var right: bool = bool(detected_screen_borders >> 1 & 1)
+	var top: bool = bool(detected_screen_borders >> 2 & 1)
+	var bottom: bool = bool(detected_screen_borders >> 3 & 1)
 	
 	var canvas_pos := get_global_transform_with_canvas().get_origin()
 	var viewsize := get_viewport_rect().size

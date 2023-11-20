@@ -52,7 +52,7 @@ collision_mask = 70
 metadata/_edit_group_ = true
 
 [node name="HShape" type="CollisionShape2D" parent="AreaHead"]
-position = Vector2(0, -14)
+position = Vector2(0, -13)
 shape = ExtResource("3_tilld")
 debug_color = Color(0, 0.647059, 0.247059, 0.419608)
 

@@ -151,7 +151,7 @@ func set_rest_time(value: int) -> void:
 	if _scoring && rest_time == 0:
 		interval.stop()
 		
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(1, false).timeout
 		
 		if current_level:
 			current_level.remove_object_to_wait_finish(self)

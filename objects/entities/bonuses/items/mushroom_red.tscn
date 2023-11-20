@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://8n547aqrg05l"]
+
+[ext_resource type="Script" path="res://scripts/entity_bodies_2d/general_moving_body.gd" id="1_nro5u"]
+[ext_resource type="PackedScene" uid="uid://d1fmdqb4xt82a" path="res://objects/#components/solid_detector/solid_detector.tscn" id="2_6a6nm"]
+[ext_resource type="Texture2D" uid="uid://4b2h8vjvj6t6" path="res://objects/entities/bonuses/items/textures/mushroom_red.png" id="2_676en"]
+[ext_resource type="PackedScene" uid="uid://c7ybmtwsq38ci" path="res://objects/#components/item_component/item_appearing.tscn" id="3_dev6q"]
+[ext_resource type="Script" path="res://scripts/node2d/visible_on_screen/hidden_visible_on_screen.gd" id="4_efs04"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p1hfx"]
+size = Vector2(32, 32)
+
+[node name="MushroomRed" type="EntityBody2D"]
+speed = 100.0
+gravity = 1250.0
+collision_layer = 4
+collision_mask = 8
+script = ExtResource("1_nro5u")
+initial_moving_direction = 1
+metadata/_edit_pinned_properties_ = [&"initial_moving_direction"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("RectangleShape2D_p1hfx")
+
+[node name="Area2D" type="Area2D" parent="." groups=["#fluid_spray_triggerible"]]
+visible = false
+collision_layer = 4
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_p1hfx")
+debug_color = Color(1, 0, 0.129412, 0.419608)
+
+[node name="SolidDetector" parent="Area2D" instance=ExtResource("2_6a6nm")]
+solid_group = &"item"
+metadata/_edit_pinned_properties_ = [&"solid_group"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_676en")
+
+[node name="ItemAppearing" parent="." instance=ExtResource("3_dev6q")]
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+visible = false
+rect = Rect2(-16, -16, 32, 32)
+script = ExtResource("4_efs04")
+
+[connection signal="collided_wall" from="." to="." method="turn_wall"]
+[connection signal="detected_solid_body" from="Area2D/SolidDetector" to="." method="turn_wall"]
+[connection signal="item_appeared" from="ItemAppearing" to="." method="update_direction"]

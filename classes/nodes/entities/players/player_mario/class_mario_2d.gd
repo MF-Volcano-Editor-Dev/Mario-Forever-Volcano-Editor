@@ -145,10 +145,10 @@ func hurt() -> void:
 				var tw := create_tween().set_loops(10).set_trans(Tween.TRANS_SINE).set_parallel(true)
 				var g := modulate.g
 				var b := modulate.b
-				tw.tween_property(self, "modulate:g", 0.1, 0.05)
-				tw.tween_property(self, "modulate:b", 0.1, 0.05)
-				tw.chain().tween_property(self, "modulate:g", g, 0.05)
-				tw.chain().tween_property(self, "modulate:b", b, 0.05)
+				tw.tween_property(self, ^"modulate:g", 0.1, 0.05)
+				tw.tween_property(self, ^"modulate:b", 0.1, 0.05)
+				tw.chain().tween_property(self, ^"modulate:g", g, 0.05)
+				tw.chain().tween_property(self, ^"modulate:b", b, 0.05)
 			else:
 				_invulnerability = null
 				die()

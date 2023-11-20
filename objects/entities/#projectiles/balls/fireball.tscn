@@ -41,10 +41,10 @@ metadata/_edit_pinned_properties_ = [&"attacker_id", &"root_path"]
 texture = ExtResource("3_68ea6")
 script = ExtResource("4_6xjg7")
 accordance = NodePath("..")
-scale_x_accordance = "velocity:x"
+scale_x_path = "velocity:x"
+rotation_direction_path = "velocity:x"
 rotation_speed = 562.5
-rotation_direction_accordance = "velocity:x"
-metadata/_edit_pinned_properties_ = [&"accordance", &"rotation_speed", &"rotation_direction_accordance"]
+metadata/_edit_pinned_properties_ = [&"accordance", &"rotation_speed", &"rotation_direction_path", &"scale_x_path"]
 
 [node name="EffectCreator" parent="." instance=ExtResource("5_f8ste")]
 gizmo_extents = 4.0

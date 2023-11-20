@@ -13,14 +13,15 @@ const EnemyAttackReceiver := preload("res://objects/#components/enemy_related/sc
 const EnemyBody := preload("res://objects/#components/enemy_related/scripts/enemy_body.gd")
 const HealthComponent := preload("res://objects/#components/health_component/scripts/health_component.gd")
 const ItemComponent := preload("res://objects/#components/item_component/scripts/item_component.gd")
+const ItemAppearing := preload("res://objects/#components/item_component/scripts/item_appearing.gd")
 const LivesAdder := preload("res://objects/#components/player_data_adders/scripts/lives_adder.gd")
 const PropertyUpdater := preload("res://objects/#components/property_updater/scripts/property_updater.gd")
 const ScoresAdder := preload("res://objects/#components/player_data_adders/scripts/scores_adder.gd")
 const SolidDetector := preload("res://objects/#components/solid_detector/scripts/solid_detector.gd")
 #endregion
 
-
 #region Objects
 const Coin := preload("res://objects/entities/bonuses/items/scripts/coin.gd")
 const HittableBlock := preload("res://objects/entities/bonuses/blocks/scripts/hittable_block.gd")
 const MarioSuit2D := preload("res://objects/entities/players/mario/scripts/mario_suit.gd")
+#endregion

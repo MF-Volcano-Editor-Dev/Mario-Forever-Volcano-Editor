@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=15 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="Script" path="res://classes/nodes/scenes/level.gd" id="1_n7yi6"]
 [ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/#attachments/level_use/level_huds/level_hud.tscn" id="2_woqqe"]
@@ -8,6 +8,20 @@
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="6_un4yr"]
 [ext_resource type="PackedScene" uid="uid://bv26woxthkhv6" path="res://objects/entities/players/mario/mario.tscn" id="7_7u4rv"]
 [ext_resource type="PackedScene" uid="uid://c7td81ydps6xl" path="res://objects/entities/bonuses/blocks/question_block.tscn" id="8_0x1pn"]
+[ext_resource type="PackedScene" uid="uid://8n547aqrg05l" path="res://objects/entities/bonuses/items/mushroom_red.tscn" id="9_g5vec"]
+[ext_resource type="Texture2D" uid="uid://dhvpl7i7dcq2k" path="res://objects/entities/#effects/coin_effect/textures/coin_hit.png" id="10_y4l3n"]
+[ext_resource type="Script" path="res://objects/entities/bonuses/blocks/scripts/#resources/bonus_block_item.gd" id="11_dolke"]
+[ext_resource type="PackedScene" uid="uid://bsk7rwrwav6ym" path="res://objects/entities/enemies/goombas/goomba.tscn" id="12_ooiqo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y5tv0"]
+atlas = ExtResource("10_y4l3n")
+region = Rect2(0, 84, 21, 28)
+
+[sub_resource type="Resource" id="Resource_0qrgt"]
+script = ExtResource("11_dolke")
+item = ExtResource("9_g5vec")
+amount = 1
+preview = SubResource("AtlasTexture_y5tv0")
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_n7yi6")
@@ -34,3 +48,7 @@ position = Vector2(144, 304)
 
 [node name="QuestionBlock2" parent="." instance=ExtResource("8_0x1pn")]
 position = Vector2(176, 304)
+items = Array[ExtResource("11_dolke")]([SubResource("Resource_0qrgt")])
+
+[node name="Goomba" parent="." instance=ExtResource("12_ooiqo")]
+position = Vector2(368, 400)

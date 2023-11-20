@@ -71,11 +71,12 @@ shape = SubResource("RectangleShape2D_raq80")
 debug_color = Color(1, 0, 0.129412, 0.419608)
 
 [node name="SolidDetector" parent="Area2D" instance=ExtResource("2_bpjd0")]
+solid_group = &"enemy"
+metadata/_edit_pinned_properties_ = [&"solid_group"]
 
 [node name="EnemyAttackReceiver" parent="Area2D" instance=ExtResource("3_xloyj")]
-filter_features = Array[StringName]([&"player"])
-filter_feature_mode = 0
-metadata/_edit_pinned_properties_ = [&"filter_feature_mode", &"filter_features"]
+filter_features = Array[StringName]([&"enemy"])
+metadata/_edit_pinned_properties_ = [&"filter_features"]
 
 [node name="EnemyBodyStompable" parent="Area2D" instance=ExtResource("4_bo2eb")]
 root_path = NodePath("..")

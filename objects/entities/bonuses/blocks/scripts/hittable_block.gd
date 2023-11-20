@@ -105,8 +105,8 @@ func hit_animation(by_area: Area2D) -> void:
 	
 	if sprite:
 		var tw := create_tween().set_trans(Tween.TRANS_SINE)
-		tw.tween_property(sprite, "position", sprite_pos + to, 0.1)
-		tw.tween_property(sprite, "position", sprite_pos, 0.1)
+		tw.tween_property(sprite, ^"position", sprite_pos + to, 0.1)
+		tw.tween_property(sprite, ^"position", sprite_pos, 0.1)
 
 
 #region Getters

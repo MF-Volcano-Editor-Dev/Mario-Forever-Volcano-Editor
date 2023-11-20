@@ -7,7 +7,7 @@ func _enter_tree() -> void:
 	if !start_scene:
 		printerr("Lack of start scene, the game will quit for 3 seconds!")
 		
-		await get_tree().create_timer(3).timeout
+		await get_tree().create_timer(3, false).timeout
 		
 		get_tree().quit()
 		return

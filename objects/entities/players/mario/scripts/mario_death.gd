@@ -37,10 +37,10 @@ func _ready() -> void:
 	Sound.play_sound(self, sound_death)
 	
 	set_process(false)
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.5, false).timeout
 	set_process(true)
 	
-	await get_tree().create_timer(emission_await).timeout
+	await get_tree().create_timer(emission_await, false).timeout
 	player_death_finished.emit()
 	queue_free()
 

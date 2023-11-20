@@ -446,7 +446,7 @@ func _body_detection_process() -> void:
 	
 	for i: Area2D in ova:
 		# Fluid
-		if i is AreaFluid2D && &"#swimmable" in i.fluid_features:
+		if i is AreaFluid2D && &"swimmable" in i.fluid_features:
 			adpr[0] += 1
 		# Climable Area
 		if i.is_in_group(&"#climbable"):
@@ -492,7 +492,7 @@ func _head_detection_process() -> void:
 	
 	for i: Area2D in ova:
 		# Fluid
-		if i is AreaFluid2D && i.is_in_group(&"#player_swimmable"):
+		if i is AreaFluid2D && &"swimmable" in i.fluid_features:
 			adpr[0] += 1
 	
 	if adpr[0]:

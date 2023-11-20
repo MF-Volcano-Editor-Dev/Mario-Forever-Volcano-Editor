@@ -1,5 +1,6 @@
 extends Component
 
+@export_category("Beetroot Underwater")
 @export var beetroot: EntityBody2D
 
 @onready var attacker: Classes.Attacker = $"../Attacker"

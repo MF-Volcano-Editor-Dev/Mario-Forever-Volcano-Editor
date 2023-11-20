@@ -34,6 +34,6 @@ func create_effect(times: int = 1, interval: float = 1) -> void:
 			e.z_as_relative = z_as_relative
 		
 		if times > 1 && interval > 0:
-			await get_tree().create_timer(interval).timeout
+			await get_tree().create_timer(interval, false).timeout
 	
 	effect_finished.emit()

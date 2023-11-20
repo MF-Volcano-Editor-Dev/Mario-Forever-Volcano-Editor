@@ -71,4 +71,4 @@ func bricks_scraps(sound: bool = true) -> void:
 		var scrp := scrps[j]
 		add_sibling.call_deferred(scrp)
 		scrp.global_transform = global_transform.translated_local(broken_scraps_offset[j])
-		scrp.velocity = broken_scraps_velocity[j]
+		scrp.global_velocity = broken_scraps_velocity[j].rotated(global_rotation)

@@ -35,8 +35,8 @@ func _ready() -> void:
 			
 			if phantom_tween:
 				var tw: Tween = ph.create_tween()
-				tw.tween_property(ph, "modulate:a", 0, phantom_duration_alpha_tween)
+				tw.tween_property(ph, ^"modulate:a", 0, phantom_duration_alpha_tween)
 				tw.finished.connect(ph.queue_free)
 			else:
-				get_tree().create_timer(phantom_duration_without_tween).timeout.connect(ph.queue_free)
+				get_tree().create_timer(phantom_duration_without_tween, false).timeout.connect(ph.queue_free)
 	)

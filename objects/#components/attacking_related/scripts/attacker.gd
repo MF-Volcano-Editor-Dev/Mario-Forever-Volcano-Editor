@@ -15,9 +15,6 @@ signal hit_receiver(receiver: Classes.AttackReceiver)
 ## Emitted when the receiver send callback
 signal receiver_called_back(receiver: Classes.AttackReceiver)
 
-## Emitted when the body of receiver send callback
-signal receiver_body_called_back(body: Node)
-
 @export_category("Attacker")
 @export var disabled: bool
 ## Id of the attacker
