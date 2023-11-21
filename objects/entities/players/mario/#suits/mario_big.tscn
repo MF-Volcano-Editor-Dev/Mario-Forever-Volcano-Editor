@@ -11,11 +11,12 @@ size = Vector2(16, 24)
 
 [node name="MarioBig" instance=ExtResource("1_kcx6m")]
 suit_id = &"big"
+suit_level = 1
 down_suit_id = &"small"
 suit_features = Array[StringName]([])
 shape_lib_name = &"big"
 shape_lib = ExtResource("6_vw258")
-metadata/_edit_pinned_properties_ = [&"suit_id", &"down_suit_id", &"suit_features", &"shape_lib_name", &"shape_lib"]
+metadata/_edit_pinned_properties_ = [&"suit_id", &"down_suit_id", &"suit_features", &"shape_lib_name", &"shape_lib", &"suit_level"]
 
 [node name="AreaStuckHead" type="Area2D" parent="." index="0"]
 collision_layer = 0

@@ -1,4 +1,4 @@
-extends EntityBody2D
+extends "./simple_entity_movement.gd"
 
 @export_category("General Moving Body")
 @export_enum("None", "Look at Player") var initial_moving_direction: int
@@ -6,10 +6,6 @@ extends EntityBody2D
 
 func _ready() -> void:
 	await update_direction()
-
-
-func _physics_process(_delta: float) -> void:
-	move_and_slide()
 
 
 func update_direction() -> void:

@@ -8,8 +8,9 @@
 
 [node name="MarioGreenLui" instance=ExtResource("1_ul2yd")]
 suit_id = &"green_lui"
+suit_level = 2
 down_suit_id = &"big"
-metadata/_edit_pinned_properties_ = [&"suit_id", &"down_suit_id"]
+metadata/_edit_pinned_properties_ = [&"suit_id", &"down_suit_id", &"suit_level"]
 
 [node name="Sprite2D" parent="." index="1"]
 texture = ExtResource("2_1xdf6")

@@ -20,5 +20,3 @@ shape = SubResource("RectangleShape2D_kkrcc")
 [node name="Sprite2D" type="Sprite2D" parent="." index="2"]
 texture = ExtResource("2_7s14w")
 offset = Vector2(0.5, 0)
-
-[connection signal="disappeared" from="." to="." method="queue_free"]

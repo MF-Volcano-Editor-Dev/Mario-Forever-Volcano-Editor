@@ -14,7 +14,6 @@ enum FilterModes {
 
 ## Temporary reference to attacker.gd
 @export_category("Attack Receiver")
-@export var disabled: bool
 @export_group("Filter")
 @export_subgroup("IDs")
 ## Filters the attackers with ids listed in this property

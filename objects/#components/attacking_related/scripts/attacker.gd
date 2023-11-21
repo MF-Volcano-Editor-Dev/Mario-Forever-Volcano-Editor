@@ -16,7 +16,6 @@ signal hit_receiver(receiver: Classes.AttackReceiver)
 signal receiver_called_back(receiver: Classes.AttackReceiver)
 
 @export_category("Attacker")
-@export var disabled: bool
 ## Id of the attacker
 @export var attacker_id: StringName
 ## Features of attacker, see the list above

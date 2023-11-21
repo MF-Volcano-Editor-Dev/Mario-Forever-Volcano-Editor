@@ -4,8 +4,6 @@ extends Classes.HealthComponent
 signal touched_body(body: Node2D)
 
 @export_category("Enemy Body")
-@export_group("Detection")
-@export var disabled: bool
 @export_group("Delay")
 @export_range(0, 20, 0.001, "suffix:s") var detection_delay: float = 0.08
 

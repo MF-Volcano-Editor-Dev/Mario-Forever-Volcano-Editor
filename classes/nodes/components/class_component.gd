@@ -6,6 +6,8 @@ class_name Component extends Node
 ##
 
 ## [NodePath] to the root node
+@export_category("Component")
+@export var disabled: bool
 @export var root_path: NodePath = ^".."
 
 ## Root node in [Node] type by [member root_path] from the component

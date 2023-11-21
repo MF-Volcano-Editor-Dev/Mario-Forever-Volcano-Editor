@@ -8,12 +8,14 @@ const Scores := preload("res://objects/entities/#effects/scores_and_lives/scores
 @export var sound_score: AudioStream
 
 
-func add_score() -> void:
+func add_score(with_text: bool = true) -> void:
 	Data.add_scores(scores)
 	
 	if root is Node2D:
 		Sound.play_sound_2d(root, sound_score)
-		var scr := Scores.instantiate()
-		root.add_sibling.call_deferred(scr)
-		scr.global_position = root.global_position
-		scr.set_display(scores)
+		
+		if with_text:
+			var scr := Scores.instantiate()
+			root.add_sibling.call_deferred(scr)
+			scr.global_position = root.global_position
+			scr.set_display(scores)

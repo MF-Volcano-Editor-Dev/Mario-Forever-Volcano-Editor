@@ -10,6 +10,10 @@ extends Node2D
 ## Id of the suit, also used in [member Mario2D][br]
 ## [b]Note:[/b] This is used for suit registeration, see [member Mario2D.suit_id]
 @export var suit_id: StringName = &"small"
+## Level of the suit, used to check if the character is able to
+## change to a powerful suit when touching a powerup [br]
+## Lower level of the suit will lead to low level suit when getting a powered item
+@export_range(-10, 10, 1) var suit_level: int
 ## The [member suit_id] of the suit when the player gets hurt [br]
 ## If this is empty, the character will die when getting damaged
 @export var down_suit_id: StringName = &""

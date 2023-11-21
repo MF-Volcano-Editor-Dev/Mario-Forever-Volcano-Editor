@@ -1,7 +1,7 @@
 [gd_scene load_steps=16 format=3 uid="uid://bsk7rwrwav6ym"]
 
-[ext_resource type="Script" path="res://scripts/entity_bodies_2d/general_moving_body.gd" id="1_26oad"]
 [ext_resource type="Texture2D" uid="uid://by3uk7jcvyall" path="res://objects/entities/enemies/goombas/textures/goomba.png" id="1_kfcy0"]
+[ext_resource type="Script" path="res://scripts/entity_bodies_2d/general_entity_movement.gd" id="1_vl720"]
 [ext_resource type="PackedScene" uid="uid://d1fmdqb4xt82a" path="res://objects/#components/solid_detector/solid_detector.tscn" id="2_bpjd0"]
 [ext_resource type="PackedScene" uid="uid://cr78xayjmo18a" path="res://objects/#components/enemy_related/enemy_attack_receiver.tscn" id="3_xloyj"]
 [ext_resource type="PackedScene" uid="uid://b452cgnosh3xd" path="res://objects/#components/enemy_related/enemy_body_stompable.tscn" id="4_bo2eb"]
@@ -53,7 +53,7 @@ speed = 50.0
 gravity = 1250.0
 collision_layer = 4
 collision_mask = 8
-script = ExtResource("1_26oad")
+script = ExtResource("1_vl720")
 initial_moving_direction = 1
 metadata/_edit_pinned_properties_ = [&"initial_moving_direction"]
 

@@ -4,7 +4,6 @@ extends Component
 signal hit_block(block: Classes.HittableBlock)
 
 @export_category("Block Hitter")
-@export var disabled: bool
 ## Hitter's types
 @export var hitter_targets: Array[StringName]
 ## Features of the hitter
