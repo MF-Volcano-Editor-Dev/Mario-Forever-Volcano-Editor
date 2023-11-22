@@ -23,6 +23,9 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if _player.state_machine.is_state(&"no_hurt"):
+		return
+	
 	if _removed_crouching && !get_overlapping_bodies().is_empty():
 		_removed_crouching = false
 		

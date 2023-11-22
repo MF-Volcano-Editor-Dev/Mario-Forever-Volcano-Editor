@@ -12,6 +12,8 @@ signal powerup_got
 @export var beneth_suit_id: StringName = &"big"
 ## ID of the suit that the character's current suit level is greater or equal than [baseline_suit_level]
 @export var line_suit_id: StringName = &"big"
+## If a character touches the powerup, his suit will be [member line_suit_id] no matther which suit level the current suit of him is
+@export var force_line_suit: bool
 @export_group("Sounds", "sound_")
 @export var sound_item: AudioStream = preload("res://assets/sounds/power_up.wav")
 

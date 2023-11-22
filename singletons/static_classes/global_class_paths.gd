@@ -22,8 +22,14 @@ const ScoresAdder := preload("res://objects/#components/player_data_adders/scrip
 const SolidDetector := preload("res://objects/#components/solid_detector/scripts/solid_detector.gd")
 #endregion
 
+#region Attachments
+const LevelCamera := preload("res://objects/#attachments/level_use/level_view/camera/scripts/level_camera.gd")
+#endregion
+
 #region Objects
 const Coin := preload("res://objects/entities/bonuses/items/scripts/coin.gd")
 const HittableBlock := preload("res://objects/entities/bonuses/blocks/scripts/hittable_block.gd")
 const MarioSuit2D := preload("res://objects/entities/players/mario/scripts/mario_suit.gd")
+const PipeEntrance := preload("res://objects/entities/warps/scripts/pipe_entrance.gd")
+const PipeExit := preload("res://objects/entities/warps/scripts/pipe_exit.gd")
 #endregion

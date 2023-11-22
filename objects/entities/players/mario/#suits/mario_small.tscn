@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvq8x1atfxyaq"]
+[gd_scene load_steps=7 format=3 uid="uid://bvq8x1atfxyaq"]
 
 [ext_resource type="Script" path="res://objects/entities/players/mario/scripts/mario_suit.gd" id="1_6xnmu"]
 [ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://objects/entities/players/mario/textures/mario_small.png" id="4_m41gs"]
+[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/effect_creator/effect_creator.tscn" id="4_oobob"]
 [ext_resource type="AnimationLibrary" uid="uid://dr7xgiofekxps" path="res://objects/entities/players/mario/animations/mario_animations_small.res" id="5_uhqkc"]
 [ext_resource type="AnimationLibrary" uid="uid://bfdws2coy4660" path="res://objects/entities/players/mario/animations/mario_shapes_small.res" id="6_4c35d"]
 [ext_resource type="PackedScene" uid="uid://cjwp2krmh5qx5" path="res://objects/entities/players/mario/#components/mario_behavior.tscn" id="7_r45j1"]
@@ -19,7 +20,7 @@ texture = ExtResource("4_m41gs")
 hframes = 13
 metadata/_edit_group_ = true
 
-[node name="PosBubble" type="Marker2D" parent="Sprite2D"]
+[node name="PosBubble" parent="Sprite2D" instance=ExtResource("4_oobob")]
 position = Vector2(4, 16)
 gizmo_extents = 4.0
 

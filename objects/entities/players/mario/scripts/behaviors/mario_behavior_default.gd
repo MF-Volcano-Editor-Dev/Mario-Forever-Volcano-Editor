@@ -76,8 +76,6 @@ var _start_animations: bool # Used to defer the animation process for 1 frame at
 var _pos_delta: Vector2 # Used to prevent mario colliding with a wall from playing walking animation when pressing the key towards the wall
 
 # These are controlled keys
-var _left_right: int # Key direction horizontal
-var _up_down: int # Key direction vertical
 var _jumped: bool # True only if the jumping key is pressed and not being held
 var _jumping: bool # True when holding jumping key
 var _jumped_already: bool # True when not close jumping and holding jumping key, prevent from continuous jump by holding the key
@@ -139,6 +137,13 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(delta: float) -> void:
+	# Warping
+	# Written here to make sure the state is updated
+	_warping_process()
+	
+	if mario.state_machine.is_state(&"no_physics"):
+		return
+	
 	_pos_delta = mario.global_position
 	
 	if mario.state_machine.is_state(&"climbing"):
@@ -163,8 +168,11 @@ func _control_states_process() -> void:
 	var ctrlable := !mario.state_machine.is_state(&"control_ignored") # Controllable
 	
 	# Basic controls
-	_left_right = int(Input.get_axis(_get_key_input(key_left), _get_key_input(key_right))) if ctrlable else 0
-	_up_down = int(Input.get_axis(_get_key_input(key_up), _get_key_input(key_down))) if ctrlable else 0
+	mario.set_key_direction(
+		Vector2i
+		(int(Input.get_axis(_get_key_input(key_left), _get_key_input(key_right))) if ctrlable else 0,
+		int(Input.get_axis(_get_key_input(key_up), _get_key_input(key_down))) if ctrlable else 0)
+	)
 	_jumped = Input.is_action_just_pressed(_get_key_input(key_jump)) if ctrlable else false
 	_jumping = Input.is_action_pressed(_get_key_input(key_jump)) if ctrlable else false
 	_running = Input.is_action_pressed(_get_key_input(key_run)) if ctrlable else false
@@ -198,7 +206,7 @@ func _movement_crouching_process() -> void:
 	
 	var sm: bool = "small" in suit.suit_features # Small
 	var crbl: bool = (_crouchable_in_small_suit && sm) || !sm # Crouchable
-	var ofd: bool = _up_down > 0 && mario.is_on_floor() # On floor down
+	var ofd: bool = mario.get_key_direction().y > 0 && mario.is_on_floor() # On floor down
 	
 	if ofd && crbl:
 		if !mario.state_machine.is_state(&"crouching"):
@@ -214,8 +222,9 @@ func _movement_x_process() -> void:
 		return
 	
 	# Deceleration
-	var isdc: int = _is_decelerating() # Is deceleration
-	var dc: float = deceleration if isdc == 1 else \
+	var lr: int = mario.get_key_direction().x
+	var isdc := _is_decelerating() # Is deceleration
+	var dc := deceleration if isdc == 1 else \
 		deceleration_crouching if isdc == 2 else \
 		deceleration_crouching_moving # Deceleration
 	if isdc:
@@ -223,11 +232,11 @@ func _movement_x_process() -> void:
 		return
 	
 	# Initial speed
-	if _left_right != 0 && mario.speed == 0:
-		mario.direction = _left_right
+	if lr != 0 && mario.speed == 0:
+		mario.direction = lr
 		mario.speed = initial_walking_speed * mario.direction
 	# Acceleration
-	elif _left_right * signf(mario.speed) > 0:
+	elif lr * signf(mario.speed) > 0:
 		var isrn: bool = _is_running() && !mario.state_machine.is_state(&"underwater") # Is running
 		var cw: bool = _walkable_when_crouching && mario.state_machine.is_state(&"crouching") # Crouchwalk
 		var wf: float = 0.1 if cw else 1.0 # Walking factor
@@ -246,7 +255,7 @@ func _movement_x_process() -> void:
 		elif abs(mario.speed) > abs(ms):
 			mario.accelerate_speed(deceleration_overspeed, ms)
 	# Turning back
-	elif _left_right * signf(mario.speed) < 0:
+	elif lr * signf(mario.speed) < 0:
 		mario.accelerate_speed(turning_aceleration, 0)
 		mario.state_machine.set_state(&"turning")
 		
@@ -310,16 +319,20 @@ func _movement_climb_process() -> void:
 		mario.state_machine.remove_state(&"climbing")
 		return
 	
+	var dir: Vector2i = mario.get_key_direction()
+	var lr: int = dir.x
+	var ud: int = dir.y
+	
 	# Direction correcting
-	if _left_right != 0:
-		mario.direction = _left_right
+	if lr != 0:
+		mario.direction = lr
 	
 	# Velocity
-	mario.velocity = (Vector2(_left_right, _up_down).normalized() if _left_right || _up_down else Vector2.ZERO) * climbing_speed
+	mario.velocity = (Vector2(dir).normalized() if lr || ud else Vector2.ZERO) * climbing_speed
 	mario.speed = 0
 	
 	# Jumping from climbing
-	if _is_jumpable() && _up_down >= 0:
+	if _is_jumpable() && ud >= 0:
 		_jumped_already = true
 		Sound.play_sound_2d(mario, sound_jump)
 		mario.jump(initial_jumping_speed)
@@ -331,12 +344,13 @@ func _movement_climbing_physics_process(delta: float) -> void:
 	if !is_equal_approx(mario.global_rotation, gr):
 		mario.global_rotation = lerp_angle(mario.global_rotation, gr, 22.5 * delta)
 	
+	var ud: int = mario.get_key_direction().y
 	var c := mario.move_and_collide(mario.global_velocity * delta)
 	if c: 
 		mario.global_velocity = mario.global_velocity.slide(c.get_normal())
 		
 		# Stop the character from climbing when touching the ground by pressing down key
-		if _up_down > 0:
+		if ud > 0:
 			var rg := mario.test_move(mario.global_transform, -mario.up_direction)
 			if rg && mario.state_machine.is_state(&"climbing"):
 				mario.state_machine.remove_state(&"climbing")
@@ -344,13 +358,14 @@ func _movement_climbing_physics_process(delta: float) -> void:
 
 #region Test for Movement
 func _is_decelerating() -> int:
-	var dc: bool = _left_right == 0 # Decelerating
+	var lr: int = mario.get_key_direction().x
+	var dc: bool = lr == 0 # Decelerating
 	var cronly: bool = mario.state_machine.is_state(&"crouching") && !_walkable_when_crouching # Crouching only
 	
 	if dc:
 		return 1
 	elif cronly:
-		if !_left_right:
+		if !lr:
 			return 2
 		else:
 			return 3
@@ -372,12 +387,33 @@ func _reset_jumping_already() -> void:
 #endregion
 
 
+#region Warping
+func _warping_process() -> void:
+	if !mario.state_machine.is_state(&"warping"):
+		return
+	
+	# Animations & Shapes
+	var wdir := mario.get_meta(&"warp_dir", 0) as int
+	match wdir:
+		1:
+			animation.play(&"crouch")
+			mario.set_shape_state(suit.shape_lib_name, &"crouch")
+		-1:
+			animation.play(&"jump")
+		2, -2:
+			animation.play(&"walk")
+			animation.speed_scale = 2
+			mario.direction = signi(wdir)
+#endregion
+
+
 #region Animations
 func _animation_process(delta: float) -> void:
 	animation.speed_scale = 1
 	sprite.scale.x = mario.direction
 	
-	if animation.current_animation in [&"appear", &"attack"]:
+	# Block normal animation playing
+	if animation.current_animation in [&"appear", &"attack"] || mario.state_machine.is_state(&"warping"):
 		return
 	
 	# Climbing
@@ -513,14 +549,4 @@ func _on_getting_damage(attacker: Classes.Attacker) -> void:
 	
 	if &"enemy" in attacker.attacker_features:
 		mario.hurt()
-#endregion
-
-
-#region Setters & Getters
-func get_left_right() -> int:
-	return _left_right
-
-
-func get_up_down() -> int:
-	return _up_down
 #endregion

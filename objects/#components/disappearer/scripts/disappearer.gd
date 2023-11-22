@@ -9,8 +9,6 @@ signal disappeared
 @export_group("Disability")
 @export_flags("Process", "Physics Process") var disable_root_processes: int = 0b11
 
-var _stop_delete: bool
-
 
 func disappear_transparent() -> void:
 	if disabled || !root is Node2D:
@@ -18,10 +16,7 @@ func disappear_transparent() -> void:
 	
 	_disable_processes_on_root()
 	
-	var tw: Tween = root.create_tween().set_trans(Tween.TRANS_SINE)
-	tw.tween_property(root, ^"modulate:a", 0, duration)
-	
-	await tw.finished
+	await Effects2D.transparentize(root, duration).finished
 	
 	disappeared.emit()
 	_delete()
@@ -33,12 +28,7 @@ func disappear_swirl() -> void:
 	
 	_disable_processes_on_root()
 	
-	var rt: float = root.rotation
-	var tw: Tween = root.create_tween().set_trans(Tween.TRANS_SINE).set_parallel(true)
-	tw.tween_property(root, ^"rotation", rt + [TAU, -TAU].pick_random(), duration)
-	tw.tween_property(root, ^"modulate:a", 0, duration)
-	
-	await tw.finished
+	await Effects2D.swirl_and_transparentize(root, duration, TAU).finished
 	
 	disappeared.emit()
 	_delete()
@@ -50,40 +40,22 @@ func disappear_swirl_down() -> void:
 	
 	_disable_processes_on_root()
 	
-	var rt: float = root.rotation
-	var tw: Tween = root.create_tween().set_trans(Tween.TRANS_SINE).set_parallel(true)
-	tw.tween_property(root, ^"rotation", rt + [TAU, -TAU].pick_random(), duration)
-	tw.tween_property(root, ^"scale", Vector2.ZERO, duration)
-	
-	await tw.finished
+	await Effects2D.swirl_down(root, duration, TAU).finished
 	
 	disappeared.emit()
 	_delete()
 
 
-func disappear_jump(height: float = 64) -> void:
+func disappear_slime(height: float = 64) -> void:
 	if disabled || !root is Node2D:
 		return
 	
 	_disable_processes_on_root()
 	
-	var pos: Vector2 = root.position
-	var scl: Vector2 = root.scale
-	var dir: Vector2 = Vector2.UP.rotated(root.rotation)
-	var tw: Tween = root.create_tween().set_parallel(true)
-	tw.tween_property(root, ^"position", pos + dir * height, duration / 2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tw.tween_property(root, ^"scale", scl * 1.25 * Vector2(1, 1.25), duration / 2).set_trans(Tween.TRANS_SINE)
-	tw.chain().tween_property(root, ^"position", pos, duration / 2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	tw.tween_property(root, ^"scale", Vector2(0, 0.5), duration / 2).set_trans(Tween.TRANS_SINE)
-	
-	await tw.finished
+	await Effects2D.slime(root, duration, height).finished
 	
 	disappeared.emit()
 	_delete()
-
-
-func stop_disappearance() -> void:
-	_stop_delete = true
 
 
 func _disable_processes_on_root() -> void:
@@ -98,9 +70,6 @@ func _disable_processes_on_root() -> void:
 
 func _delete() -> void:
 	if !root:
-		return
-	elif _stop_delete:
-		_stop_delete = false
 		return
 	
 	if delete_deeply:

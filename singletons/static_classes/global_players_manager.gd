@@ -2,12 +2,16 @@ class_name PlayersManager
 
 ## Static class to manage players
 ##
-##
+## [b]Note:[/b] Some methods that removes the player(s) from the scene tree
+## will NOT delete the state of him and his information in the players list,
+## which means that you have to use some methods to manually handle these data.
+## One of the good exercises is calling methods in Scenes when you need to 
 
 static var _players: Array[EntityPlayer2D]
 
 
 #region Players Registerations
+## Register a player into a players list
 static func register(player: EntityPlayer2D) -> void:
 	if !is_instance_valid(player):
 		return
@@ -18,11 +22,17 @@ static func register(player: EntityPlayer2D) -> void:
 	_players.append(player)
 
 
+## Removes a player from the list
 static func unregister(id: int) -> void:
 	if _players[id] != null:
 		return
 	
 	_players[id] = null
+
+
+## Removes all players from the list
+static func unregister_all() -> void:
+	_players.clear()
 #endregion
 
 

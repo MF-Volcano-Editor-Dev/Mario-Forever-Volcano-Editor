@@ -21,6 +21,7 @@ config/icon="res://icon.svg"
 
 Game="*res://singletons/scripts/Game.gd"
 Developer="*res://singletons/scripts/Developer.gd"
+Scenes="*res://singletons/scripts/Scenes.gd"
 
 [display]
 
@@ -94,6 +95,7 @@ folder_colors={
 "res://objects/entities/core/goal/textures/": "green",
 "res://objects/entities/enemies/#components/": "yellow",
 "res://objects/entities/enemies/#deaths/": "yellow",
+"res://objects/entities/enemies/#deaths/scripts/": "green",
 "res://objects/entities/enemies/goombas/#components/": "yellow",
 "res://objects/entities/enemies/goombas/scripts/": "green",
 "res://objects/entities/enemies/goombas/textures/": "green",
@@ -103,7 +105,9 @@ folder_colors={
 "res://objects/entities/players/mario/animations/": "orange",
 "res://objects/entities/players/mario/scripts/": "green",
 "res://objects/entities/players/mario/shapes/": "orange",
-"res://objects/entities/players/mario/textures/": "green"
+"res://objects/entities/players/mario/textures/": "green",
+"res://objects/entities/warps/scripts/": "green",
+"res://objects/entities/warps/textures/": "green"
 }
 
 [filesystem]

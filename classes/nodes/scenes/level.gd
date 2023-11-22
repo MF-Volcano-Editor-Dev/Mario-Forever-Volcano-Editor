@@ -75,12 +75,8 @@ func _on_level_finished() -> void:
 	
 	# Try changing the scene
 	if scene_after_finish:
-		# Remove player nodes from the tree first
-		for j: EntityPlayer2D in players:
-			j.state_machine.remove_multiple_states.call_deferred([&"no_hurt", &"control_ignored", &"level_finished"])
-		PlayersManager.remove_all_players()
-		# Change the scene
-		get_tree().change_scene_to_packed.call_deferred(scene_after_finish)
+		# Changes the scene
+		Scenes.jump_to_scene_packed(scene_after_finish)
 	else:
 		printerr("[Scene Changing Error] The scene to be warped to is invalid or not set yet!")
 	

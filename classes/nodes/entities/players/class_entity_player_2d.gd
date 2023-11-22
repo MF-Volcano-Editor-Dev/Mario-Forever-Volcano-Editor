@@ -45,6 +45,9 @@ signal got_death
 ## [StateMachine] for the player
 var state_machine: StateMachine = StateMachine.new()
 
+## Key direction of the player
+var _key_direction: Vector2i
+
 @onready var _default_process_mode: ProcessMode = process_mode
 
 
@@ -85,4 +88,12 @@ func die() -> void:
 ## especially the [Mario2D] when changing the suit
 func set_character_id(new_character_id: StringName) -> void:
 	character_id = new_character_id
+
+
+func set_key_direction(value: Vector2i) -> void:
+	_key_direction = value.clamp(-Vector2i.ONE, Vector2i.ONE)
+
+
+func get_key_direction() -> Vector2i:
+	return _key_direction
 #endregion

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://8n547aqrg05l"]
+[gd_scene load_steps=11 format=3 uid="uid://8n547aqrg05l"]
 
 [ext_resource type="Script" path="res://scripts/entity_bodies_2d/general_entity_movement.gd" id="1_ewykf"]
 [ext_resource type="PackedScene" uid="uid://d1fmdqb4xt82a" path="res://objects/#components/solid_detector/solid_detector.tscn" id="2_6a6nm"]
@@ -7,7 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://dm12p8i1plglc" path="res://objects/entities/bonuses/items/#components/powerup.tscn" id="3_oi5ll"]
 [ext_resource type="Script" path="res://scripts/node2d/visible_on_screen/hidden_visible_on_screen.gd" id="4_efs04"]
 [ext_resource type="PackedScene" uid="uid://d2yn6nm302yg1" path="res://objects/#components/player_data_adders/scores_adder.tscn" id="6_4h25q"]
-[ext_resource type="PackedScene" uid="uid://dowueugdydw3c" path="res://objects/#components/disappearer/disappearer.tscn" id="7_u6mox"]
+[ext_resource type="PackedScene" uid="uid://cvmeep3in51dj" path="res://objects/entities/#effects/explosions/explosion_smoke.tscn" id="6_rr6mf"]
+[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/effect_creator/effect_creator.tscn" id="7_y88h4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p1hfx"]
 size = Vector2(32, 32)
@@ -43,15 +44,16 @@ metadata/_edit_pinned_properties_ = [&"solid_group"]
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_676en")
 
+[node name="EffectCreator" parent="." instance=ExtResource("7_y88h4")]
+visible = false
+effect = ExtResource("6_rr6mf")
+metadata/_edit_pinned_properties_ = [&"effect"]
+
 [node name="ItemAppearing" parent="." instance=ExtResource("3_dev6q")]
 
 [node name="ScoresAdder" parent="." instance=ExtResource("6_4h25q")]
 scores = 1000
 metadata/_edit_pinned_properties_ = [&"scores"]
-
-[node name="Disappearer" parent="." instance=ExtResource("7_u6mox")]
-duration = 0.5
-metadata/_edit_pinned_properties_ = [&"duration"]
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
 visible = false
@@ -60,7 +62,7 @@ script = ExtResource("4_efs04")
 
 [connection signal="collided_wall" from="." to="." method="turn_wall"]
 [connection signal="detected_solid_body" from="Area2D/SolidDetector" to="." method="turn_wall"]
-[connection signal="powerup_got" from="Area2D/Powerup" to="Area2D/CollisionShape2D" method="queue_free"]
+[connection signal="powerup_got" from="Area2D/Powerup" to="." method="queue_free"]
 [connection signal="powerup_got" from="Area2D/Powerup" to="ScoresAdder" method="add_score"]
-[connection signal="powerup_got" from="Area2D/Powerup" to="Disappearer" method="disappear_jump"]
+[connection signal="powerup_got" from="Area2D/Powerup" to="EffectCreator" method="create_effect"]
 [connection signal="item_appeared" from="ItemAppearing" to="." method="update_direction"]

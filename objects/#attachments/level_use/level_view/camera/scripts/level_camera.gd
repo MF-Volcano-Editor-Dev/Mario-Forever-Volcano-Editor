@@ -33,6 +33,10 @@ func _process(_delta: float) -> void:
 	# focus on the players' average global position accurately
 	await get_tree().process_frame
 	
+	focus()
+
+
+func focus() -> void:
 	var campos := PlayersManager.get_average_global_position(self)
 	if campos == Vector2.INF:
 		return

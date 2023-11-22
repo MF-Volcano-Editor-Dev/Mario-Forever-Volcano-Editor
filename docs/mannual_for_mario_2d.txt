@@ -26,6 +26,8 @@ States in Mario2D's `state_machine`:
 		Mario will NOT be able to walk
 	> no_jumping:
 		Mario will NOT be able to jump or swim
+	> no_physics:
+		Mario's physics will be disabled till the removal of this state
 	> is_climbable:
 		When the action "climbing" gets pressed, mario will climb on an object
 	> climbing:
@@ -34,6 +36,8 @@ States in Mario2D's `state_machine`:
 		Mario is underwater, also meaning that mario is able to swim
 	> underwater_jumpout:
 		While Mario is underwater, if the head is out of the surface of it, he can jump out of the liquid
+	> warping:
+		Mario is warping. This ONLY stands for the mario being on warping, and you need to set "no_physics" manually
 	> control_ignored:
 		Every control will be ignored, this is useful when mario has completed a level or is entering and exiting from a pipe warping
 	> level_finished:
@@ -44,3 +48,12 @@ About adding and removing an extra suit for Mario:
 	2. After the completion of the suit you made, drag it under the node Mario
 	3. Set the `process_mode` to "Disabled" and disable its visibility
 	4. If you want to remove the extra suits, just select and delete them
+============================================================================
+About mario's warping:
+	1. Five states will be set:
+		> warping
+		> no_physics
+		> no_hurt
+		> no_death
+		> control_ignored
+	2. These states should be set immediately when the warping is about to start, because the state "no_physics" will be detected before the other states

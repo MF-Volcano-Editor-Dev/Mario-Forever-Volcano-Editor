@@ -24,7 +24,8 @@ class SignalsManager:
 
 
 ## Called to check if all players are dead, and emit [signal EventsManager.SignalsManager.players_all_dead]
-## if yes
+## if yes [br]
+## This is called when a player starts death process
 static func player_all_death_detect() -> void:
 	if PlayersManager.get_all_available_players().is_empty():
 		signals.players_all_dead.emit()
@@ -33,17 +34,14 @@ static func player_all_death_detect() -> void:
 ## Called to check if all players has been dead and their bodies have finished
 ## their performances. [br]
 ## If yes, then if the rest lives is greater than 0, one life will be taken down from all players;
-## otherwise a signal [signal EventsManager.SignalsManager.game_over] will get emission
-static func player_all_death_process(tree: SceneTree) -> void:
-	if !tree:
-		assert(false, "The SceneTree is invalid!")
-		return
-	
+## otherwise a signal [signal EventsManager.SignalsManager.game_over] will get emission [br]
+## This is called when a player ends death process
+static func player_all_death_process() -> void:
 	var players := PlayersManager.get_all_available_players()
 	if players.is_empty():
 		if Data.player_lives > 0:
 			Data.add_lives(-1)
-			tree.reload_current_scene()
+			Scenes.reload_current_scene()
 		else:
 			signals.game_over.emit()
 
@@ -53,6 +51,8 @@ static func level_finish() -> void:
 	signals.level_finished.emit()
 
 
-## Emits [signal EventsManager.SignalsManager.level_done_finishing]
+## Emits [signal EventsManager.SignalsManager.level_done_finishing][br]
+## [b]Caution:[/b] This method is called only when the level is finished, and better let a [Level]-like
+## node call this function
 static func level_done_finishing() -> void:
 	signals.level_done_finishing.emit()

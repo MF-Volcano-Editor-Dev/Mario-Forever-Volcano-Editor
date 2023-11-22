@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvghf15lfbt40"]
+
+[ext_resource type="Script" path="res://objects/entities/warps/scripts/pipe_exit.gd" id="1_rl7j3"]
+[ext_resource type="Script" path="res://scripts/node2d/visible_on_screen/hidden_visible_on_screen.gd" id="2_7kpy4"]
+
+[node name="PipeExit" type="Node2D"]
+script = ExtResource("1_rl7j3")
+
+[node name="Rect" type="Polygon2D" parent="."]
+color = Color(0.701961, 0.121569, 0, 0.537255)
+polygon = PackedVector2Array(-32, -16, -32, 16, 32, 16, 32, -16)
+
+[node name="Arrow" type="Polygon2D" parent="."]
+color = Color(1, 0.466667, 0.435294, 1)
+polygon = PackedVector2Array(8, 24, 8, -16, 16, -16, 0, -32, -16, -16, -8, -16, -8, 24, 0, 16)
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+visible = false
+rect = Rect2(-16, -8, 32, 16)
+script = ExtResource("2_7kpy4")
+
+[node name="PosRight" type="Marker2D" parent="."]
+visible = false
+position = Vector2(16, 0)
+
+[node name="PosLeft" type="Marker2D" parent="."]
+visible = false
+position = Vector2(-16, 0)
