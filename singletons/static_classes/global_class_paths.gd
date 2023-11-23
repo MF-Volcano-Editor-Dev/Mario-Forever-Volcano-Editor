@@ -2,6 +2,13 @@ class_name Classes
 
 ## Static class storing path to certain script
 
+#region HiddenClasses
+const HiddenNode := preload("res://classes/hidden/class_hidden_node.gd")
+const HiddenNode2D := preload("res://classes/hidden/class_hidden_node_2d.gd")
+const HiddenEntityBody2D := preload("res://classes/hidden/class_hidden_entity_body_2d.gd")
+const HiddenMarker2D := preload("res://classes/hidden/class_hiddden_marker_2d.gd")
+#endregion
+
 #region Components
 const Attacker := preload("res://objects/#components/attacking_related/scripts/attacker.gd")
 const AttackReceiver := preload("res://objects/#components/attacking_related/scripts/attack_receiver.gd")

@@ -1,14 +1,16 @@
-extends Marker2D
+class_name EffectCreator extends Classes.HiddenMarker2D
 
 ## Emitted when the effect is finished
 signal effect_finished
 
 @export_category("Effect Creator")
 @export var effect: PackedScene
+@export_node_path("Node2D") var create_on: NodePath = ^".."
 @export_group("Visiblity Inheritance")
 @export_flags("Y Sort Enabled", "Z Index", "Z as Relative") var inheritances: int = 0b110
 
-@onready var root: Node2D = get_parent()
+@onready var base := get_node(create_on) as Node2D
+@onready var root := get_parent() as Node2D
 
 
 func create_effect(times: int = 1, interval: float = 1) -> void:

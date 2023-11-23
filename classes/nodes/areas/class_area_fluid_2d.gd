@@ -1,9 +1,11 @@
 class_name AreaFluid2D extends EntityArea2D
 
-# #fluid_spray_triggerible
+const CHARACTER_SWIMMABLE := &"character_swimmable"
+const CHARACTER_MAX_FALLING_SPEED_FACTOR := &"chracter_max_falling_speed_factor"
+const CHARACTER_MAX_WALKING_SPEED_FACTOR := &"chracter_max_walking_speed_factor"
+const CHARACTER_MAX_RUNNING_SPEED_FACTOR := &"chracter_max_running_speed_factor"
 
 @export var fluid_id: StringName
-@export var fluid_features: Array[StringName]
 @export_group("Fluid Spray")
 @export var spray: PackedScene
 
@@ -12,26 +14,25 @@ var _in_fluid_body: Array[Node2D]
 
 func _ready() -> void:
 	await get_tree().physics_frame
-	area_entered.connect(_spray_trigger_area.bind(true))
-	area_exited.connect(_spray_trigger_area.bind(false))
+	body_entered.connect(_spray_trigger_area.bind(true))
+	body_exited.connect(_spray_trigger_area.bind(false))
 
 
-func _spray_trigger_area(area: Area2D, is_entering: bool) -> void:
+func _spray_trigger_area(body: Node2D, is_entering: bool) -> void:
 	if is_entering:
-		if area in _in_fluid_body:
+		if body in _in_fluid_body:
 			return
-		_in_fluid_body.append(area)
+		_in_fluid_body.append(body)
 	else:
-		if !area in _in_fluid_body:
+		if !body in _in_fluid_body:
 			return
-		_in_fluid_body.erase(area)
+		_in_fluid_body.erase(body)
 	
-	if area.is_in_group(&"#fluid_spray_triggerible"):
-		create_spray(area, Transform2D(0, area.global_scale, area.global_skew, area.global_position))
+	create_spray(body, Transform2D(0, body.global_scale, body.global_skew, body.global_position))
 
 
 ## Create [member spray] effect on a body with [param transform] preset
-func create_spray(body: Node2D, p_transform: Transform2D) -> void:
+func create_spray(body: Node2D, global_trans: Transform2D) -> void:
 	if !spray:
 		return
 	
@@ -41,5 +42,5 @@ func create_spray(body: Node2D, p_transform: Transform2D) -> void:
 		return
 	
 	s = s as Node2D
-	s.global_transform = p_transform
+	s.global_transform = global_trans
 	body.add_sibling.call_deferred(s)

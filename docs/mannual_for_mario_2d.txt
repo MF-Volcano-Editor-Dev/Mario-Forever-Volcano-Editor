@@ -56,4 +56,4 @@ About mario's warping:
 		> no_hurt
 		> no_death
 		> control_ignored
-	2. These states should be set immediately when the warping is about to start, because the state "no_physics" will be detected before the other states
+	2. These states should be set immediately when the warping is about to start, because the state "no_physics" will be detected earlier than the other states

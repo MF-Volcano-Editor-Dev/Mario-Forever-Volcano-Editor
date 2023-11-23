@@ -106,6 +106,10 @@ folder_colors={
 "res://objects/entities/players/mario/scripts/": "green",
 "res://objects/entities/players/mario/shapes/": "orange",
 "res://objects/entities/players/mario/textures/": "green",
+"res://objects/entities/players/mario_series/#components/": "yellow",
+"res://objects/entities/players/mario_series/#powers/": "yellow",
+"res://objects/entities/players/mario_series/animations/": "green",
+"res://objects/entities/players/mario_series/scripts/": "green",
 "res://objects/entities/warps/scripts/": "green",
 "res://objects/entities/warps/textures/": "green"
 }
@@ -116,9 +120,9 @@ import/blender/enabled=false
 
 [game]
 
-control/player/jumpable_when_crouching=false
-control/player/crouchable_in_small_suit=false
-control/player/walkable_when_crouching=false
+control/player/jumpable_when_crouching=true
+control/player/crouchable_in_small_suit=true
+control/player/walkable_when_crouching=true
 data/player/default_lives=4
 
 [input]

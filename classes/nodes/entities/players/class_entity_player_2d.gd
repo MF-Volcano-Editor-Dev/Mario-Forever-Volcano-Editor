@@ -1,4 +1,4 @@
-class_name EntityPlayer2D extends EntityBody2D
+class_name EntityPlayer2D extends Classes.HiddenEntityBody2D
 
 ## Class of platform-game players, mainly for [Mario2D]
 ##

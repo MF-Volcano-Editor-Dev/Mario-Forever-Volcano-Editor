@@ -38,13 +38,13 @@ func _process(_delta: float) -> void:
 		var twbl: bool = false
 		var dir:= i.get_key_direction()
 		match entrance_direction:
-			1 when dir.y > 0:
+			1 when dir.y > 0 && i.is_on_floor():
 				twbl = true
-			-1 when dir.y < 0:
+			-1 when dir.y < 0 && !i.is_on_floor():
 				twbl = true
-			2 when dir.x > 0:
+			2 when dir.x > 0 && i.is_on_wall():
 				twbl = true
-			-2 when dir.x < 0:
+			-2 when dir.x < 0 && i.is_on_wall():
 				twbl = true
 		if !twbl:
 			return

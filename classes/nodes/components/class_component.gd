@@ -1,4 +1,4 @@
-class_name Component extends Node
+class_name Component extends Classes.HiddenNode
 
 ## Class that used under a [Node] to be a tag to provide
 ## extra behaviors for the tagged node

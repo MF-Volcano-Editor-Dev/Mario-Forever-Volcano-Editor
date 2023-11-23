@@ -1,6 +1,6 @@
-extends Component
+class_name HealthComponent extends Component
 
-## Abstract class that provides health management
+## Class that provides health management
 ##
 ##
 

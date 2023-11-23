@@ -15,7 +15,7 @@ func _ready() -> void:
 	item_hit_out.connect(_on_item_hit_out)
 
 
-func _on_item_hit_out(hitting_direction: Vector2) -> void:
+func _on_item_hit_out(_hitting_direction: Vector2) -> void:
 	if !root is Node2D:
 		return
 	

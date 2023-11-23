@@ -18,7 +18,7 @@ signal stage_finished
 
 var _finish_music_player: AudioStreamPlayer
 
-var _after_finish_wait_nodes: Array[Object]
+var _after_finish_wait_objects: Array[Object]
 
 
 func _enter_tree() -> void:
@@ -28,16 +28,16 @@ func _enter_tree() -> void:
 #region Todo List after Finish
 ## Add an object to the finish process await list
 func add_object_to_wait_finish(object: Object) -> void:
-	if object in _after_finish_wait_nodes:
+	if object in _after_finish_wait_objects:
 		return
-	_after_finish_wait_nodes.append(object)
+	_after_finish_wait_objects.append(object)
 
 
 ## Remove an object from the finish process await list
 func remove_object_to_wait_finish(object: Object) -> void:
-	if !object in _after_finish_wait_nodes:
+	if !object in _after_finish_wait_objects:
 		return
-	_after_finish_wait_nodes.erase(object)
+	_after_finish_wait_objects.erase(object)
 #endregion
 
 
@@ -70,7 +70,7 @@ func _on_level_finished() -> void:
 	stage_to_be_finished.emit()
 	
 	# Await for the objecs that blocks the process in the list
-	while !_after_finish_wait_nodes.is_empty():
+	while !_after_finish_wait_objects.is_empty():
 		await get_tree().process_frame
 	
 	# Try changing the scene
