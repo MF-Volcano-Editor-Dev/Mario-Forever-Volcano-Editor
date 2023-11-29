@@ -1,8 +1,8 @@
 [gd_scene load_steps=16 format=3 uid="uid://bd6pmuly2nay5"]
 
 [ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/character_power_2d.gd" id="1_mq02o"]
-[ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://objects/entities/players/mario/textures/mario_small.png" id="2_f2ebp"]
-[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/effect_creator/effect_creator.tscn" id="3_xxhwa"]
+[ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://objects/entities/players/mario_series/textures/mario_small.png" id="2_f2ebp"]
+[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/entities/effects/effect_creator/effect_creator.tscn" id="3_f86f0"]
 [ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/behaviors/character_behavior.gd" id="4_ivrmb"]
 
 [sub_resource type="Animation" id="Animation_av72s"]
@@ -393,13 +393,15 @@ _data = {
 
 [node name="MarioSmall" type="Node2D"]
 script = ExtResource("1_mq02o")
+is_small = true
+metadata/_edit_pinned_properties_ = [&"is_small"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -16)
 texture = ExtResource("2_f2ebp")
 hframes = 13
 
-[node name="EffBubble" parent="Sprite2D" instance=ExtResource("3_xxhwa")]
+[node name="EffBubble" parent="Sprite2D" instance=ExtResource("3_f86f0")]
 position = Vector2(4, 16)
 gizmo_extents = 4.0
 create_on = NodePath("../../..")
@@ -416,9 +418,3 @@ autoplay = "idle"
 script = ExtResource("4_ivrmb")
 root_path = NodePath("../..")
 metadata/_edit_pinned_properties_ = [&"root_path"]
-metadata/is_small = true
-metadata/allows_walking = true
-metadata/allows_jumping = true
-metadata/allows_swimming = true
-metadata/allows_crouching = true
-metadata/allows_climbing = true

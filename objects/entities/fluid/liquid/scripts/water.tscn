@@ -1,24 +1,23 @@
 [gd_scene load_steps=4 format=3 uid="uid://bnewtaib54hhw"]
 
-[ext_resource type="Script" path="res://classes/nodes/areas/class_area_fluid_2d.gd" id="1_8oebv"]
+[ext_resource type="Script" path="res://objects/#scripts/nodes/public/areas/area_fluid_2d.gd" id="1_m1gcw"]
 [ext_resource type="PackedScene" uid="uid://b3ds2052h0bx7" path="res://objects/entities/#effects/sprays/spray_water.tscn" id="2_y4bmu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1hi0j"]
 size = Vector2(32, 32)
 
-[node name="Water" type="EntityArea2D"]
+[node name="Water" type="Area2D"]
 collision_layer = 64
 gravity_space_override = 3
-gravity = 98.0
-script = ExtResource("1_8oebv")
+gravity = 250.0
+linear_damp_space_override = 1
+linear_damp = 50.0
+script = ExtResource("1_m1gcw")
 fluid_id = &"water"
+character_swimmable = true
+max_falling_speed_scale = 0.3
 spray = ExtResource("2_y4bmu")
-metadata/_edit_group_ = true
-metadata/character_swimmable = true
-metadata/chracter_max_falling_speed_factor = 0.3
-metadata/chracter_max_walking_speed_factor = 1.0
-metadata/chracter_max_running_speed_factor = 0.5
-metadata/_edit_pinned_properties_ = [&"fluid_id", &"spray"]
+metadata/_edit_pinned_properties_ = [&"fluid_id", &"character_swimmable", &"spray", &"max_falling_speed_scale"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(16, 16)

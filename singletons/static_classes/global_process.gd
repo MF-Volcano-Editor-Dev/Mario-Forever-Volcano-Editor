@@ -35,3 +35,15 @@ static func get_child_in_group(from: Node, group: StringName) -> Node:
 			continue
 		return i
 	return null
+
+
+## Await the readiness of a [param node] [br]
+## [b]Note:[/b] You should use [code]await[/code] to get the correct use of the method
+static func await_readiness(node: Node) -> void:
+	if !node.is_node_ready():
+		await node.ready
+
+
+## Await the readiness of the current scene, see [method await_readiness] to get more details
+static func await_current_scene_readiness(tree: SceneTree) -> void:
+	await_readiness(tree.current_scene)

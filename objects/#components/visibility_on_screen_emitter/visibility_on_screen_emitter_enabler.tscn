@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bctq6853hh07i"]
-
-[ext_resource type="Script" path="res://objects/#components/visibility_on_screen_emitter/scripts/visibility_on_screen_emitter.gd" id="1_kw2ib"]
-
-[node name="VisibilityOnScreenEmitterEnabler" type="VisibleOnScreenEnabler2D"]
-process_mode = 1
-rect = Rect2(-8, -8, 16, 16)
-script = ExtResource("1_kw2ib")

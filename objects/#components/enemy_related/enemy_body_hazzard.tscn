@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://2efrbr4mehhu"]
-
-[ext_resource type="Script" path="res://objects/#components/enemy_related/scripts/enemy_body.gd" id="1_se5b2"]
-
-[node name="EnemyBodyHazzard" type="Node"]
-process_mode = 4
-editor_description = "A player will detect if an Area2D has this node, so please ensure this node is under the Area2D.
-With this node, a player will get hurt when he touches the Area2D under which this node is attached."
-script = ExtResource("1_se5b2")

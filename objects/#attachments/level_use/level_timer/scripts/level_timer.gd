@@ -1,13 +1,8 @@
-extends CanvasLayer
+class_name LevelTimer extends Classes.HiddenCanvasLayer
 
-## Emitted when the timer decreases
-signal timer_down(count: int)
-
-## Emitted when the timer increases
-signal timer_up(count: int)
-
-## Emitted when the timer is up
-signal timer_over
+signal timer_down(count: int) ## Emitted when the timer decreases
+signal timer_up(count: int) ## Emitted when the timer increases
+signal timer_over  ## Emitted when the timer is up
 
 @export_category("Level Timer")
 @export_group("Timer")
@@ -49,110 +44,10 @@ var _has_warned: bool
 
 
 func _ready() -> void:
-	# Process of all death of players
-	EventsManager.signals.players_all_dead.connect(
-		func() -> void:
-			interval.paused = true
-			
-			if current_level:
-				current_level.stop_finishing_music()
-	)
-	
-	# Set timer down unit
-	interval.wait_time = time_change_unit_tick
-	interval.timeout.connect(_time_down)
-	
-	# Level finishing
-	# Add the timer into await list after finish of current level
-	# to block the level from fast finishing without scoring
-	if current_level:
-		current_level.add_object_to_wait_finish(self)
-		
-		EventsManager.signals.level_finished.connect(
-			func() -> void:
-				interval.paused = true
-				_scoring = true
-				
-				await current_level.stage_to_be_finished
-				
-				interval.wait_time = time_down_unit_tick_scoring
-				interval.paused = false
-		)
-	
-	# Update display of timer
-	rest_time = rest_time
+	pass
 
 
 #region Timer Managements
-func _time_down() -> void:
-	rest_time -= time_down_unit_scoring if _scoring else time_change_unit * time_changing_mode
-
-
-func _time_warning() -> void:
-	if _scoring:
-		return
-	
-	if _has_warned:
-		return
-	_has_warned = true
-	
-	if sound_warning:
-		Sound.play_sound(self, sound_warning)
-	
-	animation_player.play(&"warning")
-	await animation_player.animation_finished
-	animation_player.play(&"RESET")
-
-
-func _time_scoring(amount: int) -> void:
-	# Sound
-	_scoring_count += 1
-	if _scoring_count > 3:
-		_scoring_count = 0
-		Sound.play_sound(self, sound_scoring)
-	
-	Data.add_scores(amount * time_unit_scores)
-#endregion
-
-
-#region Setters & Getters
-func set_rest_time(value: int) -> void:
-	var to := clampi(value, 0, 86400)
-	
-	if !is_node_ready():
-		await ready
-	
-	# Decreasing
-	if to < rest_time:
-		timer_down.emit(to)
-		# Time scoring
-		if _scoring:
-			_time_scoring(rest_time - to)
-		# Time warning
-		else:
-			if to <= warning_time && warning_disabled:
-				_time_warning()
-			# Time's up
-			if to == 0:
-				time_up.visible = true
-				timer_over.emit()
-	# Increasing
-	elif to > rest_time:
-		timer_up.emit(to)
-		# Reset warning state
-		if _has_warned && to > warning_time:
-			_has_warned = false
-	
-	# Update timer and its display
-	rest_time = to
-	times.text = str(rest_time)
-	
-	# Remove the timer from blocking listif scoring and the timer is zero
-	if _scoring && rest_time == 0:
-		interval.stop()
-		
-		await get_tree().create_timer(1, false).timeout
-		
-		if current_level:
-			current_level.remove_object_to_wait_finish(self)
+func set_rest_time(value: float) -> void:
+	pass
 #endregion

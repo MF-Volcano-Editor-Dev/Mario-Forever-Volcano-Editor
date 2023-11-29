@@ -21,7 +21,6 @@ config/icon="res://icon.svg"
 
 Game="*res://singletons/scripts/Game.gd"
 Developer="*res://singletons/scripts/Developer.gd"
-Scenes="*res://singletons/scripts/Scenes.gd"
 
 [display]
 
@@ -42,7 +41,6 @@ enabled=PackedStringArray("res://addons/abfi/plugin.cfg")
 
 folder_colors={
 "res://assets/": "blue",
-"res://classes/": "green",
 "res://gdextension/": "red",
 "res://objects/#attachments/": "yellow",
 "res://objects/#attachments/level_use/level_huds/scripts/": "green",
@@ -54,16 +52,17 @@ folder_colors={
 "res://objects/#components/": "yellow",
 "res://objects/#components/attacking_related/scripts/": "green",
 "res://objects/#components/block_hitter/scripts/": "green",
-"res://objects/#components/disappearer/scripts/": "green",
-"res://objects/#components/effect_creator/scripts/": "green",
 "res://objects/#components/enemy_related/scripts/": "green",
-"res://objects/#components/health_component/": "yellow",
-"res://objects/#components/health_component/scripts/": "green",
+"res://objects/#components/entities/data/player_data_adders/scripts/": "green",
+"res://objects/#components/entities/effects/disappearer/scripts/": "green",
+"res://objects/#components/entities/effects/effect_creator/scripts/": "green",
+"res://objects/#components/entities/health/health_component/": "yellow",
+"res://objects/#components/entities/health/health_component/scripts/": "green",
+"res://objects/#components/entities/physics/solid_detector/scripts/": "green",
+"res://objects/#components/entities/vision/visibility_on_screen_emitter/scripts/": "green",
 "res://objects/#components/item_component/scripts/": "green",
-"res://objects/#components/player_data_adders/scripts/": "green",
 "res://objects/#components/property_updater/scripts/": "green",
-"res://objects/#components/solid_detector/scripts/": "green",
-"res://objects/#components/visibility_on_screen_emitter/scripts/": "green",
+"res://objects/#scripts/": "green",
 "res://objects/entities/#effects/": "yellow",
 "res://objects/entities/#effects/coin_effect/scripts/": "green",
 "res://objects/entities/#effects/coin_effect/textures/": "green",
@@ -81,10 +80,10 @@ folder_colors={
 "res://objects/entities/#projectiles/balls/textures/": "green",
 "res://objects/entities/#projectiles/bumpers/scripts/": "green",
 "res://objects/entities/#projectiles/bumpers/textures/": "green",
+"res://objects/entities/#projectiles/hammer/textures/": "green",
 "res://objects/entities/bonuses/blocks/scripts/": "green",
-"res://objects/entities/bonuses/blocks/scripts/#resources/": "green",
+"res://objects/entities/bonuses/blocks/scripts/#resources/": "orange",
 "res://objects/entities/bonuses/blocks/textures/": "green",
-"res://objects/entities/bonuses/items/#components/": "yellow",
 "res://objects/entities/bonuses/items/bonus_block_items/": "orange",
 "res://objects/entities/bonuses/items/scripts/": "green",
 "res://objects/entities/bonuses/items/textures/": "green",
@@ -100,18 +99,19 @@ folder_colors={
 "res://objects/entities/enemies/goombas/scripts/": "green",
 "res://objects/entities/enemies/goombas/textures/": "green",
 "res://objects/entities/players/mario/#components/": "yellow",
-"res://objects/entities/players/mario/#death/": "yellow",
 "res://objects/entities/players/mario/#suits/": "yellow",
 "res://objects/entities/players/mario/animations/": "orange",
 "res://objects/entities/players/mario/scripts/": "green",
 "res://objects/entities/players/mario/shapes/": "orange",
-"res://objects/entities/players/mario/textures/": "green",
 "res://objects/entities/players/mario_series/#components/": "yellow",
+"res://objects/entities/players/mario_series/#death/": "yellow",
 "res://objects/entities/players/mario_series/#powers/": "yellow",
 "res://objects/entities/players/mario_series/animations/": "green",
 "res://objects/entities/players/mario_series/scripts/": "green",
+"res://objects/entities/players/mario_series/textures/": "green",
 "res://objects/entities/warps/scripts/": "green",
-"res://objects/entities/warps/textures/": "green"
+"res://objects/entities/warps/textures/": "green",
+"res://scenes/#scripts/": "green"
 }
 
 [filesystem]
@@ -201,6 +201,10 @@ fire1={
 2d_physics/layer_6="facilities"
 2d_physics/layer_7="fluid"
 2d_physics/layer_8="sounds"
+
+[physics]
+
+2d/default_gravity=2500.0
 
 [rendering]
 

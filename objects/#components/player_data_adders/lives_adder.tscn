@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://pq2mh2387p05"]
-
-[ext_resource type="Script" path="res://objects/#components/player_data_adders/scripts/lives_adder.gd" id="1_ce06e"]
-
-[node name="LivesAdder" type="Node"]
-process_mode = 4
-script = ExtResource("1_ce06e")

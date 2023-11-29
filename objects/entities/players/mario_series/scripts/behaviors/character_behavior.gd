@@ -1,17 +1,16 @@
 class_name CharacterBehavior2D extends Component
 
 ## Class used to provide basic behaviors for [CharacterEntity]
-
-const IS_SMALL := &"is_small"
-const ALLOWS_WALKING := &"allows_walking"
-const ALLOWS_JUMPING := &"allows_jumping"
-const ALLOWS_SWIMMING := &"allows_swimming"
-const ALLOWS_CROUCHING := &"allows_crouching"
-const ALLOWS_CLIMBING := &"allows_climbing"
+##
+## To override basic behaviors, just extend this class with a new script and override functions in the script [br]
+## [b]Note:[/b] This will override the gravity and the max falling velocity.x of the character, see [CharacterEntity2D] [br]
 
 const _HIGH_PRIORITY_ANIMATIONS: Array[StringName] = [&"appear", &"attack"]
 
-const _IS_CLIMBING := &"on_climbing"
+const STATE_IS_CLIMBING := &"is_climbing" ## Identifierized access to the state "is_climbing"
+const STATE_IS_SWIMMING := &"is_swimming" ## Identifierized access to the state "is_swimming"
+const STATE_IS_SWIMMING_OUT := &"is_swimming_out" ## Identifierized access to the state "is_swimming_out"
+const STATE_IS_JUMPED := &"is_jumped" ## Identifierized access to the state "is_jumped"
 
 @export_category("Character Behaviors")
 ## Names of key inputs [br]
@@ -33,7 +32,25 @@ const _IS_CLIMBING := &"on_climbing"
 @export var key_run: StringName = &"run"
 ## Key of controlling climbing
 @export var key_climb: StringName = &"up"
+@export_group("States")
+## Allows the physics movement and collision if [code]true[/code]
+@export var allow_physics: bool = true
+## Allows walking if [code]true[/code]
+@export var allow_walking: bool = true
+## Allows jumping if [code]true[/code]
+@export var allow_jumping: bool = true
+## Allows swimming if [code]true[/code]
+@export var allow_swimming: bool = true
+## Allows crouching if [code]true[/code]
+@export var allow_crouching: bool = true
+## Allows climbing if [code]true[/code]
+@export var allow_climbing: bool = true
 @export_group("Physics")
+@export_subgroup("Gravity")
+## Overrides the character's [member EntityBody2D.gravity]
+@export_range(-1, 1, 0.001, "or_greater", "hide_slider", "suffix:x²") var gravity_scale: float = 1
+## Overrides the character's [member EntityBody2D.max_falling_speed]
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var max_falling_speed: float = 500
 @export_subgroup("Walking")
 ## Initial walking speed
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_walking_speed: float = 50
@@ -77,20 +94,13 @@ const _IS_CLIMBING := &"on_climbing"
 ## Swimming sound
 @export var sound_swim: AudioStream = preload("res://assets/sounds/swim.wav")
 
-@onready var power := get_parent() as CharacterPower2D
+@onready var power := get_parent() as CharacterPower2D ## The power that the behavior is serving for
 
 #region == Keys pressed ==
 var _on_jump: bool
 var _on_jump_held: bool
 var _on_running: bool
 var _on_climbing: bool
-#endregion
-
-#region == Status ==
-var _is_jumped: bool
-var _is_climbing: bool
-var _on_swimming: bool
-var _on_swimming_jumping: bool = true
 #endregion
 
 #region == Transform ==
@@ -100,65 +110,70 @@ var _pos_delta: Vector2
 
 ## Virtual method called when the power is one switched to
 func _behavior_ready() -> void:
-	_is_climbing = root.get_meta(_IS_CLIMBING, false) # Loads climbing
+	pass
 
 
 ## Virtual method called when the power is one switched from
 func _behavior_disready() -> void:
-	root.set_meta(_IS_CLIMBING, _is_climbing) # Saves climbing
+	pass
 
 
 func _ready() -> void:
-	super()
-	
 	# Await for the readiness of the power
 	# Since this is the child node of the power and the onready
 	# nodes of the power should be got after all the children done _ready()
 	if !power.is_node_ready():
 		await power.ready
 	
+	# Signal connections
 	power.animation.animation_finished.connect(_on_animation_finished)
 
 
 func _process(delta: float) -> void:
-	var pl := root as CharacterEntity2D
+	if disabled:
+		return
+	
+	var pl := get_root() as CharacterEntity2D
 	if !pl:
 		return
 	
 	_controls(pl) # Control process
 	
-	if !_is_climbing:
+	if !ObjectState.is_state(pl, STATE_IS_CLIMBING):
 		_walk(pl)
 		_jump(pl, delta)
 		_swim(pl, delta)
 	else:
-		_climb(pl, delta)
+		_climb(pl)
 	
 	_animation(pl, delta)
 
 
 func _physics_process(delta: float) -> void:
-	var pl := root as CharacterEntity2D
+	if disabled:
+		return
+	
+	var pl := get_root() as CharacterEntity2D
 	if !pl:
 		return
 	
+	# Overrides physics
+	pl.gravity_scale = gravity_scale
+	pl.max_falling_speed = max_falling_speed
+	
+	# Physics
 	_pos_delta = pl.global_position
-	
-	if !_is_climbing: # Non-climbing
-		pl.move_and_slide()
-		pl.correct_onto_floor()
-		pl.correct_on_wall_corner()
-	else: # Climbing
-		var kc := pl.move_and_collide(pl.global_velocity * delta)
-		if kc:
-			pl.global_velocity = pl.global_velocity.slide(kc.get_normal())
-	
+	_physics(pl, delta)
 	_pos_delta = pl.global_position - _pos_delta
+	# Fixes on wall stopping
+	if _pos_delta.is_zero_approx():
+		pl.velocity.x = 0
 	
-	if _pos_delta.is_zero_approx(): # Fixes on wall stopping
-		pl.speed = 0
-	
-	_overlapping_process(pl) # Overlapping
+	# Overlapping
+	var bdva := pl.body.get_overlapping_areas()
+	var hdva := pl.head.get_overlapping_areas()
+	_body_overlapping_process(pl, bdva) # Body overlapping
+	_head_overlapping_process(pl, hdva) # Head overlapping
 
 
 #region == Controls ==
@@ -166,17 +181,33 @@ func _controls(player: CharacterEntity2D) -> void:
 	player.set_key_input_directions(key_left, key_right, key_up, key_down)
 	
 	var id: StringName = str(player.id)
-	_on_jump = Input.is_action_just_pressed(key_jump + id)
-	_on_jump_held = Input.is_action_pressed(key_jump + id)
-	_on_running = Input.is_action_pressed(key_run + id)
-	_on_climbing = Input.is_action_just_pressed(key_climb + id)
+	var controllable: bool = ObjectState.is_state(player, CharacterEntity2D.STATE_UNCONTROLLABLE)
+	_on_jump = Input.is_action_just_pressed(key_jump + id) if controllable else false
+	_on_jump_held = Input.is_action_pressed(key_jump + id) if controllable else false
+	_on_running = Input.is_action_pressed(key_run + id) if controllable else false
+	_on_climbing = Input.is_action_just_pressed(key_climb + id) if controllable else false
 #endregion
 
 
 #region == Movement ==
+# Physics
+func _physics(player: CharacterEntity2D, delta: float) -> void:
+	if !allow_physics: # Process these codes if allows physics
+		return
+	# Climbing
+	if ObjectState.is_state(player, STATE_IS_CLIMBING): 
+		var kc := player.move_and_collide(player.global_velocity * delta)
+		if kc:
+			player.global_velocity = player.global_velocity.slide(kc.get_normal())
+	# Non-climbing
+	else:
+		player.move_and_slide()
+		player.correct_onto_floor()
+		player.correct_on_wall_corner()
+
 # Walking process
 func _walk(player: CharacterEntity2D) -> void:
-	if !is_walking_enabled():
+	if !allow_walking:
 		return
 	
 	var dec := get_deceleration(player)
@@ -185,146 +216,107 @@ func _walk(player: CharacterEntity2D) -> void:
 		return
 	
 	var left_right := player.get_key_input_directions().x
-	var max_speed := (max_running_speed if _on_running else max_walking_speed) * (1.0 if !is_crouching(player) else 0.25)
+	player.max_speed = (max_running_speed if _on_running && !ObjectState.is_state(player, STATE_IS_SWIMMING) else max_walking_speed) * (1.0 if !is_crouching(player) else 0.25)
 	
-	# Initial speed
-	if left_right && is_zero_approx(player.speed):
+	# Initial velocity.x
+	if left_right && is_zero_approx(player.velocity.x):
 		player.direction = left_right
-		player.speed = initial_walking_speed * player.direction
+		player.velocity.x = initial_walking_speed * player.direction
 	# Acceleration
 	if left_right * player.direction > 0:
-		# Within speed range
-		if absf(player.speed) < max_speed:
-			player.accelerate_walking(acceleration, max_speed)
-		# Oversped
-		elif absf(player.speed) > max_speed:
-			player.decelerate_walking(dec * 2)
+		# Here do NOT use accelerate_to_max_speed(), because in some cases the method would bring wrong physics
+		player.accelerate_local_x(acceleration, player.max_speed * player.max_speed_scale * player.direction)
 	# Turning back
 	elif left_right * player.direction < 0:
 		player.decelerate_walking(turning_aceleration)
-		if is_zero_approx(player.speed):
+		if is_zero_approx(player.velocity.x):
 			player.direction *= -1
-			# player.speed = 6.25 * player.direction
+			# player.velocity.x = 6.25 * player.direction
 
 func _jump(player: CharacterEntity2D, delta: float) -> void:
-	if _on_swimming || !is_jumping_enabled():
+	if ObjectState.is_state(player, STATE_IS_SWIMMING) || !allow_jumping:
 		return
 	
 	if is_jumpable(player):
 		Sound.play_sound_2d(player, sound_jump)
 		player.jump(initial_jumping_speed)
-		make_jumped()
+		make_jumped(player)
 	
 	if player.is_leaving_ground() && _on_jump_held:
-		player.jump((jumping_acceleration_dynamic if absf(player.speed) > 50 else jumping_acceleration_static) * delta, true)
+		player.jump((jumping_acceleration_dynamic if absf(player.velocity.x) > 50 else jumping_acceleration_static) * delta, true)
 
 func _swim(player: CharacterEntity2D, delta: float) -> void:
-	if !_on_swimming || !is_swimming_enabled():
+	if !ObjectState.is_state(player, STATE_IS_SWIMMING) || !allow_swimming:
 		return
 	
 	if is_swimmable(player):
 		Sound.play_sound_2d(player, sound_swim)
-		if _on_swimming_jumping: # Juming out
+		if ObjectState.is_state(player, STATE_IS_SWIMMING_OUT): # Juming out
 			player.jump(swimming_jumping_speed)
 		else: # Swim
 			player.jump(swimming_speed)
 		
 		var anim := power.animation
 		if anim.current_animation == &"swim":
-			anim.seek(0)
+			anim.seek(0, true)
 	
-	if player.velocity.y < -swimming_peak_speed:
-		lerpf(player.velocity.y, -swimming_peak_speed, 24 * delta)
+	var max_peak_speed := -absf(swimming_peak_speed)
+	if !ObjectState.is_state(player, STATE_IS_SWIMMING_OUT) && player.velocity.y < max_peak_speed:
+		player.velocity.y = lerpf(player.velocity.y, max_peak_speed, 8 * delta)
 
-func _climb(player: CharacterEntity2D, delta: float) -> void:
+func _climb(player: CharacterEntity2D) -> void:
+	if !allow_climbing:
+		return
+	
 	player.velocity = Vector2(player.get_key_input_directions()).normalized() * climbing_speed
 #endregion
 
 
 #region == Physics collision ==
-func _overlapping_process(player: CharacterEntity2D) -> void:
+func _body_overlapping_process(player: CharacterEntity2D, overlapping_areas: Array[Area2D]) -> void:
 	var body_area_count: PackedInt32Array = [0, 0] # Counts for areas
-	var fluid_data_average: Dictionary = { # Fluid data
-		AreaFluid2D.CHARACTER_MAX_FALLING_SPEED_FACTOR: 0.0,
-		AreaFluid2D.CHARACTER_MAX_WALKING_SPEED_FACTOR: 0.0,
-		AreaFluid2D.CHARACTER_MAX_RUNNING_SPEED_FACTOR: 0.0
-	}
 	
-	# == Body ==
 	# Detect overlapped areas by body detector
-	for i: Area2D in player.body.get_overlapping_areas():
+	for i: Area2D in overlapping_areas:
 		# AreaFluid2D
 		if i is AreaFluid2D: 
 			body_area_count[0] += 1
-			
 			# Activate swimming
-			if i.get_meta(AreaFluid2D.CHARACTER_SWIMMABLE, false):
-				_on_swimming = true
-			
-			# Store the physics data from the fluid's metadata
-			for j: StringName in fluid_data_average:
-				fluid_data_average[j] += i.get_meta(j, 1.0)
+			if i.character_swimmable:
+				ObjectState.set_state(player, STATE_IS_SWIMMING, true)
+		
 		# Climable Area
-		if is_climbable(i):
+		if is_climbable(player, i):
 			body_area_count[1] += 1
-			_is_climbing = true
-		# Enemy Stomping
-	
-	
-	# Sets the average of each fluid data
-	for k: StringName in fluid_data_average:
-		fluid_data_average[k] /= float(body_area_count[0])
+			ObjectState.set_state(player, STATE_IS_CLIMBING, true)
 	
 	# Restore data out of the fluid
 	if body_area_count[0] <= 0:
-		# Disables swimming
-		_on_swimming = false
-		
-		var rsd := player.get_meta(CharacterEntity2D.PHYSICS_OVERWORLD, {}) as Dictionary
-		if rsd.is_empty():
-			return
-		
-		player.max_falling_speed = rsd.max_falling_speed
-		max_walking_speed = rsd.max_walking_speed
-		max_running_speed = rsd.max_running_speed
-		player.remove_meta(CharacterEntity2D.PHYSICS_OVERWORLD)
-	# Set data in the fluid
-	elif !player.has_meta(CharacterEntity2D.PHYSICS_OVERWORLD):
-		player.set_meta(CharacterEntity2D.PHYSICS_OVERWORLD, {
-			max_falling_speed = player.max_falling_speed,
-			max_walking_speed = self.max_walking_speed,
-			max_running_speed = self.max_running_speed
-		})
-		
-		player.max_falling_speed *= fluid_data_average[AreaFluid2D.CHARACTER_MAX_FALLING_SPEED_FACTOR]
-		max_walking_speed *= fluid_data_average[AreaFluid2D.CHARACTER_MAX_WALKING_SPEED_FACTOR]
-		max_running_speed *= fluid_data_average[AreaFluid2D.CHARACTER_MAX_RUNNING_SPEED_FACTOR]
-	
+		ObjectState.set_state(player, STATE_IS_SWIMMING, false) # Quits swimming
 	# Restore data out of climable area
 	if body_area_count[1] <= 0:
-		_is_climbing = false
-	
-	# == Head ==
+		ObjectState.set_state(player, STATE_IS_CLIMBING, false) # Quits climbing
+
+func _head_overlapping_process(player: CharacterEntity2D, overlapping_areas: Array[Area2D]) -> void:
 	var head_area_count: PackedInt32Array = [0]
 	
 	# Detect overlapped areas by head detector
-	for l: Area2D in player.head.get_overlapping_areas():
+	for i: Area2D in overlapping_areas:
 		# AreaFluid2D
-		if l is AreaFluid2D:
+		if i is AreaFluid2D:
 			head_area_count[0] += 1
-			
-			if l.get_meta(AreaFluid2D.CHARACTER_SWIMMABLE, false):
-				_on_swimming_jumping = false
+			if i.character_swimmable:
+				ObjectState.set_state(player, STATE_IS_SWIMMING_OUT, false)
 	
 	if head_area_count[0] <= 0:
-		_on_swimming_jumping = true
+		ObjectState.set_state(player, STATE_IS_SWIMMING_OUT, true)
 #endregion
 
 
 #region == Animations ==
 func _animation(player: CharacterEntity2D, delta: float) -> void:
 	var anim := power.animation
-	anim.speed_scale = 1 # Reset animation speed scale
+	anim.speed_scale = 1 # Reset animation velocity.x scale
 	if power.sprite: # Set sprite flip (scale.x)
 		power.sprite.scale.x = player.direction
 	
@@ -332,17 +324,17 @@ func _animation(player: CharacterEntity2D, delta: float) -> void:
 	if anim.current_animation in _HIGH_PRIORITY_ANIMATIONS:
 		return
 	
-	if _is_climbing:
+	if ObjectState.is_state(player, STATE_IS_CLIMBING):
 		anim.play(&"climbing")
 	elif player.is_on_floor():
 		if is_crouching(player):
 			anim.play(&"crouch")
-		elif is_zero_approx(player.speed):
+		elif is_zero_approx(player.velocity.x):
 			anim.play(&"idle")
 		else:
 			anim.play(&"walk")
-			anim.speed_scale = clampf(absf(player.speed) * delta * 0.67, 0, 5)
-	elif _on_swimming:
+			anim.speed_scale = clampf(absf(player.velocity.x) * delta * 0.67, 0, 5)
+	elif ObjectState.is_state(player, STATE_IS_SWIMMING):
 		anim.play(&"swim")
 	elif player.is_leaving_ground():
 		anim.play(&"jump")
@@ -350,6 +342,9 @@ func _animation(player: CharacterEntity2D, delta: float) -> void:
 		anim.play(&"fall")
 
 func _on_animation_finished(anim_name: StringName) -> void:
+	if disabled:
+		return
+	
 	var anim := power.animation as AnimationPlayer
 	
 	# Restore swimming animation
@@ -362,31 +357,30 @@ func _on_animation_finished(anim_name: StringName) -> void:
 
 
 #region == Status setters ==
-func make_jumped() -> void:
-	_is_jumped = true
+## After calling [method EntityBody2D.jump], please call this method to make sure the character won't 
+## get continuous jumps with jumping key held
+func make_jumped(player: CharacterEntity2D) -> void:
+	ObjectState.set_state(player, STATE_IS_JUMPED, true)
 #endregion
 
 
 #region == Status getters ==
+## Returns [code]true[/code] if the [param character] is crouching
 func is_crouching(player: CharacterEntity2D) -> bool:
-	var small := bool(get_meta(IS_SMALL, false))
 	var small_crouchable := bool(ProjectSettings.get_setting("game/control/player/crouchable_in_small_suit", false))
-	return player.get_key_input_directions().y > 0 && player.is_on_floor() && (!small || (small && small_crouchable))
+	return player.get_key_input_directions().y > 0 && player.is_on_floor() && (!power.is_small || (power.is_small && small_crouchable))
 
+## Returns [code]true[/code] if the [param character] is walkable
 func is_crouching_walkable(player: CharacterEntity2D) -> bool:
 	var walkable_when_crouching := bool(ProjectSettings.get_setting("game/control/player/walkable_when_crouching", false))
 	return walkable_when_crouching && is_crouching(player)
 
-func is_walking_enabled() -> bool:
-	return bool(get_meta(ALLOWS_WALKING, false))
-
+## Returns [code]true[/code] if the [param character] is allowed to walk
 func is_allowed_to_walk(player: CharacterEntity2D) -> bool:
 	var crouching := is_crouching(player)
-	return player.is_controllable() && player.get_key_input_directions().x && (!crouching || (crouching && is_crouching_walkable(player)))
+	return player.get_key_input_directions().x && (!crouching || (crouching && is_crouching_walkable(player)))
 
-func is_jumping_enabled() -> bool:
-	return bool(get_meta(ALLOWS_JUMPING, false))
-
+## Returns [code]true[/code] if the [param character] is jumpable
 func is_jumpable(player: CharacterEntity2D) -> bool:
 	var on_floor := player.is_on_floor()
 	var on_falling := player.is_falling()
@@ -394,20 +388,20 @@ func is_jumpable(player: CharacterEntity2D) -> bool:
 	var jumpable_when_crouching := bool(ProjectSettings.get_setting("game/control/player/jumpable_when_crouching", false))
 	
 	if !_on_jump_held && (on_floor || on_falling):
-		_is_jumped = false
+		ObjectState.set_state(player, STATE_IS_JUMPED, false)
 	
-	return !_on_swimming && _on_jump_held && !_is_jumped && on_floor && (!on_crouching || (on_crouching && jumpable_when_crouching))
+	return !ObjectState.is_state(player, STATE_IS_SWIMMING) && !ObjectState.is_state(player, STATE_IS_JUMPED) && _on_jump_held && on_floor && (!on_crouching || (on_crouching && jumpable_when_crouching))
 
-func is_swimming_enabled() -> bool:
-	return bool(get_meta(ALLOWS_SWIMMING, false))
-
+## Returns [code]true[/code] if the [param character] is swimmable
 func is_swimmable(player: CharacterEntity2D) -> bool:
-	return _on_swimming && _on_jump && !is_crouching(player)
+	return _on_jump && !is_crouching(player) && ObjectState.is_state(player, STATE_IS_SWIMMING)
 
-func is_climbable(area: Area2D) -> bool:
-	return _on_climbing && !_is_climbing && area.is_in_group(&"@climbable@")
+## Returns [code]true[/code] if the [param character] is climbable in the [param area]
+func is_climbable(player: CharacterEntity2D, area: Area2D) -> bool:
+	return _on_climbing && area.is_in_group(&"@climbable@") && !ObjectState.is_state(player, STATE_IS_CLIMBING)
 
 
+## Returns deceleration of the behavior
 func get_deceleration(player: CharacterEntity2D) -> float:
 	var crouching := is_crouching(player)
 	return deceleration_crouching_moving if crouching && player.get_key_input_directions().x != 0 else deceleration_crouching if crouching else deceleration

@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bj0eef13ohuuk"]
-
-[ext_resource type="Script" path="res://objects/#components/visibility_on_screen_emitter/scripts/visibility_on_screen_emitter.gd" id="1_3q3cr"]
-
-[node name="VisibilityOnScreenEmitter" type="VisibleOnScreenNotifier2D"]
-rect = Rect2(-8, -8, 16, 16)
-script = ExtResource("1_3q3cr")

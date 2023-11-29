@@ -10,7 +10,9 @@ class_name CharacterPower2D extends Classes.HiddenNode2D
 ## Level of the suit
 @export_range(-5, 5, 1) var power_level: int
 @export var power_id: StringName = &"small"
-@export var powdown_to_id: StringName
+@export var power_down_to_id: StringName
+@export_subgroup("States")
+@export var is_small: bool
 @export_group("Sounds", "sound_")
 @export var sound_hurt: AudioStream = preload("res://assets/sounds/power_down.wav")
 @export var sound_death: AudioStream = preload("res://assets/sounds/death.ogg")

@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dpkc0xuier4xx"]
-
-[ext_resource type="Script" path="res://objects/#components/player_data_adders/scripts/coins_adder.gd" id="1_7c6n8"]
-
-[node name="CoinsAdder" type="Node"]
-process_mode = 4
-script = ExtResource("1_7c6n8")

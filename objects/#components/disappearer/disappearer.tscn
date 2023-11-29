@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dowueugdydw3c"]
-
-[ext_resource type="Script" path="res://objects/#components/disappearer/scripts/disappearer.gd" id="1_j3eta"]
-
-[node name="Disappearer" type="Node"]
-process_mode = 4
-script = ExtResource("1_j3eta")

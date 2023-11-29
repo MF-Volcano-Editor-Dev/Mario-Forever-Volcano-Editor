@@ -8,16 +8,7 @@ class_name Data
 static var signals: SignalsManager = SignalsManager.new()
 
 
-## Signals list of [Data]
-class SignalsManager:
-	## Emitted when the [member player_coins] is euqal to [member player_max_coins]
-	signal player_coins_reached_max
-	
-	## Emitted when the property in this class is changed
-	signal player_data_changed(property: StringName, value: int)
-
-
-#region Data of Player
+#region Data of characters
 ## Lives of players
 static var player_lives: int = ProjectSettings.get_setting("game/data/player/default_lives", 0):
 	set(value):
@@ -68,15 +59,24 @@ static func data_init_signal_emit() -> void:
 static func add_lives(amount: int) -> void:
 	player_lives += amount
 
-
 ## Fast access to adding [member player_scores] [br]
 ## [b]Note:[/b] If [param amount] is negative, this call will lead to subtraction of the property
 static func add_scores(amount: int) -> void:
 	player_scores += amount
 
-
 ## Fast access to adding [member player_coins] [br]
 ## [b]Note:[/b] If [param amount] is negative, this call will lead to subtraction of the property
 static func add_coins(amount: int) -> void:
 	player_coins += amount
+#endregion
+
+
+#region Inner classes
+## Signals list of [Data]
+class SignalsManager:
+	## Emitted when the [member player_coins] is euqal to [member player_max_coins]
+	signal player_coins_reached_max
+	
+	## Emitted when the property in this class is changed
+	signal player_data_changed(property: StringName, value: int)
 #endregion

@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7ybmtwsq38ci"]
-
-[ext_resource type="PackedScene" uid="uid://c5v1uu38sp0wd" path="res://objects/#components/item_component/item_component.tscn" id="1_510aj"]
-[ext_resource type="Script" path="res://objects/#components/item_component/scripts/item_appearing.gd" id="2_ol5cn"]
-
-[node name="ItemAppearing" instance=ExtResource("1_510aj")]
-script = ExtResource("2_ol5cn")
-appearing_duration = 1.0
-apperaing_final_y_pos = 32.0
