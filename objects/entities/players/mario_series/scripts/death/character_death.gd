@@ -1,10 +1,11 @@
 extends Node2D
 
-## Emitted when the player death is started
-signal player_death_started
+## Base class of dead characters
+##
+##
 
-## Emitted when the player death is finished
-signal player_death_finished
+signal player_death_started ## Emitted when the player death is started
+signal player_death_finished ## Emitted when the player death is finished
 
 @export_category("Player Death")
 @export_group("Physics")
@@ -16,12 +17,11 @@ signal player_death_finished
 @export_group("Sound", "sound_")
 @export var sound_death: AudioStream = preload("res://assets/sounds/death.ogg")
 
-var _tw: Tween
+var _tw: Tween # Tween ref
+
 var _fall_rot: bool
 
-
 @onready var sprite: Sprite2D = $Sprite2D
-
 
 func _ready() -> void:
 	player_death_started.connect(EventsManager.player_all_death_detect)
@@ -32,7 +32,7 @@ func _ready() -> void:
 	# can work as expected
 	await get_tree().process_frame
 	
-	player_death_started.emit()
+	player_death_started.emit(get_tree())
 	
 	Sound.play_sound(self, sound_death)
 	

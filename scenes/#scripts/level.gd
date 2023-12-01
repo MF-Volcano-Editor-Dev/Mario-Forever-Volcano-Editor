@@ -9,7 +9,6 @@ class_name Level extends SceneGame
 ## the execution of the second section until the list is empty [br]
 ## > 2nd section: Before the process of this section, if [method EventsManager.level_stop_finishment] is called, then the e
 
-
 signal stage_to_be_finished ## Emitted when the finishing delay is up (the level is to be finished)
 signal stage_finished ## Emitted when the level is finished
 
@@ -71,7 +70,7 @@ func _on_level_finished() -> void:
 	var players := await CharactersManager2D.get_characters_getter().get_characters(get_tree())
 	for i: CharacterEntity2D in players:
 		i.controllable = false
-		ObjectState.set_multistates(i, [], [])
+		ObjectState.set_state(i, CharacterEntity2D.STATE_UNDAMAGIBLE, true)
 	
 	# Plays finishing music
 	play_finishing_music()

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy1u88hqsvo6p"]
+
+[ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/behaviors/actions/character_action_crouch.gd" id="1_fe334"]
+
+[node name="Crouch" type="Node"]
+script = ExtResource("1_fe334")
+action_name = &"crouch"
+metadata/_edit_pinned_properties_ = [&"action_name"]

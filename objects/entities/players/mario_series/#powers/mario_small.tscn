@@ -1,9 +1,13 @@
-[gd_scene load_steps=16 format=3 uid="uid://bd6pmuly2nay5"]
+[gd_scene load_steps=19 format=3 uid="uid://bd6pmuly2nay5"]
 
 [ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/character_power_2d.gd" id="1_mq02o"]
 [ext_resource type="Texture2D" uid="uid://bthv1uh5gpdsm" path="res://objects/entities/players/mario_series/textures/mario_small.png" id="2_f2ebp"]
-[ext_resource type="PackedScene" uid="uid://ds0mt2h51dqa4" path="res://objects/#components/entities/effects/effect_creator/effect_creator.tscn" id="3_f86f0"]
-[ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/behaviors/character_behavior.gd" id="4_ivrmb"]
+[ext_resource type="PackedScene" uid="uid://dsmyjwcmddbbm" path="res://objects/entities/players/mario_series/#behaviors/behavior_default.tscn" id="3_sgbpt"]
+[ext_resource type="PackedScene" uid="uid://dy1u88hqsvo6p" path="res://objects/entities/players/mario_series/#actions/crouch.tscn" id="4_sgt6i"]
+[ext_resource type="PackedScene" uid="uid://dlvn6t3e3c4f6" path="res://objects/entities/players/mario_series/#actions/walk.tscn" id="5_mpxbv"]
+[ext_resource type="PackedScene" uid="uid://cufc0wtba3o3s" path="res://objects/entities/players/mario_series/#actions/jump.tscn" id="6_kv11q"]
+[ext_resource type="PackedScene" uid="uid://criuiqykhxv6d" path="res://objects/entities/players/mario_series/#actions/swim.tscn" id="7_ou6ml"]
+[ext_resource type="PackedScene" uid="uid://b70ptaf12wygp" path="res://objects/entities/players/mario_series/#actions/climb.tscn" id="9_l8s42"]
 
 [sub_resource type="Animation" id="Animation_av72s"]
 length = 0.001
@@ -22,22 +26,10 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D/EffBubble:position")
+tracks/1/path = NodePath("Sprite2D:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(4, 16)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -64,22 +56,10 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D/EffBubble:position")
+tracks/1/path = NodePath("Sprite2D:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.02, 0.04),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(4, -6), Vector2(4, 10), Vector2(4, 16)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -105,22 +85,10 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D/EffBubble:position")
+tracks/1/path = NodePath("Sprite2D:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(4, 15)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -155,18 +123,6 @@ tracks/1/keys = {
 "update": 1,
 "values": [false, true]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D/EffBubble:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 16)]
-}
 
 [sub_resource type="Animation" id="Animation_3ghdt"]
 resource_name = "crouch"
@@ -183,18 +139,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [7]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D/EffBubble:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(4, 18)]
 }
 
 [sub_resource type="Animation" id="Animation_2w4i5"]
@@ -216,63 +160,10 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D/EffBubble:position")
+tracks/1/path = NodePath("Sprite2D:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(4, 13)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_prlyl"]
-resource_name = "idle"
-length = 0.001
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D/EffBubble:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(4, 16)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -298,22 +189,10 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D/EffBubble:position")
+tracks/1/path = NodePath("Sprite2D:flip_h")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(4, 13)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -335,18 +214,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [8, 9, 10, 8, 11]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D/EffBubble:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(4, 13)]
-}
 
 [sub_resource type="Animation" id="Animation_3imi1"]
 resource_name = "walk"
@@ -364,18 +231,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [1, 2, 0]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D/EffBubble:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(4, 13), Vector2(4, 15), Vector2(4, 16)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ubran"]
 _data = {
@@ -385,7 +240,6 @@ _data = {
 "climb": SubResource("Animation_jpaam"),
 "crouch": SubResource("Animation_3ghdt"),
 "fall": SubResource("Animation_2w4i5"),
-"idle": SubResource("Animation_prlyl"),
 "jump": SubResource("Animation_6u4km"),
 "swim": SubResource("Animation_jybgw"),
 "walk": SubResource("Animation_3imi1")
@@ -401,20 +255,20 @@ position = Vector2(0, -16)
 texture = ExtResource("2_f2ebp")
 hframes = 13
 
-[node name="EffBubble" parent="Sprite2D" instance=ExtResource("3_f86f0")]
-position = Vector2(4, 16)
-gizmo_extents = 4.0
-create_on = NodePath("../../..")
-inheritances = null
-metadata/_edit_pinned_properties_ = [&"create_on"]
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_ubran")
 }
-autoplay = "idle"
+autoplay = "RESET"
 
-[node name="Behavior" type="Node" parent="."]
-script = ExtResource("4_ivrmb")
-root_path = NodePath("../..")
-metadata/_edit_pinned_properties_ = [&"root_path"]
+[node name="BehaviorDefault" parent="." instance=ExtResource("3_sgbpt")]
+
+[node name="Crouch" parent="BehaviorDefault" instance=ExtResource("4_sgt6i")]
+
+[node name="Walk" parent="BehaviorDefault" instance=ExtResource("5_mpxbv")]
+
+[node name="Jump" parent="BehaviorDefault" instance=ExtResource("6_kv11q")]
+
+[node name="Swim" parent="BehaviorDefault" instance=ExtResource("7_ou6ml")]
+
+[node name="Climb" parent="BehaviorDefault" instance=ExtResource("9_l8s42")]

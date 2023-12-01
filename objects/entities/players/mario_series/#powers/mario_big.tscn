@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://da5jt0x58np72"]
+
+[ext_resource type="PackedScene" uid="uid://bd6pmuly2nay5" path="res://objects/entities/players/mario_series/#powers/mario_small.tscn" id="1_wtccv"]
+[ext_resource type="Texture2D" uid="uid://d2amp1pvo4bgo" path="res://objects/entities/players/mario_series/textures/mario_big.png" id="2_ctiwm"]
+
+[node name="MarioBig" instance=ExtResource("1_wtccv")]
+power_level = 1
+power_id = &"big"
+power_down_to_id = &"small"
+is_small = false
+metadata/_edit_pinned_properties_ = [&"power_id", &"is_small", &"power_down_to_id", &"power_level"]
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_ctiwm")
+metadata/_edit_pinned_properties_ = [&"texture"]
+
+[node name="Crouch" parent="BehaviorDefault" index="0"]
+normal_body_shape_scale = Vector2(1, 2)
+normal_body_shape_position = Vector2(0, -12)
+normal_head_position = Vector2(0, -41)
+metadata/_edit_pinned_properties_ = [&"normal_body_shape_scale", &"normal_body_shape_position", &"normal_head_position"]

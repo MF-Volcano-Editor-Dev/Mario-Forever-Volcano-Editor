@@ -1,26 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://cvnkj7x0t0mm0"]
+[gd_scene load_steps=6 format=3 uid="uid://cvnkj7x0t0mm0"]
 
 [ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/character_entity_2d.gd" id="1_vlgv0"]
 [ext_resource type="PackedScene" uid="uid://bd6pmuly2nay5" path="res://objects/entities/players/mario_series/#powers/mario_small.tscn" id="2_8ugd8"]
-[ext_resource type="PackedScene" uid="uid://dj7lfqnv2li05" path="res://objects/entities/players/mario_series/#death/mario_death.tscn" id="2_j2s0s"]
+[ext_resource type="PackedScene" uid="uid://da5jt0x58np72" path="res://objects/entities/players/mario_series/#powers/mario_big.tscn" id="3_vmk6x"]
 [ext_resource type="PackedScene" uid="uid://cprsxw7scpvfp" path="res://objects/#components/entities/health/health_component/health_component.tscn" id="4_2sg87"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bwlpc"]
-size = Vector2(22, 29)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_onwop"]
-size = Vector2(22, 29)
+size = Vector2(22, 28)
 
 [node name="Mario" type="EntityBody2D"]
 collision_mask = 2
 script = ExtResource("1_vlgv0")
 nickname = &"Mario"
-death = ExtResource("2_j2s0s")
 metadata/controllable = true
-metadata/_edit_pinned_properties_ = [&"nickname", &"death"]
+metadata/_edit_pinned_properties_ = [&"nickname"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 1.5)
+position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_bwlpc")
 debug_color = Color(0, 0.647059, 0.2, 0.419608)
 
@@ -29,8 +25,8 @@ collision_mask = 116
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaBody"]
-position = Vector2(0, 1.5)
-shape = SubResource("RectangleShape2D_onwop")
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_bwlpc")
 debug_color = Color(0.952941, 0.219608, 0, 0.419608)
 
 [node name="AreaHead" type="Area2D" parent="."]
@@ -38,11 +34,15 @@ collision_layer = 0
 collision_mask = 114
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionPolygon2D" parent="AreaHead"]
-position = Vector2(0, -14)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AreaHead"]
+position = Vector2(0, -13)
 polygon = PackedVector2Array(-11, 1, 11, 1, 10, 0, -10, 0)
 
 [node name="MarioSmall" parent="." instance=ExtResource("2_8ugd8")]
 process_mode = 4
+
+[node name="MarioBig" parent="." instance=ExtResource("3_vmk6x")]
+process_mode = 4
+visible = false
 
 [node name="HealthComponent" parent="." instance=ExtResource("4_2sg87")]

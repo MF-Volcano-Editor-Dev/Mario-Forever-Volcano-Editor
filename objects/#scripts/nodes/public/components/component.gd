@@ -1,4 +1,4 @@
-@icon("./component.svg")
+@icon("res://icons/component.svg")
 class_name Component extends Classes.HiddenNode
 
 ## Base class of such ones used under a [Node] to be a tag to provide extra behaviors for the root node.
@@ -13,13 +13,19 @@ class_name Component extends Classes.HiddenNode
 ## [br]
 ## [b]Note:[/b] For developers who want to extend this class, please implement methods with
 ## this property to ensure the methods you are going to define are controllable.
-@export var disabled: bool
+@export var disabled: bool:
+	set = set_disabled
 ## [NodePath] to the root node
 @export var root_path: NodePath = ^".."
 
 @onready var _root: Node = get_node_or_null(root_path)
 
 
+#region == Setgets ==
+func set_disabled(value: bool) -> void:
+	disabled = value
+
 ## Returns the root node
 func get_root() -> Node:
 	return _root if is_instance_valid(_root) else null
+#endregion

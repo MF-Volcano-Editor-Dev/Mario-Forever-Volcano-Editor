@@ -12,7 +12,7 @@ class CharactersDataList2D:
 	
 	
 	## Register a data of [param character] into the list
-	func register(character: CharacterEntity2D, override: bool = true) -> void:
+	func register(character: CharacterEntity2D, override: bool = false) -> void:
 		var data := CharacterDataStorage2D.new(character)
 		_data_list.merge({character.id: data}, override)
 	

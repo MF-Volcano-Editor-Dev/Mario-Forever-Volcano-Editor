@@ -1,6 +1,6 @@
 [icons]
 
-StateMachine = "res://gdextension/state_machine/state_machine.svg"
+ObjectState = "res://gdextension/state_machine/state_machine.svg"
 
 [configuration]
 

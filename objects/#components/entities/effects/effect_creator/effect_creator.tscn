@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ds0mt2h51dqa4"]
-
-[ext_resource type="Script" path="res://objects/#components/entities/effects/effect_creator/scripts/effect_creator.gd" id="1_1y0xo"]
-
-[node name="EffectCreator" type="Marker2D"]
-editor_description = "If you want to create an effect, please call `create_effect()`, before which please make sure the root node of the PackedScene `effect` is a Node2D.
-"
-script = ExtResource("1_1y0xo")

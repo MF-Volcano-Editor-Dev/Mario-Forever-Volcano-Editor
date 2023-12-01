@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1f3khrnqnyfr"]
+
+[ext_resource type="Script" path="res://objects/#attachments/level_use/scripts/level_data.gd" id="1_dyr6i"]
+
+[node name="LevelEvents" type="Node"]
+process_mode = 4
+editor_description = "Used to make detect the change of character's data and react to it
+Important to a level"
+script = ExtResource("1_dyr6i")

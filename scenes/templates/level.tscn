@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=10 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="Script" path="res://scenes/#scripts/level.gd" id="1_f4bef"]
-[ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/#attachments/level_use/level_huds/level_hud.tscn" id="2_woqqe"]
-[ext_resource type="PackedScene" uid="uid://devmwslkf4fe2" path="res://objects/#attachments/level_use/level_timer/level_timer.tscn" id="3_r3b6w"]
-[ext_resource type="PackedScene" uid="uid://dqyb07p315tkl" path="res://objects/#attachments/level_use/level_view/border/level_death_line.tscn" id="4_ry64c"]
-[ext_resource type="PackedScene" uid="uid://j2jtsd3mcv0g" path="res://objects/#attachments/level_use/level_view/camera/level_camera.tscn" id="5_l14dc"]
+[ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/#attachments/level_use/level_hud.tscn" id="2_woqqe"]
+[ext_resource type="PackedScene" uid="uid://devmwslkf4fe2" path="res://objects/#attachments/level_use/level_timer.tscn" id="3_r3b6w"]
+[ext_resource type="PackedScene" uid="uid://dqyb07p315tkl" path="res://objects/#attachments/level_use/level_borders_death.tscn" id="4_ry64c"]
+[ext_resource type="PackedScene" uid="uid://d1f3khrnqnyfr" path="res://objects/#attachments/level_use/level_events.tscn" id="4_t6ny6"]
+[ext_resource type="PackedScene" uid="uid://j2jtsd3mcv0g" path="res://objects/#attachments/level_use/level_camera.tscn" id="5_l14dc"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="6_un4yr"]
 [ext_resource type="PackedScene" uid="uid://cvnkj7x0t0mm0" path="res://objects/entities/players/mario_series/mario.tscn" id="7_a5xdu"]
 [ext_resource type="PackedScene" uid="uid://bnewtaib54hhw" path="res://objects/entities/fluid/liquid/scripts/water.tscn" id="8_ho5ea"]
@@ -16,6 +17,8 @@ script = ExtResource("1_f4bef")
 
 [node name="LevelTimer" parent="." instance=ExtResource("3_r3b6w")]
 
+[node name="LevelData" parent="." instance=ExtResource("4_t6ny6")]
+
 [node name="LevelDeathBorders" parent="." instance=ExtResource("4_ry64c")]
 
 [node name="LevelCamera" parent="." instance=ExtResource("5_l14dc")]
@@ -23,13 +26,13 @@ script = ExtResource("1_f4bef")
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("6_un4yr")
 format = 2
-layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851978, 65537, 0, 851979, 65537, 0, 851980, 65537, 0, 851981, 65537, 0, 851982, 65537, 0, 851983, 65537, 0, 851984, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 851987, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917510, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917523, 65537, 1, 917524, 65537, 1, 917525, 65537, 1, 917526, 65537, 1, 917527, 65537, 1, 917528, 65537, 1, 917529, 65537, 1, 851988, 65537, 0, 851989, 65537, 0, 851990, 65537, 0, 851991, 65537, 0, 851992, 65537, 0, 851993, 65537, 0, 983039, 65537, 0, 917503, 65537, 0, 851967, 65537, 0, 786431, 65537, 0, 720895, 65537, 0, 655359, 65537, 0, 589823, 65537, 0, 524287, 65537, 0, 458751, 65537, 0, 393215, 65537, 0, 327679, 65537, 0, 262143, 65537, 0, 196607, 65537, 0, 131071, 65537, 0, 65535, 65537, 0, 458766, 65537, 1, 524302, 65537, 1, 589838, 65537, 1, 589839, 65537, 1, 524303, 65537, 1, 458767, 65537, 1, 393222, 65537, 1, 393223, 65537, 1, 851994, 65537, 0, 851995, 65537, 0, 851996, 65537, 0, 851997, 65537, 0, 851998, 65537, 0, 851999, 65537, 0, 852000, 65537, 0, 852001, 65537, 0, 852002, 65537, 0, 852003, 65537, 0, 852004, 65537, 0, 852005, 65537, 0, 852006, 65537, 0, 852007, 65537, 0, 852008, 65537, 0, 852009, 65537, 0, 852010, 65537, 0, 852011, 65537, 0, 852012, 65537, 0, 852013, 65537, 0, 852014, 65537, 0)
+layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851978, 65537, 0, 851979, 65537, 0, 851980, 65537, 0, 851981, 65537, 0, 851982, 65537, 0, 851983, 65537, 0, 851984, 65537, 0, 851985, 65537, 0, 851986, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917510, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917522, 65537, 1, 917524, 65537, 1, 917525, 65537, 1, 917526, 65537, 1, 917527, 65537, 1, 917528, 65537, 1, 917529, 65537, 1, 851988, 65537, 0, 851989, 65537, 0, 851990, 65537, 0, 851991, 65537, 0, 851992, 65537, 0, 851993, 65537, 0, 983039, 65537, 0, 917503, 65537, 0, 851967, 65537, 0, 786431, 65537, 0, 720895, 65537, 0, 655359, 65537, 0, 589823, 65537, 0, 524287, 65537, 0, 458751, 65537, 0, 393215, 65537, 0, 327679, 65537, 0, 262143, 65537, 0, 196607, 65537, 0, 131071, 65537, 0, 65535, 65537, 0, 458766, 65537, 1, 524302, 65537, 1, 589838, 65537, 1, 589839, 65537, 1, 524303, 65537, 1, 458767, 65537, 1, 393222, 65537, 1, 393223, 65537, 1, 851994, 65537, 0, 851995, 65537, 0, 851996, 65537, 0, 851997, 65537, 0, 851998, 65537, 0, 851999, 65537, 0, 852000, 65537, 0, 852001, 65537, 0, 852002, 65537, 0, 852003, 65537, 0, 852004, 65537, 0, 852005, 65537, 0, 852006, 65537, 0, 852007, 65537, 0, 852008, 65537, 0, 852009, 65537, 0, 852010, 65537, 0, 852011, 65537, 0, 852012, 65537, 0, 852013, 65537, 0, 852014, 65537, 0)
 
 [node name="Mario" parent="." instance=ExtResource("7_a5xdu")]
 position = Vector2(108, 224)
 
 [node name="Water" parent="." instance=ExtResource("8_ho5ea")]
-position = Vector2(256, 64)
+position = Vector2(256, -128)
 scale = Vector2(6, 11)
 gravity_point_center = Vector2(-1, 0)
 gravity_direction = Vector2(-1, 0)

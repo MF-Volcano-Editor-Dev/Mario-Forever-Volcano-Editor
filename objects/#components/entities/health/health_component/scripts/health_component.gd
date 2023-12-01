@@ -1,4 +1,4 @@
-@icon("./health_component.svg")
+@icon("res://icons/health_component.svg")
 class_name HealthComponent extends Component
 
 ## A component that contains a health system and emits signals if the health gets changed.

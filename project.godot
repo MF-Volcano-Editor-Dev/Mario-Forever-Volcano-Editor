@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Mario Forever - Thunder Editor Refactored"
 config/tags=PackedStringArray("mario_forever", "project")
-run/main_scene="res://scenes/start/start.tscn"
+run/main_scene="res://scenes/start.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="res://icon.svg"
@@ -27,7 +27,6 @@ Developer="*res://singletons/scripts/Developer.gd"
 window/size/viewport_width=640
 window/size/viewport_height=480
 window/stretch/mode="viewport"
-window/vsync/vsync_mode=3
 
 [dotnet]
 
@@ -42,13 +41,15 @@ enabled=PackedStringArray("res://addons/abfi/plugin.cfg")
 folder_colors={
 "res://assets/": "blue",
 "res://gdextension/": "red",
+"res://icons/": "green",
 "res://objects/#attachments/": "yellow",
 "res://objects/#attachments/level_use/level_huds/scripts/": "green",
-"res://objects/#attachments/level_use/level_huds/textures/": "green",
-"res://objects/#attachments/level_use/level_huds/themes/": "green",
 "res://objects/#attachments/level_use/level_timer/scripts/": "green",
 "res://objects/#attachments/level_use/level_view/border/scripts/": "green",
 "res://objects/#attachments/level_use/level_view/camera/scripts/": "green",
+"res://objects/#attachments/level_use/scripts/": "green",
+"res://objects/#attachments/level_use/textures/": "green",
+"res://objects/#attachments/level_use/themes/": "green",
 "res://objects/#components/": "yellow",
 "res://objects/#components/attacking_related/scripts/": "green",
 "res://objects/#components/block_hitter/scripts/": "green",
@@ -103,10 +104,10 @@ folder_colors={
 "res://objects/entities/players/mario/animations/": "orange",
 "res://objects/entities/players/mario/scripts/": "green",
 "res://objects/entities/players/mario/shapes/": "orange",
-"res://objects/entities/players/mario_series/#components/": "yellow",
+"res://objects/entities/players/mario_series/#actions/": "yellow",
+"res://objects/entities/players/mario_series/#behaviors/": "yellow",
 "res://objects/entities/players/mario_series/#death/": "yellow",
 "res://objects/entities/players/mario_series/#powers/": "yellow",
-"res://objects/entities/players/mario_series/animations/": "green",
 "res://objects/entities/players/mario_series/scripts/": "green",
 "res://objects/entities/players/mario_series/textures/": "green",
 "res://objects/entities/warps/scripts/": "green",
@@ -120,9 +121,9 @@ import/blender/enabled=false
 
 [game]
 
-control/player/jumpable_when_crouching=true
-control/player/crouchable_in_small_suit=true
-control/player/walkable_when_crouching=true
+control/player/jumpable_when_crouching=false
+control/player/crouchable_in_small_suit=false
+control/player/walkable_when_crouching=false
 data/player/default_lives=4
 
 [input]
