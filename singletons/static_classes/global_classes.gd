@@ -18,6 +18,7 @@ class_name Classes
 const HiddenNode := preload("res://objects/#scripts/nodes/hidden/class_hidden_node.gd")
 const HiddenNode2D := preload("res://objects/#scripts/nodes/hidden/class_hidden_node_2d.gd")
 const HiddenCamera2D := preload("res://objects/#scripts/nodes/hidden/class_hidden_camera_2d.gd")
+const HiddenArea2D := preload("res://objects/#scripts/nodes/hidden/class_hidden_area_2d.gd")
 const HiddenEntityBody2D := preload("res://objects/#scripts/nodes/hidden/class_hidden_entity_body_2d.gd")
 const HiddenMarker2D := preload("res://objects/#scripts/nodes/hidden/class_hidden_marker_2d.gd")
 const HiddenCanvasLayer := preload("res://objects/#scripts/nodes/hidden/class_hidden_canvas_layer.gd")

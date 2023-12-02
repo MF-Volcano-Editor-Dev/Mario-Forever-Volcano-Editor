@@ -1,6 +1,6 @@
 class_name Level extends SceneGame
 
-## Class used for stages
+## Class used for levels
 ##
 ## When the method [method EventsManager.level_finish] is called, the level will go into the procession
 ## that contains two sections:[br]
@@ -77,14 +77,14 @@ func _on_level_finished() -> void:
 	
 	# Delay for seconds to make sure the music is done perfectly
 	await get_tree().create_timer(finish_process_delay, false).timeout
+	if await _test_stop_finishment():
+		return
 	stage_to_be_finished.emit()
 	
 	# Await for the objecs that blocks the process in the list
 	while !_finishment_awaited_objects.is_empty():
 		await get_tree().process_frame
-	
-	if _finishment_stopped:
-		_finishment_stopped = false
+	if await _test_stop_finishment():
 		return
 	
 	# Try changing the scene
@@ -95,4 +95,14 @@ func _on_level_finished() -> void:
 		printerr("[Scene Changing Error] The scene to be warped to is invalid or not set yet!")
 	
 	stage_finished.emit()
+
+func _test_stop_finishment() -> bool:
+	if !_finishment_stopped:
+		return false
+	_finishment_stopped = false
+	var players := await CharactersManager2D.get_characters_getter().get_characters(get_tree())
+	for i: CharacterEntity2D in players:
+		i.controllable = true
+		ObjectState.set_state(i, CharacterEntity2D.STATE_UNDAMAGIBLE, false)
+	return true
 #endregion

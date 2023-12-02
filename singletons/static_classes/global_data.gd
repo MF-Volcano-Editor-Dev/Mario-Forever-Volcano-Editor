@@ -14,12 +14,10 @@ static var player_lives: int = ProjectSettings.get_setting("game/data/player/def
 	set(value):
 		player_lives = clampi(value, 0, 99)
 		signals.player_data_changed.emit(&"player_lives", player_lives)
-
 ## Maximum of [member player_coins]
 static var player_max_coins: int = 100:
 	set(value):
 		player_max_coins = clampi(value, 0, 100_000)
-
 ## Coins of players [br]
 ## If reaching [member player_max_coins], the signal [member player_coins_reached_max] will be emitted
 static var player_coins: int:
@@ -32,13 +30,11 @@ static var player_coins: int:
 			signals.player_coins_reached_max.emit()
 		
 		signals.player_data_changed.emit(&"player_coins", player_coins)
-
 ## Total accumulation of [member player_coins] [br]
 ## Useful when you are developing a shopping system
 static var player_total_coins: int:
 	set(value):
 		player_total_coins = clampi(value, 0, 100_000_000_000)
-
 ## Scores of players
 static var player_scores: int:
 	set(value):
@@ -74,9 +70,6 @@ static func add_coins(amount: int) -> void:
 #region Inner classes
 ## Signals list of [Data]
 class SignalsManager:
-	## Emitted when the [member player_coins] is euqal to [member player_max_coins]
-	signal player_coins_reached_max
-	
-	## Emitted when the property in this class is changed
-	signal player_data_changed(property: StringName, value: int)
+	signal player_coins_reached_max ## Emitted when the [member player_coins] is euqal to [member player_max_coins]
+	signal player_data_changed(property: StringName, value: int) ## Emitted when the property in this class is changed
 #endregion

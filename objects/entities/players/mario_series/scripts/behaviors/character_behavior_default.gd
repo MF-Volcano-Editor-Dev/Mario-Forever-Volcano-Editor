@@ -23,7 +23,6 @@ func _process(_delta: float) -> void:
 	_overlaps_climbable(body_overlaps)
 	_head_water(head_overlaps)
 
-
 func _physics_process(delta: float) -> void:
 	if disabled:
 		return
@@ -55,6 +54,7 @@ func _overlaps_water(overlaps: Array[Area2D]) -> void:
 
 func _overlaps_climbable(overlaps: Array[Area2D]) -> void:
 	var count := 0
+	var is_climbing := ObjectState.is_state(character, ActionClimb.STATE_CLIMBING)
 	
 	for i: Area2D in overlaps:
 		if i.is_in_group(&"%%climbable"):
@@ -62,6 +62,7 @@ func _overlaps_climbable(overlaps: Array[Area2D]) -> void:
 			count += 1
 	
 	ObjectState.set_state(character, ActionClimb.STATE_CLIMBABLE, count > 0)
+	ObjectState.set_state(character, ActionClimb.STATE_CLIMBING, count > 0 && is_climbing)
 
 func _head_water(overlaps: Array[Area2D]) -> void:
 	var count := 0

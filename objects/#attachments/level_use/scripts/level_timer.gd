@@ -4,6 +4,7 @@ class_name LevelTimer extends Classes.HiddenCanvasLayer
 signal timer_down(count: int) ## Emitted when the timer decreases
 signal timer_up(count: int) ## Emitted when the timer increases
 signal timer_over  ## Emitted when the timer is up
+signal timer_over_scoring ## Emitted when the timer is up in scoring mode
 
 @export_category("Level Timer")
 @export_group("Timer")
@@ -35,6 +36,7 @@ signal timer_over  ## Emitted when the timer is up
 
 #region == Data ==
 var _scoring: bool
+var _scoring_sound_count_delay: int
 var _has_warned: bool
 #endregion
 
@@ -51,38 +53,97 @@ func _ready() -> void:
 	rest_time = rest_time # Initializes the value and trigger set_rest_time()
 	interval.start(time_change_unit_tick)
 	interval.timeout.connect(_on_rest_time_changed)
+	
+	EventsManager.signals.level_finished.connect(
+		# Level finished, when the finishing music gets playing
+		func() -> void:
+			pause() # Pauses the timer first
+			var level := get_tree().current_scene as Level
+			if !level:
+				return
+			level.add_object_to_wait_finish(self) # Block the level finishment until the scoring is end
+			await timer_over_scoring
+			await get_tree().create_timer(1, false).timeout
+			level.remove_object_to_wait_finish(self)
+	)
+	EventsManager.signals.level_done_finishing.connect(
+		# After the finishing music is over
+		func() -> void:
+			if time_changing_mode > 0: # Down-counting mode -> scoring
+				_scoring = true
+				interval.start(time_down_unit_tick_scoring)
+			else: # Up-counting mode -> skips scoring
+				timer_over_scoring.emit()
+	)
+	EventsManager.signals.level_stopped_finishement.connect(
+		# Level finishment is stopped
+		func() -> void:
+			_scoring = false
+			start()
+	)
 
 
-func _on_rest_time_changed() -> void:
-	rest_time -= time_change_unit * time_changing_mode
+#region == Time down controls ==
+## Starts the timer's counting down
+func start() -> void:
+	if interval.is_stopped():
+		interval.start(time_change_unit_tick)
+	elif interval.paused:
+		interval.paused = false
+
+## Stops the timer's counting down
+func stop() -> void:
+	interval.stop()
+
+## Pauses the timer's counting down
+func pause() -> void:
+	interval.paused = true
+#endregion
 
 
 #region Timer Managements
 func set_rest_time(value: int) -> void:
-	var delta := value - rest_time
+	var clamped := clampi(value, 0, 86400) # Value clamped within correct range
+	var delta := clamped - rest_time
 	if delta < 0:
-		timer_down.emit(value)
+		timer_down.emit(clamped)
 	else:
-		timer_up.emit(value)
+		timer_up.emit(clamped)
 	
-	rest_time = value
+	rest_time = clamped
 	text_times.text = str(rest_time)
 	
-	if !_scoring:
-		_rest_time_event_not_scoring(rest_time)
+	if _scoring:
+		_rest_time_event_scoring(delta)
 	else:
-		_rest_time_event_scoring(rest_time)
+		_rest_time_event_not_scoring()
 
-func _rest_time_event_not_scoring(time: int) -> void:
-	_warning(time < warning_time)
-	
-	if time <= 0:
+func _rest_time_event_not_scoring() -> void:
+	_warning(rest_time < warning_time)
+	if rest_time <= 0:
+		timer_over.emit()
 		interval.stop()
 
-func _rest_time_event_scoring(_time: float) -> void:
-	pass
+func _rest_time_event_scoring(delta: int) -> void:
+	Data.add_scores(time_unit_scores * delta)
+	
+	_scoring_sound_count_delay += 1
+	if _scoring_sound_count_delay > 3:
+		_scoring_sound_count_delay = 0
+		Sound.play_sound(self, sound_scoring)
+	
+	if rest_time <= 0:
+		timer_over_scoring.emit()
+		interval.stop()
 #endregion
 
+
+#region == Time changing and warning ==
+func _on_rest_time_changed() -> void:
+	if _scoring && time_changing_mode > 0: # Scoring count
+		rest_time -= time_down_unit_scoring
+	else: # Regular count
+		rest_time -= time_change_unit * time_changing_mode
 
 func _warning(alert: bool) -> void:
 	if !_has_warned && alert:
@@ -91,3 +152,4 @@ func _warning(alert: bool) -> void:
 		text_animation_player.play(&"warning")
 	elif _has_warned && !alert:
 		_has_warned = false
+#endregion

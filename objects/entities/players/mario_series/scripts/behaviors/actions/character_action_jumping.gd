@@ -2,15 +2,16 @@ extends CharacterAction2D
 
 const ActionSwim := preload("./character_action_swimming.gd")
 const ActionCrouch := preload("./character_action_crouch.gd")
+const ActionClimb := preload("./character_action_climbing.gd")
 
 const STATE_IS_JUMPED := &"is_jumped"
 
 @export_category("Action Jumping")
-@export_group("Key")
-@export var key_jump: StringName = &"jump" ## Key jump
 @export_group("Component Links", "path_")
 @export_node_path("Node") var path_action_crouch: NodePath = ^"../Crouch"
-@export_subgroup("Jumping")
+@export_group("Key")
+@export var key_jump: StringName = &"jump" ## Key jump
+@export_group("Jumping")
 ## Initial jumping speed
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_jumping_speed: float = 700
 ## Jumping acceleration when the jumping key is held and the player IS NOT walking
@@ -51,7 +52,7 @@ func _animation() -> void:
 	if behavior.is_playing_unbreakable_animation():
 		return
 	
-	if !character.is_on_floor() && !ObjectState.is_state(character, ActionSwim.STATE_SWIMMING):
+	if !character.is_on_floor() && !ObjectState.is_state(character, ActionSwim.STATE_SWIMMING) && !ObjectState.is_state(character, ActionClimb.STATE_CLIMBING):
 		power.animation.speed_scale = 1
 		if character.is_leaving_ground():
 			power.animation.play(&"jump")

@@ -1,6 +1,7 @@
 extends CharacterAction2D
 
 const ActionCrouch := preload("./character_action_crouch.gd")
+const ActionClimb := preload("./character_action_climbing.gd")
 
 const STATE_SWIMMING := &"is_swimming"
 const STATE_SWIMMING_OUT := &"is_swimming_out" ## Identifierized access to the state "is_swimming_out"
@@ -56,7 +57,7 @@ func _animation() -> void:
 	if behavior.is_playing_unbreakable_animation():
 		return
 	
-	if !character.is_on_floor() && ObjectState.is_state(character, STATE_SWIMMING):
+	if !character.is_on_floor() && ObjectState.is_state(character, STATE_SWIMMING) && !ObjectState.is_state(character, ActionClimb.STATE_CLIMBING):
 		power.animation.speed_scale = 1
 		power.animation.play(&"swim")
 

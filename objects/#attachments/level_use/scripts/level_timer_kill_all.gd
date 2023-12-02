@@ -1,7 +1,15 @@
 extends Component
 
+
+func _ready() -> void:
+	if !_root is LevelTimer:
+		return
+	
+	_root.timer_over.connect(_on_time_up_killed_all_players)
+
+
 ## Kills all players
-func time_up_kill_all_players() -> void:
+func _on_time_up_killed_all_players() -> void:
 	if disabled:
 		return
 	

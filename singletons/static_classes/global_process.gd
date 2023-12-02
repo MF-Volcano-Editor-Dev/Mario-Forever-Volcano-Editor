@@ -46,4 +46,4 @@ static func await_readiness(node: Node) -> void:
 
 ## Await the readiness of the current scene, see [method await_readiness] to get more details
 static func await_current_scene_readiness(tree: SceneTree) -> void:
-	await_readiness(tree.current_scene)
+	await await_readiness(tree.current_scene)

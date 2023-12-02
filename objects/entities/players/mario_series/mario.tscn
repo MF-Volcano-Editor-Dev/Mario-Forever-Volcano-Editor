@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/character_entity_2d.gd" id="1_vlgv0"]
 [ext_resource type="PackedScene" uid="uid://bd6pmuly2nay5" path="res://objects/entities/players/mario_series/#powers/mario_small.tscn" id="2_8ugd8"]
 [ext_resource type="PackedScene" uid="uid://da5jt0x58np72" path="res://objects/entities/players/mario_series/#powers/mario_big.tscn" id="3_vmk6x"]
-[ext_resource type="PackedScene" uid="uid://cprsxw7scpvfp" path="res://objects/#components/entities/health/health_component/health_component.tscn" id="4_2sg87"]
+[ext_resource type="PackedScene" uid="uid://cprsxw7scpvfp" path="res://objects/#components/health/health_component/health_component.tscn" id="4_oecpc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bwlpc"]
 size = Vector2(22, 28)
@@ -45,4 +45,4 @@ process_mode = 4
 process_mode = 4
 visible = false
 
-[node name="HealthComponent" parent="." instance=ExtResource("4_2sg87")]
+[node name="HealthComponent" parent="." instance=ExtResource("4_oecpc")]

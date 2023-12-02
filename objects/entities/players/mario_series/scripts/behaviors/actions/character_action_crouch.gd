@@ -54,11 +54,11 @@ func _animation(crouching: bool) -> void:
 #region == Getters ==
 ## Returns [code]true[/code] if the character is crouching
 func is_crouching() -> bool:
-	return ObjectState.is_state(character, STATE_CROUCHING)
+	return character.is_on_floor() && ObjectState.is_state(character, STATE_CROUCHING)
 
 ## Test if the character is able to crouch and returns [code]true[/code] if the character is and set to crouching state
 func test_crouching() -> bool:
-	if !character.controllable:
+	if !character.controllable || !character.is_on_floor():
 		ObjectState.set_state(character, STATE_CROUCHING, false)
 	else:
 		var small_crouchable := bool(ProjectSettings.get_setting_with_override(&"game/control/player/crouchable_in_small_suit"))

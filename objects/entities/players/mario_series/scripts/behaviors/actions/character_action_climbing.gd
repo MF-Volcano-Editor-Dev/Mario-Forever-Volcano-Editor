@@ -50,7 +50,7 @@ func _animation() -> void:
 		return
 	
 	if ObjectState.is_state(character, STATE_CLIMBING):
-		power.animation.speed_scale = 1
+		power.animation.speed_scale = 1 if character.velocity else 0
 		power.animation.play(&"climb")
 #endregion
 
@@ -58,9 +58,9 @@ func _animation() -> void:
 #region == Getters ==
 ## Returns [code]true[/code] if the character is climbing and jumpable
 func is_climbing_jumpable() -> bool:
-	return Input.is_action_pressed(action_jump.key_jump + str(character.id)) && ObjectState.is_state(character, STATE_CLIMBING)
+	return character.controllable && Input.is_action_pressed(action_jump.key_jump + str(character.id)) && ObjectState.is_state(character, STATE_CLIMBING)
 
 ## Returns [code]true[/code] if the character is climbable in the [param area]
 func is_climbable() -> bool:
-	return Input.is_action_pressed(key_climb + str(character.id)) && ObjectState.is_state(character, STATE_CLIMBABLE) && !ObjectState.is_state(character, STATE_CLIMBING)
+	return character.controllable && !Input.is_action_pressed(action_jump.key_jump + str(character.id)) && Input.is_action_pressed(key_climb + str(character.id)) && ObjectState.is_state(character, STATE_CLIMBABLE) && !ObjectState.is_state(character, STATE_CLIMBING)
 #endregion

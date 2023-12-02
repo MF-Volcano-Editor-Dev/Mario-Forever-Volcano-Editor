@@ -13,8 +13,10 @@ class_name LevelCamera extends Classes.HiddenCamera2D
 @export var smooth_when_entering: bool
 @export_range(0, 64, 0.001, "suffix:px/s") var smooth_speed: float = 16
 
+#region == References ==
 @onready var camera_area: Area2D = $CameraArea
 @onready var camera_area_shape: CollisionShape2D = $CameraArea/CollisionShape2D
+#endregion
 
 
 func _ready() -> void:

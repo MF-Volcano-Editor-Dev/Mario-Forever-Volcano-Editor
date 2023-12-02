@@ -134,15 +134,12 @@ func die(_tag: TagsObject = null) -> void:
 	
 	# Death
 	if death:
-		# Needs to be called deferredly because of create_instance()
-		# Lambda is used because call_deferred is not allowed to call
-		(func() -> void:
-			var death_ins := death.instantiate() # Create death instance
-			var death_2d := death_ins as Node2D # Reference as Node2D to the death instance
-			death_2d.global_transform = global_transform
-			death_2d.visible = visible
-			queue_free() # Delete character
-		).call_deferred() 
+		var death_ins := death.instantiate() # Create death instance
+		var death_2d := death_ins as Node2D # Reference as Node2D to the death instance
+		death_2d.global_transform = global_transform
+		death_2d.visible = visible
+		add_sibling(death_2d)
+		queue_free()
 	else:
 		CustomErrors.error_and_quit("The death effect is not found!")
 #endregion
@@ -161,7 +158,7 @@ func set_power_id(value: StringName) -> void:
 			continue
 		
 		i = i as CharacterPower2D
-		if i.power_id == value:
+		if i.power_id == value: # Matched power
 			power_ext = true
 			_power = i
 			
@@ -175,7 +172,7 @@ func set_power_id(value: StringName) -> void:
 				i.appear()
 			
 			i.power_current.emit() # Called when the suit is current
-		else:
+		else: # Mismatched power
 			i.visible = false
 			i.process_mode = PROCESS_MODE_DISABLED
 			i.power_current.emit() # Called when the suit is NOT current
@@ -190,7 +187,6 @@ func set_power_id(value: StringName) -> void:
 ## Returns current [CharacterPower2D]
 func get_power() -> CharacterPower2D:
 	return _power
-
 
 ## Returns behavior of the current power
 func get_behavior() -> CharacterBehavior2D:
@@ -215,7 +211,7 @@ func get_warp_direction() -> WarpDir:
 #endregion
 
 
-#region Private methods
+#region == Private methods ==
 func _register_available_power_ids() -> void:
 	for i: Node in get_children():
 		var power := i as CharacterPower2D

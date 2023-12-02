@@ -29,21 +29,28 @@ const ActionSwim := preload("./character_action_swimming.gd")
 ## Maximum of the walking speed in running state
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var max_running_speed: float = 350
 
+var _crouching: bool
+
 
 func _process(delta: float) -> void:
 	if disabled:
 		return
 	
-	var crouching := ObjectState.is_state(character, ActionCrouch.STATE_CROUCHING)
 	var allowed_to_walk := is_allowed_to_walk()
-	_walk(allowed_to_walk, crouching)
-	_animation(delta, crouching)
+	_crouching = ObjectState.is_state(character, ActionCrouch.STATE_CROUCHING)
+	_walk(allowed_to_walk)
+	_animation(delta)
+
+func _physics_process(delta: float) -> void:
+	if !character.is_on_wall():
+		return
+	_animation(delta, true) # Forced to play stopping animation if the character is colliding with a wall
 
 
 #region == Walk ==
-func _walk(allowed_to_walk: bool, crouching: bool) -> void:
+func _walk(allowed_to_walk: bool) -> void:
 	if !allowed_to_walk:
-		character.accelerate_local_x(get_deceleration(crouching), 0)
+		character.accelerate_local_x(get_deceleration(_crouching), 0)
 		return
 	
 	var left_right := behavior.get_key_xy().x
@@ -56,7 +63,7 @@ func _walk(allowed_to_walk: bool, crouching: bool) -> void:
 		character.velocity.x = initial_walking_speed * character.direction
 	# Acceleration
 	if left_right * character.direction > 0:
-		if crouching: # Crouch walking
+		if _crouching: # Crouch walking
 			# Do NOT adjust max_speed since it will cause the speed plunge
 			character.accelerate_local_x(acceleration, crouching_walking_speed * character.max_speed_scale * character.direction)
 		else: # Regular walking
@@ -70,14 +77,14 @@ func _walk(allowed_to_walk: bool, crouching: bool) -> void:
 			# player.velocity.x = 6.25 * player.direction
 
 
-func _animation(delta: float, crouching: bool) -> void:
+func _animation(delta: float, forced_is_on_wall: bool = false) -> void:
 	power.sprite.scale.x = character.direction
 	
 	if behavior.is_playing_unbreakable_animation():
 		return
 	
-	if character.is_on_floor() && !crouching:
-		if is_zero_approx(character.velocity.x):
+	if character.is_on_floor() && !_crouching:
+		if is_zero_approx(character.velocity.x) || forced_is_on_wall:
 			power.animation.play(&"RESET")
 			power.animation.speed_scale = 1
 		else:
