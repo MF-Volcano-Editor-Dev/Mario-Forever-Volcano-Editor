@@ -7,6 +7,8 @@ signal timer_over  ## Emitted when the timer is up
 signal timer_over_scoring ## Emitted when the timer is up in scoring mode
 
 @export_category("Level Timer")
+@export_group("Component Links", "path_")
+@export_node_path("Node") var path_level_completion: NodePath = ^"../LevelCompletion"
 @export_group("Timer")
 ## Rest time of the level
 @export_range(0, 86400, 1, "suffix:ut") var rest_time: int = 360:
@@ -41,7 +43,7 @@ var _has_warned: bool
 #endregion
 
 #region == References ==
-@onready var current_level: Level = get_tree().current_scene
+@onready var level_completion := get_node_or_null(path_level_completion) as LevelCompletion
 @onready var interval: Timer = $Interval
 @onready var text_times: Label = $Frame/Container/Times
 @onready var text_time_up: Label = $Frame/TimeUp
@@ -54,48 +56,51 @@ func _ready() -> void:
 	interval.start(time_change_unit_tick)
 	interval.timeout.connect(_on_rest_time_changed)
 	
-	EventsManager.signals.level_finished.connect(
-		# Level finished, when the finishing music gets playing
-		func() -> void:
-			pause() # Pauses the timer first
-			var level := get_tree().current_scene as Level
-			if !level:
+	EventsManager.signals.level_to_be_completed.connect(
+		# After the completion music is over
+		func(state: int) -> void:
+			if state != 0: # Check if the state is just after finishment of the music of completion (state: 0)
 				return
-			level.add_object_to_wait_finish(self) # Block the level finishment until the scoring is end
-			await timer_over_scoring
-			await get_tree().create_timer(1, false).timeout
-			level.remove_object_to_wait_finish(self)
-	)
-	EventsManager.signals.level_done_finishing.connect(
-		# After the finishing music is over
-		func() -> void:
 			if time_changing_mode > 0: # Down-counting mode -> scoring
 				_scoring = true
-				interval.start(time_down_unit_tick_scoring)
+				interval.paused = false # Resume the timer
+				interval.start(time_down_unit_tick_scoring) # Counting down ticks -> time_down_unit_tick_scoring
 			else: # Up-counting mode -> skips scoring
 				timer_over_scoring.emit()
 	)
-	EventsManager.signals.level_stopped_finishement.connect(
-		# Level finishment is stopped
+	EventsManager.signals.level_completed.connect(
+		# Level's completion, when the finishing music gets playing
 		func() -> void:
-			_scoring = false
-			start()
+			interval.paused = true # Pauses the timer first
+			if !level_completion:
+				return
+			level_completion.add_object_to_wait_finish(self) # Blocks the completion
+			await timer_over_scoring # Until the scoring is end
+			await get_tree().create_timer(1, false).timeout # And delay for 1 second
+			level_completion.remove_object_to_wait_finish(self) # Resumes the completion
 	)
+	EventsManager.signals.level_completion_stopped.connect(
+		# Level's completion is stopped
+		func() -> void:
+			_scoring = false # Cancels scoring
+			start() # Resume counting
+	)
+	EventsManager.signals.players_all_dead.connect(stop) # Stops when all characters are dead
 
 
 #region == Time down controls ==
-## Starts the timer's counting down
+## Starts or resumes the timer's counting.
 func start() -> void:
+	if interval.paused:
+		interval.paused = false
 	if interval.is_stopped():
 		interval.start(time_change_unit_tick)
-	elif interval.paused:
-		interval.paused = false
 
-## Stops the timer's counting down
+## Stops the timer's counting.
 func stop() -> void:
 	interval.stop()
 
-## Pauses the timer's counting down
+## Pauses the timer's counting. Use [method start] to resume.
 func pause() -> void:
 	interval.paused = true
 #endregion

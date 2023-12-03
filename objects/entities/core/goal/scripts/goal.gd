@@ -25,6 +25,19 @@ const GoalPole := preload("./goal_pole.gd")
 
 func _ready() -> void:
 	goal_detector.area_entered.connect(finish)
+	
+	EventsManager.signals.level_completed.connect(
+		func() -> void:
+			if !is_instance_valid(animation_player):
+				return
+			animation_player.stop(true)
+	)
+	EventsManager.signals.level_completion_stopped.connect(
+		func() -> void:
+			if !is_instance_valid(animation_player):
+				return
+			animation_player.play()
+	)
 
 
 func finish(character_body: Area2D, pole_touched: bool = false) -> void:
@@ -32,7 +45,6 @@ func finish(character_body: Area2D, pole_touched: bool = false) -> void:
 	if !character:
 		return
 	
-	animation_player.stop(true)
 	if is_instance_valid(goal_detector_box): # CAUTION: This MUST check the validity since the pole will call this, too
 		goal_detector_box.queue_free()
 	if is_instance_valid(goal_detector_border): # The same
@@ -46,4 +58,4 @@ func finish(character_body: Area2D, pole_touched: bool = false) -> void:
 		goal_character_walk.direction = -direction
 		goal_character_walk.add_player_to_walk(character)
 	
-	EventsManager.level_finish()
+	EventsManager.level_complete()

@@ -17,7 +17,7 @@ func _ready() -> void:
 		func(data: StringName, value: int) -> void:
 			match data:
 				&"player_lives":
-					var fpl := await CharactersManager2D.get_characters_getter().get_character_with_id_min(get_tree())
+					var fpl := CharactersManager2D.get_characters_getter().get_character_with_id_min()
 					var fpln := &"PLAYER" if !fpl else fpl.nickname
 					lives.text = fpln + " × %s" % str(value)
 				&"player_scores":

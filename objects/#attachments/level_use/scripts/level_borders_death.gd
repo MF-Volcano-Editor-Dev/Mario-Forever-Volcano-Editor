@@ -12,7 +12,7 @@ func _process(_delta: float) -> void:
 	if disabled:
 		return
 	
-	var pls := await CharactersManager2D.get_characters_getter().get_characters(get_tree())
+	var pls := CharactersManager2D.get_characters_getter().get_characters()
 	if pls.is_empty():
 		return
 	

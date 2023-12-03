@@ -29,8 +29,17 @@ const ActionSwim := preload("./character_action_swimming.gd")
 ## Maximum of the walking speed in running state
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var max_running_speed: float = 350
 
-var _crouching: bool
+var _crouching: bool # Used to store as the state of crouching to improve performance from calling the same method multiple times
 
+
+func _ready() -> void:
+	character.collided_wall.connect(
+		func() -> void:
+			# CAUTION: Even though the node is disabled, signal is still accessible to the disabled nodes!
+			if disabled || process_mode == PROCESS_MODE_DISABLED: # Prevent from being called when the power is not current
+				return
+			_animation(0, true) # Forced to play stopping animation if the character is colliding with a wall
+	)
 
 func _process(delta: float) -> void:
 	if disabled:
@@ -41,19 +50,16 @@ func _process(delta: float) -> void:
 	_walk(allowed_to_walk)
 	_animation(delta)
 
-func _physics_process(delta: float) -> void:
-	if !character.is_on_wall():
-		return
-	_animation(delta, true) # Forced to play stopping animation if the character is colliding with a wall
-
 
 #region == Walk ==
 func _walk(allowed_to_walk: bool) -> void:
+	# Deceleration
 	if !allowed_to_walk:
-		character.accelerate_local_x(get_deceleration(_crouching), 0)
+		character.decelerate_with_friction(get_deceleration(_crouching))
 		return
 	
-	var left_right := behavior.get_key_xy().x
+	# Left-right and max speed
+	var left_right := behavior.get_key_x()
 	var swimming := ObjectState.is_state(character, ActionSwim.STATE_SWIMMING)
 	character.max_speed = max_running_speed if is_running() && !swimming else max_walking_speed
 	
@@ -71,7 +77,7 @@ func _walk(allowed_to_walk: bool) -> void:
 			character.accelerate_local_x(acceleration, character.max_speed * character.max_speed_scale * character.direction)
 	# Turning back
 	elif left_right * character.direction < 0:
-		character.accelerate_local_x(turning_aceleration, 0)
+		character.decelerate_with_friction(turning_aceleration)
 		if is_zero_approx(character.velocity.x):
 			character.direction *= -1
 			# player.velocity.x = 6.25 * player.direction
@@ -113,5 +119,5 @@ func is_allowed_to_walk() -> bool:
 
 ## Returns deceleration
 func get_deceleration(crouching: bool) -> float:
-	return deceleration_crouching_moving if crouching && behavior.get_key_xy().x != 0 else deceleration_crouching if crouching else deceleration
+	return deceleration_crouching_moving if crouching && behavior.get_key_x() != 0 else deceleration_crouching if crouching else deceleration
 #endregion

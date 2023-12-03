@@ -17,7 +17,6 @@ static func get_child(from: Node, type: Object) -> Node:
 			return i
 	return null
 
-
 ## Iterate nodes and find one including their multilevel children
 static func get_child_iterate(from: Node, type: Object) -> Node:
 	for i: Node in from.get_children():
@@ -26,7 +25,6 @@ static func get_child_iterate(from: Node, type: Object) -> Node:
 		elif i.get_child_count():
 			return get_child_iterate(i, type)
 	return null
-
 
 ## Get a child of [param from] in certain [param group]
 static func get_child_in_group(from: Node, group: StringName) -> Node:
@@ -43,7 +41,8 @@ static func await_readiness(node: Node) -> void:
 	if !node.is_node_ready():
 		await node.ready
 
-
 ## Await the readiness of the current scene, see [method await_readiness] to get more details
-static func await_current_scene_readiness(tree: SceneTree) -> void:
+static func await_current_scene_readiness(tree: SceneTree, quit_when_invalid: bool = false) -> void:
+	while !quit_when_invalid && !is_instance_valid(tree.current_scene):
+		await tree.process_frame
 	await await_readiness(tree.current_scene)

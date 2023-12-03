@@ -18,23 +18,27 @@ func _physics_process(delta: float) -> void:
 	rotate(_direction * PI * 4.16667 * delta)
 
 
-
 func _on_character_area_touched(area: Area2D) -> void:
 	var character := area.get_parent() as CharacterEntity2D
 	if !character:
 		return
 	
-	var segment := goal.animation_player.current_animation_length / float(SCORES.size())
-	var bottom := 0.0
-	for i in SCORES.size():
-		if goal.animation_player.current_animation_position >= bottom && goal.animation_player.current_animation_position < bottom + segment:
-			add_scores.scores = SCORES[i]
-			break
-		bottom += segment
+	if is_instance_valid(goal.animation_player):
+		var segment := goal.animation_player.current_animation_length / float(SCORES.size())
+		var bottom := 0.0
+		for i in SCORES.size():
+			if goal.animation_player.current_animation_position >= bottom && goal.animation_player.current_animation_position < bottom + segment:
+				add_scores.scores = SCORES[i]
+				add_scores.add_scores()
+				break
+			bottom += segment
 	
 	_direction = goal.direction
 	global_velocity = Vector2(_direction, -1).normalized().rotated(randf_range(-PI/12, PI/12) + global_rotation) * randf_range(150, 300)
 	set_physics_process(true)
 	
-	detector.queue_free()
+	detector.queue_free() # Destroy the detector
+	if is_instance_valid(goal.animation_player):
+		goal.animation_player.queue_free() # Removes the goal's animation player to make the pole behaves guardedly
+	
 	goal.finish(area, true)

@@ -4,8 +4,8 @@ extends Node2D
 ##
 ##
 
-signal player_death_started ## Emitted when the player death is started
-signal player_death_finished ## Emitted when the player death is finished
+signal character_death_started ## Emitted when the character's death is started
+signal character_death_finished ## Emitted when the character's death is finished
 
 @export_category("Player Death")
 @export_group("Physics")
@@ -24,24 +24,25 @@ var _fall_rot: bool
 @onready var sprite: Sprite2D = $Sprite2D
 
 func _ready() -> void:
-	player_death_started.connect(EventsManager.player_all_death_detect)
-	player_death_finished.connect(EventsManager.player_all_death_process)
+	var tree := get_tree()
 	
 	# Await for one process frame to make the character
 	# body freed and unregistered so that some methods
 	# can work as expected
-	await get_tree().process_frame
-	
-	player_death_started.emit(get_tree())
+	await tree.process_frame
+	var cached_players := CharactersManager2D.get_characters_getter().get_characters()
 	
 	Sound.play_sound(self, sound_death)
+	EventsManager.player_all_death_detect()
+	character_death_started.emit()
 	
 	set_process(false)
-	await get_tree().create_timer(0.5, false).timeout
+	await tree.create_timer(0.5, false).timeout
 	set_process(true)
 	
-	await get_tree().create_timer(emission_await, false).timeout
-	player_death_finished.emit()
+	await tree.create_timer(emission_await, false).timeout
+	EventsManager.player_all_death_process(cached_players)
+	character_death_finished.emit()
 	queue_free()
 
 

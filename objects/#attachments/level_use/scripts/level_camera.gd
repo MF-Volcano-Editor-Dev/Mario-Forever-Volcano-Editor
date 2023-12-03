@@ -39,7 +39,7 @@ func _process(_delta: float) -> void:
 
 #region == Public methods ==
 func focus() -> void:
-	var campos := await CharactersManager2D.get_character_data_getter().get_average_global_position(get_tree(), global_position)
+	var campos := CharactersManager2D.get_character_data_getter().get_average_global_position(global_position)
 	if campos == Vector2.INF:
 		return
 	
@@ -135,7 +135,7 @@ func _smooth_transition() -> void:
 		# Gets the average global position of the players
 		# and breaks the loop if the value is the same as
 		# the transitional camera's global position
-		var campos := await CharactersManager2D.get_character_data_getter().get_average_global_position(get_tree(), sms.global_position)
+		var campos := CharactersManager2D.get_character_data_getter().get_average_global_position(sms.global_position)
 		if campos == sms.global_position:
 			break
 		

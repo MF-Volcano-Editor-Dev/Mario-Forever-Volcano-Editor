@@ -85,7 +85,6 @@ func _ready() -> void:
 	# Registers the character
 	var cmdl := CharactersManager2D.get_characters_data_list()
 	cmdl.register(self)
-	print()
 	
 	# Registers the power
 	power_id = cmdl.get_data(id).get_power_id() # This will automatically call set_power_id()
@@ -131,6 +130,7 @@ func die(_tag: TagsObject = null) -> void:
 		return
 	
 	Sound.play_sound_2d(self, _power.sound_death)
+	CharactersManager2D.get_characters_data_list().unregister(id)
 	
 	# Death
 	if death:
