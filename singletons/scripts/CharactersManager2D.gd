@@ -1,6 +1,6 @@
 extends Node
 
-## A singleton class used to manage characters' data, getting, etc.
+## A singleton used to manage characters' data, getting, etc.
 
 static var _characters_data_list: CharactersDataList2D = CharactersDataList2D.new()
 static var _characters_getter: CharactersGetter2D = CharactersGetter2D.new()
@@ -12,18 +12,24 @@ class CharactersDataList2D:
 	var _data_list: Dictionary # Data list
 	
 	
-	## Register a data of [param character] into the list
-	func register(character: CharacterEntity2D, override: bool = false) -> void:
+	## Registers a data of [param character] into the list.[br]
+	## If [param override] is [code]true[/code], the original data will be covered with a new one
+	func register(character: CharacterEntity2D) -> void:
 		var data := CharacterDataStorage2D.new(character)
-		_data_list.merge({character.id: data}, override)
+		_data_list.merge({character.id: data}, true)
 	
-	## Unregister the data of a character with given [param id]
+	## Registers all data of all characters available into the list
+	func register_all() -> void:
+		for i: CharacterEntity2D in CharactersManager2D.get_characters_getter().get_characters():
+			register(i)
+	
+	## Unregisters the data of a character with given [param id]
 	func unregister(id: int) -> void:
 		if !id in _data_list:
 			return
 		_data_list.erase(id)
 	
-	## Unregister the data of all characters
+	## Unregisters the data of all characters
 	func unregister_all() -> void:
 		_data_list.clear()
 	

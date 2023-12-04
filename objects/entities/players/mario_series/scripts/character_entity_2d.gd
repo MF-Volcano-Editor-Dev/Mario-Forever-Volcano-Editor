@@ -67,7 +67,6 @@ enum WarpDir {
 #endregion
 
 #region == Data ==
-var _available_powers: PackedStringArray # Used to check if a given power id is valid
 var _warp_dir: WarpDir = WarpDir.NONE # Warping direction
 #endregion
 
@@ -79,9 +78,6 @@ var _behavior: CharacterBehavior2D # Reference to a CharacterBehavior2D
 
 
 func _ready() -> void:
-	# Registers available ids
-	_register_available_power_ids()
-	
 	# Registers the character
 	var cmdl := CharactersManager2D.get_characters_data_list()
 	cmdl.register(self)
@@ -100,36 +96,37 @@ func invulnerablize(duration: float = 2) -> void:
 	)
 
 ## Makes the character hurt with [signal hurt] emitted
-func damaged(tag: TagsObject = null) -> void:
-	if ObjectState.is_state(self, STATE_UNDAMAGIBLE) || !(tag.get_tag(&"forced", false) && is_invulnerable):
+func damaged(tag: TagsObject = TagsObject.new()) -> void:
+	if ObjectState.is_state(self, STATE_UNDAMAGIBLE) || (!tag.get_tag(&"forced", false) && is_invulnerable()):
 		return
 	
 	var soundful := tag.get_tag(&"soundful", true) as bool # Allowed to play the sound
+	var duration := tag.get_tag(&"duration", 2) as float
 	
 	# Damaged to death
-	if _power.power_down_to_id.is_empty() || !_power.power_down_to_id in _available_powers:
+	Effects2D.flash(self, duration, 0.05)
+	if _power.power_down_to_id.is_empty():
 		health_component.sub_health(tag.get_tag(&"damage", 1) as float)
 		if health_component.health <= 0: # No hp -> death
 			die(tag)
 			return
 		else: # With hp -> hp loss
-			invulnerablize(3)
+			invulnerablize(duration + 1)
 	# Damaged to lower level of suit
 	else:
 		var forced_down_to_id := tag.get_tag(&"forced_down_to", &"small") as StringName
-		power_id = forced_down_to_id if !forced_down_to_id.is_empty() && forced_down_to_id in _available_powers else _power.power_down_to_id
-		invulnerablize(2)
+		power_id = forced_down_to_id if !forced_down_to_id.is_empty() else _power.power_down_to_id
+		invulnerablize(duration)
 	
 	# Plays sound
 	if soundful:
 		Sound.play_sound_2d(self, _power.sound_hurt) 
 
 ## Makes the character die with [signal died] emitted
-func die(_tag: TagsObject = null) -> void:
+func die(_tag: TagsObject = TagsObject.new()) -> void:
 	if ObjectState.is_state(self, STATE_UNDYABLE):
 		return
 	
-	Sound.play_sound_2d(self, _power.sound_death)
 	CharactersManager2D.get_characters_data_list().unregister(id)
 	
 	# Death
@@ -138,10 +135,11 @@ func die(_tag: TagsObject = null) -> void:
 		var death_2d := death_ins as Node2D # Reference as Node2D to the death instance
 		death_2d.global_transform = global_transform
 		death_2d.visible = visible
+		death_2d.sound_death = _power.sound_death
 		add_sibling(death_2d)
 		queue_free()
 	else:
-		CustomErrors.error_and_quit("The death effect is not found!")
+		print("[Character Death Error] No death effect for %s" % [name + str(get_instance_id())])
 #endregion
 
 
@@ -182,13 +180,14 @@ func set_power_id(value: StringName) -> void:
 		power_id = value
 	else:
 		_power = null
-		printerr("Non-existing power id %s!" % value)
+		power_id = &""
+		printerr("Invalid power id: %s. Please check if the power with such id exists or if the spelling is incorrect." % value)
 
 ## Returns current [CharacterPower2D]
 func get_power() -> CharacterPower2D:
 	return _power
 
-## Returns behavior of the current power
+## Returns the behavior of current power
 func get_behavior() -> CharacterBehavior2D:
 	return _behavior if is_instance_valid(_behavior) else null
 
@@ -208,14 +207,4 @@ func set_warp_direction(to: WarpDir, controllable_control: bool = true) -> void:
 ## Returns current warping direction
 func get_warp_direction() -> WarpDir:
 	return _warp_dir
-#endregion
-
-
-#region == Private methods ==
-func _register_available_power_ids() -> void:
-	for i: Node in get_children():
-		var power := i as CharacterPower2D
-		if !power || power.power_id in _available_powers:
-			continue
-		_available_powers.append(power.power_id)
 #endregion

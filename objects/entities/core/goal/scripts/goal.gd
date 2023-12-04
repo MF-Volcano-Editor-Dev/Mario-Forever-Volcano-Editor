@@ -26,13 +26,13 @@ const GoalPole := preload("./goal_pole.gd")
 func _ready() -> void:
 	goal_detector.area_entered.connect(finish)
 	
-	EventsManager.signals.level_completed.connect(
+	Events.signals.level_completed.connect(
 		func() -> void:
 			if !is_instance_valid(animation_player):
 				return
 			animation_player.stop(true)
 	)
-	EventsManager.signals.level_completion_stopped.connect(
+	Events.signals.level_completion_stopped.connect(
 		func() -> void:
 			if !is_instance_valid(animation_player):
 				return
@@ -58,4 +58,4 @@ func finish(character_body: Area2D, pole_touched: bool = false) -> void:
 		goal_character_walk.direction = -direction
 		goal_character_walk.add_player_to_walk(character)
 	
-	EventsManager.level_complete()
+	Events.level_complete()

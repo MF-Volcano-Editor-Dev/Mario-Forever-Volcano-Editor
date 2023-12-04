@@ -10,8 +10,8 @@ extends Node2D
 
 func _ready() -> void:
 	caster.force_shapecast_update()
-	
 	if !caster.is_colliding():
+		queue_free()
 		return
 	
 	var n: Vector2 = caster.get_collision_normal(0)
@@ -20,6 +20,7 @@ func _ready() -> void:
 	
 	var cl := caster.get_collider(0) as AreaFluid2D
 	if !cl || cl.fluid_id != target_fluid_id:
+		queue_free()
 		return
 	
 	caster.shape = caster.shape.duplicate() as CircleShape2D
@@ -28,7 +29,6 @@ func _ready() -> void:
 	
 	var inout: bool = !caster.is_colliding()
 	var down: Vector2 = Vector2.DOWN.rotated(global_rotation)
-	
 	match inout:
 		true:
 			for i in 128:

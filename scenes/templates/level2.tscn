@@ -1,0 +1,47 @@
+[gd_scene load_steps=13 format=3 uid="uid://b4y5ejt7qwe6v"]
+
+[ext_resource type="Script" path="res://scenes/#scripts/scene_game.gd" id="1_4ct1w"]
+[ext_resource type="PackedScene" uid="uid://cwexucoknw1ph" path="res://objects/#attachments/level_use/level_completion.tscn" id="2_j6k08"]
+[ext_resource type="PackedScene" uid="uid://bgkf8bge6l1fa" path="res://objects/#attachments/level_use/level_hud.tscn" id="3_wv47r"]
+[ext_resource type="PackedScene" uid="uid://devmwslkf4fe2" path="res://objects/#attachments/level_use/level_timer.tscn" id="4_ygxku"]
+[ext_resource type="PackedScene" uid="uid://dqyb07p315tkl" path="res://objects/#attachments/level_use/level_borders_death.tscn" id="5_y1ey2"]
+[ext_resource type="PackedScene" uid="uid://d1f3khrnqnyfr" path="res://objects/#attachments/level_use/level_data_events.tscn" id="6_kc0gc"]
+[ext_resource type="PackedScene" uid="uid://j2jtsd3mcv0g" path="res://objects/#attachments/level_use/level_camera.tscn" id="7_drvxn"]
+[ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="8_almic"]
+[ext_resource type="PackedScene" uid="uid://cvnkj7x0t0mm0" path="res://objects/entities/players/mario_series/mario.tscn" id="9_2x70g"]
+[ext_resource type="PackedScene" uid="uid://bnewtaib54hhw" path="res://objects/entities/fluid/liquid/scripts/water.tscn" id="10_77utj"]
+[ext_resource type="PackedScene" uid="uid://dmtssqxu1l7j6" path="res://objects/entities/core/goal/goal.tscn" id="11_nrvo3"]
+[ext_resource type="PackedScene" uid="uid://dtt6n5emk6dtu" path="res://objects/entities/core/goal/goal_character_walk.tscn" id="12_wiibx"]
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_4ct1w")
+
+[node name="LevelCompletion" parent="." instance=ExtResource("2_j6k08")]
+
+[node name="LevelHUD" parent="." instance=ExtResource("3_wv47r")]
+
+[node name="LevelTimer" parent="." instance=ExtResource("4_ygxku")]
+
+[node name="LevelDeathBorders" parent="." instance=ExtResource("5_y1ey2")]
+
+[node name="LevelDataEvents" parent="." instance=ExtResource("6_kc0gc")]
+
+[node name="LevelCamera" parent="." instance=ExtResource("7_drvxn")]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("8_almic")
+format = 2
+layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 851969, 65537, 0, 851970, 65537, 0, 851971, 65537, 0, 851972, 65537, 0, 851973, 65537, 0, 851974, 65537, 0, 851975, 65537, 0, 851976, 65537, 0, 851977, 65537, 0, 851978, 65537, 0, 851979, 65537, 0, 851980, 65537, 0, 851981, 65537, 0, 851982, 65537, 0, 851983, 65537, 0, 851984, 65537, 0, 851985, 65537, 0, 917504, 65537, 1, 917505, 65537, 1, 917506, 65537, 1, 917507, 65537, 1, 917508, 65537, 1, 917509, 65537, 1, 917511, 65537, 1, 917512, 65537, 1, 917513, 65537, 1, 917514, 65537, 1, 917515, 65537, 1, 917516, 65537, 1, 917517, 65537, 1, 917518, 65537, 1, 917519, 65537, 1, 917510, 65537, 1, 917520, 65537, 1, 917521, 65537, 1, 917526, 65537, 1, 917527, 65537, 1, 851990, 65537, 0, 851991, 65537, 0, 983039, 65537, 0, 917503, 65537, 0, 851967, 65537, 0, 786431, 65537, 0, 720895, 65537, 0, 655359, 65537, 0, 589823, 65537, 0, 524287, 65537, 0, 458751, 65537, 0, 393215, 65537, 0, 327679, 65537, 0, 262143, 65537, 0, 196607, 65537, 0, 131071, 65537, 0, 65535, 65537, 0, 851987, 65537, 0, 917523, 65537, 1, 720919, 1, 1, 786455, 1, 2, 589847, 1, 1, 655383, 1, 2, 458775, 1, 1, 524311, 1, 2, 327703, 1, 1, 393239, 1, 2, 196631, 1, 1, 262167, 1, 2, 65559, 1, 1, 131095, 1, 2, 524288, 65537, 0, 524289, 65537, 0, 524290, 65537, 0, 524292, 65537, 0, 524293, 65537, 0, 524294, 65537, 0, 851986, 65537, 0, 917522, 65537, 1)
+
+[node name="Mario" parent="." instance=ExtResource("9_2x70g")]
+position = Vector2(48, 240)
+power_id = &"big"
+
+[node name="Water" parent="." groups=["%%climbable"] instance=ExtResource("10_77utj")]
+position = Vector2(192, 32)
+scale = Vector2(5.5, 5)
+
+[node name="Goal" parent="." instance=ExtResource("11_nrvo3")]
+position = Vector2(496, 416)
+
+[node name="GoalCharacterWalk" parent="Goal" instance=ExtResource("12_wiibx")]

@@ -1,10 +1,21 @@
 class_name LevelCompletion extends Component
 
+## A component used for level's completion
+##
+## When the method [method Events.level_finish] is called, the level will go into the procession
+## that contains two sections:[br]
+## > 1st section: In this section, a finishing music will be played and the system will wait for [member finish_process_delay] seconds.
+## After the delay, if there is any object in the list mentioned in [method add_object_to_wait_finish], the system will not continue
+## the execution of the second section until the list is empty [br]
+## > 2nd section: Before the process of this section, if [method Events.level_stop_finishment] is called, then the e
+
 @export_group("Level Completion")
 ## Delay to the next stage of level-completing process after the music was played
 @export_range(0, 10, 0.001, "suffix:s") var finish_process_delay: float = 8
 ## Scene to go after the stage finished is emitted
 @export var scene_after_finish: PackedScene
+@export_group("Data")
+@export var reserve_characters_data: bool = true
 @export_group("Musics", "music_")
 @export var music_completion: AudioStream = preload("res://assets/sounds/level_complete.ogg") ## Music to be played when the level is completed
 
@@ -17,8 +28,8 @@ var _awaited_objects: Array[Object]
 
 
 func _enter_tree() -> void:
-	EventsManager.signals.level_completed.connect(_on_level_completed)
-	EventsManager.signals.level_completion_stopped.connect(_on_level_stopped_completion)
+	Events.signals.level_completed.connect(_on_level_completed)
+	Events.signals.level_completion_stopped.connect(_on_level_stopped_completion)
 
 
 #region Todo-list after the completion of the level
@@ -85,7 +96,7 @@ func _on_level_completed() -> void:
 	
 	# Notices the completion has entered into the second stage
 	# This is useful when a level timer is about to scoring
-	EventsManager.level_to_be_completed_state(0)
+	Events.level_to_be_completed_state(0)
 	
 	# Await for the objects that blocks the process in the list
 	# E.g. The level timer is scoring
@@ -96,9 +107,9 @@ func _on_level_completed() -> void:
 	
 	# Changes the scene
 	if scene_after_finish:
-		get_tree().change_scene_to_packed(scene_after_finish) # Changes the scene
+		Scenes.jump_to_packed(scene_after_finish) # Changes the scene
 	else:
 		printerr("[Scene Changing Error] The scene to be warped to is invalid or not set yet!") # Throws an error on failure
 	
-	EventsManager.level_done_completion() # Notices the level's completion
+	Events.level_done_completion() # Notices the level's completion
 #endregion

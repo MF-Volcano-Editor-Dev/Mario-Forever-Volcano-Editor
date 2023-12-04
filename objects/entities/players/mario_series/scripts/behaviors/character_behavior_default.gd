@@ -12,17 +12,6 @@ const ActionClimb := preload("./actions/character_action_climbing.gd")
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var max_falling_speed: float = 500
 
 
-func _process(_delta: float) -> void:
-	if disabled:
-		return
-	
-	var body_overlaps := character.body.get_overlapping_areas()
-	var head_overlaps := character.head.get_overlapping_areas()
-	
-	_overlaps_water(body_overlaps)
-	_overlaps_climbable(body_overlaps)
-	_head_water(head_overlaps)
-
 func _physics_process(delta: float) -> void:
 	if disabled:
 		return
@@ -39,6 +28,13 @@ func _physics_process(delta: float) -> void:
 			var kc := character.move_and_collide(character.global_velocity * delta)
 			if kc:
 				character.global_velocity = character.global_velocity.slide(kc.get_normal())
+	
+	var body_overlaps := character.body.get_overlapping_areas()
+	var head_overlaps := character.head.get_overlapping_areas()
+	
+	_overlaps_water(body_overlaps)
+	_overlaps_climbable(body_overlaps)
+	_head_water(head_overlaps)
 
 
 #region == Overlapping process ==

@@ -14,6 +14,7 @@ config/name="Mario Forever - Thunder Editor Refactored"
 config/tags=PackedStringArray("mario_forever", "project")
 run/main_scene="res://scenes/start.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
+boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
 config/icon="res://icon.svg"
 
@@ -22,8 +23,9 @@ config/icon="res://icon.svg"
 CharactersManager2D="*res://singletons/scripts/CharactersManager2D.gd"
 Data="*res://singletons/scripts/Data.gd"
 Developer="*res://singletons/scripts/Developer.gd"
+Events="*res://singletons/scripts/Events.gd"
 Game="*res://singletons/scripts/Game.gd"
-ScenesManager="*res://singletons/scripts/ScenesManager.gd"
+Scenes="*res://singletons/scripts/Scenes.gd"
 
 [display]
 
@@ -61,6 +63,7 @@ folder_colors={
 "res://objects/#components/enemy_related/scripts/": "green",
 "res://objects/#components/entities/effects/disappearer/scripts/": "green",
 "res://objects/#components/entities/effects/effect_creator/scripts/": "green",
+"res://objects/#components/entities/interaction/scripts/": "green",
 "res://objects/#components/entities/physics/solid_detector/scripts/": "green",
 "res://objects/#components/entities/vision/visibility_on_screen_emitter/scripts/": "green",
 "res://objects/#components/health/health_component/": "yellow",

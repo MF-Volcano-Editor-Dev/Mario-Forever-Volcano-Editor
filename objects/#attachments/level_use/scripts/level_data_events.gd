@@ -12,7 +12,7 @@ class_name LevelDataEvents extends Component
 
 func _ready() -> void:
 	Data.signals.player_coins_reached_max.connect(_on_player_coins_to_life)
-	EventsManager.signals.game_over.connect(_on_game_over)
+	Events.signals.game_over.connect(_on_game_over)
 
 
 #region == Events ==

@@ -1,4 +1,4 @@
-class_name AreaFluid2D extends Area2D
+class_name AreaFluid2D extends Classes.HiddenArea2D
 
 @export_category("Fluid")
 ## ID of the fluid
@@ -23,8 +23,8 @@ var _delayed: bool
 
 func _ready() -> void:
 	# Then connect the spray
-	body_entered.connect(_fluid_trigger.bind(true))
-	body_exited.connect(_fluid_trigger.bind(false))
+	body_entered.connect(_on_fluid_trigger.bind(true))
+	body_exited.connect(_on_fluid_trigger.bind(false))
 	
 	# Await for one physics frame to stop sprays from being generated
 	# when physics bodies are initially overlapped with the fluid
@@ -32,7 +32,8 @@ func _ready() -> void:
 	_delayed = true
 
 
-## Create [member spray] effect on a body with [param transform] preset
+#region == Fluid ==
+## Creates [member spray] effect on a body with [param transform] preset
 func create_spray(body: Node2D, global_trans: Transform2D) -> void:
 	if !spray:
 		return
@@ -46,8 +47,7 @@ func create_spray(body: Node2D, global_trans: Transform2D) -> void:
 	s.global_transform = global_trans
 	body.add_sibling.call_deferred(s)
 
-
-func _fluid_trigger(body: Node2D, is_entering: bool) -> void:
+func _on_fluid_trigger(body: Node2D, is_entering: bool) -> void:
 	# Spray creation
 	create_spray(body, Transform2D(0, body.global_scale, body.global_skew, body.global_position))
 	
@@ -63,4 +63,5 @@ func _fluid_trigger(body: Node2D, is_entering: bool) -> void:
 		else:
 			body.max_falling_speed_scale = 1.0
 			body.max_speed_scale = 1.0
+#endregion
 

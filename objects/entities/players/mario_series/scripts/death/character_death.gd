@@ -7,13 +7,13 @@ extends Node2D
 signal character_death_started ## Emitted when the character's death is started
 signal character_death_finished ## Emitted when the character's death is finished
 
-@export_category("Player Death")
+@export_category("Character Death")
 @export_group("Physics")
 @export_range(-1, 1, 0.001, "or_less", "or_greater", "hide_slider", "suffix:px/s") var speed_y: float = -600
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s²") var gravity: float = 1250
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var max_falling_speed: float = 500
 @export_group("General")
-@export_range(0, 12, 0.01, "suffix:s") var emission_await: float = 4
+@export_range(0, 12, 0.01, "suffix:s") var duration: float = 4
 @export_group("Sound", "sound_")
 @export var sound_death: AudioStream = preload("res://assets/sounds/death.ogg")
 
@@ -33,15 +33,15 @@ func _ready() -> void:
 	var cached_players := CharactersManager2D.get_characters_getter().get_characters()
 	
 	Sound.play_sound(self, sound_death)
-	EventsManager.player_all_death_detect()
+	Events.player_all_death_detect()
 	character_death_started.emit()
 	
 	set_process(false)
 	await tree.create_timer(0.5, false).timeout
 	set_process(true)
 	
-	await tree.create_timer(emission_await, false).timeout
-	EventsManager.player_all_death_process(cached_players)
+	await tree.create_timer(duration, false).timeout
+	Events.player_all_death_process(cached_players)
 	character_death_finished.emit()
 	queue_free()
 

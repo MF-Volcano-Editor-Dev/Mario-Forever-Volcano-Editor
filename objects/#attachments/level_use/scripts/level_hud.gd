@@ -24,12 +24,10 @@ func _ready() -> void:
 					scores.text = str(value)
 				&"player_coins":
 					coins.text = str(value)
-	, CONNECT_DEFERRED)
-	
-	EventsManager.signals.game_over.connect(
+	)
+	Events.signals.game_over.connect(
 		func() -> void:
 			game_over.visible = true
 			Sound.play_sound(self, sound_game_over)
 	)
-	
-	Data.data_init_signal_emit()
+	Data.data_init_signal_emit.call_deferred() # Called at the end of the first frame to make sure all data is safely loaded
