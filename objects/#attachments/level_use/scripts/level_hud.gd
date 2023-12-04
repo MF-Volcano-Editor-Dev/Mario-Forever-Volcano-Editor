@@ -6,28 +6,32 @@ class_name LevelHUD extends Classes.HiddenCanvasLayer
 ## Sound of game over
 @export var sound_game_over: AudioStream = preload("res://assets/sounds/game_over.ogg")
 
+#region == References ==
 @onready var lives: Label = $Frame/LivesX
 @onready var scores: Label = $Frame/LivesX/Scores
 @onready var coins: Label = $Frame/CoinsX/Coins
 @onready var game_over: Label = $Frame/GameOver
+#endregion
 
 
 func _ready() -> void:
-	Data.signals.player_data_changed.connect(
-		func(data: StringName, value: int) -> void:
-			match data:
-				&"player_lives":
-					var fpl := CharactersManager2D.get_characters_getter().get_character_with_id_min()
-					var fpln := &"PLAYER" if !fpl else fpl.nickname
-					lives.text = fpln + " × %s" % str(value)
-				&"player_scores":
-					scores.text = str(value)
-				&"player_coins":
-					coins.text = str(value)
-	)
-	Events.signals.game_over.connect(
-		func() -> void:
-			game_over.visible = true
-			Sound.play_sound(self, sound_game_over)
-	)
-	Data.data_init_signal_emit.call_deferred() # Called at the end of the first frame to make sure all data is safely loaded
+	Data.signals.player_data_changed.connect(_on_player_data_displayed)
+	Events.signals.game_over.connect(_on_game_over)
+
+
+#region == Text displaying ==
+func _on_player_data_displayed(data: StringName, value: int) -> void:
+	match data:
+		&"player_lives":
+			var fpl := CharactersManager2D.get_characters_getter().get_character_with_id_min()
+			var fpln := &"PLAYER" if !fpl else fpl.nickname
+			lives.text = fpln + " × %s" % str(value)
+		&"player_scores":
+			scores.text = str(value)
+		&"player_coins":
+			coins.text = str(value)
+
+func _on_game_over() -> void:
+	game_over.visible = true
+	Sound.play_sound(self, sound_game_over)
+#endregion

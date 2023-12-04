@@ -1,13 +1,17 @@
 extends Node
 
 ## A singleton used to manage characters' data, getting, etc.
+##
+##
 
 static var _characters_data_list: CharactersDataList2D = CharactersDataList2D.new()
 static var _characters_getter: CharactersGetter2D = CharactersGetter2D.new()
 static var _characters_data_getter: CharactersDataGetter2D = CharactersDataGetter2D.new()
 
 
-## A subclass of [CharactersManager] resorted to manage the data of characters
+## A subclass of CharactersManager2D, resorted to manage the data of characters
+##
+##
 class CharactersDataList2D:
 	var _data_list: Dictionary # Data list
 	
@@ -71,7 +75,7 @@ class CharactersDataList2D:
 			return _power_id
 
 
-## A Subclass used to get characters
+## A subclass of CharactersManager2D, used to get characters
 ##
 ##
 class CharactersGetter2D:
@@ -149,7 +153,7 @@ class CharactersGetter2D:
 		return characters[arr_dis.find(arr_dis.max())]
 
 
-## A subclass used to get data of players
+## A subclass of CharactersManager2D, used to get data of players
 ## [b]Note:[/b] This is different from [CharactersManager2D.CharactersDataList2D] because this subclass puts more focus on
 ## getting information like average global position of all players and so on.
 class CharactersDataGetter2D:
@@ -158,25 +162,24 @@ class CharactersDataGetter2D:
 		var characters := CharactersManager2D.get_characters_getter().get_characters()
 		if characters.is_empty():
 			return fallback
-
+		
 		var gpos := Vector2.ZERO
 		for i: CharacterEntity2D in characters:
 			gpos += i.global_position
 		
 		return gpos / float(characters.size())
-	
 
 
 #region == Getters ==
-## Returns [CharactersManager2D.CharactersDataList2D]
+## Returns the CharactersDataList2D
 func get_characters_data_list() -> CharactersDataList2D:
 	return _characters_data_list
 
-## Returns [CharactersManager2D.CharactersGetter2D]
+## Returns the CharactersGetter2D
 func get_characters_getter() -> CharactersGetter2D:
 	return _characters_getter
 
-## Returns [CharactersManager2D.CharactersDataGetter2D]
+## Returns the CharactersDataGetter2D
 func get_character_data_getter() -> CharactersDataGetter2D:
 	return _characters_data_getter
 #endregion

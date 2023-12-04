@@ -20,6 +20,8 @@ visible = false
 shape = SubResource("RectangleShape2D_lo46j")
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+monitorable = false
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D"]
 visible = false
@@ -29,3 +31,9 @@ shape = SubResource("RectangleShape2D_lo46j")
 texture = ExtResource("1_w3vhi")
 
 [node name="AddScores" parent="." instance=ExtResource("3_c1xxu")]
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+modulate = Color(1, 1, 1, 0.0392157)
+position = Vector2(0, -4.76837e-07)
+scale = Vector2(2.6, 0.8)
+metadata/_edit_lock_ = true

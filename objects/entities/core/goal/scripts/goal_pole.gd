@@ -4,14 +4,35 @@ const SCORES: PackedInt32Array = [200, 500, 1000, 2000, 5000, 10000]
 
 var _direction: int
 
+#region == References ==
 @onready var goal := get_parent() as Goal
 @onready var detector: Area2D = $Area2D
 @onready var add_scores: AddScores = $AddScores
+#endregion
+@onready var detector_collision_mask: int = detector.collision_mask
 
 
 func _ready() -> void:
-	set_physics_process(false)
+	set_physics_process(false) # Disables movement at first
 	detector.area_entered.connect(_on_character_area_touched)
+	Events.signals.level_completed.connect(
+		func() -> void:
+			if !is_instance_valid(detector):
+				return
+			elif goal.is_processing(): # If the goal is still detecting the characters, then the collision of the pole is allowed
+				return
+			if !is_physics_processing(): # Only when the pole is not hit down can the pole disappears
+				detector.collision_mask = 0 # Cancels collision detection of the detector on the completion of current level
+				Effects2D.transparentize(self, 0.5) # Disappears
+	)
+	Events.signals.level_completion_stopped.connect(
+		func() -> void:
+			if !is_instance_valid(detector):
+				return
+			detector.collision_mask = detector_collision_mask # Restores collision detection of the detector if the completion is stopped
+			var tw: Tween = create_tween()
+			tw.tween_property(self, ^"modulate:a", 1.0, 0.5) # Reappears
+	)
 
 func _physics_process(delta: float) -> void:
 	move_and_slide()
