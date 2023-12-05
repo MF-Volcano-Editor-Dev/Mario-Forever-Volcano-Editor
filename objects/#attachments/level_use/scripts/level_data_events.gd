@@ -19,7 +19,6 @@ func _ready() -> void:
 func _on_player_coins_to_life() -> void:
 	if disabled || !enable_coins_to_life:
 		return
-	
 	Data.add_lives(coin_to_lives)
 	Sound.play_sound(self, sound_life)
 

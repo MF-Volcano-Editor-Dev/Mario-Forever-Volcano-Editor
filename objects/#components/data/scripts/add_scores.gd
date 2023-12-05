@@ -13,8 +13,9 @@ func add_scores(show_text: bool = true) -> void:
 		return
 	
 	Data.add_scores(scores)
-	if show_text && _root is Node2D:
+	var root := get_root() as Node2D
+	if show_text && root:
 		var eff := Scores.instantiate()
-		eff.global_position = _root.global_position
+		eff.global_position = root.global_position
 		eff.set_shown_texts(scores)
-		_root.add_sibling(eff)
+		root.add_sibling(eff)

@@ -14,7 +14,7 @@ class_name Classes
 ## > 2: The content of a script is changed, but sometimes you can keep editor open.[br]
 ## > 3: A new script referred by this script is attached in it.
 
-#region HiddenClasses
+#region == HiddenClasses ==
 const HiddenNode := preload("res://objects/#scripts/nodes/hidden/class_hidden_node.gd")
 const HiddenNode2D := preload("res://objects/#scripts/nodes/hidden/class_hidden_node_2d.gd")
 const HiddenCamera2D := preload("res://objects/#scripts/nodes/hidden/class_hidden_camera_2d.gd")

@@ -13,9 +13,3 @@ metadata/_edit_pinned_properties_ = [&"power_id", &"is_small", &"power_down_to_i
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("2_ctiwm")
 metadata/_edit_pinned_properties_ = [&"texture"]
-
-[node name="Crouch" parent="BehaviorDefault" index="0"]
-normal_body_shape_scale = Vector2(1, 2)
-normal_body_shape_position = Vector2(0, -12)
-normal_head_position = Vector2(0, -41)
-metadata/_edit_pinned_properties_ = [&"normal_body_shape_scale", &"normal_body_shape_position", &"normal_head_position"]

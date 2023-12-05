@@ -36,6 +36,7 @@ animations = [{
 }]
 
 [node name="GoalPredetector" type="AnimatedSprite2D"]
+z_index = -5
 sprite_frames = SubResource("SpriteFrames_m0hre")
 autoplay = "default"
 script = ExtResource("2_fmnyi")

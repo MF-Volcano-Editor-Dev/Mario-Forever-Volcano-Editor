@@ -7,7 +7,6 @@ signal power_backrun ## Emitted when the power is not current
 @export_group("Component Links", "path_")
 @export_node_path("Node2D") var path_sprite: NodePath = ^"Sprite2D"
 @export_node_path("AnimationPlayer") var path_animation: NodePath = ^"AnimationPlayer"
-@export_node_path("Node") var path_behavior: NodePath = ^"BehaviorDefault"
 @export_group("Power Data")
 ## Level of the suit
 @export_range(-5, 5, 1) var power_level: int
@@ -19,16 +18,23 @@ signal power_backrun ## Emitted when the power is not current
 @export var sound_hurt: AudioStream = preload("res://assets/sounds/power_down.wav")
 @export var sound_death: AudioStream = preload("res://assets/sounds/death.ogg")
 
-# Node getting
-@onready var sprite := get_node_or_null(path_sprite) as Node2D
-@onready var animation := get_node(path_animation) as AnimationPlayer
-@onready var behavior := get_node(path_behavior) as CharacterBehavior2D
+#@onready var _sprite := get_sprite()
+@onready var _animation := get_animation() as AnimationPlayer
+#@onready var _behaviors := get_behaviors()
 
 
 #region == Animation ==
 func appear() -> void:
-	if !animation:
+	if !_animation:
 		return
-	animation.play(&"appear")
-	get_tree().create_timer(1, false).timeout.connect(animation.play.bind(&"RESET"))
+	_animation.play(&"appear")
+	get_tree().create_timer(1, false).timeout.connect(_animation.play.bind(&"RESET"))
+#endregion
+
+#region == Getters ==
+func get_sprite() -> Node2D:
+	return get_node_or_null(path_sprite) as Node2D
+
+func get_animation() -> AnimationPlayer:
+	return get_node(path_animation) as AnimationPlayer
 #endregion

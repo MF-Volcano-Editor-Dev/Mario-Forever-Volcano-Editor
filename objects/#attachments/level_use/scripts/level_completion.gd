@@ -65,7 +65,6 @@ func stop_completion_music() -> void:
 func _on_level_stopped_completion() -> void:
 	if disabled:
 		return
-	
 	_stopped = true
 	stop_completion_music() # Stops the music
 	if _delayer: # Quits the awaitness if the music is playing
@@ -73,7 +72,7 @@ func _on_level_stopped_completion() -> void:
 	var players := CharactersManager2D.get_characters_getter().get_characters()
 	for i: CharacterEntity2D in players:
 		i.controllable = true
-		ObjectState.set_state(i, CharacterEntity2D.STATE_UNDAMAGIBLE, false)
+		i.get_flagger().set_flag(&"undamagible", false)
 
 func _on_level_completed() -> void:
 	if disabled:
@@ -83,7 +82,7 @@ func _on_level_completed() -> void:
 	var players := CharactersManager2D.get_characters_getter().get_characters()
 	for i: CharacterEntity2D in players:
 		i.controllable = false
-		ObjectState.set_state(i, CharacterEntity2D.STATE_UNDAMAGIBLE, true)
+		i.get_flagger().set_flag(&"undamagible", true)
 	
 	play_completion_music() # Plays finishing music
 	

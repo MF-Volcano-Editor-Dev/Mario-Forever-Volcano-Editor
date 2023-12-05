@@ -18,8 +18,6 @@ class_name Component extends Classes.HiddenNode
 ## [NodePath] to the root node
 @export var root_path: NodePath = ^".."
 
-@onready var _root: Node = get_node_or_null(root_path)
-
 
 #region == Setgets ==
 func set_disabled(value: bool) -> void:
@@ -27,5 +25,6 @@ func set_disabled(value: bool) -> void:
 
 ## Returns the root node
 func get_root() -> Node:
-	return _root if is_instance_valid(_root) else null
+	var root := get_node_or_null(root_path)
+	return root if is_instance_valid(root) else null
 #endregion

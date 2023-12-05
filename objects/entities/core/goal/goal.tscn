@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://objects/entities/core/goal/scripts/goal.gd" id="1_xc88o"]
 [ext_resource type="Texture2D" uid="uid://dbpduobrrg2v2" path="res://objects/entities/core/goal/textures/goal_gate_right.png" id="2_3m8r0"]
 [ext_resource type="PackedScene" uid="uid://d1giyrm2ug18q" path="res://objects/entities/core/goal/#components/goal_pole.tscn" id="4_aexkf"]
-[ext_resource type="PackedScene" uid="uid://b58pd7ka0ondt" path="res://objects/entities/core/goal/goal_predetector.tscn" id="4_k2gk6"]
+[ext_resource type="PackedScene" uid="uid://b58pd7ka0ondt" path="res://objects/entities/core/goal/#components/goal_predetector.tscn" id="4_k2gk6"]
 [ext_resource type="Script" path="res://objects/entities/core/goal/scripts/tool/goal_tool_facing.gd" id="6_dnqnv"]
 
 [sub_resource type="Animation" id="Animation_668hd"]

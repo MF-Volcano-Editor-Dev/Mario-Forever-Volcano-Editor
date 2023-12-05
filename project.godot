@@ -32,6 +32,7 @@ Scenes="*res://singletons/scripts/Scenes.gd"
 window/size/viewport_width=640
 window/size/viewport_height=480
 window/stretch/mode="viewport"
+window/vsync/vsync_mode=0
 
 [dotnet]
 
@@ -70,6 +71,7 @@ folder_colors={
 "res://objects/#components/health/health_component/scripts/": "green",
 "res://objects/#components/item_component/scripts/": "green",
 "res://objects/#components/property_updater/scripts/": "green",
+"res://objects/#components/state/scripts/": "green",
 "res://objects/#scripts/": "green",
 "res://objects/entities/#effects/": "yellow",
 "res://objects/entities/#effects/coin_effect/scripts/": "green",
@@ -111,8 +113,6 @@ folder_colors={
 "res://objects/entities/players/mario/animations/": "orange",
 "res://objects/entities/players/mario/scripts/": "green",
 "res://objects/entities/players/mario/shapes/": "orange",
-"res://objects/entities/players/mario_series/#actions/": "yellow",
-"res://objects/entities/players/mario_series/#behaviors/": "yellow",
 "res://objects/entities/players/mario_series/#death/": "yellow",
 "res://objects/entities/players/mario_series/#powers/": "yellow",
 "res://objects/entities/players/mario_series/scripts/": "green",
@@ -224,6 +224,6 @@ fire1={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-gl_compatibility/driver.windows="opengl3_angle"
-renderer/rendering_method="gl_compatibility"
+gl_compatibility/driver.macos="opengl3"
+renderer/rendering_method="mobile"
 renderer/rendering_method.mobile="gl_compatibility"

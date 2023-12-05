@@ -12,11 +12,11 @@ func _process(_delta: float) -> void:
 	if disabled:
 		return
 	
-	var pls := CharactersManager2D.get_characters_getter().get_characters()
-	if pls.is_empty():
+	var characters := CharactersManager2D.get_characters_getter().get_characters()
+	if characters.is_empty():
 		return
 	
-	for i: CharacterEntity2D in pls:
+	for i: CharacterEntity2D in characters:
 		if !dyable_after_level_finished && i.state_machine.is_state(&"level_finished"):
 			continue
 		

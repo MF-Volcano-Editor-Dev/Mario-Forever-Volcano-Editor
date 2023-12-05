@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://cvnkj7x0t0mm0"]
+[gd_scene load_steps=8 format=3 uid="uid://cvnkj7x0t0mm0"]
 
-[ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/character_entity_2d.gd" id="1_vlgv0"]
+[ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/character_entity_2d.gd" id="1_6v7w4"]
 [ext_resource type="PackedScene" uid="uid://bd6pmuly2nay5" path="res://objects/entities/players/mario_series/#powers/mario_small.tscn" id="2_8ugd8"]
 [ext_resource type="PackedScene" uid="uid://bo46gkfa8umyh" path="res://objects/#components/entities/interaction/block_hitter.tscn" id="2_fek1f"]
+[ext_resource type="PackedScene" uid="uid://dsp17yp7kga4r" path="res://objects/#components/state/flagger.tscn" id="3_mhuu8"]
 [ext_resource type="PackedScene" uid="uid://da5jt0x58np72" path="res://objects/entities/players/mario_series/#powers/mario_big.tscn" id="3_vmk6x"]
 [ext_resource type="PackedScene" uid="uid://cprsxw7scpvfp" path="res://objects/#components/health/health_component/health_component.tscn" id="4_oecpc"]
 
@@ -11,7 +12,7 @@ size = Vector2(22, 28)
 
 [node name="Mario" type="EntityBody2D"]
 collision_mask = 2
-script = ExtResource("1_vlgv0")
+script = ExtResource("1_6v7w4")
 nickname = &"Mario"
 metadata/controllable = true
 metadata/_edit_pinned_properties_ = [&"nickname"]
@@ -47,5 +48,18 @@ process_mode = 4
 [node name="MarioBig" parent="." instance=ExtResource("3_vmk6x")]
 process_mode = 4
 visible = false
+
+[node name="Flagger" parent="." instance=ExtResource("3_mhuu8")]
+preset_flags = {
+"is_climbable": false,
+"is_climbing": false,
+"is_crouching": false,
+"is_swimming": false,
+"is_swimming_out": false,
+"undamagible": false,
+"undyable": false,
+"uninvulerizable": false
+}
+metadata/_edit_pinned_properties_ = [&"preset_flags"]
 
 [node name="HealthComponent" parent="." instance=ExtResource("4_oecpc")]

@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dsmyjwcmddbbm"]
-
-[ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/behaviors/character_behavior_default.gd" id="1_q5pd4"]
-
-[node name="BehaviorDefault" type="Node"]
-script = ExtResource("1_q5pd4")
-root_path = NodePath("..")
-metadata/_edit_pinned_properties_ = [&"root_path"]
