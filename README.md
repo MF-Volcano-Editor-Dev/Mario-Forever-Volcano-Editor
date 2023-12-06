@@ -11,3 +11,8 @@ However, even though C# is able to interact with GDScript, inheritance from C# t
 ### C++, or GDExtension
 Since Godot 4.0, C++ libraries can be installed in a smoother and easier way -- GDExtension, which exceeds GDNative but inherited the style. This means that every developer can now get faster access to making a C++ script/library with godot-cpp project. C++ is the fastest language among the three, and is supported to be inherited by GDScript, so if you have requirement on calculations in large amount, or to make complex logics where some calls may lag the performance, this is a better choice for developers.  
 Actually, this template contains GDExtensions made for convenience and low performance cost, especially EntityBody2D, in which a heavy calculation on physics is conducted. E.g. the redefined `move_and_slide()` in this GDExtension on some old hardwares can run around 140us, but in GDScript the number could be greater, about 200 to 350.
+
+# Credits
+* ElectronicBoy(Lazy-Rabbit-2001): Major creator, coder, constructurer.
+* JUE13: LibOpenMPT compiler for this template.
+* Visphort: Creator of LibOpenMPT GDExtension.
