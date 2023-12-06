@@ -25,9 +25,9 @@ func _process(_delta: float) -> void:
 		var angl := i.get_gravity_vector().angle()
 		var die := false
 		
-		if vpos.x > rect.size.x + death_detection_margin && angl >= -PI/4 && angl <= PI/4:
+		if vpos.x > rect.end.x + death_detection_margin && angl >= -PI/4 && angl <= PI/4:
 			die = true
-		elif vpos.y > rect.size.y + death_detection_margin && angl >= PI/4 && angl <= 3*PI/4:
+		elif vpos.y > rect.end.y + death_detection_margin && angl >= PI/4 && angl <= 3*PI/4:
 			die = true
 		elif vpos.x < rect.position.x - death_detection_margin && angl >= 3*PI/4 || angl <= -3*PI/4:
 			die = true

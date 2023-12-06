@@ -14,11 +14,11 @@ extends CharacterBehavior2D
 @export var key_run: StringName = &"run"
 @export_group("Shapes")
 @export_subgroup("Body")
-@export var shape_normal: CharacterShape2D
-@export var shape_crouch: CharacterShape2D
+@export var shape_normal: CharacterShape2D = preload("res://objects/entities/players/mario_series/resources/shapes/character_shape_mario_small.tres")
+@export var shape_crouch: CharacterShape2D = preload("res://objects/entities/players/mario_series/resources/shapes/character_shape_mario_small.tres")
 @export_subgroup("Head")
-@export var head_normal: CharacterShape2D
-@export var head_crouch: CharacterShape2D
+@export var head_normal: CharacterShape2D = preload("res://objects/entities/players/mario_series/resources/shapes/character_head_mario_small.tres")
+@export var head_crouch: CharacterShape2D = preload("res://objects/entities/players/mario_series/resources/shapes/character_head_mario_small.tres")
 @export_group("Physics")
 @export_subgroup("Gravity")
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:x") var gravity_scale: float = 1
@@ -78,6 +78,7 @@ func _process(delta: float) -> void:
 	_character.set_key_xy(key_up, key_down, key_left, key_right)
 	_key_xy = _character.get_key_xy()
 	
+	_crouch()
 	_walk()
 	_jump(delta)
 	_swim(delta)
@@ -98,6 +99,9 @@ func _physics_process(_delta: float) -> void:
 
 
 #region == Movements ==
+func _crouch() -> void:
+	_flagger.set_flag(&"is_crouching", _character.controllable && _character.is_on_floor() && _character.get_key_y() > 0 && (!is_small || (is_small && _crouchable_in_small)))
+
 func _walk() -> void:
 	_flagger.set_flag(&"is_running", _character.is_action_pressed(key_run)) # Sets running flag
 	
@@ -127,6 +131,8 @@ func _jump(delta: float) -> void:
 	var jumping := _character.is_action_pressed(key_jump)
 	if _has_jumped && !jumping && (on_floor || is_falling):
 		_has_jumped = false
+	
+	_flagger.set_flag(&"is_jumping", jumping)
 	
 	var jumpable := !_has_jumped && jumping
 	if on_floor && jumpable:
@@ -202,6 +208,10 @@ func _on_character_flagger_changed(flag: StringName, value: bool) -> void:
 			_swimming = value
 		&"is_swimming_out":
 			_swimming_out = value
+
+func _on_crouching(value: bool) -> void:
+	_character.update_body_collision_shapes(shape_crouch if value else shape_normal)
+	_character.update_head_collision_shape(head_crouch if value else head_normal)
 #endregion
 
 #region == Getters ==

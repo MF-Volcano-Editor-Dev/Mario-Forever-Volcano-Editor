@@ -11,6 +11,7 @@
 size = Vector2(22, 28)
 
 [node name="Mario" type="EntityBody2D"]
+restore_to_max_speed = true
 collision_mask = 2
 script = ExtResource("1_6v7w4")
 nickname = &"Mario"
@@ -49,11 +50,14 @@ process_mode = 4
 process_mode = 4
 visible = false
 
+[node name="HealthComponent" parent="." instance=ExtResource("4_oecpc")]
+
 [node name="Flagger" parent="." instance=ExtResource("3_mhuu8")]
 preset_flags = {
 "is_climbable": false,
 "is_climbing": false,
 "is_crouching": false,
+"is_jumping": false,
 "is_swimming": false,
 "is_swimming_out": false,
 "undamagible": false,
@@ -61,5 +65,3 @@ preset_flags = {
 "uninvulerizable": false
 }
 metadata/_edit_pinned_properties_ = [&"preset_flags"]
-
-[node name="HealthComponent" parent="." instance=ExtResource("4_oecpc")]

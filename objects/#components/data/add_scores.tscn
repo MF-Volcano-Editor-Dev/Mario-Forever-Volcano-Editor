@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://objects/#components/data/scripts/add_scores.gd" id="1_q0aer"]
 
 [node name="AddScores" type="Node"]
+process_mode = 4
 script = ExtResource("1_q0aer")

@@ -17,6 +17,7 @@ signal character_death_finished ## Emitted when the character's death is finishe
 @export_group("Sound", "sound_")
 @export var sound_death: AudioStream = preload("res://assets/sounds/death.ogg")
 
+var _game_events := Events.get_game_events()
 var _tw: Tween # Tween ref
 
 var _fall_rot: bool
@@ -33,7 +34,7 @@ func _ready() -> void:
 	var cached_players := CharactersManager2D.get_characters_getter().get_characters()
 	
 	Sound.play_sound(self, sound_death)
-	Events.player_all_death_detect()
+	_game_events.player_all_death_detect()
 	character_death_started.emit()
 	
 	set_process(false)
@@ -41,10 +42,9 @@ func _ready() -> void:
 	set_process(true)
 	
 	await tree.create_timer(duration, false).timeout
-	Events.player_all_death_process(cached_players)
+	_game_events.player_all_death_process(cached_players)
 	character_death_finished.emit()
 	queue_free()
-
 
 func _process(delta: float) -> void:
 	speed_y += gravity * delta

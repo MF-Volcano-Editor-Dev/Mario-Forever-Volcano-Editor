@@ -15,7 +15,7 @@ class_name CharacterShape2D extends Resource
 		_trans = true
 		transform.x = Vector2.RIGHT.rotated(deg_to_rad(rotation))
 		transform.y = Vector2.DOWN.rotated(deg_to_rad(rotation))
-@export var scale: Vector2:
+@export var scale: Vector2 = Vector2(1, 1):
 	set(value):
 		_trans = true
 		transform.x *= value.x
@@ -30,3 +30,7 @@ var transform: Transform2D:
 		position = transform.get_origin()
 		rotation = rad_to_deg(transform.get_rotation())
 		scale = transform.get_scale()
+
+
+func _init() -> void:
+	scale = scale # Triggers the scale's setter

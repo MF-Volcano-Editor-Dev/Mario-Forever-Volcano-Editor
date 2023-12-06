@@ -39,10 +39,10 @@ signal health_zero ## Emitted when the [member health] is zero, will be emitted 
 
 #region Health controls
 ## Adds [member health] by [param amount]
-func add_health(amount: float) -> void:
+func add_health(amount: float = 1) -> void:
 	health += abs(amount)
 
 ## Subtracts [member health] from [param amount]
-func sub_health(amount: float) -> void:
+func sub_health(amount: float = 1) -> void:
 	health -= abs(amount)
 #endregion

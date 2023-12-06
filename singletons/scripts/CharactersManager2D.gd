@@ -4,12 +4,16 @@ extends Node
 ##
 ##
 
-static var _characters_data_list: CharactersDataList2D = CharactersDataList2D.new()
-static var _characters_getter: CharactersGetter2D = CharactersGetter2D.new()
-static var _characters_data_getter: CharactersDataGetter2D = CharactersDataGetter2D.new()
+var _characters_data_list: CharactersDataList2D = CharactersDataList2D.new()
+var _characters_getter: CharactersGetter2D = CharactersGetter2D.new()
+var _characters_data_getter: CharactersDataGetter2D = CharactersDataGetter2D.new()
 
 
-## A subclass of CharactersManager2D, resorted to manage the data of characters
+func _init() -> void:
+	process_mode = PROCESS_MODE_DISABLED
+
+
+## A subclass of CharactersManager2D, resorted to manage the data of characters.
 ##
 ##
 class CharactersDataList2D:
@@ -17,39 +21,39 @@ class CharactersDataList2D:
 	
 	
 	## Registers a data of [param character] into the list.[br]
-	## If [param override] is [code]true[/code], the original data will be covered with a new one
+	## If [param override] is [code]true[/code], the original data will be covered with a new one.
 	func register(character: CharacterEntity2D) -> void:
 		var data := CharacterDataStorage2D.new(character)
 		_data_list.merge({character.id: data}, true)
 	
-	## Registers all data of all characters available into the list
+	## Registers all data of all characters available into the list.
 	func register_all() -> void:
 		for i: CharacterEntity2D in CharactersManager2D.get_characters_getter().get_characters():
 			register(i)
 	
-	## Unregisters the data of a character with given [param id]
+	## Unregisters the data of a character with given [param id].
 	func unregister(id: int) -> void:
 		if !id in _data_list:
 			return
 		_data_list.erase(id)
 	
-	## Unregisters the data of all characters
+	## Unregisters the data of all characters.
 	func unregister_all() -> void:
 		_data_list.clear()
 	
 	
-	## Returns the data of a character with given [param id]
+	## Returns the data of a character with given [param id].
 	func get_data(id: int) -> CharacterDataStorage2D:
 		if !id in _data_list:
 			return null
 		return _data_list[id] as CharacterDataStorage2D
 	
-	## Returns data list of all characters
+	## Returns data list of all characters.
 	func get_all_data_list() -> Dictionary:
 		return _data_list
 	
 	
-	## Class used to store the data of a character
+	## Class used to store the data of a character.
 	class CharacterDataStorage2D:
 		var _character: CharacterEntity2D
 		var _global_transform: Transform2D
@@ -62,26 +66,29 @@ class CharactersDataList2D:
 			_power_id = character.power_id
 		
 		
-		## Returns current character
+		## Returns current character.
 		func get_character() -> CharacterEntity2D:
 			return _character if is_instance_valid(_character) else null
 		
-		## Returns the global transform of the current character
+		## Returns the global transform of the current character.
 		func get_global_transform() -> Transform2D:
 			return _global_transform
 		
-		## Returns [member CharacterEntity2D.power_id] of the current character
+		## Returns [member CharacterEntity2D.power_id] of the current character.
 		func get_power_id() -> StringName:
 			return _power_id
 
 
-## A subclass of CharactersManager2D, used to get characters
+## A subclass of CharactersManager2D, used to get characters.
 ##
 ##
 class CharactersGetter2D:
+	## Returns a character with certain [param id].
+	func get_character(id: int) -> CharacterEntity2D:
+		var character := CharactersManager2D.get_characters_data_list().get_data(id).get_character()
+		return character if is_instance_valid(character) else null
+	
 	## Returns all available characters [br]
-	## [b]Note:[/b] When [method SceneTree.change_scene_to_file] or [method SceneTree.change_scene_to_packed] is called,
-	## this will return an empty array, so please make sure that it is called during the procession of the tree
 	func get_characters() -> Array[CharacterEntity2D]:
 		const Storage := CharactersDataList2D.CharacterDataStorage2D # Reference in shorter spelling
 		
@@ -100,7 +107,7 @@ class CharactersGetter2D:
 		
 		return rst
 	
-	## Returns a character with the minimum of id
+	## Returns a character with the minimum of id.
 	func get_character_with_id_min() -> CharacterEntity2D:
 		const Storage := CharactersDataList2D.CharacterDataStorage2D
 		
@@ -114,7 +121,7 @@ class CharactersGetter2D:
 		
 		return (player_data[player_ids.min()] as Storage).get_character()
 	
-	## Returns a character with the maximum of id
+	## Returns a character with the maximum of id.
 	func get_character_with_id_max() -> CharacterEntity2D:
 		const Storage := CharactersDataList2D.CharacterDataStorage2D
 		
@@ -128,25 +135,25 @@ class CharactersGetter2D:
 		
 		return (player_data[player_ids.max()] as Storage).get_character()
 	
-	## Returns a character nearest to [param global_position]
+	## Returns a character nearest to [param global_position].
 	func get_character_nearest_to(global_position: Vector2) -> CharacterEntity2D:
 		var characters := get_characters() # It's more convenient to get all characters here, though double for-loops exists here
 		if characters.is_empty():
 			return null
 		
-		var arr_dis: Array[Vector2] = []
+		var arr_dis: Array[float] = []
 		for i: CharacterEntity2D in characters:
 			arr_dis.append(i.global_position.distance_squared_to(global_position))
 		
 		return characters[arr_dis.find(arr_dis.min())]
 	
-	## Returns a character farest to [param global_position]
+	## Returns a character farest to [param global_position].
 	func get_character_farest_to(global_position: Vector2) -> CharacterEntity2D:
 		var characters := get_characters()
 		if characters.is_empty():
 			return null
 		
-		var arr_dis: Array[Vector2] = []
+		var arr_dis: Array[float] = []
 		for i: CharacterEntity2D in characters:
 			arr_dis.append(i.global_position.distance_squared_to(global_position))
 		
@@ -157,7 +164,7 @@ class CharactersGetter2D:
 ## [b]Note:[/b] This is different from [CharactersManager2D.CharactersDataList2D] because this subclass puts more focus on
 ## getting information like average global position of all players and so on.
 class CharactersDataGetter2D:
-	## Returns average global positin of valid players
+	## Returns average global positin of valid players.
 	func get_average_global_position(fallback: Vector2) -> Vector2:
 		var characters := CharactersManager2D.get_characters_getter().get_characters()
 		if characters.is_empty():
@@ -171,15 +178,15 @@ class CharactersDataGetter2D:
 
 
 #region == Getters ==
-## Returns the CharactersDataList2D
+## Returns the CharactersDataList2D.
 func get_characters_data_list() -> CharactersDataList2D:
 	return _characters_data_list
 
-## Returns the CharactersGetter2D
+## Returns the CharactersGetter2D.
 func get_characters_getter() -> CharactersGetter2D:
 	return _characters_getter
 
-## Returns the CharactersDataGetter2D
+## Returns the CharactersDataGetter2D.
 func get_character_data_getter() -> CharactersDataGetter2D:
 	return _characters_data_getter
 #endregion

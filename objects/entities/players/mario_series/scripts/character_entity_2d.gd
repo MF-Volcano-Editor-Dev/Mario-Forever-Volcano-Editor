@@ -53,14 +53,6 @@ enum WarpDir {
 		await Process.await_readiness(self)
 		direction = value if value != 0 else [-1, 1].pick_random()
 
-#region RefNodes
-@onready var _flagger := get_flagger() as Flagger
-@onready var _shape := get_collision_shape() as CollisionShape2D
-@onready var _body_shape := $AreaBody/CollisionShape2D as CollisionShape2D
-@onready var _head_shape := $AreaHead/CollisionPolygon2D as CollisionPolygon2D
-@onready var _health_component := $HealthComponent as HealthComponent
-#endregion
-
 #region == Data ==
 var _warp_dir: WarpDir = WarpDir.NONE # Warping direction
 var _key_xy: Vector2i # Direction of arrow keys 
@@ -69,6 +61,12 @@ var _key_xy: Vector2i # Direction of arrow keys
 #region == References ==
 var _invulnerability: SceneTreeTimer # Reference to a invulnerability counter
 var _power: CharacterPower2D # Reference to current power
+
+@onready var _flagger := get_flagger() as Flagger
+@onready var _shape := get_collision_shape() as CollisionShape2D
+@onready var _body_shape := $AreaBody/CollisionShape2D as CollisionShape2D
+@onready var _head_shape := $AreaHead/CollisionPolygon2D as CollisionPolygon2D
+@onready var _health_component := $HealthComponent as HealthComponent
 #endregion
 
 
@@ -92,25 +90,28 @@ func invulnerablize(duration: float = 2) -> void:
 	)
 
 ## Makes the character hurt with [signal hurt] emitted.
-func damaged(tag: TagsObject = TagsObject.new()) -> void:
-	if _flagger.is_flag(&"undamagible") || (!tag.get_tag(&"forced", false) && is_invulnerable()):
+func damaged(tags: TagsObject = null) -> void:
+	if !tags:
+		tags = TagsObject.new()
+	
+	if _flagger.is_flag(&"undamagible") || (!tags.get_tag(&"forced", false) && is_invulnerable()):
 		return
 	
-	var soundful := tag.get_tag(&"soundful", true) as bool # Allowed to play the sound
-	var duration := tag.get_tag(&"duration", 2) as float
+	var soundful := tags.get_tag(&"soundful", true) as bool # Allowed to play the sound
+	var duration := tags.get_tag(&"duration", 2) as float
 	
 	# Damaged to death
 	Effects2D.flash(self, duration, 0.05)
 	if _power.power_down_to_id.is_empty():
-		_health_component.sub_health(tag.get_tag(&"damage", 1) as float)
+		_health_component.sub_health(tags.get_tag(&"damage", 1) as float)
 		if _health_component.health <= 0: # No hp -> death
-			die(tag)
+			die(tags)
 			return
 		else: # With hp -> hp loss
 			invulnerablize(duration + 1)
 	# Damaged to lower level of suit
 	else:
-		var forced_down_to_id := tag.get_tag(&"forced_down_to", &"small") as StringName
+		var forced_down_to_id := tags.get_tag(&"forced_down_to", &"small") as StringName
 		power_id = forced_down_to_id if !forced_down_to_id.is_empty() else _power.power_down_to_id
 		invulnerablize(duration)
 	
@@ -119,7 +120,10 @@ func damaged(tag: TagsObject = TagsObject.new()) -> void:
 		Sound.play_sound_2d(self, _power.sound_hurt) 
 
 ## Makes the character die with [signal died] emitted.
-func die(_tag: TagsObject = TagsObject.new()) -> void:
+func die(tags: TagsObject = null) -> void:
+	if !tags:
+		tags = TagsObject.new()
+	
 	if _flagger.is_flag(&"undyable"):
 		return
 	
@@ -231,6 +235,8 @@ func is_action_just_released(action: StringName) -> bool:
 #region == Collision shapes ==
 ## Updates the scale and position of the character's collision shape and the one of its detector.
 func update_body_collision_shapes(character_shape: CharacterShape2D) -> void:
+	if !character_shape:
+		return
 	if _shape.shape != character_shape.shape:
 		_shape.set_deferred(&"shape", character_shape.shape)
 	if _body_shape.shape != character_shape.shape:

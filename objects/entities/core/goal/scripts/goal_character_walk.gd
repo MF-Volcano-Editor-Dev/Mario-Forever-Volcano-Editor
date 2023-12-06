@@ -8,11 +8,14 @@ var direction: int:
 		direction = clampi(value, -1, 1)
 		if !direction:
 			direction = [-1, 1].pick_random()
+
+var _level_events := Events.get_level_events()
+
 var _characters_to_walk: Array[CharacterEntity2D]
 
 
 func _ready() -> void:
-	Events.signals.level_completed.connect(_on_character_completed_walking)
+	_level_events.level_completed.connect(_on_character_completed_walking)
 
 
 func add_player_to_walk(character: CharacterEntity2D) -> void:
@@ -34,7 +37,7 @@ func _on_character_completed_walking() -> void:
 		for j: CharacterEntity2D in _characters_to_walk:
 			if !is_instance_valid(j): # Skips invalid character and stops completion, and clear cached character lists
 				_characters_to_walk.clear()
-				Events.level_stop_completion()
+				_level_events.level_stop_completion()
 				continue
 			j.direction = direction
 			j.velocity.x = walking_speed

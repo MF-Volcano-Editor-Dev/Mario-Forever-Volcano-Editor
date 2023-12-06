@@ -8,6 +8,8 @@ const GoalPole := preload("./goal_pole.gd")
 @export_enum("Left: -1", "Right: 1") var direction: int = -1
 @export var detection_area: Rect2 = Rect2(Vector2(0, -256), Vector2(640, 256))
 
+var _level_events := Events.get_level_events()
+
 #region == References ==
 @onready var goal_pole := $GoalPole as GoalPole
 @onready var goal_character_walk := get_node_or_null(path_goal_character_walk) as GoalCharacterWalk
@@ -16,14 +18,14 @@ const GoalPole := preload("./goal_pole.gd")
 
 
 func _ready() -> void:
-	Events.signals.level_completed.connect(
+	_level_events.level_completed.connect(
 		func() -> void:
 			if !is_instance_valid(animation_player):
 				return
 			animation_player.pause()
 			set_process(false)
 	)
-	Events.signals.level_completion_stopped.connect(
+	_level_events.level_completion_stopped.connect(
 		func() -> void:
 			if !is_instance_valid(animation_player):
 				return
@@ -51,4 +53,4 @@ func finish(character_body: Node2D, pole_touched: bool = false) -> void:
 		goal_character_walk.direction = -direction
 		goal_character_walk.add_player_to_walk(character)
 	
-	Events.level_complete()
+	_level_events.level_complete()

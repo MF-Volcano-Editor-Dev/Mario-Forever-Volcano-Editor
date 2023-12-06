@@ -9,8 +9,8 @@
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="6_un4yr"]
 [ext_resource type="PackedScene" uid="uid://d1f3khrnqnyfr" path="res://objects/#attachments/level_use/level_data_events.tscn" id="6_xif4x"]
 [ext_resource type="PackedScene" uid="uid://cvnkj7x0t0mm0" path="res://objects/entities/players/mario_series/mario.tscn" id="9_q64jo"]
-[ext_resource type="PackedScene" uid="uid://dmtssqxu1l7j6" path="res://objects/entities/core/goal/goal.tscn" id="10_dce78"]
-[ext_resource type="PackedScene" uid="uid://dtt6n5emk6dtu" path="res://objects/entities/core/goal/goal_character_walk.tscn" id="11_80pxe"]
+[ext_resource type="PackedScene" uid="uid://bnewtaib54hhw" path="res://objects/entities/fluid/liquid/scripts/water.tscn" id="12_yh4od"]
+[ext_resource type="PackedScene" uid="uid://cvh7xbvy0048b" path="res://objects/entities/enemies/goombas/goomba.tscn" id="13_l7fho"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_7slwg")
@@ -30,12 +30,14 @@ script = ExtResource("1_7slwg")
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("6_un4yr")
 format = 2
-layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969, 65537, 0, 917505, 65537, 1, 851970, 65537, 0, 917506, 65537, 1, 851971, 65537, 0, 917507, 65537, 1, 851972, 65537, 0, 917508, 65537, 1, 851973, 65537, 0, 917509, 65537, 1, 851974, 65537, 0, 917510, 65537, 1, 851975, 65537, 0, 917511, 65537, 1, 851976, 65537, 0, 917512, 65537, 1, 851977, 65537, 0, 917513, 65537, 1, 851978, 65537, 0, 917514, 65537, 1, 851979, 65537, 0, 917515, 65537, 1, 851980, 65537, 0, 917516, 65537, 1, 851981, 65537, 0, 917517, 65537, 1, 851982, 65537, 0, 917518, 65537, 1, 851983, 65537, 0, 917519, 65537, 1, 851984, 65537, 0, 917520, 65537, 1, 851985, 65537, 0, 917521, 65537, 1, 851986, 65537, 0, 917522, 65537, 1, 851987, 65537, 0, 917523, 65537, 1, 851967, 196609, 1, 786431, 196609, 1, 720895, 196609, 1, 655359, 196609, 1, 589823, 196609, 1, 524287, 196609, 1, 458751, 196609, 1, 393215, 196609, 1, 327679, 196609, 1, 262143, 196609, 1, 196607, 196609, 1, 131071, 196609, 1, 65535, 196609, 1)
+layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969, 65537, 0, 917505, 65537, 1, 851970, 65537, 0, 917506, 65537, 1, 851971, 65537, 0, 917507, 65537, 1, 851972, 65537, 0, 917508, 65537, 1, 851973, 65537, 0, 917509, 65537, 1, 851974, 65537, 0, 917510, 65537, 1, 851975, 65537, 0, 917511, 65537, 1, 851976, 65537, 0, 917512, 65537, 1, 851977, 65537, 0, 917513, 65537, 1, 851978, 65537, 0, 917514, 65537, 1, 851979, 65537, 0, 917515, 65537, 1, 851980, 65537, 0, 917516, 65537, 1, 851981, 65537, 0, 917517, 65537, 1, 851982, 65537, 0, 917518, 65537, 1, 851983, 65537, 0, 917519, 65537, 1, 851984, 65537, 0, 917520, 65537, 1, 851985, 65537, 0, 917521, 65537, 1, 851986, 65537, 0, 917522, 65537, 1, 851987, 65537, 0, 917523, 65537, 1, 851967, 196609, 1, 786431, 196609, 1, 720895, 196609, 1, 655359, 196609, 1, 589823, 196609, 1, 524287, 196609, 1, 458751, 196609, 1, 393215, 196609, 1, 327679, 196609, 1, 262143, 196609, 1, 196607, 196609, 1, 131071, 196609, 1, 65535, 196609, 1, 851988, 65537, 0, 917524, 65537, 1, 851989, 65537, 0, 917525, 65537, 1, 851990, 65537, 0, 917526, 65537, 1, 851991, 65537, 0, 917527, 65537, 1, 851992, 65537, 0, 917528, 65537, 1, 851993, 65537, 0, 917529, 65537, 1, 851994, 65537, 0, 917530, 65537, 1, 720922, 1, 1, 786458, 1, 2, 589850, 1, 1, 655386, 1, 2, 458778, 1, 1, 524314, 1, 2, 327706, 1, 1, 393242, 1, 2, 196634, 1, 1, 262170, 1, 2, 65562, 1, 1, 131098, 1, 2, -65510, 1, 1, 26, 1, 2)
 
 [node name="Mario" parent="." instance=ExtResource("9_q64jo")]
 position = Vector2(48, 400)
 
-[node name="Goal" parent="." instance=ExtResource("10_dce78")]
-position = Vector2(496, 416)
+[node name="Water" parent="." instance=ExtResource("12_yh4od")]
+position = Vector2(192, 0)
+scale = Vector2(9, 5)
 
-[node name="GoalCharacterWalk" parent="Goal" instance=ExtResource("11_80pxe")]
+[node name="Goomba" parent="." instance=ExtResource("13_l7fho")]
+position = Vector2(528, 400)

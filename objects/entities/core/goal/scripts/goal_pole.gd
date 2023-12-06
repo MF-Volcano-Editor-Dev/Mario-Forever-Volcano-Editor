@@ -2,6 +2,8 @@ extends EntityBody2D
 
 const SCORES: PackedInt32Array = [200, 500, 1000, 2000, 5000, 10000]
 
+var _level_events := Events.get_level_events()
+
 var _direction: int
 
 #region == References ==
@@ -15,13 +17,13 @@ var _direction: int
 func _ready() -> void:
 	set_physics_process(false) # Disables movement at first
 	detector.area_entered.connect(_on_character_area_touched)
-	Events.signals.level_completed.connect(
+	_level_events.level_completed.connect(
 		func() -> void:
 			if !is_instance_valid(detector):
 				return
 			detector.collision_mask = 0 # Cancels collision detection of the detector on the completion of current level
 	)
-	Events.signals.level_completion_stopped.connect(
+	_level_events.level_completion_stopped.connect(
 		func() -> void:
 			if !is_instance_valid(detector):
 				return

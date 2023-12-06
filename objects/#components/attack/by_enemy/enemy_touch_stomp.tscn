@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cf4pm4ojp7ld1"]
+
+[ext_resource type="Script" path="res://objects/#components/attack/by_enemy/scripts/enemy_touch_stomp.gd" id="1_kp0ht"]
+
+[node name="EnemyTouchStomp" type="Node"]
+script = ExtResource("1_kp0ht")

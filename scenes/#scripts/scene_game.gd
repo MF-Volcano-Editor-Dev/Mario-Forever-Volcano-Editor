@@ -7,4 +7,4 @@ class_name SceneGame extends Node2D
 
 
 func _ready() -> void:
-	Data.data_init_signal_emit() # Emits the notice to initialize the data of players
+	Data.get_player_data().data_init_signal_emit() # Emits the notice to initialize the data of players

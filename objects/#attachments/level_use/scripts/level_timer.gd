@@ -36,6 +36,10 @@ signal timer_over_scoring ## Emitted when the timer is up in scoring mode
 @export var sound_warning: AudioStream = preload("res://assets/sounds/timer_warning.wav")
 @export var sound_scoring: AudioStream = preload("res://assets/sounds/timer_scoring.wav")
 
+var _player_data := Data.get_player_data()
+var _level_events := Events.get_level_events()
+var _game_events := Events.get_game_events()
+
 #region == Data ==
 var _scoring: bool
 var _scoring_sound_count_delay: int
@@ -56,7 +60,7 @@ func _ready() -> void:
 	interval.start(time_change_unit_tick)
 	interval.timeout.connect(_on_rest_time_changed)
 	
-	Events.signals.level_to_be_completed.connect(
+	_level_events.level_to_be_completed.connect(
 		# After the completion music is over
 		func(state: int) -> void:
 			if state != 0: # Check if the state is just after finishment of the music of completion (state: 0)
@@ -68,7 +72,7 @@ func _ready() -> void:
 			else: # Up-counting mode -> skips scoring
 				timer_over_scoring.emit()
 	)
-	Events.signals.level_completed.connect(
+	_level_events.level_completed.connect(
 		# Level's completion, when the finishing music gets playing
 		func() -> void:
 			interval.paused = true # Pauses the timer first
@@ -79,13 +83,13 @@ func _ready() -> void:
 			await get_tree().create_timer(1, false).timeout # And delay for 1 second
 			level_completion.remove_object_to_wait_finish(self) # Resumes the completion
 	)
-	Events.signals.level_completion_stopped.connect(
+	_level_events.level_completion_stopped.connect(
 		# Level's completion is stopped
 		func() -> void:
 			_scoring = false # Cancels scoring
 			start() # Resume counting
 	)
-	Events.signals.players_all_dead.connect(stop) # Stops when all characters are dead
+	_game_events.players_all_dead.connect(stop) # Stops when all characters are dead
 
 
 #region == Time down controls ==
@@ -130,7 +134,7 @@ func _rest_time_event_not_scoring() -> void:
 		interval.stop()
 
 func _rest_time_event_scoring(delta: int) -> void:
-	Data.add_scores(time_unit_scores * absi(delta))
+	_player_data.add_scores(time_unit_scores * absi(delta))
 	
 	_scoring_sound_count_delay += 1
 	if _scoring_sound_count_delay > 3:

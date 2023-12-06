@@ -7,12 +7,14 @@ const Scores := preload("res://objects/entities/#effects/scores_and_lives/scores
 @export_group("Sounds", "sound_")
 @export var sound_score: AudioStream
 
+var _player_data := Data.get_player_data()
+
 
 func add_scores(show_text: bool = true) -> void:
 	if disabled:
 		return
 	
-	Data.add_scores(scores)
+	_player_data.add_scores(scores)
 	var root := get_root() as Node2D
 	if show_text && root:
 		var eff := Scores.instantiate()

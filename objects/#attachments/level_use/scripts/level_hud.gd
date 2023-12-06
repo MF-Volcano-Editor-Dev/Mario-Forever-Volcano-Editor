@@ -6,6 +6,9 @@ class_name LevelHUD extends Classes.HiddenCanvasLayer
 ## Sound of game over
 @export var sound_game_over: AudioStream = preload("res://assets/sounds/game_over.ogg")
 
+var _player_data := Data.get_player_data()
+var _game_events := Events.get_game_events()
+
 #region == References ==
 @onready var lives: Label = $Frame/LivesX
 @onready var scores: Label = $Frame/LivesX/Scores
@@ -15,8 +18,8 @@ class_name LevelHUD extends Classes.HiddenCanvasLayer
 
 
 func _ready() -> void:
-	Data.signals.player_data_changed.connect(_on_player_data_displayed)
-	Events.signals.game_over.connect(_on_game_over)
+	_player_data.player_data_changed.connect(_on_player_data_displayed)
+	_game_events.game_over.connect(_on_game_over)
 
 
 #region == Text displaying ==

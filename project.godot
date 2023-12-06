@@ -58,6 +58,7 @@ folder_colors={
 "res://objects/#attachments/level_use/themes/": "green",
 "res://objects/#attachments/universal_scenes_use/scripts/": "green",
 "res://objects/#components/": "yellow",
+"res://objects/#components/attack/by_enemy/scripts/": "green",
 "res://objects/#components/attacking_related/scripts/": "green",
 "res://objects/#components/block_hitter/scripts/": "green",
 "res://objects/#components/data/scripts/": "green",
@@ -91,6 +92,7 @@ folder_colors={
 "res://objects/entities/#projectiles/bumpers/scripts/": "green",
 "res://objects/entities/#projectiles/bumpers/textures/": "green",
 "res://objects/entities/#projectiles/hammer/textures/": "green",
+"res://objects/entities/@scripts/": "green",
 "res://objects/entities/bonuses/blocks/scripts/": "green",
 "res://objects/entities/bonuses/blocks/scripts/#resources/": "orange",
 "res://objects/entities/bonuses/blocks/textures/": "green",
@@ -129,7 +131,7 @@ import/blender/enabled=false
 [game]
 
 control/player/jumpable_when_crouching=false
-control/player/crouchable_in_small_suit=false
+control/player/crouchable_in_small_suit=true
 control/player/walkable_when_crouching=false
 data/player/default_lives=4
 
@@ -224,6 +226,4 @@ fire1={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-gl_compatibility/driver.macos="opengl3"
 renderer/rendering_method="mobile"
-renderer/rendering_method.mobile="gl_compatibility"
