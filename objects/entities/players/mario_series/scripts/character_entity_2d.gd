@@ -103,7 +103,7 @@ func damaged(tags: TagsObject = null) -> void:
 	# Damaged to death
 	Effects2D.flash(self, duration, 0.05)
 	if _power.power_down_to_id.is_empty():
-		_health_component.sub_health(tags.get_tag(&"damage", 1) as float)
+		_health_component.sub_health(tags.get_tag(&"damage", 1) as int)
 		if _health_component.health <= 0: # No hp -> death
 			die(tags)
 			return

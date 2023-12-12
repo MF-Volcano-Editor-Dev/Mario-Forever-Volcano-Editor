@@ -53,7 +53,7 @@ var _has_jumped: bool
 var _running: bool # Is running
 var _crouching: bool # On crouching
 var _swimming: bool # On swimming
-var _swimming_out: bool
+var _swimming_out: bool # On swimming jumping out of the water
 var _climbable: bool # Is climable
 var _climbing: bool # Is climbing
 
@@ -109,13 +109,18 @@ func _walk() -> void:
 		_character.decelerate_with_friction(get_deceleration())
 		return
 	
-	_character.max_speed = max_running_speed if _running && !_swimming else max_walking_speed
+	# TBD: Currently, the max_speed underwater is the same to max_walking_speed
+	# and since the difficulty of introducing speed_scale for velocity.x, it's
+	# not supported, either, to limit the max speed in different fluid
+	# NOTE: However, you can override the relative pieces of code of fluid
+	# to make the speed affection.
+	var max_speed: float = max_running_speed if _running && !_swimming else max_walking_speed
 	
 	if _key_xy.x && is_zero_approx(_character.velocity.x): # Initial speed
 		_character.direction = _key_xy.x
 		_character.velocity.x = initial_speed * _character.direction
 	elif _key_xy.x == _character.direction: # Acceleration
-		var accelerate_to := _character.direction * _character.max_speed * (max_walking_speed_crouching_scale if _crouching && _able_crouch_walking else 1.0)
+		var accelerate_to := _character.direction * max_speed * (max_walking_speed_crouching_scale if _crouching && _able_crouch_walking else 1.0)
 		_character.accelerate_local_x(acceleration, accelerate_to)
 	elif _key_xy.x == -_character.direction:
 		_character.decelerate_with_friction(turning_deceleration)

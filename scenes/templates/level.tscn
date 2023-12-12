@@ -36,8 +36,10 @@ layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969,
 position = Vector2(48, 400)
 
 [node name="Water" parent="." instance=ExtResource("12_yh4od")]
-position = Vector2(192, 0)
+position = Vector2(192, 256)
 scale = Vector2(9, 5)
 
 [node name="Goomba" parent="." instance=ExtResource("13_l7fho")]
+velocity = Vector2(50, -6.82121e-13)
 position = Vector2(528, 400)
+velocity = Vector2(50, -6.82121e-13)

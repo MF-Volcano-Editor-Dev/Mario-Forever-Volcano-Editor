@@ -10,8 +10,6 @@ class_name AreaFluid2D extends Classes.HiddenArea2D
 ## Otherwise, it's no any use.
 @export var character_swimmable: bool
 @export_subgroup("")
-## Modifies [member EntityBody2D.max_speed_scale], and will return to 1.0 if the body leaves from the fluid
-@export_range(0, 20, 0.001, "suffix:x") var max_speed_scale: float = 1
 ## Modifies [member EntityBody2D.max_falling_speed_scale], and will return to 1.0 if the body leaves from the fluid
 @export_range(0, 20, 0.001, "suffix:x") var max_falling_speed_scale: float = 1
 @export_group("Fluid Spray")
@@ -59,9 +57,7 @@ func _on_fluid_trigger(body: Node2D, is_entering: bool) -> void:
 	if body is EntityBody2D:
 		if is_entering:
 			body.max_falling_speed_scale = max_falling_speed_scale
-			body.max_speed_scale = max_speed_scale
 		else:
 			body.max_falling_speed_scale = 1.0
-			body.max_speed_scale = 1.0
 #endregion
 

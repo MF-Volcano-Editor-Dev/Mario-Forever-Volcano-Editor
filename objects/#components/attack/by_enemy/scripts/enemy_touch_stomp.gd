@@ -18,7 +18,7 @@ signal stomped_by_character ## Emitted when the enemy is stomped by the characte
 ## Determines how wide the stomping directions will be. The directions out of this range
 ## will be regarded as simply touching.
 @export_range(0, 45, 0.001, "degrees") var stomping_tolerance_angle: float = 45
-@export_group("Stomping For Player")
+@export_subgroup("For Character")
 ## Minimum of jumping speed when the character stomps onto the enemy without the player holding jumping key
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var stomping_jumping_speed_min: float = 450
 ## Minimum of jumping speed when the character stomps onto the enemy with the player holding jumping key

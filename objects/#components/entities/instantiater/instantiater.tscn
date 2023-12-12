@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dblc3h5xjsxat"]
+
+[ext_resource type="Script" path="res://objects/#components/entities/instantiater/scripts/instantiater.gd" id="1_lcle3"]
+
+[node name="Instantiater" type="Marker2D"]
+process_mode = 4
+visible = false
+script = ExtResource("1_lcle3")

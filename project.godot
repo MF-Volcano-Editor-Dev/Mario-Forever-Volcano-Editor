@@ -62,9 +62,11 @@ folder_colors={
 "res://objects/#components/attacking_related/scripts/": "green",
 "res://objects/#components/block_hitter/scripts/": "green",
 "res://objects/#components/data/scripts/": "green",
+"res://objects/#components/enemy/scripts/": "green",
 "res://objects/#components/enemy_related/scripts/": "green",
-"res://objects/#components/entities/effects/disappearer/scripts/": "green",
 "res://objects/#components/entities/effects/effect_creator/scripts/": "green",
+"res://objects/#components/entities/effects/scripts/": "green",
+"res://objects/#components/entities/instantiater/scripts/": "green",
 "res://objects/#components/entities/interaction/scripts/": "green",
 "res://objects/#components/entities/physics/solid_detector/scripts/": "green",
 "res://objects/#components/entities/vision/visibility_on_screen_emitter/scripts/": "green",
@@ -107,6 +109,9 @@ folder_colors={
 "res://objects/entities/enemies/#components/": "yellow",
 "res://objects/entities/enemies/#deaths/": "yellow",
 "res://objects/entities/enemies/#deaths/scripts/": "green",
+"res://objects/entities/enemies/_deaths/": "purple",
+"res://objects/entities/enemies/_deaths/#basic/scripts/": "green",
+"res://objects/entities/enemies/_deaths/scripts/": "green",
 "res://objects/entities/enemies/goombas/#components/": "yellow",
 "res://objects/entities/enemies/goombas/scripts/": "green",
 "res://objects/entities/enemies/goombas/textures/": "green",
@@ -226,4 +231,4 @@ fire1={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"

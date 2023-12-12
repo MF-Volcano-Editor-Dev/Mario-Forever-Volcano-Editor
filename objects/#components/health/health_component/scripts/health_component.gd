@@ -17,32 +17,32 @@ signal health_zero ## Emitted when the [member health] is zero, will be emitted 
 @export_category("Health Points")
 ## Current health of the component, and doesn't outnumber [member max_health]. [br]
 ## [b]Note:[/b] The range of this varaible is [0, [member max_health]].
-@export_range(0, 1, 0.01, "or_greater", "hide_slider", "suffix:♥") var health: float = 1:
+@export_range(0, 1, 1, "or_greater", "hide_slider", "suffix:♥") var health: int = 1:
 	set(value):
 		if disabled:
 			return
 		
 		# Signal notification of health change
-		var delta_hp: float = value - health
+		var delta_hp: int = value - health
 		if delta_hp > 0:
 			health_point_up.emit(delta_hp)
 		elif delta_hp < 0:
 			health_point_down.emit(-delta_hp)
 		
-		health = clampf(value, 0, max_health)
+		health = clampi(value, 0, max_health)
 		
 		# Signal notification of health being zero
 		if health <= 0:
 			health_zero.emit()
 ## Maximum of [member health]
-@export_range(0, 1, 0.01, "or_greater", "hide_slider", "suffix:♥") var max_health: float = 1
+@export_range(0, 1, 1, "or_greater", "hide_slider", "suffix:♥") var max_health: int = 1
 
 #region Health controls
 ## Adds [member health] by [param amount]
-func add_health(amount: float = 1) -> void:
+func add_health(amount: int = 1) -> void:
 	health += abs(amount)
 
 ## Subtracts [member health] from [param amount]
-func sub_health(amount: float = 1) -> void:
+func sub_health(amount: int = 1) -> void:
 	health -= abs(amount)
 #endregion
