@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://ciekefj21gsj3" path="res://objects/#components/entities/effects/effects.tscn" id="2_b5qxy"]
 
 [node name="EnemyStomped" type="EntityBody2D"]
-restore_to_max_speed = false
 gravity_scale = 0.5
 collision_layer = 4
 collision_mask = 8
@@ -22,4 +21,4 @@ one_shot = true
 autostart = true
 
 [connection signal="effect_over" from="Effects" to="." method="queue_free"]
-[connection signal="timeout" from="Timer" to="Effects" method="transparentize" binds= [1.0]]
+[connection signal="timeout" from="Timer" to="Effects" method="transparentize" binds= [0.5]]

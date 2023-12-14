@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cdbtpinf0ew4x"]
 
-[ext_resource type="Script" path="res://objects/#components/enemy/scripts/enemy_death.gd" id="1_xrs3o"]
+[ext_resource type="Script" path="res://objects/#components/entities/instantiater/scripts/enemy_death.gd" id="1_xrs3o"]
 
 [node name="EnemyDeath" type="Marker2D"]
 process_mode = 4

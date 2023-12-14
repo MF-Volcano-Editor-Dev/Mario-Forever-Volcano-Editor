@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://j7wd8eq2xneo"]
+
+[ext_resource type="Script" path="res://objects/#components/entities/instantiater/scripts/basic_instantiater.gd" id="1_luxdw"]
+
+[node name="BasicInstantiater2D" type="Marker2D"]
+process_mode = 4
+visible = false
+script = ExtResource("1_luxdw")

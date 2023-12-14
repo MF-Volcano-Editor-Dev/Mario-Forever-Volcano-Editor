@@ -13,11 +13,13 @@ var _areas_by_head: Array[Area2D]:
 @onready var _body := _character.get_detector_body() as Area2D
 @onready var _head := _character.get_detector_head() as Area2D
 
+
 func _ready() -> void:
 	_body.area_entered.connect(_on_area_body_detected.bind(true))
 	_body.area_exited.connect(_on_area_body_detected.bind(false))
 	_head.area_entered.connect(_on_area_head_detected.bind(true))
 	_head.area_exited.connect(_on_area_head_detected.bind(false))
+
 
 #region == Area entering & exiting ==
 func _on_area_body_detected(area: Area2D, in_or_out: bool) -> void:
@@ -51,8 +53,8 @@ func _areas_by_body_updated(rest_areas: Array[Area2D]) -> void:
 			_flagger.set_flag(&"is_swimming", true)
 		if i.is_in_group(&"%%climbable"): # Climable
 			counts[1] += 1
-	_flagger.set_flag(&"is_swimming", counts[0])
-	_flagger.set_flag(&"is_climbable", counts[1])
+	_flagger.set_flag(&"is_swimming", counts[0] > 0)
+	_flagger.set_flag(&"is_climbable", counts[1] > 0)
 	if !counts[1]:
 		_flagger.set_flag(&"is_climbing", false)
 
@@ -64,7 +66,7 @@ func _areas_by_head_updated(rest_areas: Array[Area2D]) -> void:
 	for i: Area2D in rest_areas:
 		if i is AreaFluid2D && i.character_swimmable:
 			counts[0] += 1
-	_flagger.set_flag(&"is_swimming_out", !counts[0])
+	_flagger.set_flag(&"is_swimming_out", counts[0] <= 0)
 #endregion
 
 #region == Getters ==

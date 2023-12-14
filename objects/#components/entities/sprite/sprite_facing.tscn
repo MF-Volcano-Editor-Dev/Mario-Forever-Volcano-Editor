@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bq2g0ufv8rpcn"]
+
+[ext_resource type="Script" path="res://objects/#components/entities/sprite/scripts/sprite_facing.gd" id="1_ilhct"]
+
+[node name="SpriteFacing" type="Node"]
+script = ExtResource("1_ilhct")

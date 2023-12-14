@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://dhih8pnoifys1"]
+
+[ext_resource type="PackedScene" uid="uid://da5jt0x58np72" path="res://objects/entities/players/mario_series/#powers/mario_big.tscn" id="1_v1o83"]
+[ext_resource type="Texture2D" uid="uid://bqljw565ywlho" path="res://objects/entities/players/mario_series/textures/mario_fireball.png" id="2_rr8dj"]
+[ext_resource type="AnimationLibrary" uid="uid://jsttpd5eba62" path="res://objects/entities/players/mario_series/resources/animations/animation_character_powered.res" id="3_s44yc"]
+
+[node name="MarioFireball" instance=ExtResource("1_v1o83")]
+power_level = 2
+power_id = &"fireball"
+power_down_to_id = &"big"
+metadata/_edit_pinned_properties_ = [&"power_level", &"power_id", &"power_down_to_id"]
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_rr8dj")
+hframes = 12
+metadata/_edit_pinned_properties_ = [&"texture", &"hframes"]
+
+[node name="AnimationPlayer" parent="." index="1"]
+libraries = {
+"": ExtResource("3_s44yc")
+}
+metadata/_edit_pinned_properties_ = [&"libraries"]

@@ -1,4 +1,4 @@
-class_name EnemyDeath extends Instantiater
+class_name EnemyDeath extends Instantiater2D
 
 signal death_stomped_created ## Emitted when [member death_stomped] is created
 signal death_killed_created ## Emitted when [member death_attacked] is created

@@ -1,6 +1,6 @@
 class_name Sound
 
-## Static class that manages playing sound
+## Static class that manages playing sound.
 ##
 ##
 
@@ -11,9 +11,9 @@ enum SoundMode {
 }
 
 
-## Plays an sound on n [param node] with [param stream] to be played [br]
-## For 2D sounds, see [method play_sound_2d] [br]
-## For 3D sounds, see [method play_sound_3d] [br]
+## Plays an sound on n [param node] with [param stream] to be played.[br]
+## For 2D sounds, see [method play_sound_2d].[br]
+## For 3D sounds, see [method play_sound_3d].[br]
 static func play_sound(node: Node, stream: AudioStream, mode: SoundMode = SoundMode.SCENIAL, bus: StringName = &"Sound") -> AudioStreamPlayer:
 	if !node || !stream: 
 		return
@@ -35,9 +35,9 @@ static func play_sound(node: Node, stream: AudioStream, mode: SoundMode = SoundM
 	return au
 
 
-## Plays an sound on n [param node_2d] with [param stream] to be played in a 2D space[br]
-## For 1D sounds, see [method play_sound] [br]
-## For 3D sounds, see [method play_sound_3d] [br]
+## Plays an sound on n [param node_2d] with [param stream] to be played in a 2D space.[br]
+## For 1D sounds, see [method play_sound].[br]
+## For 3D sounds, see [method play_sound_3d].[br]
 static func play_sound_2d(node_2d: Node2D, stream: AudioStream, mode: SoundMode = SoundMode.SCENIAL, bus: StringName = &"Sound") -> AudioStreamPlayer2D:
 	if !node_2d || !stream: 
 		return
@@ -60,9 +60,9 @@ static func play_sound_2d(node_2d: Node2D, stream: AudioStream, mode: SoundMode 
 	return au
 
 
-## Plays an sound on n [param node_2d] with [param stream] to be played in a 3D space[br]
-## For 1D sounds, see [method play_sound] [br]
-## For 2D sounds, see [method play_sound_2d] [br]
+## Plays an sound on n [param node_2d] with [param stream] to be played in a 3D space.[br]
+## For 1D sounds, see [method play_sound].[br]
+## For 2D sounds, see [method play_sound_2d].[br]
 static func play_sound_3d(node_3d: Node3D, stream: AudioStream, mode: SoundMode = SoundMode.SCENIAL, bus: StringName = &"Sound") -> AudioStreamPlayer3D:
 	if !node_3d || !stream: 
 		return

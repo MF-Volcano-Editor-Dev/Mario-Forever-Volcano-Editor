@@ -108,10 +108,8 @@ folder_colors={
 "res://objects/entities/core/goal/textures/": "green",
 "res://objects/entities/enemies/#components/": "yellow",
 "res://objects/entities/enemies/#deaths/": "yellow",
+"res://objects/entities/enemies/#deaths/#basic/scripts/": "green",
 "res://objects/entities/enemies/#deaths/scripts/": "green",
-"res://objects/entities/enemies/_deaths/": "purple",
-"res://objects/entities/enemies/_deaths/#basic/scripts/": "green",
-"res://objects/entities/enemies/_deaths/scripts/": "green",
 "res://objects/entities/enemies/goombas/#components/": "yellow",
 "res://objects/entities/enemies/goombas/scripts/": "green",
 "res://objects/entities/enemies/goombas/textures/": "green",
@@ -136,7 +134,7 @@ import/blender/enabled=false
 [game]
 
 control/player/jumpable_when_crouching=false
-control/player/crouchable_in_small_suit=true
+control/player/crouchable_in_small_suit=false
 control/player/walkable_when_crouching=false
 data/player/default_lives=4
 
@@ -231,4 +229,4 @@ fire1={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="gl_compatibility"
+renderer/rendering_method="mobile"

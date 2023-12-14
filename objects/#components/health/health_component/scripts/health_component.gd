@@ -41,8 +41,10 @@ signal health_zero ## Emitted when the [member health] is zero, will be emitted 
 ## Adds [member health] by [param amount]
 func add_health(amount: int = 1) -> void:
 	health += abs(amount)
+	health_point_up.emit(amount)
 
 ## Subtracts [member health] from [param amount]
 func sub_health(amount: int = 1) -> void:
 	health -= abs(amount)
+	health_point_down.emit(amount)
 #endregion

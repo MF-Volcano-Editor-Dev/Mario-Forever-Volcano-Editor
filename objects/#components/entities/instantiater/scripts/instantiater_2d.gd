@@ -1,4 +1,5 @@
-class_name Instantiater extends Classes.HiddenMarker2D
+@icon("res://icons/instantiater_2d.svg")
+class_name Instantiater2D extends Classes.HiddenMarker2D
 
 ## Abstract base class for each [b]2D node[/b] that needs to create
 ## [b]2D scenes[/b] instances.
@@ -25,6 +26,8 @@ enum CreatingMode {
 @export_range(-4096, 4096, 1) var instance_z_index: int = 0
 @export var instance_modulate: Color = Color.WHITE
 @export var instance_visible: bool = true
+@export_group("Sounds", "sound_")
+@export var sound_instantiation: AudioStream
 
 @onready var _root := get_root()
 
@@ -41,11 +44,10 @@ func instantiate(packed_scene: PackedScene, offset: Vector2 = Vector2.ZERO) -> N
 	ins = ins as Node2D # Cast for better coding hints
 	
 	var adjust_index := func(node: Node, child: Node) -> void:
-		node.get_parent().move_child.call_deferred(child, get_index() + instance_order)
+		node.get_parent().move_child.call_deferred(child, node.get_index() + instance_order)
 	match creating_mode:
 		CreatingMode.CHILD_OF_SELF:
 			add_child.call_deferred(ins)
-			adjust_index.call(self, ins)
 		CreatingMode.SIBLING_OF_SELF:
 			add_sibling.call_deferred(ins)
 			adjust_index.call(self, ins)
@@ -57,6 +59,7 @@ func instantiate(packed_scene: PackedScene, offset: Vector2 = Vector2.ZERO) -> N
 	ins.z_index = instance_z_index
 	ins.modulate = instance_modulate
 	ins.visible = instance_visible
+	Sound.play_sound_2d(ins, sound_instantiation)
 	
 	instance_created.emit(ins)
 	return ins

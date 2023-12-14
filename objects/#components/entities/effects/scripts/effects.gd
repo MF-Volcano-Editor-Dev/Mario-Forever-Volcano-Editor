@@ -1,5 +1,9 @@
 class_name Effects extends Component
 
+## A component class that stores effects from [Effect2D]
+##
+## This component is used to be connected with signals from the editor pannel.
+
 signal effect_over ## Emitted when the effect is over
 
 @onready var _root := get_root() as Node2D

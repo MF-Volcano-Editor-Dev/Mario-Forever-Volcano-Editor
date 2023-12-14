@@ -1,3 +1,4 @@
+@tool
 class_name OnScreenNotifierToolDir2D extends OnScreenNotifierTool2D
 
 ## Class used to detect if the node leaves from specific sides of the screen

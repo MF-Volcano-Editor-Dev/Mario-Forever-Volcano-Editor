@@ -7,7 +7,7 @@ signal hurt_character ## Emitted when the enemy hurts the character
 ## Tags when the body hurts the character
 @export var hurt_tags: TagsObject
 
-var _characters: Array[CharacterEntity2D]
+var _entity_areas: Array[Area2D]
 
 @onready var _area := get_root() as Area2D
 
@@ -24,28 +24,27 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if disabled:
 		return
-	for i: CharacterEntity2D in _characters:
-		_touches_character(i)
+	for i: Area2D in _entity_areas:
+		_touches_entity_area(i)
 
 
 #region == Touching a character ==
 func _on_character_in_area(area: Area2D, in_or_out: bool) -> void:
-	if disabled:
+	if disabled || !area.is_in_group(&"%%enemy_touchable"):
 		set_process(false)
 		return
 	
-	var character := area.get_parent() as CharacterEntity2D
-	if !character:
-		return
-	if in_or_out && !character in _characters:
-		_characters.append(character)
-	elif !in_or_out && character in _characters:
-		_characters.erase(character)
-	set_process(!_characters.is_empty())
+	if in_or_out && !area in _entity_areas:
+		_entity_areas.append(area)
+	elif !in_or_out && area in _entity_areas:
+		_entity_areas.erase(area)
+	set_process(!_entity_areas.is_empty())
 
 ## Handles the behavior of the [param character] touching the enemy.[br]
 ## [b]Note:[/b] It's recommended to override this method in child classes if you want to customize the behavior
 ## of manipulation on this behavior.
-func _touches_character(character: CharacterEntity2D) -> void:
-	character.damaged(hurt_tags)
+func _touches_entity_area(entity_area: Area2D) -> void:
+	var character := entity_area.get_parent() as CharacterEntity2D
+	if character:
+		character.damaged(hurt_tags)
 #endregion

@@ -111,7 +111,7 @@ func damaged(tags: TagsObject = null) -> void:
 			invulnerablize(duration + 1)
 	# Damaged to lower level of suit
 	else:
-		var forced_down_to_id := tags.get_tag(&"forced_down_to", &"small") as StringName
+		var forced_down_to_id := tags.get_tag(&"forced_down_to", &"") as StringName
 		power_id = forced_down_to_id if !forced_down_to_id.is_empty() else _power.power_down_to_id
 		invulnerablize(duration)
 	
@@ -237,16 +237,17 @@ func is_action_just_released(action: StringName) -> bool:
 func update_body_collision_shapes(character_shape: CharacterShape2D) -> void:
 	if !character_shape:
 		return
-	if _shape.shape != character_shape.shape:
-		_shape.set_deferred(&"shape", character_shape.shape)
-	if _body_shape.shape != character_shape.shape:
-		_body_shape.set_deferred(&"shape", character_shape.shape)
-	_shape.transform = character_shape.transform
-	_body_shape.transform = character_shape.transform
+	if character_shape.shape:
+		if _shape.shape != character_shape.shape:
+			_shape.set_deferred(&"shape", character_shape.shape)
+		if _body_shape.shape != character_shape.shape:
+			_body_shape.set_deferred(&"shape", character_shape.shape)
+	_shape.transform = character_shape.get_transform()
+	_body_shape.transform = character_shape.get_transform()
 
 ## Updates the scale and position of the collision shape of the character's head detector.
 func update_head_collision_shape(character_shape: CharacterShape2D) -> void:
-	_head_shape.transform = character_shape.transform
+	_head_shape.transform = character_shape.get_transform()
 
 ## Returns the collision shape of the character.
 func get_collision_shape() -> CollisionShape2D:

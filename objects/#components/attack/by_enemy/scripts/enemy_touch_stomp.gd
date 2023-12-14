@@ -1,7 +1,7 @@
 @icon("res://icons/enemy_touch_stomp.svg")
 class_name EnemyTouchStomp extends EnemyTouch
 
-signal stomped_by_character ## Emitted when the enemy is stomped by the character
+signal stomped ## Emitted when the enemy is stomped by a stomper
 
 @export_category("Enemy Touch")
 @export_group("Stomping")
@@ -27,23 +27,27 @@ signal stomped_by_character ## Emitted when the enemy is stomped by the characte
 var _delay: SceneTreeTimer
 
 
-func _touches_character(character: CharacterEntity2D) -> void:
+func _touches_entity_area(entity_area: Area2D) -> void:
 	if _delay:
 		return
 	
 	var center := (_area.global_position + offset).rotated(_area.global_rotation)
-	var dir := character.global_position.direction_to(center)
+	var dir := entity_area.global_position.direction_to(center)
 	var dot := dir.dot(down_direction.rotated(_area.global_rotation))
+	var character := entity_area.get_parent() as CharacterEntity2D
 	
 	if dot >= cos(deg_to_rad(stomping_tolerance_angle)):
-		stomped_by_character.emit()
-		character.jump(stomping_jumping_speed_max if character.get_flagger().is_flag(&"is_jumping") else stomping_jumping_speed_min)
+		stomped.emit()
+		# Delay for stomping
 		_delay = get_tree().create_timer(0.08, false)
 		_delay.timeout.connect(
 			func() -> void:
 				_delay = null
 		)
-	else:
+		# Character's reaction
+		if character:
+			character.jump(stomping_jumping_speed_max if character.get_flagger().is_flag(&"is_jumping") else stomping_jumping_speed_min)
+	elif character: # Character's getting damage
 		hurt_character.emit()
 		if !harmless:
 			character.damaged(hurt_tags)

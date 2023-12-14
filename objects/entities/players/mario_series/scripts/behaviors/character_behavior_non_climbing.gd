@@ -1,6 +1,7 @@
 extends CharacterBehavior2D
 
 @export_category("Character Action Non Climbing")
+@export_node_path("Node") var path_climbing: NodePath = ^"../BehaviorClimbing"
 @export_group("State")
 @export var is_small: bool
 @export_group("Keys")
@@ -66,8 +67,11 @@ var _climbing: bool # Is climbing
 var _pos_delta: Vector2
 #endregion
 
-@onready var _sprite := get_power().get_sprite() as Node2D
-@onready var _animation := get_power().get_animation() as AnimationPlayer
+#region == References ==
+@onready var _sprite := get_power().get_sprite()
+@onready var _animation := get_power().get_animation()
+@onready var _behavior_climbing := get_node(path_climbing) as CharacterBehavior2D
+#endregion
 
 
 func _ready() -> void:
@@ -75,9 +79,18 @@ func _ready() -> void:
 	_animation.animation_finished.connect(_on_animation_finished)
 
 func _process(delta: float) -> void:
+	if disabled:
+		return
+	
+	# Switch to climbing
+	if _flagger.is_flag(&"is_climbable") && _character.is_action_just_pressed(key_to_climb):
+		_flagger.set_flag(&"is_climbing", true)
+		switch_enability(false)
+		_behavior_climbing.switch_enability(true)
+		return
+	
 	_character.set_key_xy(key_up, key_down, key_left, key_right)
 	_key_xy = _character.get_key_xy()
-	
 	_crouch()
 	_walk()
 	_jump(delta)
@@ -101,6 +114,9 @@ func _physics_process(_delta: float) -> void:
 #region == Movements ==
 func _crouch() -> void:
 	_flagger.set_flag(&"is_crouching", _character.controllable && _character.is_on_floor() && _character.get_key_y() > 0 && (!is_small || (is_small && _crouchable_in_small)))
+	_crouching = _flagger.is_flag(&"is_crouching")
+	_character.update_body_collision_shapes(shape_crouch if _crouching else shape_normal)
+	_character.update_head_collision_shape(head_crouch if _crouching else head_normal)
 
 func _walk() -> void:
 	_flagger.set_flag(&"is_running", _character.is_action_pressed(key_run)) # Sets running flag

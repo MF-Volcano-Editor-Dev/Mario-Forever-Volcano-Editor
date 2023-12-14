@@ -15,6 +15,13 @@ func _action_enabled() -> void:
 
 func _action_disabled() -> void:
 	process_mode = PROCESS_MODE_DISABLED
+
+## Calls [method _action_enabled] if [param enabled] is [code]true[/code], or [method _action_disabled] if [code]false[/code].
+func switch_enability(enabled: bool) -> void:
+	if enabled:
+		_action_enabled()
+	else:
+		_action_disabled()
 #endregion
 
 #region == Getters ==

@@ -7,3 +7,4 @@ script = ExtResource("1_7rk0o")
 position = Vector2(0, 2)
 rotation = 0.0
 scale = Vector2(1, 1)
+skew = 0.0
