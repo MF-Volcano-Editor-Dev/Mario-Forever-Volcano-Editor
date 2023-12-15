@@ -1,7 +1,6 @@
 extends CharacterBehavior2D
 
 @export_category("Character Action Non Climbing")
-@export_node_path("Node") var path_climbing: NodePath = ^"../BehaviorClimbing"
 @export_group("State")
 @export var is_small: bool
 @export_group("Keys")
@@ -70,7 +69,6 @@ var _pos_delta: Vector2
 #region == References ==
 @onready var _sprite := get_power().get_sprite()
 @onready var _animation := get_power().get_animation()
-@onready var _behavior_climbing := get_node(path_climbing) as CharacterBehavior2D
 #endregion
 
 
@@ -79,40 +77,33 @@ func _ready() -> void:
 	_animation.animation_finished.connect(_on_animation_finished)
 
 func _process(delta: float) -> void:
-	if disabled:
-		return
-	
 	# Switch to climbing
 	if _flagger.is_flag(&"is_climbable") && _character.is_action_just_pressed(key_to_climb):
 		_flagger.set_flag(&"is_climbing", true)
-		switch_enability(false)
-		_behavior_climbing.switch_enability(true)
+		_behaviors_center.switch_behavior(self, &"climbing")
 		return
 	
 	_character.set_key_xy(key_up, key_down, key_left, key_right)
 	_key_xy = _character.get_key_xy()
-	_crouch()
+	_crouch_and_shape()
 	_walk()
 	_jump(delta)
 	_swim(delta)
 	_anim(delta)
 
 func _physics_process(_delta: float) -> void:
-	if disabled:
-		return
-	
-	_pos_delta = _character.global_position
 	_character.gravity_scale = gravity_scale
 	_character.max_falling_speed = max_falling_speed
-	if _character.get_warp_direction() == CharacterEntity2D.WarpDir.NONE:
-		_character.move_and_slide()
-		_character.correct_onto_floor()
-		_character.correct_on_wall_corner()
+	
+	_pos_delta = _character.global_position
+	_character.move_and_slide()
+	_character.correct_onto_floor()
+	_character.correct_on_wall_corner()
 	_pos_delta = _character.global_position - _pos_delta
 
 
 #region == Movements ==
-func _crouch() -> void:
+func _crouch_and_shape() -> void:
 	_flagger.set_flag(&"is_crouching", _character.controllable && _character.is_on_floor() && _character.get_key_y() > 0 && (!is_small || (is_small && _crouchable_in_small)))
 	_crouching = _flagger.is_flag(&"is_crouching")
 	_character.update_body_collision_shapes(shape_crouch if _crouching else shape_normal)
@@ -172,6 +163,7 @@ func _swim(delta: float) -> void:
 	if swim:
 		Sound.play_sound_2d(_character, sound_swim)
 		_character.jump(swimming_jumping_speed if _swimming_out else swimming_speed)
+		_animation.seek(0, true)
 	
 	var peak_speed: float = -absf(swimming_peak_speed)
 	if _swimming && !_swimming_out && _character.velocity.y < peak_speed:
@@ -183,9 +175,6 @@ func _anim(delta: float) -> void:
 	const UNBREAKABLES: Array[StringName] = [&"appear", &"attack"]
 	
 	_animation.speed_scale = 1
-	if _sprite.scale.x != _character.direction:
-		_sprite.scale.x = _character.direction
-	
 	if _animation.current_animation in UNBREAKABLES:
 		return
 	

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://xm2gptsn2yh8"]
+[gd_scene load_steps=12 format=3 uid="uid://xm2gptsn2yh8"]
 
 [ext_resource type="Script" path="res://scenes/#scripts/scene_game.gd" id="1_7slwg"]
 [ext_resource type="PackedScene" uid="uid://cwexucoknw1ph" path="res://objects/#attachments/level_use/level_completion.tscn" id="2_hy8td"]
@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://d1f3khrnqnyfr" path="res://objects/#attachments/level_use/level_data_events.tscn" id="6_xif4x"]
 [ext_resource type="PackedScene" uid="uid://cvnkj7x0t0mm0" path="res://objects/entities/players/mario_series/mario.tscn" id="9_q64jo"]
 [ext_resource type="PackedScene" uid="uid://cvh7xbvy0048b" path="res://objects/entities/enemies/goombas/goomba.tscn" id="13_l7fho"]
-[ext_resource type="PackedScene" uid="uid://bthrfct2iw6st" path="res://objects/entities/#projectiles/balls/fireball.tscn" id="13_vaql2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m8vr7"]
 size = Vector2(320, 192)
@@ -30,14 +29,14 @@ script = ExtResource("1_7slwg")
 
 [node name="LevelCamera" parent="." instance=ExtResource("5_l14dc")]
 
+[node name="Mario" parent="." instance=ExtResource("9_q64jo")]
+position = Vector2(48, 400)
+power_id = &"fireball"
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("6_un4yr")
 format = 2
 layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969, 65537, 0, 917505, 65537, 1, 851970, 65537, 0, 917506, 65537, 1, 851971, 65537, 0, 917507, 65537, 1, 851972, 65537, 0, 917508, 65537, 1, 851973, 65537, 0, 917509, 65537, 1, 851974, 65537, 0, 917510, 65537, 1, 851975, 65537, 0, 917511, 65537, 1, 851976, 65537, 0, 917512, 65537, 1, 851977, 65537, 0, 917513, 65537, 1, 851978, 65537, 0, 917514, 65537, 1, 851979, 65537, 0, 917515, 65537, 1, 851980, 65537, 0, 917516, 65537, 1, 851981, 65537, 0, 917517, 65537, 1, 851982, 65537, 0, 917518, 65537, 1, 851983, 65537, 0, 917519, 65537, 1, 851984, 65537, 0, 917520, 65537, 1, 851985, 65537, 0, 917521, 65537, 1, 851986, 65537, 0, 917522, 65537, 1, 851987, 65537, 0, 917523, 65537, 1, 851967, 196609, 1, 786431, 196609, 1, 720895, 196609, 1, 655359, 196609, 1, 589823, 196609, 1, 524287, 196609, 1, 458751, 196609, 1, 393215, 196609, 1, 327679, 196609, 1, 262143, 196609, 1, 196607, 196609, 1, 131071, 196609, 1, 65535, 196609, 1, 851988, 65537, 0, 917524, 65537, 1, 851989, 65537, 0, 917525, 65537, 1, 851990, 65537, 0, 917526, 65537, 1, 851991, 65537, 0, 917527, 65537, 1, 851992, 65537, 0, 917528, 65537, 1, 851993, 65537, 0, 917529, 65537, 1, 851994, 65537, 0, 917530, 65537, 1, 720922, 1, 1, 786458, 1, 2, 589850, 1, 1, 655386, 1, 2, 458778, 1, 1, 524314, 1, 2, 327706, 1, 1, 393242, 1, 2, 196634, 1, 1, 262170, 1, 2, 65562, 1, 1, 131098, 1, 2, -65510, 1, 1, 26, 1, 2)
-
-[node name="Mario" parent="." instance=ExtResource("9_q64jo")]
-position = Vector2(48, 400)
-power_id = &"fireball"
 
 [node name="Goomba" parent="." instance=ExtResource("13_l7fho")]
 velocity = Vector2(50, -6.82121e-13)
@@ -45,14 +44,8 @@ global_velocity = Vector2(50, -2.18557e-06)
 position = Vector2(528, 400)
 velocity = Vector2(50, -6.82121e-13)
 
-[node name="Fireball" parent="." instance=ExtResource("13_vaql2")]
-velocity = Vector2(-300, 0)
-global_velocity = Vector2(-300, 1.31134e-05)
-position = Vector2(440, 368)
-velocity = Vector2(-300, 0)
-
 [node name="Area2D" type="Area2D" parent="." groups=["%%climbable"]]
-position = Vector2(160, 224)
+position = Vector2(136, 128)
 collision_layer = 32
 metadata/_edit_group_ = true
 

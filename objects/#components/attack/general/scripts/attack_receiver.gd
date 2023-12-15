@@ -28,9 +28,10 @@ func attacker_attacked(attacker: Attacker) -> void:
 	for i: StringName in attacker.attacker_features:
 		if i in blocked_attacker_features:
 			Sound.play_sound_2d(_root, sound_blocked)
+			attacker.attack_got_blocked.emit(self)
 			attack_blocked.emit()
 			return
+	attacker.attack_got_received.emit(self)
 	attack_received.emit(attacker)
 	attack_damage_received.emit(attacker.attacker_damage)
 	attack_tags_received.emit(attacker.attacker_tags)
-	attacker.attack_received = true

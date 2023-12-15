@@ -1,7 +1,6 @@
 extends CharacterBehavior2D
 
 @export_category("Character Action Climbing")
-@export_node_path("Node") var path_non_climbing: NodePath = ^"../BehaviorNonClimbing"
 @export_group("Keys")
 @export var key_up: StringName = &"up"
 @export var key_down: StringName = &"down"
@@ -17,13 +16,9 @@ extends CharacterBehavior2D
 @export var sound_jump: AudioStream = preload("res://assets/sounds/jump.wav")
 
 @onready var _animation := get_power().get_animation()
-@onready var _behavior_non_climbing := get_node(path_non_climbing) as CharacterBehavior2D
 
 
 func _process(delta: float) -> void:
-	if disabled:
-		return
-	
 	_character.set_key_xy(key_up, key_down, key_left, key_right)
 	var vec := Vector2(_character.get_key_xy()).normalized()
 	
@@ -37,8 +32,7 @@ func _process(delta: float) -> void:
 		_flagger.set_flag(&"is_climbing", false)
 	# Switches back to non-climbing
 	if !_flagger.is_flag(&"is_climbing"):
-		switch_enability(false)
-		_behavior_non_climbing.switch_enability(true)
+		_behaviors_center.switch_behavior(self, &"non-climbing")
 		return
 	
 	# Velocity
@@ -49,8 +43,6 @@ func _process(delta: float) -> void:
 	_animation.play(&"climb")
 
 func _physics_process(delta: float) -> void:
-	if disabled:
-		return
 	var kc := _character.move_and_collide(_character.global_velocity * delta)
 	if kc:
 		_character.global_velocity = _character.global_velocity.slide(kc.get_normal())

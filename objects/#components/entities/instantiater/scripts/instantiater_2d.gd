@@ -37,11 +37,7 @@ func instantiate(packed_scene: PackedScene, offset: Vector2 = Vector2.ZERO) -> N
 	if !packed_scene:
 		return null
 	
-	var ins := packed_scene.instantiate()
-	if !ins is Node2D:
-		ins.queue_free() # Don't forget to manually remove the instance that is not a Node2D
-		return null
-	ins = ins as Node2D # Cast for better coding hints
+	var ins := get_prepared_instance(packed_scene)
 	
 	var adjust_index := func(node: Node, child: Node) -> void:
 		node.get_parent().move_child.call_deferred(child, node.get_index() + instance_order)
@@ -59,10 +55,17 @@ func instantiate(packed_scene: PackedScene, offset: Vector2 = Vector2.ZERO) -> N
 	ins.z_index = instance_z_index
 	ins.modulate = instance_modulate
 	ins.visible = instance_visible
-	Sound.play_sound_2d(ins, sound_instantiation)
+	Sound.play_sound_2d.call_deferred(ins, sound_instantiation)
 	
 	instance_created.emit(ins)
 	return ins
+
+func get_prepared_instance(packed_scene: PackedScene) -> Node2D:
+	var ins := packed_scene.instantiate()
+	if !ins is Node2D:
+		ins.queue_free() # Don't forget to manually remove the instance that is not a Node2D
+		return null
+	return ins as Node2D
 #endregion
 
 #region == Getters ==

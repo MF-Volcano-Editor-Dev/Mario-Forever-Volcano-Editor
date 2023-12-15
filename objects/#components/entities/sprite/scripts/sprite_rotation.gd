@@ -20,5 +20,5 @@ func _process(delta: float) -> void:
 	if disabled || property_path.is_empty():
 		return
 	var _facing = _node.get_indexed(_property_path_from_tracked_node)
-	if _facing is float:
-		_root.rotate(signf(_facing if _facing else 1.0) * deg_to_rad(rotation_speed * delta))
+	if (_facing is float || _facing is int):
+		_root.rotate(signf(_facing if absf(_facing) != 0.0 else 1.0) * deg_to_rad(rotation_speed * delta))

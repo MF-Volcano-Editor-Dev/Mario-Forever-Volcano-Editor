@@ -6,6 +6,7 @@ class_name Attacker extends Component
 ##
 
 signal attack_got_received(attack_receiver: AttackReceiver) ## Emitted when an attack receiver receives the attack
+signal attack_got_blocked(attack_receiver: AttackReceiver) ## Emitted when an attack receiver blocks the attack
 
 @export_category("Attacker")
 @export var attacker_source: StringName
@@ -16,6 +17,7 @@ signal attack_got_received(attack_receiver: AttackReceiver) ## Emitted when an a
 @export var sound_attacked: AudioStream
 
 var attack_received: bool # This should be changed by AttackReceiver
+var attack_blocked: bool # This should be changed by AttackReceiver
 
 @onready var _root := get_root() as Area2D
 
@@ -30,8 +32,5 @@ func _on_checking_attack_receiver(area: Area2D) -> void:
 	var attack_receiver := Process.get_child(area, AttackReceiver) as AttackReceiver
 	if !attack_receiver:
 		return
-	Sound.play_sound_2d(_root, sound_attacked)
 	attack_receiver.attacker_attacked(self)
-	if attack_received:
-		attack_got_received.emit(attack_receiver)
-		attack_received = false
+	Sound.play_sound_2d(_root, sound_attacked)

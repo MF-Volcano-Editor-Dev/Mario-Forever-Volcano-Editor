@@ -32,8 +32,8 @@ func appear() -> void:
 #endregion
 
 #region == Getters ==
-func get_sprite() -> Node2D:
-	return get_node_or_null(path_sprite) as Node2D
+func get_sprite() -> Sprite2D:
+	return get_node_or_null(path_sprite) as Sprite2D
 
 func get_animation() -> AnimationPlayer:
 	return get_node(path_animation) as AnimationPlayer

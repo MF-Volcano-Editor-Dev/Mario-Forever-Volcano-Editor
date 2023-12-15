@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://lcu7ofhgdmgo"]
+
+[ext_resource type="Script" path="res://objects/#components/state/scripts/behaviors_center.gd" id="1_an1vj"]
+
+[node name="BehaviorsCenter" type="Node"]
+script = ExtResource("1_an1vj")

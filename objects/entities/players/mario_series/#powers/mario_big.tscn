@@ -16,7 +16,7 @@ metadata/_edit_pinned_properties_ = [&"power_id", &"is_small", &"power_down_to_i
 texture = ExtResource("2_ctiwm")
 metadata/_edit_pinned_properties_ = [&"texture"]
 
-[node name="BehaviorNonClimbing" parent="." index="3"]
+[node name="NonClimbing" parent="Behaviors" index="0"]
 shape_normal = ExtResource("3_5nmij")
 head_normal = ExtResource("4_aefuo")
 metadata/_edit_pinned_properties_ = [&"head_normal", &"shape_normal"]

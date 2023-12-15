@@ -7,6 +7,7 @@ var _node: Node
 var _property_path_from_tracked_node: NodePath 
 
 @onready var _root := get_root() as Node2D
+@onready var _root_has_flip_h: bool = _root is Sprite2D || _root is AnimatedSprite2D
 
 
 func _ready() -> void:
@@ -19,5 +20,10 @@ func _process(_delta: float) -> void:
 	if disabled || property_path.is_empty():
 		return
 	var _facing = _node.get_indexed(_property_path_from_tracked_node)
-	if _facing is float:
-		_root.scale.x *= signf((_facing if _facing else 1.0) * _root.scale.x)
+	if (_facing is float || _facing is int) && _root_has_flip_h:
+		@warning_ignore("integer_division")
+		# NOTE:
+		# flip = -dir_int + 1 / 2 (right-facing as default, when flip_h = false)
+		# dir_int = 1: flip = (1 * -1 + 1) / 2 = 0 => false (right-facing)
+		# dir_int = -1: flip = (-1 * -1) + 1 / 2 = 1 => true (left-facing)
+		_root.flip_h = bool((-int(signf(_facing if !is_zero_approx(_facing) else 1.0)) + 1) / 2)

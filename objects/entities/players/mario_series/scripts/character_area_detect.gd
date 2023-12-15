@@ -1,4 +1,4 @@
-class_name CharacterAreaDetect2D extends Component
+extends Component
 
 @warning_ignore("unused_private_class_variable")
 var _areas_by_body: Array[Area2D]:

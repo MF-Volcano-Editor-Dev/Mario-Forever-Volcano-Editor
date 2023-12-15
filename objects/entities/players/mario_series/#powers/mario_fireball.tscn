@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://dhih8pnoifys1"]
+[gd_scene load_steps=8 format=3 uid="uid://dhih8pnoifys1"]
 
 [ext_resource type="PackedScene" uid="uid://da5jt0x58np72" path="res://objects/entities/players/mario_series/#powers/mario_big.tscn" id="1_v1o83"]
 [ext_resource type="Texture2D" uid="uid://bqljw565ywlho" path="res://objects/entities/players/mario_series/textures/mario_fireball.png" id="2_rr8dj"]
+[ext_resource type="PackedScene" uid="uid://j5ke8iq4p3n4" path="res://objects/#components/entities/instantiater/entity_body_shooter_2d.tscn" id="3_3ju2p"]
 [ext_resource type="AnimationLibrary" uid="uid://jsttpd5eba62" path="res://objects/entities/players/mario_series/resources/animations/animation_character_powered.res" id="3_s44yc"]
+[ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/behaviors/character_behavior_shoot.gd" id="4_17tgc"]
+[ext_resource type="PackedScene" uid="uid://bthrfct2iw6st" path="res://objects/entities/#projectiles/balls/fireball.tscn" id="4_hq1sr"]
+[ext_resource type="AudioStream" uid="uid://c4wx7vkqy1cd4" path="res://assets/sounds/shoot.wav" id="5_31gdc"]
 
 [node name="MarioFireball" instance=ExtResource("1_v1o83")]
 power_level = 2
@@ -15,8 +19,29 @@ texture = ExtResource("2_rr8dj")
 hframes = 12
 metadata/_edit_pinned_properties_ = [&"texture", &"hframes"]
 
-[node name="AnimationPlayer" parent="." index="1"]
+[node name="EntityBodyShooter2D" parent="." index="1" instance=ExtResource("3_3ju2p")]
+visible = false
+position = Vector2(8, -24)
+body = ExtResource("4_hq1sr")
+velocity = Vector2(400, 0)
+direction_property_path = NodePath("../..:direction")
+root_path = NodePath("../..")
+sound_instantiation = ExtResource("5_31gdc")
+metadata/_edit_pinned_properties_ = [&"root_path", &"direction_property_path", &"sound_instantiation"]
+
+[node name="AnimationPlayer" parent="." index="2"]
 libraries = {
 "": ExtResource("3_s44yc")
 }
 metadata/_edit_pinned_properties_ = [&"libraries"]
+
+[node name="Shoot" type="Node" parent="Behaviors/NonClimbing" index="1"]
+editor_description = "Keep this node as a child of NonClimbing to make sure the node is shared with the parent's process_mode"
+script = ExtResource("4_17tgc")
+projectile_group = &"fireball"
+behavior_id = &"non-climbing"
+root_path = NodePath("../..")
+metadata/_edit_pinned_properties_ = [&"root_path", &"projectile_group"]
+
+[connection signal="instance_created" from="EntityBodyShooter2D" to="Behaviors/NonClimbing/Shoot" method="_on_projectile_created"]
+[connection signal="shooted_projectile" from="Behaviors/NonClimbing/Shoot" to="EntityBodyShooter2D" method="shoot"]
