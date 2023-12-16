@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bmk8valbaq2xg"]
+[gd_scene load_steps=20 format=3 uid="uid://bmk8valbaq2xg"]
 
 [ext_resource type="Script" path="res://objects/entities/@scripts/simple_walking_body_2d.gd" id="1_60pdc"]
 [ext_resource type="Texture2D" uid="uid://bbnt2qmtg02qg" path="res://objects/entities/enemies/shells/textures/shell_koopa_green.png" id="2_q7wc0"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://48jxbjtsgjs3" path="res://objects/#components/attack/for_enemy/attack_receiver_enemy.tscn" id="3_fcavh"]
 [ext_resource type="PackedScene" uid="uid://cdbtpinf0ew4x" path="res://objects/#components/entities/instantiater/enemy_death.tscn" id="3_lb3n0"]
 [ext_resource type="PackedScene" uid="uid://cf4pm4ojp7ld1" path="res://objects/#components/attack/by_enemy/enemy_touch_stomp.tscn" id="4_6x7tr"]
+[ext_resource type="PackedScene" uid="uid://bkr510lg35w3i" path="res://objects/#components/entities/physics/solid_entity/solid_entity.tscn" id="5_rh5fr"]
 [ext_resource type="PackedScene" uid="uid://bq2g0ufv8rpcn" path="res://objects/#components/entities/sprite/sprite_facing.tscn" id="6_6x6ym"]
 [ext_resource type="PackedScene" uid="uid://bhw66ur47rsuf" path="res://objects/#components/data/combo.tscn" id="6_g741v"]
 [ext_resource type="PackedScene" uid="uid://db4suxs45luyf" path="res://objects/#components/data/add_scores.tscn" id="6_lkgbl"]
@@ -90,6 +91,8 @@ combo_features = Array[StringName]([&"combo"])
 offset = Vector2(0, 3)
 metadata/_edit_pinned_properties_ = [&"offset"]
 
+[node name="SolidEntity" parent="Area2D" instance=ExtResource("5_rh5fr")]
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_g84o6")
 offset = Vector2(0.5, 0)
@@ -115,6 +118,7 @@ metadata/_edit_pinned_properties_ = [&"scores"]
 [node name="OnScreenEnablerTool2D" type="VisibleOnScreenEnabler2D" parent="."]
 rect = Rect2(0, 0, 0, 0)
 script = ExtResource("7_sgfst")
+actual_rect = Rect2(-18, -14, 36, 28)
 
 [connection signal="collided_wall" from="." to="." method="turn_wall"]
 [connection signal="collided_wall" from="." to="ShellBehavior" method="play_sound_colliding_wall"]

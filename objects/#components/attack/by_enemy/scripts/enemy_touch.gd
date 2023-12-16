@@ -1,5 +1,5 @@
 @icon("res://icons/enemy_touch.svg")
-class_name EnemyTouch extends Component
+class_name EnemyTouch extends AreaDetectingComponent
 
 signal hurt_character ## Emitted when the enemy hurts the character
 signal touched_character_friendly(character: CharacterEntity2D) ## Emitted when the enemy touches the character harmlessly
@@ -33,7 +33,7 @@ func _process(_delta: float) -> void:
 
 #region == Touching a character ==
 func _on_character_in_area(area: Area2D, in_or_out: bool) -> void:
-	if disabled || !area.is_in_group(&"%%enemy_touchable"):
+	if disabled || is_area_ignored(area) || !area.is_in_group(&"%%enemy_touchable"):
 		set_process(false)
 		return
 	if in_or_out:

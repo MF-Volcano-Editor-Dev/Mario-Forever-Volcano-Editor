@@ -1,5 +1,5 @@
 @icon("res://icons/attacker.svg")
-class_name Attacker extends Component
+class_name Attacker extends AreaDetectingComponent
 
 ## Class that works together with [AttackReceiver]
 ##
@@ -50,10 +50,7 @@ func _process(_delta: float) -> void:
 
 
 func _on_checking_attack_receiver(area: Area2D) -> void:
-	#if continuous_detection:
-		#_root.set_deferred(&"monitoring", true)
-		#_root.set_deferred(&"monitoring", false)
-	if disabled:
+	if disabled || is_area_ignored(area):
 		return
 	var attack_receiver := Process.get_child(area, AttackReceiver) as AttackReceiver
 	if !attack_receiver:

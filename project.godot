@@ -69,7 +69,7 @@ folder_colors={
 "res://objects/#components/entities/effects/scripts/": "green",
 "res://objects/#components/entities/instantiater/scripts/": "green",
 "res://objects/#components/entities/interaction/scripts/": "green",
-"res://objects/#components/entities/physics/solid_detector/scripts/": "green",
+"res://objects/#components/entities/physics/solid_entity/scripts/": "green",
 "res://objects/#components/entities/vision/visibility_on_screen_emitter/scripts/": "green",
 "res://objects/#components/health/health_component/": "yellow",
 "res://objects/#components/health/health_component/scripts/": "green",

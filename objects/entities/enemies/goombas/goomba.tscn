@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cvh7xbvy0048b"]
+[gd_scene load_steps=15 format=3 uid="uid://cvh7xbvy0048b"]
 
 [ext_resource type="Script" path="res://objects/entities/@scripts/simple_walking_body_2d.gd" id="1_fs73i"]
 [ext_resource type="Texture2D" uid="uid://by3uk7jcvyall" path="res://objects/entities/enemies/goombas/textures/goomba.png" id="2_03pwk"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cf4pm4ojp7ld1" path="res://objects/#components/attack/by_enemy/enemy_touch_stomp.tscn" id="3_y42qx"]
 [ext_resource type="PackedScene" uid="uid://cdbtpinf0ew4x" path="res://objects/#components/entities/instantiater/enemy_death.tscn" id="4_5ogk8"]
 [ext_resource type="Script" path="res://objects/#scripts/nodes/public/visibility/class_on_screen_enabler_tool_2d.gd" id="4_oubgt"]
+[ext_resource type="PackedScene" uid="uid://bkr510lg35w3i" path="res://objects/#components/entities/physics/solid_entity/solid_entity.tscn" id="4_w23dw"]
 [ext_resource type="PackedScene" uid="uid://cotmjwtyq17o" path="res://objects/entities/enemies/#deaths/goomba_stomped.tscn" id="5_lh23m"]
 [ext_resource type="PackedScene" uid="uid://db4suxs45luyf" path="res://objects/#components/data/add_scores.tscn" id="5_t24vi"]
 [ext_resource type="PackedScene" uid="uid://dyaxohgodb3iw" path="res://objects/entities/enemies/#deaths/goomba_killed.tscn" id="6_e6seu"]
@@ -66,6 +67,8 @@ metadata/_edit_pinned_properties_ = [&"ignored_attacker_sources"]
 
 [node name="EnemyTouchStomp" parent="Area2D" instance=ExtResource("3_y42qx")]
 
+[node name="SolidEntity" parent="Area2D" instance=ExtResource("4_w23dw")]
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_rxyue")
 autoplay = "default"
@@ -90,5 +93,6 @@ script = ExtResource("4_oubgt")
 [connection signal="attack_received_no_combo" from="Area2D/AttackReceiverEnemy" to="AddScores" method="add_scores"]
 [connection signal="stomped" from="Area2D/EnemyTouchStomp" to="EnemyDeath" method="stomped_to_death"]
 [connection signal="stomped" from="Area2D/EnemyTouchStomp" to="AddScores" method="add_scores"]
+[connection signal="collided_entity" from="Area2D/SolidEntity" to="." method="turn_wall"]
 [connection signal="death_killed_created" from="EnemyDeath" to="." method="queue_free"]
 [connection signal="death_stomped_created" from="EnemyDeath" to="." method="queue_free"]

@@ -14,6 +14,7 @@ extends Component
 @export_node_path("Node") var path_attacker: NodePath = ^"../Area2D/Attacker"
 @export_node_path("Node") var path_attack_receiver: NodePath = ^"../Area2D/AttackReceiverEnemy"
 @export_node_path("Node") var path_enemy_stompable: NodePath = ^"../Area2D/EnemyTouchStomp"
+@export_node_path("Node") var path_solid_entity: NodePath = ^"../Area2D/SolidEntity"
 @export_node_path("AnimatedSprite2D") var path_sprite: NodePath = ^"../AnimatedSprite2D"
 @export_group("Sounds", "sound_")
 @export var sound_stomped: AudioStream = preload("res://assets/sounds/stomp.wav")
@@ -30,6 +31,7 @@ var _blocked_attacker_features: Array[StringName]
 @onready var _attacker := get_attacker()
 @onready var _attack_receiver := get_attack_receiver()
 @onready var _enemy_stompable := get_enemy_stompable()
+@onready var _solid_entity := get_solid_entity()
 @onready var _sprite := get_sprite()
 
 
@@ -54,6 +56,7 @@ func start_movement() -> void:
 		_blocked_attacker_features.clear()
 	
 	_attacker.disabled = false
+	_solid_entity.disabled = true
 	_enemy_stompable.disabled = true
 	await _delay(0.25).timeout
 	_enemy_stompable.disabled = false
@@ -72,6 +75,7 @@ func stop_movement() -> void:
 		_attack_receiver.blocked_attacker_features.clear()
 	
 	_attacker.disabled = true
+	_solid_entity.disabled = false
 	_enemy_stompable.harmless = true
 	_enemy_stompable.disable_stompability = true
 #endregion
@@ -120,6 +124,9 @@ func get_attack_receiver() -> AttackReceiverEnemy:
 
 func get_enemy_stompable() -> EnemyTouchStomp:
 	return get_node(path_enemy_stompable) as EnemyTouchStomp
+
+func get_solid_entity() -> SolidEntity:
+	return get_node(path_solid_entity) as SolidEntity
 
 func get_sprite() -> AnimatedSprite2D:
 	return get_node(path_sprite) as AnimatedSprite2D
