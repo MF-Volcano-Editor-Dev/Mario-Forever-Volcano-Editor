@@ -67,7 +67,6 @@ var _pos_delta: Vector2
 #endregion
 
 #region == References ==
-@onready var _sprite := get_power().get_sprite()
 @onready var _animation := get_power().get_animation()
 #endregion
 
@@ -80,7 +79,7 @@ func _process(delta: float) -> void:
 	# Switch to climbing
 	if _flagger.is_flag(&"is_climbable") && _character.is_action_just_pressed(key_to_climb):
 		_flagger.set_flag(&"is_climbing", true)
-		_behaviors_center.switch_behavior(self, &"climbing")
+		_behaviors_center.switch_behavior(&"climbing")
 		return
 	
 	_character.set_key_xy(key_up, key_down, key_left, key_right)

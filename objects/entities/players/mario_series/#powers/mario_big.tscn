@@ -20,3 +20,8 @@ metadata/_edit_pinned_properties_ = [&"texture"]
 shape_normal = ExtResource("3_5nmij")
 head_normal = ExtResource("4_aefuo")
 metadata/_edit_pinned_properties_ = [&"head_normal", &"shape_normal"]
+
+[node name="Climbing" parent="Behaviors" index="1"]
+shape_body = ExtResource("3_5nmij")
+shape_head = ExtResource("4_aefuo")
+metadata/_edit_pinned_properties_ = [&"shape_body", &"shape_head"]

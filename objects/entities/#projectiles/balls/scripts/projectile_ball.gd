@@ -9,7 +9,7 @@ signal run_out ## Emitted when [member jumping_times] is zero when the ball jump
 @export var sound_jumping: AudioStream
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 

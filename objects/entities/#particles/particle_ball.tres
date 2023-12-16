@@ -15,7 +15,7 @@ point_count = 2
 curve = SubResource("Curve_ie5gm")
 
 [resource]
-lifetime_randomness = 0.5
+lifetime_randomness = 0.1
 particle_flag_disable_z = true
 emission_shape = 1
 emission_sphere_radius = 4.0

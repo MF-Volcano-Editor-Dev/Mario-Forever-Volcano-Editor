@@ -35,6 +35,25 @@ libraries = {
 }
 metadata/_edit_pinned_properties_ = [&"libraries"]
 
+[node name="NonClimbing" parent="Behaviors" index="0"]
+gravity_scale = null
+max_falling_speed = null
+initial_speed = null
+acceleration = null
+deceleration = null
+deceleration_scale_crouching = null
+deceleration_scale_crouching_sliding = null
+turning_deceleration = null
+max_walking_speed = null
+max_running_speed = null
+max_walking_speed_crouching_scale = null
+initial_jumping_speed = null
+jumping_acceleration_static = null
+jumping_acceleration_dynamic = null
+swimming_speed = null
+swimming_jumping_speed = null
+swimming_peak_speed = null
+
 [node name="Shoot" type="Node" parent="Behaviors/NonClimbing" index="1"]
 editor_description = "Keep this node as a child of NonClimbing to make sure the node is shared with the parent's process_mode"
 script = ExtResource("4_17tgc")

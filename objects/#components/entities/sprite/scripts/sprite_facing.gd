@@ -1,8 +1,15 @@
 class_name SpriteFacing extends Component
 
+## Components that used to flip a [Sprite2D] or [AnimatedSprite2D] by a given property via [member property_path]
+##
+##
+
 @export_category("Sprite Facing")
 @export var property_path: NodePath
+@export_enum("Flip H", "Flip V") var flip_mode: int
+@export var reversed_flip: bool
 
+var _prev_flip: bool
 var _node: Node
 var _property_path_from_tracked_node: NodePath 
 
@@ -21,9 +28,16 @@ func _process(_delta: float) -> void:
 		return
 	var _facing = _node.get_indexed(_property_path_from_tracked_node)
 	if (_facing is float || _facing is int) && _root_has_flip_h:
-		@warning_ignore("integer_division")
 		# NOTE:
-		# flip = -dir_int + 1 / 2 (right-facing as default, when flip_h = false)
-		# dir_int = 1: flip = (1 * -1 + 1) / 2 = 0 => false (right-facing)
-		# dir_int = -1: flip = (-1 * -1) + 1 / 2 = 1 => true (left-facing)
-		_root.flip_h = bool((-int(signf(_facing if !is_zero_approx(_facing) else 1.0)) + 1) / 2)
+		# flip = -dir_int + 1 / 2 (right/down-facing as default, when flip_h/flip_v = false, unless reversed_flip = true)
+		# dir_int = 1: flip = (1 * -1 + 1) / 2 = 0 => false (right/down-facing)
+		# dir_int = -1: flip = (-1 * -1) + 1 / 2 = 1 => true (left/up-facing)
+		var reversed := int(reversed_flip) * 2 - 1
+		var facing_not_zero := !is_zero_approx(_facing)
+		@warning_ignore("integer_division")
+		var flip := bool((reversed * int(signf(_facing if facing_not_zero else _prev_flip)) + 1) / 2)
+		_prev_flip = flip if facing_not_zero else _prev_flip
+		if flip_mode == 0:
+			_root.flip_h = flip
+		else:
+			_root.flip_v = flip

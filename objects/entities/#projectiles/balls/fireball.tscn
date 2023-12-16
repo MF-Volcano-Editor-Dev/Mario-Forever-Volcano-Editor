@@ -40,10 +40,10 @@ attacker_features = Array[StringName]([&"fire"])
 metadata/_edit_pinned_properties_ = [&"attacker_features"]
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-amount = 4
+amount = 3
 process_material = ExtResource("3_68nhf")
 texture = ExtResource("8_e1kjt")
-lifetime = 0.25
+lifetime = 0.2
 visibility_rect = Rect2(-16, -16, 32, 32)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -73,5 +73,5 @@ metadata/_edit_pinned_properties_ = [&"specific_screen_sides", &"actual_rect"]
 [connection signal="collided_wall" from="." to="." method="notify_run_out"]
 [connection signal="run_out" from="." to="." method="queue_free"]
 [connection signal="run_out" from="." to="BasicInstantiater" method="create_instance"]
-[connection signal="attack_got_received" from="Area2D/Attacker" to="." method="notify_run_out" unbinds=1]
+[connection signal="attack_got_received" from="Area2D/Attacker" to="." method="notify_run_out"]
 [connection signal="screen_exited_from_specific_sides" from="OnScreenNotifierToolDir2D" to="." method="queue_free"]

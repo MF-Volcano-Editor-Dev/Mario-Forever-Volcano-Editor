@@ -7,6 +7,9 @@ extends CharacterBehavior2D
 @export var key_left: StringName = &"left"
 @export var key_right: StringName = &"right"
 @export var key_jump: StringName = &"jump"
+@export_group("Shapes", "shape_")
+@export var shape_body: CharacterShape2D = preload("res://objects/entities/players/mario_series/resources/shapes/character_shape_mario_small.tres")
+@export var shape_head: CharacterShape2D = preload("res://objects/entities/players/mario_series/resources/shapes/character_head_mario_small.tres")
 @export_group("Physics")
 @export_subgroup("Climbing")
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var climbing_speed: float = 150
@@ -22,6 +25,10 @@ func _process(delta: float) -> void:
 	_character.set_key_xy(key_up, key_down, key_left, key_right)
 	var vec := Vector2(_character.get_key_xy()).normalized()
 	
+	# Shapes update
+	_character.update_body_collision_shapes(shape_body)
+	_character.update_head_collision_shape(shape_head)
+	
 	# Jumping from climbing
 	if _character.is_action_pressed(key_jump):
 		Sound.play_sound_2d(_character, sound_jump)
@@ -32,7 +39,7 @@ func _process(delta: float) -> void:
 		_flagger.set_flag(&"is_climbing", false)
 	# Switches back to non-climbing
 	if !_flagger.is_flag(&"is_climbing"):
-		_behaviors_center.switch_behavior(self, &"non-climbing")
+		_behaviors_center.switch_behavior(&"non-climbing")
 		return
 	
 	# Velocity

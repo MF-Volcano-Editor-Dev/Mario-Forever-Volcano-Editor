@@ -59,6 +59,7 @@ folder_colors={
 "res://objects/#attachments/universal_scenes_use/scripts/": "green",
 "res://objects/#components/": "yellow",
 "res://objects/#components/attack/by_enemy/scripts/": "green",
+"res://objects/#components/attack/for_enemy/scripts/": "green",
 "res://objects/#components/attacking_related/scripts/": "green",
 "res://objects/#components/block_hitter/scripts/": "green",
 "res://objects/#components/data/scripts/": "green",

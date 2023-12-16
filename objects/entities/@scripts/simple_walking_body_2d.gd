@@ -1,7 +1,7 @@
 class_name SimpleWalkingEntity2D extends Classes.HiddenEntityBody2D
 
 @export_category("Simple Walking Entity")
-@export_enum("Node", "To Player", "Back to Player") var initial_direction: int = 1
+@export_enum("None", "To Player", "Back to Player") var initial_direction: int = 1
 
 
 func _ready() -> void:
@@ -16,4 +16,6 @@ func update_direction() -> void:
 		return
 	var nearest_character := CharactersManager2D.get_characters_getter().get_character_nearest_to(global_position)
 	var dir := Transform2DAlgo.get_direction_to_regardless_transform(global_position, nearest_character.global_position, global_transform)
+	if dir == 0:
+		dir = [-1, 1].pick_random()
 	velocity.x *= dir if initial_direction == 1 else -dir

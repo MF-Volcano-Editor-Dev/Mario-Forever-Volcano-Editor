@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://48jxbjtsgjs3"]
+
+[ext_resource type="PackedScene" uid="uid://8gn0wap4vbbr" path="res://objects/#components/attack/general/attack_receiver.tscn" id="1_w60tb"]
+[ext_resource type="Script" path="res://objects/#components/attack/for_enemy/scripts/attack_receiver_enemy.gd" id="2_dlvwt"]
+
+[node name="AttackReceiverEnemy" instance=ExtResource("1_w60tb")]
+script = ExtResource("2_dlvwt")
+no_combo_features = Array[StringName]([])

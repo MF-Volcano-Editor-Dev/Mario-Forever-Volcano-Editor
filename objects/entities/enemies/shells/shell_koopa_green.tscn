@@ -1,0 +1,131 @@
+[gd_scene load_steps=19 format=3 uid="uid://bmk8valbaq2xg"]
+
+[ext_resource type="Script" path="res://objects/entities/@scripts/simple_walking_body_2d.gd" id="1_60pdc"]
+[ext_resource type="Texture2D" uid="uid://bbnt2qmtg02qg" path="res://objects/entities/enemies/shells/textures/shell_koopa_green.png" id="2_q7wc0"]
+[ext_resource type="PackedScene" uid="uid://r6qrdfxr1tqs" path="res://objects/#components/attack/general/attacker.tscn" id="2_ylqdq"]
+[ext_resource type="PackedScene" uid="uid://48jxbjtsgjs3" path="res://objects/#components/attack/for_enemy/attack_receiver_enemy.tscn" id="3_fcavh"]
+[ext_resource type="PackedScene" uid="uid://cdbtpinf0ew4x" path="res://objects/#components/entities/instantiater/enemy_death.tscn" id="3_lb3n0"]
+[ext_resource type="PackedScene" uid="uid://cf4pm4ojp7ld1" path="res://objects/#components/attack/by_enemy/enemy_touch_stomp.tscn" id="4_6x7tr"]
+[ext_resource type="PackedScene" uid="uid://bq2g0ufv8rpcn" path="res://objects/#components/entities/sprite/sprite_facing.tscn" id="6_6x6ym"]
+[ext_resource type="PackedScene" uid="uid://bhw66ur47rsuf" path="res://objects/#components/data/combo.tscn" id="6_g741v"]
+[ext_resource type="PackedScene" uid="uid://db4suxs45luyf" path="res://objects/#components/data/add_scores.tscn" id="6_lkgbl"]
+[ext_resource type="Script" path="res://objects/#scripts/nodes/public/visibility/class_on_screen_enabler_tool_2d.gd" id="7_sgfst"]
+[ext_resource type="PackedScene" uid="uid://bgk1p1w0oxsov" path="res://objects/entities/enemies/#deaths/shell_koopa_green_killed.tscn" id="8_wdkr4"]
+[ext_resource type="Script" path="res://objects/entities/enemies/shells/scripts/shell_behaviors_center.gd" id="10_rscto"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4c5uw"]
+size = Vector2(32, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vvogj"]
+atlas = ExtResource("2_q7wc0")
+region = Rect2(96, 0, 32, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gc8bx"]
+atlas = ExtResource("2_q7wc0")
+region = Rect2(64, 0, 32, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ysfnw"]
+atlas = ExtResource("2_q7wc0")
+region = Rect2(32, 0, 32, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tosrj"]
+atlas = ExtResource("2_q7wc0")
+region = Rect2(0, 0, 32, 28)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g84o6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vvogj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gc8bx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ysfnw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tosrj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 30.0
+}]
+
+[node name="ShellKoopaGreen" type="EntityBody2D"]
+velocity = Vector2(350, 0)
+global_velocity = Vector2(350, -1.5299e-05)
+gravity_scale = 0.5
+collision_layer = 4
+collision_mask = 8
+velocity = Vector2(350, 0)
+script = ExtResource("1_60pdc")
+metadata/move = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_4c5uw")
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+collision_layer = 4
+collision_mask = 37
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_4c5uw")
+
+[node name="Attacker" parent="Area2D" instance=ExtResource("2_ylqdq")]
+attacker_source = &"shell"
+attacker_features = Array[StringName]([&"combo", &"shell_low"])
+continuous_detection = true
+metadata/_edit_pinned_properties_ = [&"attacker_features", &"attacker_source", &"continuous_detection"]
+
+[node name="AttackReceiverEnemy" parent="Area2D" instance=ExtResource("3_fcavh")]
+combo_features = Array[StringName]([&"combo"])
+
+[node name="EnemyTouchStomp" parent="Area2D" instance=ExtResource("4_6x7tr")]
+offset = Vector2(0, 3)
+metadata/_edit_pinned_properties_ = [&"offset"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_g84o6")
+offset = Vector2(0.5, 0)
+
+[node name="SpriteFacing" parent="AnimatedSprite2D" instance=ExtResource("6_6x6ym")]
+property_path = NodePath("../..:velocity:x")
+
+[node name="EnemyDeath" parent="." instance=ExtResource("3_lb3n0")]
+death_killed = ExtResource("8_wdkr4")
+metadata/_edit_pinned_properties_ = [&"death_killed"]
+
+[node name="ShellBehavior" type="Node" parent="."]
+process_mode = 4
+script = ExtResource("10_rscto")
+metadata/_edit_pinned_properties_ = [&"script"]
+
+[node name="AddScores" parent="." instance=ExtResource("6_lkgbl")]
+scores = 100
+metadata/_edit_pinned_properties_ = [&"scores"]
+
+[node name="Combo" parent="." instance=ExtResource("6_g741v")]
+
+[node name="OnScreenEnablerTool2D" type="VisibleOnScreenEnabler2D" parent="."]
+rect = Rect2(0, 0, 0, 0)
+script = ExtResource("7_sgfst")
+
+[connection signal="collided_wall" from="." to="." method="turn_wall"]
+[connection signal="collided_wall" from="." to="ShellBehavior" method="play_sound_colliding_wall"]
+[connection signal="attack_got_blocked" from="Area2D/Attacker" to="EnemyDeath" method="killed_to_death"]
+[connection signal="attack_got_blocked" from="Area2D/Attacker" to="AddScores" method="add_scores"]
+[connection signal="attack_got_received" from="Area2D/Attacker" to="Combo" method="combo"]
+[connection signal="attack_received_combo" from="Area2D/AttackReceiverEnemy" to="EnemyDeath" method="killed_to_death" binds= [false]]
+[connection signal="attack_received_no_combo" from="Area2D/AttackReceiverEnemy" to="EnemyDeath" method="killed_to_death"]
+[connection signal="attack_received_no_combo" from="Area2D/AttackReceiverEnemy" to="AddScores" method="add_scores"]
+[connection signal="stomped" from="Area2D/EnemyTouchStomp" to="ShellBehavior" method="_on_stomped"]
+[connection signal="stomped" from="Area2D/EnemyTouchStomp" to="AddScores" method="add_scores"]
+[connection signal="touched_character_friendly" from="Area2D/EnemyTouchStomp" to="ShellBehavior" method="_on_character_touched"]
+[connection signal="death_killed_created" from="EnemyDeath" to="." method="queue_free"]
+[connection signal="death_stomped_created" from="EnemyDeath" to="." method="queue_free"]

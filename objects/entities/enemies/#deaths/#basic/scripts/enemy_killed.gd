@@ -9,5 +9,5 @@ func _ready() -> void:
 	var angle := deg_to_rad(randf_range(-initial_velocity_direction, initial_velocity_direction))
 	velocity = Vector2.UP.rotated(angle) * randf_range(initial_speed_range.x, initial_speed_range.y)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	move_and_slide()

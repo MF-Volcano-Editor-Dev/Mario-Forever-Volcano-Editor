@@ -3,7 +3,7 @@ class_name EnemyDeath extends Instantiater2D
 signal death_stomped_created ## Emitted when [member death_stomped] is created
 signal death_killed_created ## Emitted when [member death_attacked] is created
 
-@export_category("General Death Events")
+@export_category("General Death Instantiater")
 @export_group("Deaths")
 @export_subgroup("Stomped")
 @export var death_stomped: PackedScene
@@ -17,13 +17,15 @@ signal death_killed_created ## Emitted when [member death_attacked] is created
 
 
 #region == Stomped and killed ==
-func stomped_to_death() -> void:
+func stomped_to_death(with_sound: bool = true) -> void:
+	if with_sound:
+		Sound.play_sound_2d(_root, sound_stomped)
 	instantiate(death_stomped, death_stomped_offset)
-	Sound.play_sound_2d(_root, sound_stomped)
 	death_stomped_created.emit()
 
-func killed_to_death() -> void:
+func killed_to_death(with_sound: bool = true) -> void:
+	if with_sound:
+		Sound.play_sound_2d(_root, sound_killed)
 	instantiate(death_killed, death_killed_offset)
-	Sound.play_sound_2d(_root, sound_killed)
 	death_killed_created.emit()
 #endregion

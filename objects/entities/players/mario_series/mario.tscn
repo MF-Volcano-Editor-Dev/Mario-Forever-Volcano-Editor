@@ -34,7 +34,7 @@ shape = SubResource("RectangleShape2D_bwlpc")
 debug_color = Color(0.952941, 0.219608, 0, 0.419608)
 
 [node name="AttackReceiver" parent="AreaBody" instance=ExtResource("2_1reci")]
-ignored_attacker_sources = Array[StringName]([&"player"])
+ignored_attacker_sources = Array[StringName]([&"player", &"shell"])
 metadata/_edit_pinned_properties_ = [&"ignored_attacker_sources"]
 
 [node name="AreaHead" type="Area2D" parent="."]

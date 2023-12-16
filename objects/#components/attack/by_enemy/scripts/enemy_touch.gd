@@ -2,8 +2,11 @@
 class_name EnemyTouch extends Component
 
 signal hurt_character ## Emitted when the enemy hurts the character
+signal touched_character_friendly(character: CharacterEntity2D) ## Emitted when the enemy touches the character harmlessly
 
 @export_category("Enemy Touch")
+## If [code]true[/code], the enemy will not hurt the character
+@export var harmless: bool
 ## Tags when the body hurts the character
 @export var hurt_tags: TagsObject
 
@@ -33,10 +36,10 @@ func _on_character_in_area(area: Area2D, in_or_out: bool) -> void:
 	if disabled || !area.is_in_group(&"%%enemy_touchable"):
 		set_process(false)
 		return
-	
-	if in_or_out && !area in _entity_areas:
-		_entity_areas.append(area)
-	elif !in_or_out && area in _entity_areas:
+	if in_or_out:
+		if !area in _entity_areas:
+			_entity_areas.append(area)
+	elif area in _entity_areas:
 		_entity_areas.erase(area)
 	set_process(!_entity_areas.is_empty())
 
@@ -45,6 +48,11 @@ func _on_character_in_area(area: Area2D, in_or_out: bool) -> void:
 ## of manipulation on this behavior.
 func _touches_entity_area(entity_area: Area2D) -> void:
 	var character := entity_area.get_parent() as CharacterEntity2D
-	if character:
+	if !character:
+		return
+	if harmless:
+		touched_character_friendly.emit(character)
+	else:
+		hurt_character.emit()
 		character.damaged(hurt_tags)
 #endregion
