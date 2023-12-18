@@ -16,3 +16,5 @@ Actually, this template contains GDExtensions made for convenience and low perfo
 * ElectronicBoy(Lazy-Rabbit-2001): Major creator, coder, constructurer.
 * JUE13: LibOpenMPT compiler for this template.
 * Visphort: Creator of LibOpenMPT GDExtension.
+* Dasasdhba: Optimization for Smooth Outline shader made by Tanders to make the effect compatible with `CanvasGroup` which makes the shader on texts possible.
+* Tanders: Creator of Smooth Outline shader.
