@@ -3,4 +3,5 @@
 [ext_resource type="Script" path="res://objects/#components/entities/physics/solid_entity/scripts/solid_entity.gd" id="1_dsj4g"]
 
 [node name="SolidEntity" type="Node"]
+process_mode = 4
 script = ExtResource("1_dsj4g")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://bmk8valbaq2xg"]
 
-[ext_resource type="Script" path="res://objects/entities/@scripts/simple_walking_body_2d.gd" id="1_60pdc"]
+[ext_resource type="Script" path="res://objects/entities/##scripts/simple_walking_body_2d.gd" id="1_n7xvo"]
 [ext_resource type="Texture2D" uid="uid://bbnt2qmtg02qg" path="res://objects/entities/enemies/shells/textures/shell_koopa_green.png" id="2_q7wc0"]
 [ext_resource type="PackedScene" uid="uid://r6qrdfxr1tqs" path="res://objects/#components/attack/general/attacker.tscn" id="2_ylqdq"]
 [ext_resource type="PackedScene" uid="uid://48jxbjtsgjs3" path="res://objects/#components/attack/for_enemy/attack_receiver_enemy.tscn" id="3_fcavh"]
@@ -60,7 +60,7 @@ gravity_scale = 0.5
 collision_layer = 4
 collision_mask = 8
 velocity = Vector2(350, 0)
-script = ExtResource("1_60pdc")
+script = ExtResource("1_n7xvo")
 metadata/move = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -89,7 +89,8 @@ combo_features = Array[StringName]([&"combo"])
 
 [node name="EnemyTouchStomp" parent="Area2D" instance=ExtResource("4_6x7tr")]
 offset = Vector2(0, 3)
-metadata/_edit_pinned_properties_ = [&"offset"]
+initial_delay = 0.15
+metadata/_edit_pinned_properties_ = [&"offset", &"initial_delay"]
 
 [node name="SolidEntity" parent="Area2D" instance=ExtResource("5_rh5fr")]
 

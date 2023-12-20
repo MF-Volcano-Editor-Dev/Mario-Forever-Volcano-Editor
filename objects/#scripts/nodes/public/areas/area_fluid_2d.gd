@@ -46,13 +46,10 @@ func create_spray(body: Node2D, global_trans: Transform2D) -> void:
 	body.add_sibling.call_deferred(s)
 
 func _on_fluid_trigger(body: Node2D, is_entering: bool) -> void:
-	# Spray creation
-	create_spray(body, Transform2D(0, body.global_scale, body.global_skew, body.global_position))
-	
 	# Stop the sprays from being created when the bodies are initialized
 	# within the fluid at the very beginning of the game
 	if !_delayed:
-		return
+		create_spray(body, Transform2D(0, body.global_scale, body.global_skew, body.global_position))
 	
 	if body is EntityBody2D:
 		if is_entering:

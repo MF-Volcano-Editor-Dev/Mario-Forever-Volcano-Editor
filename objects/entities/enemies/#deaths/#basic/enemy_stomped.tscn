@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://glg3sv50clg6"]
 
-[ext_resource type="Script" path="res://objects/entities/@scripts/simple_walking_body_2d.gd" id="1_1pmgc"]
+[ext_resource type="Script" path="res://objects/entities/##scripts/simple_walking_body_2d.gd" id="1_1pmgc"]
 [ext_resource type="PackedScene" uid="uid://ciekefj21gsj3" path="res://objects/#components/entities/effects/effects.tscn" id="2_b5qxy"]
 
 [node name="EnemyStomped" type="EntityBody2D"]

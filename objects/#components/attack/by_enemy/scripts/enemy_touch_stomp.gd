@@ -18,6 +18,11 @@ signal stomped ## Emitted when the enemy is stomped by a stomper
 ## Determines how wide the stomping directions will be. The directions out of this range
 ## will be regarded as simply touching.
 @export_range(0, 75, 0.001, "degrees") var stomping_tolerance_angle: float = 75
+@export_group("Detection")
+## Initial delay when the enemy appears (when the this node is ready).[br]
+## This is often modified to prevent from continuous stomp when an enemy is stomped and creates another one that is stompable,
+## when the latter will be immediately detected as stomped.
+@export_range(0, 5, 0.001, "suffix:s") var initial_delay: float = 0.15
 ## Defines how long will be delayed after the previous stomp onto the enemy
 @export_range(0, 2, 0.001, "suffix:s") var delay_times: float = 0.08
 @export_subgroup("For Character")
@@ -26,11 +31,16 @@ signal stomped ## Emitted when the enemy is stomped by a stomper
 ## Minimum of jumping speed when the character stomps onto the enemy with the player holding jumping key
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var stomping_jumping_speed_max: float = 700
 
-var _delay: SceneTreeTimer
+@onready var _delay: Timer = $Delay
 
+
+func _ready() -> void:
+	super()
+	if initial_delay > 0:
+		_delay.start(initial_delay)
 
 func _touches_entity_area(entity_area: Area2D) -> void:
-	if _delay:
+	if !_delay.is_stopped():
 		return
 	
 	var on_stomped: bool = false
@@ -45,11 +55,7 @@ func _touches_entity_area(entity_area: Area2D) -> void:
 			on_stomped = true
 			stomped.emit()
 			# Delay for stomping
-			_delay = get_tree().create_timer(delay_times, false)
-			_delay.timeout.connect(
-				func() -> void:
-					_delay = null
-			)
+			_delay.start(delay_times)
 			# Character's reaction
 			if character:
 				character.jump(stomping_jumping_speed_max if character.get_flagger().is_flag(&"is_jumping") else stomping_jumping_speed_min)

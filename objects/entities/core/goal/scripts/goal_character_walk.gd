@@ -27,7 +27,6 @@ func add_player_to_walk(character: CharacterEntity2D) -> void:
 func _on_character_completed_walking() -> void:
 	for i: CharacterEntity2D in _characters_to_walk:
 		# Initialization of data, called once every time the Event.level_finished is called
-		i.max_speed = 0 # Unlimited max speed for better control of walking speed after completion of the level
 		i.collided_wall.connect(
 			func() -> void:
 				_characters_to_walk.erase(i) # Remove the character from the list to make the character stop when colliding with a wall

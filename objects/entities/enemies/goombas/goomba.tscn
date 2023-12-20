@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://cvh7xbvy0048b"]
 
-[ext_resource type="Script" path="res://objects/entities/@scripts/simple_walking_body_2d.gd" id="1_fs73i"]
+[ext_resource type="Script" path="res://objects/entities/##scripts/simple_walking_body_2d.gd" id="1_fs73i"]
 [ext_resource type="Texture2D" uid="uid://by3uk7jcvyall" path="res://objects/entities/enemies/goombas/textures/goomba.png" id="2_03pwk"]
 [ext_resource type="PackedScene" uid="uid://48jxbjtsgjs3" path="res://objects/#components/attack/for_enemy/attack_receiver_enemy.tscn" id="2_cd314"]
 [ext_resource type="PackedScene" uid="uid://cf4pm4ojp7ld1" path="res://objects/#components/attack/by_enemy/enemy_touch_stomp.tscn" id="3_y42qx"]

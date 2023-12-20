@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://byhc8smjgrqpy"]
+
+[ext_resource type="PackedScene" uid="uid://bmk8valbaq2xg" path="res://objects/entities/enemies/shells/shell_koopa_green.tscn" id="1_rwht4"]
+[ext_resource type="Texture2D" uid="uid://c5xlkida046in" path="res://objects/entities/enemies/shells/textures/shell_koopa_blue.png" id="2_nyre7"]
+[ext_resource type="PackedScene" uid="uid://dabspny7nvppj" path="res://objects/entities/enemies/#deaths/shell_koopa_blue_killed.tscn" id="3_jkkqi"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7hyf"]
+atlas = ExtResource("2_nyre7")
+region = Rect2(96, 0, 32, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ymndg"]
+atlas = ExtResource("2_nyre7")
+region = Rect2(64, 0, 32, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xkx5g"]
+atlas = ExtResource("2_nyre7")
+region = Rect2(32, 0, 32, 28)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wabi6"]
+atlas = ExtResource("2_nyre7")
+region = Rect2(0, 0, 32, 28)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ip7pl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t7hyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ymndg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xkx5g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wabi6")
+}],
+"loop": true,
+"name": &"default",
+"speed": 30.0
+}]
+
+[node name="ShellKoopaBlue" instance=ExtResource("1_rwht4")]
+
+[node name="AnimatedSprite2D" parent="." index="2"]
+sprite_frames = SubResource("SpriteFrames_ip7pl")
+metadata/_edit_pinned_properties_ = [&"sprite_frames"]
+
+[node name="SpriteFacing" parent="AnimatedSprite2D" index="0"]
+property_path = NodePath("../..")
+
+[node name="EnemyDeath" parent="." index="3"]
+death_killed = ExtResource("3_jkkqi")

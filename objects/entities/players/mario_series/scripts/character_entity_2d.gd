@@ -10,7 +10,8 @@ class_name CharacterEntity2D extends Classes.HiddenEntityBody2D
 ## and [member CharacterBehavior2D.max_falling_speed]. Please pay close attention to this note if you are going to modify
 ## the gravity and max falling speed of the character.
 
-signal hurt ## Emitted when the character gets damaged
+signal hurt_with_power(damage: int) ## Emitted when the character gets damaged
+signal hurt_without_power(damage: int) ## Emitted when the character gets damaged without any power
 signal died ## Emitted when the character is dead
 
 ## Warping directions, if not [code]NONE[/code], the player is not on warping, otherwise it is.[br]
@@ -62,11 +63,10 @@ var _key_xy: Vector2i # Direction of arrow keys
 var _invulnerability: SceneTreeTimer # Reference to a invulnerability counter
 var _power: CharacterPower2D # Reference to current power
 
-@onready var _flagger := get_flagger() as Flagger
-@onready var _shape := get_collision_shape() as CollisionShape2D
-@onready var _body_shape := $AreaBody/CollisionShape2D as CollisionShape2D
-@onready var _head_shape := $AreaHead/CollisionPolygon2D as CollisionPolygon2D
-@onready var _health_component := $HealthComponent as HealthComponent
+@onready var _flagger := get_flagger()
+@onready var _shape := get_collision_shape()
+@onready var _body_shape := get_body_collision_shape()
+@onready var _head_shape := get_area_collision_shape()
 #endregion
 
 
@@ -102,17 +102,15 @@ func damaged(tags: TagsObject = null) -> void:
 	
 	# Damaged to death
 	Effects2D.flash(self, duration, 0.05)
-	if _power.power_down_to_id.is_empty():
-		_health_component.sub_health(tags.get_tag(&"damage", 1) as int)
-		if _health_component.health <= 0: # No hp -> death
-			die(tags)
-			return
-		else: # With hp -> hp loss
-			invulnerablize(duration + 1)
+	var dmg := tags.get_tag(&"damage", 1) as int
+	if _power.power_down_to_id.is_empty(): # Hurt without power
+		hurt_without_power.emit(dmg)
+		invulnerablize(duration + 1)
 	# Damaged to lower level of suit
-	else:
+	else: # Hurt with power
 		var forced_down_to_id := tags.get_tag(&"forced_down_to", &"") as StringName
 		power_id = forced_down_to_id if !forced_down_to_id.is_empty() else _power.power_down_to_id
+		hurt_with_power.emit(dmg)
 		invulnerablize(duration)
 	
 	# Plays sound
@@ -234,24 +232,36 @@ func is_action_just_released(action: StringName) -> bool:
 
 #region == Collision shapes ==
 ## Updates the scale and position of the character's collision shape and the one of its detector.
-func update_body_collision_shapes(character_shape: CharacterShape2D) -> void:
-	if !character_shape:
+func update_body_collision_shapes(shape: CharacterShape2D) -> void:
+	if !shape:
 		return
-	if character_shape.shape:
-		if _shape.shape != character_shape.shape:
-			_shape.set_deferred(&"shape", character_shape.shape)
-		if _body_shape.shape != character_shape.shape:
-			_body_shape.set_deferred(&"shape", character_shape.shape)
-	_shape.transform = character_shape.get_transform()
-	_body_shape.transform = character_shape.get_transform()
+	if shape.shape:
+		if _shape.shape != shape.shape:
+			_shape.set_deferred(&"shape", shape.shape)
+		if _body_shape.shape != shape.shape:
+			_body_shape.set_deferred(&"shape", shape.shape)
+	_shape.transform = shape.get_transform()
+	_body_shape.transform = shape.get_transform()
 
 ## Updates the scale and position of the collision shape of the character's head detector.
-func update_head_collision_shape(character_shape: CharacterShape2D) -> void:
-	_head_shape.transform = character_shape.get_transform()
+func update_head_collision_shape(shape: CharacterShape2D) -> void:
+	if !shape:
+		return
+	if shape.shape && _head_shape.shape != shape.shape:
+		_head_shape.set_deferred(&"shape", shape.shape)
+	_head_shape.transform = shape.get_transform()
 
 ## Returns the collision shape of the character.
 func get_collision_shape() -> CollisionShape2D:
 	return $CollisionShape2D
+
+## Returns the collision shape of the body detector
+func get_body_collision_shape() -> CollisionShape2D:
+	return $AreaBody/CollisionShape2D
+
+## Returns the collision shape of the head detector
+func get_area_collision_shape() -> CollisionShape2D:
+	return $AreaHead/CollisionShape2D
 
 ## Returns the body detector of the character.
 func get_detector_body() -> Area2D:
