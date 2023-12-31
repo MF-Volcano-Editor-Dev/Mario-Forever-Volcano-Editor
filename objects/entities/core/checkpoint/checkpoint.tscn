@@ -10,7 +10,7 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ucvcf"]
 shader = ExtResource("3_yshaw")
 shader_parameter/glow = true
-shader_parameter/glow_scalar = 4.0
+shader_parameter/glow_scalar = 4.425
 shader_parameter/width = 4.0
 shader_parameter/outline_color = Color(0.501961, 0.305882, 0.0196078, 0.623529)
 shader_parameter/threshold = 0.5
@@ -103,6 +103,8 @@ _data = {
 }
 
 [node name="Checkpoint" type="Area2D"]
+z_index = -1
+collision_layer = 0
 script = ExtResource("1_5f8tc")
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="."]

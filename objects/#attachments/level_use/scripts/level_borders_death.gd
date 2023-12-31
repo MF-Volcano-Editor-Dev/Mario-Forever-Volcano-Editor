@@ -1,6 +1,8 @@
 @icon("res://icons/level_borders.svg")
 class_name LevelDeathBorders extends Component
 
+## A component
+
 signal player_fell_to_death(player: CharacterEntity2D)
 
 @export_category("Death Area")

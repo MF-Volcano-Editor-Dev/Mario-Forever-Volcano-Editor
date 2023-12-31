@@ -56,7 +56,7 @@ position = Vector2(48, 400)
 power_id = &"fireball"
 
 [node name="Water" parent="." instance=ExtResource("13_k7l4g")]
-position = Vector2(128, 160)
+position = Vector2(128, 64)
 scale = Vector2(16, 6)
 
 [node name="Checkpoint" parent="." instance=ExtResource("12_0q63x")]

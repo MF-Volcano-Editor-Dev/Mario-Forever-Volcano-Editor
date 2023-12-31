@@ -47,6 +47,7 @@ enabled=PackedStringArray("res://addons/abfi/plugin.cfg")
 folder_colors={
 "res://assets/": "blue",
 "res://gdextension/": "red",
+"res://guides/": "orange",
 "res://icons/": "green",
 "res://objects/#attachments/": "yellow",
 "res://objects/#attachments/level_use/level_huds/scripts/": "green",

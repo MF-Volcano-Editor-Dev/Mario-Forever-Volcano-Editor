@@ -7,17 +7,23 @@ class_name LevelCompletion extends Component
 ## > 1st section: In this section, a finishing music will be played and the system will wait for [member finish_process_delay] seconds.
 ## After the delay, if there is any object in the list mentioned in [method add_object_to_wait_finish], the system will not continue
 ## the execution of the second section until the list is empty [br]
-## > 2nd section: Before the process of this section, if [method Events.level_stop_finishment] is called, then the e
+## > 2nd section: Before the process of this section, if [method Events.level_stop_finishment] is called, the process will be interrupted and
+## stopped; if not, then the process of jumping to the next scene will be executed.
 
 @export_category("Level Completion")
-## Scene to go after the stage finished is emitted
+## The scene to go to when the second section of [method Events.level_finish] is called
 @export var scene_after_finish: PackedScene
 @export_group("Delay")
-## Delay to the next stage of level-completing process after the music was played
+## Delay to the next section of level completion process after the music was played.[br]
+## The default value is the length of the music of completing a level.
 @export_range(0, 10, 0.001, "suffix:s") var finish_process_delay: float = 8
 @export_group("Data")
+## If [code]true[/code], the data of each character in current level will be saved in RAM.[br]
+## [br]
+## [b]Note:[/b] Please keep this option [code]true[/code] unless you know what you are doing.
 @export var reserve_characters_data: bool = true
 @export_group("Musics", "music_")
+## Music of completing the level
 @export var music_completion: AudioStream = preload("res://assets/sounds/level_complete.ogg") ## Music to be played when the level is completed
 
 var _level_events := Events.get_level_events()
@@ -38,6 +44,7 @@ func _enter_tree() -> void:
 
 #region Todo-list after the completion of the level
 ## Adds an object to the completion process await list.[br]
+## [br]
 ## [b]Note:[/b] This will block the process of level completion to its second stage.
 func add_object_to_wait_finish(object: Object) -> void:
 	if !is_instance_valid(object) || object in _awaited_objects:
@@ -45,6 +52,7 @@ func add_object_to_wait_finish(object: Object) -> void:
 	_awaited_objects.append(object)
 
 ## Removes an object from the completion process await list.[br]
+## [br]
 ## [b]Note:[/b] If there are no objects in the list mentioned in [method add_object_to_wait_finish]
 ## to block the process mentioned as well, the completion is able to go into the second
 ## section of process.
