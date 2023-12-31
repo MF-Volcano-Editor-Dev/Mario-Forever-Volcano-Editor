@@ -1,5 +1,6 @@
 # Mario-Forever-Thunder-Editor-Refactored
 A Mario Forever fangame making template based on Godot 4.2 and above, using <b>GDScript</b> as the main language, with <b>C#/C++/Rust</b> as assistant langs for high-amount and complex calculations
+Before using the template, it is recommended to learn the usage in the `guide` folder on Github.
 
 ## Why only GDScript in the template?
 Since C# needs extra steps to use, to make greenhands better get to using this editor(template), we prefer GDScript first. But this doesn't mean that we have no chances to use C# in the template anymore, unless there should be an archobstacle to solve.
