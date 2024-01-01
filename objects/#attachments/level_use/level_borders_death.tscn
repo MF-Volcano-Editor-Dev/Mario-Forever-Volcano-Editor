@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqyb07p315tkl"]
-
-[ext_resource type="Script" path="res://objects/#attachments/level_use/scripts/level_borders_death.gd" id="1_ljp3w"]
-
-[node name="LevelDeathBorders" type="Node"]
-editor_description = "Used to ensure the falling of characters to death.
-If no this attachment, the character will NOT die when they fall out of the screen"
-script = ExtResource("1_ljp3w")

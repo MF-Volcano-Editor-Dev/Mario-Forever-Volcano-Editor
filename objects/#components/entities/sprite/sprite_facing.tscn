@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bq2g0ufv8rpcn"]
-
-[ext_resource type="Script" path="res://objects/#components/entities/sprite/scripts/sprite_facing.gd" id="1_ilhct"]
-
-[node name="SpriteFacing" type="Node"]
-editor_description = "The root path of the node should direct to one that inherits from Sprite2D or AnimatedSprite2D"
-script = ExtResource("1_ilhct")

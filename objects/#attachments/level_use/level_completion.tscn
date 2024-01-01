@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwexucoknw1ph"]
-
-[ext_resource type="Script" path="res://objects/#attachments/level_use/scripts/level_completion.gd" id="1_wrytn"]
-
-[node name="LevelCompletion" type="Node"]
-process_mode = 4
-script = ExtResource("1_wrytn")

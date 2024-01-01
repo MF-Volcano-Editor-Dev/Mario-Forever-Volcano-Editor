@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://8gn0wap4vbbr"]
-
-[ext_resource type="Script" path="res://objects/#components/attack/general/scripts/attack_receiver.gd" id="1_ykrhw"]
-
-[node name="AttackReceiver" type="Node"]
-process_mode = 4
-script = ExtResource("1_ykrhw")

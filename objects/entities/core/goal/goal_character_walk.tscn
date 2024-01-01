@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dtt6n5emk6dtu"]
-
-[ext_resource type="Script" path="res://objects/entities/core/goal/scripts/goal_character_walk.gd" id="1_1xex2"]
-
-[node name="GoalCharacterWalk" type="Node"]
-process_mode = 4
-script = ExtResource("1_1xex2")

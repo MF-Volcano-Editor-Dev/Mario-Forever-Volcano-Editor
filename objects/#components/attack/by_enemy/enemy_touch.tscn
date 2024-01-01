@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://xn67qc0riqeo"]
-
-[ext_resource type="Script" path="res://objects/#components/attack/by_enemy/scripts/enemy_touch.gd" id="1_wpfql"]
-
-[node name="EnemyTouch" type="Node"]
-script = ExtResource("1_wpfql")

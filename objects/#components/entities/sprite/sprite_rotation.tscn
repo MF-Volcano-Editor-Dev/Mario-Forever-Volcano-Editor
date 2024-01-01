@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://q26573gwbilg"]
-
-[ext_resource type="Script" path="res://objects/#components/entities/sprite/scripts/sprite_rotation.gd" id="1_dj1ip"]
-
-[node name="SpriteRotation" type="Node"]
-script = ExtResource("1_dj1ip")

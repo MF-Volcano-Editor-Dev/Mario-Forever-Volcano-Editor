@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="CharacterShape2D" load_steps=2 format=3 uid="uid://cakj0vjspkxaa"]
-
-[ext_resource type="Script" path="res://objects/entities/players/mario_series/scripts/resources/character_shape_shape_2d.gd" id="1_wgfny"]
-
-[resource]
-script = ExtResource("1_wgfny")
-position = Vector2(0, -41)
-rotation = 0.0
-scale = Vector2(1, 1)
