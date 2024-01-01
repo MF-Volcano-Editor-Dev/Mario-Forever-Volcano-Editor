@@ -36,9 +36,8 @@ enabled=PackedStringArray("res://addons/abfi/plugin.cfg")
 [file_customization]
 
 folder_colors={
-"res://assets/": "blue",
+"res://assets/": "green",
 "res://gdextension/": "red",
-"res://guides/": "orange",
 "res://icons/": "green",
 "res://objects/#attachments/level_use/level_huds/scripts/": "green",
 "res://objects/#attachments/level_use/level_timer/scripts/": "green",
@@ -116,8 +115,8 @@ folder_colors={
 "res://objects/entities/players/mario_series/textures/": "green",
 "res://objects/entities/warps/scripts/": "green",
 "res://objects/entities/warps/textures/": "green",
-"res://scenes/": "teal",
-"res://scripts/": "pink"
+"res://scripts/": "red",
+"res://singletons/": "red"
 }
 
 [filesystem]

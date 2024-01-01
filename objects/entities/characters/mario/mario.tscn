@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://dm1au2ar8wp71"]
+
+[ext_resource type="Script" path="res://scripts/entities/characters/mario/mario.gd" id="1_es2gk"]
+[ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_powerup.gd" id="2_5njbx"]
+[ext_resource type="Texture2D" uid="uid://boyhdrc8eefo7" path="res://assets/gfx/objects/entities/characters/mario_small.png" id="2_hpavc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_84u7v"]
+size = Vector2(20, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_815h0"]
+size = Vector2(20, 58)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vjadw"]
+atlas = ExtResource("2_hpavc")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_shfxv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vjadw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Mario" type="EntityBody2D"]
+script = ExtResource("1_es2gk")
+
+[node name="Small" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_84u7v")
+
+[node name="Big" type="CollisionShape2D" parent="."]
+position = Vector2(0, -13)
+shape = SubResource("RectangleShape2D_815h0")
+disabled = true
+
+[node name="Body" type="Area2D" parent="."]
+visible = false
+
+[node name="Small" type="CollisionShape2D" parent="Body"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_84u7v")
+debug_color = Color(0.980392, 0.145098, 0, 0.419608)
+
+[node name="Big" type="CollisionShape2D" parent="Body"]
+position = Vector2(0, -13)
+shape = SubResource("RectangleShape2D_815h0")
+disabled = true
+debug_color = Color(0.980392, 0.145098, 0, 0.419608)
+
+[node name="MarioSmall" type="Node2D" parent="." node_paths=PackedStringArray("mario")]
+script = ExtResource("2_5njbx")
+mario = NodePath("..")
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+metadata/_edit_pinned_properties_ = [&"mario"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarioSmall"]
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_shfxv")

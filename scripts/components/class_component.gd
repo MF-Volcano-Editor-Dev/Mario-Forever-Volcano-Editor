@@ -20,7 +20,6 @@ class_name Component extends Node
 	get = get_root
 
 
-## [code]Override if necessary[/code]
-## Returns [member root]
+## [code]override if necessary[/code] Returns [member root]
 func get_root() -> Node:
 	return root

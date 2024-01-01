@@ -12,10 +12,10 @@ class_name State extends Component
 @export var state_id: StringName
 
 
-## [code]virtual:[/code] Called when the state becomes current. 
+## [code]virtual[/code] Called when the state becomes current. 
 func _state_enter() -> void: pass
 
-## [code]virtual:[/code] Called when the state becomes non-current.
+## [code]virtual[/code] Called when the state becomes non-current.
 func _state_exit() -> void: pass
 
 ## [code]virtual[/code] Called when the state [u]is current[/u] and the state machine's [method Node._process] gets called.
