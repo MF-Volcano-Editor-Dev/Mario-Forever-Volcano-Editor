@@ -7,8 +7,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_84u7v"]
 size = Vector2(20, 28)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_815h0"]
-size = Vector2(20, 58)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4gjme"]
+size = Vector2(20, 28)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vjadw"]
 atlas = ExtResource("2_hpavc")
@@ -26,37 +26,40 @@ animations = [{
 }]
 
 [node name="Mario" type="EntityBody2D"]
+collision_mask = 2
 script = ExtResource("1_es2gk")
 
-[node name="Small" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_84u7v")
-
-[node name="Big" type="CollisionShape2D" parent="."]
-position = Vector2(0, -13)
-shape = SubResource("RectangleShape2D_815h0")
-disabled = true
 
 [node name="Body" type="Area2D" parent="."]
 visible = false
+collision_mask = 116
 
-[node name="Small" type="CollisionShape2D" parent="Body"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 position = Vector2(0, 2)
-shape = SubResource("RectangleShape2D_84u7v")
 debug_color = Color(0.980392, 0.145098, 0, 0.419608)
 
-[node name="Big" type="CollisionShape2D" parent="Body"]
-position = Vector2(0, -13)
-shape = SubResource("RectangleShape2D_815h0")
-disabled = true
-debug_color = Color(0.980392, 0.145098, 0, 0.419608)
+[node name="Head" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 114
 
-[node name="MarioSmall" type="Node2D" parent="." node_paths=PackedStringArray("mario")]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Head"]
+
+[node name="MarioSmall" type="Node2D" parent="."]
 script = ExtResource("2_5njbx")
-mario = NodePath("..")
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
-metadata/_edit_pinned_properties_ = [&"mario"]
+
+[node name="Normal" type="RemoteCollisionShape2D" parent="MarioSmall"]
+remote_collision_shapes = Array[CollisionShape2D]([Object(CollisionShape2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":false,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(0, 2),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"shape":SubResource("RectangleShape2D_84u7v"),"disabled":false,"one_way_collision":false,"one_way_collision_margin":1.0,"script":null)
+, Object(CollisionShape2D,"_import_path":NodePath(""),"unique_name_in_owner":false,"process_mode":0,"process_priority":0,"process_physics_priority":0,"process_thread_group":0,"editor_description":"","visible":true,"modulate":Color(1, 1, 1, 1),"self_modulate":Color(1, 1, 1, 1),"show_behind_parent":false,"top_level":false,"light_mask":1,"visibility_layer":1,"z_index":0,"z_as_relative":true,"y_sort_enabled":false,"texture_filter":0,"texture_repeat":0,"material":null,"use_parent_material":false,"position":Vector2(0, 2),"rotation":0.0,"scale":Vector2(1, 1),"skew":0.0,"shape":null,"disabled":false,"one_way_collision":false,"one_way_collision_margin":1.0,"debug_color":Color(0.980392, 0.145098, 0, 0.419608),"script":null)
+])
+shape = SubResource("RectangleShape2D_4gjme")
+debug_color = Color(0.27, 0.55, 0.26, 0.4)
+position = Vector2(0, 2)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MarioSmall"]
 position = Vector2(0, -16)

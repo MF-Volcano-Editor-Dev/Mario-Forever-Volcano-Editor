@@ -1,3 +1,4 @@
+@icon("res://icons/character_entity_2d.svg")
 class_name Mario extends Character
 
 
@@ -7,7 +8,6 @@ class_name Mario extends Character
 
 func _ready() -> void:
 	current_powerup = current_powerup # Triggers "set_powerup" to set initial powerup
-
 
 
 func set_powerup(value: StringName) -> void:

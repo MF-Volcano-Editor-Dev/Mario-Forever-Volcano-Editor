@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cewsceigeehfc"
-path="res://.godot/imported/state_machine.svg-ebb594c7d93b86416aff9c03945490f5.ctex"
+uid="uid://d74wpcg8ydpq"
+path="res://.godot/imported/remote_collision_shape_2d.svg-01adf1c6458a6ca70e949357b3158392.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://gdextension/state_machine/state_machine.svg"
-dest_files=["res://.godot/imported/state_machine.svg-ebb594c7d93b86416aff9c03945490f5.ctex"]
+source_file="res://gdextension/remote_collision_shape_2d/remote_collision_shape_2d.svg"
+dest_files=["res://.godot/imported/remote_collision_shape_2d.svg-01adf1c6458a6ca70e949357b3158392.ctex"]
 
 [params]
 
