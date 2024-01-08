@@ -1,1 +1,0 @@
-class_name PlaceholderNode2D extends Node2D

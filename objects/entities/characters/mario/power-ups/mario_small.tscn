@@ -1,0 +1,150 @@
+[gd_scene load_steps=12 format=3 uid="uid://d2a3jxasggppj"]
+
+[ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_powerup.gd" id="1_igb6y"]
+[ext_resource type="Texture2D" uid="uid://boyhdrc8eefo7" path="res://assets/gfx/objects/entities/characters/mario_small.png" id="2_hajdj"]
+[ext_resource type="Script" path="res://scripts/components/state_machine/class_state.gd" id="3_o4p3o"]
+[ext_resource type="Script" path="res://scripts/components/state_machine/class_state_machine.gd" id="4_boade"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4gjme"]
+size = Vector2(20, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3312i"]
+size = Vector2(18, 2)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vjadw"]
+atlas = ExtResource("2_hajdj")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_shfxv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vjadw")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Animation" id="Animation_kih71"]
+resource_name = "CROUCH"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HeadRem:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -13)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BodyRem:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 2)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BodyRem:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dw8la"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HeadRem:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -13)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BodyRem:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 2)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BodyRem:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8igf2"]
+_data = {
+"CROUCH": SubResource("Animation_kih71"),
+"RESET": SubResource("Animation_dw8la")
+}
+
+[node name="MarioSmall" type="Node2D"]
+script = ExtResource("1_igb6y")
+metadata/_edit_group_ = true
+
+[node name="BodyRem" type="RemoteCollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4gjme")
+position = Vector2(0, 2)
+
+[node name="HeadRem" type="RemoteCollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3312i")
+debug_color = Color(0.678431, 0.00392157, 0.952941, 0.4)
+position = Vector2(0, -13)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_shfxv")
+
+[node name="RemBubble" type="RemoteTransform2D" parent="AnimatedSprite2D"]
+position = Vector2(4, 16)
+remote_path = NodePath("../../PosBubble")
+update_scale = false
+
+[node name="PosBubble" type="Marker2D" parent="."]
+position = Vector2(4, 0)
+gizmo_extents = 4.0
+
+[node name="ShapeController" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8igf2")
+}
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state", "root")]
+script = ExtResource("4_boade")
+current_state = NodePath("State")
+root = NodePath("..")
+
+[node name="State" type="Node" parent="StateMachine"]
+script = ExtResource("3_o4p3o")
