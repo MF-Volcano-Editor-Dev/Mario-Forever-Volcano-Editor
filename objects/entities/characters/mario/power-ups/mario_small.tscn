@@ -126,6 +126,7 @@ position = Vector2(0, -13)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_shfxv")
+metadata/_edit_group_ = true
 
 [node name="RemBubble" type="RemoteTransform2D" parent="AnimatedSprite2D"]
 position = Vector2(4, 16)
@@ -135,11 +136,7 @@ update_scale = false
 [node name="PosBubble" type="Marker2D" parent="."]
 position = Vector2(4, 0)
 gizmo_extents = 4.0
-
-[node name="ShapeController" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_8igf2")
-}
+metadata/_edit_lock_ = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state", "root")]
 script = ExtResource("4_boade")
@@ -148,3 +145,8 @@ root = NodePath("..")
 
 [node name="State" type="Node" parent="StateMachine"]
 script = ExtResource("3_o4p3o")
+
+[node name="ShapeController" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8igf2")
+}

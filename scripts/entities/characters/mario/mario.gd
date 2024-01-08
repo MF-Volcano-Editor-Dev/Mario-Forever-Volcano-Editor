@@ -1,6 +1,9 @@
 @icon("res://icons/character_entity_2d.svg")
 class_name Mario extends Character
 
+## Character that behaves similarly to Mario
+##
+##
 
 @export var current_powerup: StringName = &"small":
 	set = set_powerup
