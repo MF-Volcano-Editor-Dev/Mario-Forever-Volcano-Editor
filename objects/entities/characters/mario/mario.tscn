@@ -9,7 +9,7 @@ size = Vector2(20, 28)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dw8bv"]
 size = Vector2(18, 2)
 
-[node name="Mario" type="EntityBody2D"]
+[node name="Mario" type="EntityBody2D" groups=["character"]]
 collision_mask = 2
 script = ExtResource("1_es2gk")
 

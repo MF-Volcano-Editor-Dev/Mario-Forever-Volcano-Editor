@@ -12,6 +12,8 @@ To insist typed coding, we here requires that the typed coding should be always 
 It's NOT RECOMMENDED to remove any spaces in previous examples.
 
 However, as the typed coding gets taken, in some situation the type specification is not required:
+	- For local variables in a function, you can use ":=" if the right value is type-inferrable by the first sight of a human.
+		- For arrays, misuse of the feature will cause error. For example, an array assigned with [] will throw an error when it is prefixed with ":=".
 	- When assigning a for loop, you needn't speficy the type for the loop variable `i`, `j`, `k`, etc..
 
 The type specification can also be done by interring with ":=" plus for variables, and in such circumstance, a value should be given so that the inferring may work. However, we do not recommend to use such form since it may sometimes cause trouble with tracking issues.
@@ -106,3 +108,47 @@ However, sometimes this structure will lead to another problem that the structur
 ## Class inheritance
 A programmer will hate class inheritance when the extending chain is so long as a Chinese loong. As their common, we here do not suggest you to depend on `extends` too much. Instead, if you have some common behaviors, you can pack them into a node as a component of other one.
 In the template is provided a `Component` class for such usage.
+
+## Proper use of `if`
+See the following examples:
+	if !expression:
+		return
+	<codes>
+compared with
+	if expression:
+		<codes>
+See the difference? The first one will break ALL THE REST OF FUNCTION when the expression is false, while the second one won't.
+However, if you have got into such a situation:
+	if expression:
+		<codes>
+	# then nothing
+though it's the same as the first example, sometimes, however, this would break the tidiness of your code. So if a codeblock only contains one if-condition, then why not reverse its condition? Compare these two examples:
+I.
+	if expression:
+		<code1>
+		<code2>
+		...
+		if another_expression:
+			<codeA1>
+			<codeA2>
+			...
+			if third_expression:
+				<codeN+1>
+				<codeN+2>
+				...
+II.
+	if !expression:
+		return/continue/break # Choose one that fits your situation
+	<code1>
+	<code2>
+	...
+	if another_expression:
+		<codeA1>
+		<codeA2>
+	if !third_expression:
+		return/continue/break
+	...
+	<codeN+1>
+	<codeN+2>
+	...
+In conclusion, we prefer the second style in order to keep the cleaness and tidiness of the code structure.
