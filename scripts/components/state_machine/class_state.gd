@@ -27,4 +27,4 @@ func _state_process(delta: float) -> void: pass
 
 ## [code]virtual[/code] Called when the state [u]is current[/u] and the state machine's [method Node._physics_process] gets called.
 @warning_ignore("unused_parameter")
-func _state_physics_proces(delta: float) -> void: pass
+func _state_physics_process(delta: float) -> void: pass

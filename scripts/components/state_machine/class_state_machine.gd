@@ -18,8 +18,9 @@ signal state_changed ## Emitted when [member current_state] gets changed
 			current_state = value
 			return
 		# Previous state calls finishing functions and emits a relevant signal
-		current_state.state_exited.emit()
-		current_state._state_exit()
+		if current_state:
+			current_state.state_exited.emit()
+			current_state._state_exit()
 		# Sets to new state as current
 		current_state = value 
 		# New state calls entering functions and emits a relevant signal
@@ -43,7 +44,7 @@ func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	if current_state:
-		current_state._state_physics_proces(delta)
+		current_state._state_physics_process(delta)
 
 
 ## Changes the current state to a given one that contains [member State.state_id] that is the same as [param to]

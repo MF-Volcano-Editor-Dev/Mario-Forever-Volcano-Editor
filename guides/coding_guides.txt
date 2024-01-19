@@ -53,7 +53,7 @@ var d: Type
 @onready _e: Type // Private
 @onready _f: Type
 
-@onready g: Type
+@onready g: Type // Public or protected
 @onready h: Type
 
 @onready i: NodeType // Node getting
@@ -92,6 +92,8 @@ func set_xxx_2() -> void:
 
 func get_xxx_2() -> void:
 	...
+
+And, if possible, we recommend to use code region to quote your codes with a general title about how your codes work for. 
 
 ## Setters and getters
 Since 4.0, we can now make inline setters and getters. However, if possible, we prefer to put a large chunk of codes into a setter function or a getter function. While sometimes we can only have a setter or a getter, which is not limited but should be tidy enough.

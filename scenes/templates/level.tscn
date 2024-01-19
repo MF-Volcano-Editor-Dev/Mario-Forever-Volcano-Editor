@@ -1,16 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=4 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_bvcda"]
 [ext_resource type="PackedScene" uid="uid://dm1au2ar8wp71" path="res://objects/entities/characters/mario/mario.tscn" id="3_2xf2e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mdf2w"]
 size = Vector2(128, 320)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mhock"]
-size = Vector2(32, 32)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_82f0c"]
-size = Vector2(30, 30)
 
 [node name="Level" type="Node2D"]
 
@@ -36,19 +30,4 @@ shape = SubResource("RectangleShape2D_mdf2w")
 debug_color = Color(0.796078, 0.423529, 0, 0.419608)
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
-gravity_scale = 0.5
-position = Vector2(352, 400)
-
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-position = Vector2(400, 304)
-collision_layer = 2
-collision_mask = 0
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-shape = SubResource("RectangleShape2D_mhock")
-
-[node name="Area2D" type="Area2D" parent="StaticBody2D"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D/Area2D"]
-shape = SubResource("RectangleShape2D_82f0c")
+position = Vector2(64, 104)

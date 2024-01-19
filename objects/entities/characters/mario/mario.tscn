@@ -1,37 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://dm1au2ar8wp71"]
+[gd_scene load_steps=3 format=3 uid="uid://dm1au2ar8wp71"]
 
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario.gd" id="1_es2gk"]
 [ext_resource type="PackedScene" uid="uid://d2a3jxasggppj" path="res://objects/entities/characters/mario/power-ups/mario_small.tscn" id="2_04tbc"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_84u7v"]
-size = Vector2(20, 28)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dw8bv"]
-size = Vector2(18, 2)
-
 [node name="Mario" type="EntityBody2D" groups=["character"]]
+gravity_scale = 1.0
+max_falling_speed = 500.0
 collision_mask = 2
 script = ExtResource("1_es2gk")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(0, 2)
-shape = SubResource("RectangleShape2D_84u7v")
-
-[node name="Body" type="Area2D" parent="."]
-visible = false
-collision_mask = 118
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
-position = Vector2(0, 2)
-debug_color = Color(0.980392, 0.145098, 0, 0.419608)
-
-[node name="Head" type="Area2D" parent="."]
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Head"]
-position = Vector2(0, -13)
-shape = SubResource("RectangleShape2D_dw8bv")
-
-[node name="MarioSmall" parent="." instance=ExtResource("2_04tbc")]
+[node name="MarioSmall" parent="." node_paths=PackedStringArray("mario") instance=ExtResource("2_04tbc")]
+mario = NodePath("..")
