@@ -129,6 +129,7 @@ control/player/jumpable_when_crouching=false
 control/player/crouchable_in_small_suit=false
 control/player/walkable_when_crouching=false
 data/player/default_lives=4
+data/sound/default_area_mask=16
 
 [input]
 

@@ -1,9 +1,11 @@
-[gd_scene load_steps=26 format=3 uid="uid://d2a3jxasggppj"]
+[gd_scene load_steps=31 format=3 uid="uid://d2a3jxasggppj"]
 
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_powerup.gd" id="1_igb6y"]
 [ext_resource type="Texture2D" uid="uid://boyhdrc8eefo7" path="res://assets/gfx/objects/entities/characters/mario_small.png" id="2_hajdj"]
+[ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_underwater.gd" id="3_2jggs"]
 [ext_resource type="Script" path="res://scripts/components/state_machine/class_state_machine.gd" id="4_boade"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_non_climbing.gd" id="4_j3ux2"]
+[ext_resource type="Script" path="res://scripts/components/state_machine/class_state.gd" id="5_sk46f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_on2rw"]
 size = Vector2(20, 26)
@@ -69,6 +71,18 @@ region = Rect2(256, 0, 32, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_k0kdp"]
 atlas = ExtResource("2_hajdj")
 region = Rect2(352, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ohyoo"]
+atlas = ExtResource("2_hajdj")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o3bp3"]
+atlas = ExtResource("2_hajdj")
+region = Rect2(64, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_axcwg"]
+atlas = ExtResource("2_hajdj")
+region = Rect2(0, 0, 32, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_shfxv"]
 animations = [{
@@ -154,7 +168,16 @@ animations = [{
 "name": &"swim",
 "speed": 5.0
 }, {
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ohyoo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o3bp3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_axcwg")
+}],
 "loop": true,
 "name": &"walk",
 "speed": 5.0
@@ -345,6 +368,12 @@ metadata/_edit_group_ = true
 position = Vector2(4, 16)
 update_scale = false
 
+[node name="Underwater" type="Node" parent="." node_paths=PackedStringArray("head", "body")]
+script = ExtResource("3_2jggs")
+head = NodePath("../Head")
+body = NodePath("../Body")
+metadata/_edit_pinned_properties_ = [&"head", &"body"]
+
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state", "root")]
 editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`"
 script = ExtResource("4_boade")
@@ -352,16 +381,20 @@ current_state = NodePath("NonClimbing")
 root = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"root", &"current_state"]
 
-[node name="NonClimbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite", "shape_controller", "head", "body", "root")]
+[node name="NonClimbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite", "shape_controller", "root")]
 editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`"
 script = ExtResource("4_j3ux2")
 animated_sprite = NodePath("../../AnimatedSprite2D")
 shape_controller = NodePath("../../ShapeController")
-head = NodePath("../../Head")
-body = NodePath("../../Body")
 state_id = &"non_climbing"
 root = NodePath("../..")
-metadata/_edit_pinned_properties_ = [&"animated_sprite", &"shape_controller", &"head", &"body", &"state_id", &"root"]
+metadata/_edit_pinned_properties_ = [&"state_id"]
+
+[node name="Climbing" type="Node" parent="StateMachine"]
+editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`"
+script = ExtResource("5_sk46f")
+state_id = &"climbing"
+metadata/_edit_pinned_properties_ = [&"state_id", &"root"]
 
 [node name="ShapeController" type="AnimationPlayer" parent="."]
 libraries = {

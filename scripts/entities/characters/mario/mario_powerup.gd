@@ -7,6 +7,8 @@ signal powerup_exited ## Emitted when the powerup exits from being current.
 @export var powerup_id: StringName = &"small"
 @export_group("References")
 @export var collision_shapes: Array[CollisionShape2D]
+@export_group("Features")
+@export var is_small: bool = true
 
 @onready var _character: Character = get_parent() as Character
 
