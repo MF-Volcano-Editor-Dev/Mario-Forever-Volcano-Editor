@@ -126,8 +126,8 @@ import/blender/enabled=false
 [game]
 
 control/player/jumpable_when_crouching=false
-control/player/crouchable_in_small_suit=false
-control/player/walkable_when_crouching=false
+control/player/crouchable_in_small_suit=true
+control/player/walkable_when_crouching=true
 data/player/default_lives=4
 data/sound/default_area_mask=16
 

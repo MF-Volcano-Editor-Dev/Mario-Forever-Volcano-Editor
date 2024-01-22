@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=5 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_bvcda"]
 [ext_resource type="PackedScene" uid="uid://dm1au2ar8wp71" path="res://objects/entities/characters/mario/mario.tscn" id="3_2xf2e"]
+[ext_resource type="PackedScene" uid="uid://ber4ghptyioeg" path="res://objects/entities/areas/fluid/water/water.tscn" id="3_bvtuf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mdf2w"]
 size = Vector2(128, 320)
@@ -31,3 +32,5 @@ debug_color = Color(0.796078, 0.423529, 0, 0.419608)
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
 position = Vector2(64, 104)
+
+[node name="AreaWater" parent="." instance=ExtResource("3_bvtuf")]

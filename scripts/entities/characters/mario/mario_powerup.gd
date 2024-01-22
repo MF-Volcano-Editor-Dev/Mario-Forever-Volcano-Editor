@@ -7,20 +7,31 @@ signal powerup_exited ## Emitted when the powerup exits from being current.
 @export var powerup_id: StringName = &"small"
 @export_group("References")
 @export var collision_shapes: Array[CollisionShape2D]
-@export_group("Features")
-@export var is_small: bool = true
+@export_group("Physics")
+@export var gravity_scale_override: float = 1
+@export var max_falling_speed_override: float = 500
 
 @onready var _character: Character = get_parent() as Character
 
 ## [code]virtual[/code], [code]mutable[/code] Called when the powerup becomes current.
 func _powerup_entered() -> void:
 	powerup_entered.emit()
+	
 	if !collision_shapes.is_empty():
 		set_shapes_for_character.call_deferred()
+	
+	_character.gravity_scale = gravity_scale_override
+	_character.max_falling_speed = max_falling_speed_override
 
 ## [code]virtual[/code], [code]mutable[/code] Called when the powerup exits from being current.
 func _powerup_exited() -> void:
 	powerup_exited.emit()
+
+
+## Overrides given [param properties] with values
+func overriding_properties_scale(properties: Dictionary) -> void:
+	for i in properties:
+		_character.set_indexed(i, _character.get_indexed(i) * properties[i])
 
 
 ## Sets the shapes for the character.[br]

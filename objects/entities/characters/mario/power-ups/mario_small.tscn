@@ -166,7 +166,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"swim",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -362,13 +362,14 @@ debug_color = Color(0.984314, 0, 0.356863, 0.419608)
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -24)
 sprite_frames = SubResource("SpriteFrames_shfxv")
+autoplay = "default"
 metadata/_edit_group_ = true
 
 [node name="RemoBubble" type="RemoteTransform2D" parent="AnimatedSprite2D"]
 position = Vector2(4, 16)
 update_scale = false
 
-[node name="Underwater" type="Node" parent="." node_paths=PackedStringArray("head", "body")]
+[node name="AreaDetection" type="Node" parent="." node_paths=PackedStringArray("head", "body")]
 script = ExtResource("3_2jggs")
 head = NodePath("../Head")
 body = NodePath("../Body")
@@ -381,7 +382,7 @@ current_state = NodePath("NonClimbing")
 root = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"root", &"current_state"]
 
-[node name="NonClimbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite", "shape_controller", "root")]
+[node name="NonClimbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite", "shape_controller", "root") groups=["state_machine_state_small_crouchable"]]
 editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`"
 script = ExtResource("4_j3ux2")
 animated_sprite = NodePath("../../AnimatedSprite2D")

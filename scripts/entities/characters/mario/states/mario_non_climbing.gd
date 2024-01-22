@@ -11,7 +11,6 @@ extends State
 @export var key_down: StringName = &"down"
 @export var key_jump: StringName = &"jump"
 @export var key_run: StringName = &"run"
-@export_group("Physics")
 @export_subgroup("Walking")
 ## Initial walking speed.
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_speed: float = 50
@@ -49,12 +48,19 @@ extends State
 
 var _has_jumped: bool
 
-@onready var _character: Character = root.get_parent()
+@onready var _powerup: MarioPowerup = root
+@onready var _character: Mario = root.get_parent()
 
+
+func _ready() -> void:
+	if animated_sprite:
+		animated_sprite.animation_looped.connect(_on_animation_looped)
 
 func _state_process(delta: float) -> void:
+	_crouch() # Should be executed before all the following methods to make sure the following ones can be executed as expected
 	_walk()
 	_jump(delta)
+	_swim(delta)
 	_animation.call_deferred(delta) # Called at the end of a frame to make sure the animation will be correctly played if the character is walking against a wall
 
 func _state_physics_process(_delta: float) -> void:
@@ -62,14 +68,42 @@ func _state_physics_process(_delta: float) -> void:
 	_character.move_and_slide()
 
 
+#region == Movement ==
+func _crouch() -> void:
+	# Reset to default shape
+	_character.remove_from_group(&"state_crouching")
+	if shape_controller:
+		shape_controller.play(&"RESET")
+		_powerup.set_shapes_for_character()
+	
+	if !_powerup:
+		return
+	if _character.is_in_group(&"state_completed"):
+		_character.remove_from_group(&"state_crouching")
+		return
+	
+	# Detection for crouching
+	var small_crhable: bool = ProjectSettings.get_setting("game/control/player/crouchable_in_small_suit", false)
+	var small_crhable_for_self: bool = is_in_group(&"state_machine_state_small_crouchable")
+	if _character.is_on_floor() && _character.get_input_pressed(key_down) && (!small_crhable_for_self || (small_crhable_for_self && small_crhable)):
+		_character.add_to_group(&"state_crouching")
+	
+	# Updates shapes to one in crouching state
+	if _character.is_in_group(&"state_crouching") && shape_controller:
+		shape_controller.play(&"CROUCH")
+		_powerup.set_shapes_for_character()
+
 func _walk() -> void:
 	var lr: int = _character.get_udlr_directions(key_left, key_right, key_up, key_down).x # Acceleration
-	if _character.is_in_group(&"state_completed"):
+	var crh: bool = _character.is_in_group(&"state_crouching") # Crouching
+	var crh_walkable: bool = ProjectSettings.get_setting("game/control/player/walkable_when_crouching", false) # Crouch-walkable
+	if _character.is_in_group(&"state_completed") || (!crh_walkable && crh):
 		lr = 0 # If the character has completed the level, then the input will be interfered
 	# Deceleration
 	if !lr:
-		var dc: float = deceleration * (deceleration_scale_crouch if _character.is_in_group(&"state_crouching") else 1.0) # Deceleration
-		_character.decelerate_with_friction(dc)
+		if !is_zero_approx(_character.velocality.x):
+			var dc: float = deceleration * (deceleration_scale_crouch if crh else 1.0) # Deceleration
+			_character.decelerate_with_friction(dc)
 		return
 	# Initial walking speed
 	elif is_zero_approx(_character.velocality.x):
@@ -77,12 +111,11 @@ func _walk() -> void:
 		_character.velocality.x = _character.direction * initial_speed
 	# Walking and running
 	if lr == _character.direction:
-		if _character.get_input_pressed(key_run):
+		if _character.get_input_pressed(key_run) && !crh: # Crouching-walking should not be applied to running
 			_character.add_to_group(&"state_running")
 		else:
 			_character.remove_from_group(&"state_running")
-		var crwlk: bool = bool(ProjectSettings.get_setting("game/control/player/walkable_when_crouching", false)) # Crouch-walking
-		var max_spd: float = max_running_speed if _character.is_in_group(&"state_running") else max_walking_speed if !crwlk else max_walking_speed * 0.2
+		var max_spd: float = max_running_speed if _character.is_in_group(&"state_running") else max_walking_speed if !crh_walkable else max_walking_speed * 0.2
 		_character.accelerate_local_x(acceleration, max_spd * _character.direction)
 	# Turning back
 	elif lr == -_character.direction:
@@ -97,22 +130,41 @@ func _jump(delta: float) -> void:
 		return
 	if _character.is_in_group(&"state_swimming"):
 		return
+	if _character.is_in_group(&"state_crouching") && !ProjectSettings.get_setting("game/control/player/jumpable_when_crouching", false):
+		return
 	
 	# Resets _has_jumped
-	var press_jump: bool = _character.get_input_just_pressed(key_jump)
-	var hold_jump: bool = _character.get_input_pressed(key_jump)
+	var pj: bool = _character.get_input_just_pressed(key_jump) # Pressing jump
+	var hj: bool = _character.get_input_pressed(key_jump) # Holding jump
 	if _has_jumped && \
-		(_character.is_falling() && press_jump) || \
-		(_character.is_on_floor() && !hold_jump):
+		(_character.is_falling() && pj) || \
+		(_character.is_on_floor() && !hj):
 			_has_jumped = false
 	# Jumping
-	if !_has_jumped && _character.is_on_floor() && hold_jump: # `hold_jump` detects more precise than `press_jump` here
+	if !_has_jumped && _character.is_on_floor() && hj: # `hold_jump` detects more precise than `press_jump` here
 		_has_jumped = true
 		_character.jump(initial_jumping_speed)
 		Sound.play_2d(sound_jumping, _character)
 	# Accelerates jumping
-	if _character.is_leaving_ground() && hold_jump:
+	if _character.is_leaving_ground() && hj:
 		_character.jump((jumping_acceleration_dynamic if absf(_character.velocality.x) >= 10 else jumping_acceleration_static) * delta, true)
+
+func _swim(delta: float) -> void:
+	if _character.is_in_group(&"state_completed"):
+		_character.remove_from_group(&"state_swimming")
+		return
+	if !_character.is_in_group(&"state_swimming"):
+		return
+	
+	if _character.get_input_just_pressed(key_jump):
+		var swspd: float = swimming_strength if !_character.is_in_group(&"state_swimming_to_jumping") else swimming_strength_jumping_out
+		_character.jump(swspd)
+		Sound.play_2d(sound_swimming, _character)
+	
+	var max_swspd: float = -absf(swimming_up_max_speed) # Max swimming speed
+	if !_character.is_in_group(&"state_swimming_to_jumping") && _character.velocality.y < max_swspd:
+		_character.velocality.y = lerpf(_character.velocality.y, max_swspd, 16 * delta)
+#endregion
 
 
 #region == Animations ==
@@ -126,15 +178,22 @@ func _animation(delta: float) -> void:
 		return
 	
 	if _character.is_on_floor():
-		var real_vel: Vector2 = _character.get_real_velocity()
-		if !real_vel.slide(_character.get_floor_normal()).is_zero_approx():
-			animated_sprite.play(&"walk", absf(_character.velocality.x) * delta * 10)
+		if _character.is_in_group(&"state_crouching"):
+			animated_sprite.play(&"crouch")
 		else:
-			animated_sprite.play(&"default")
+			var real_vel: Vector2 = _character.get_real_velocity()
+			if !real_vel.slide(_character.get_floor_normal()).is_zero_approx():
+				animated_sprite.play(&"walk", absf(_character.velocality.x) * delta * 10)
+			else:
+				animated_sprite.play(&"default")
 	elif _character.is_in_group(&"state_swimming"):
 		animated_sprite.play(&"swim")
 	elif _character.is_falling():
 		animated_sprite.play(&"fall")
 	else:
 		animated_sprite.play(&"jump")
+
+func _on_animation_looped() -> void:
+	if animated_sprite.animation == &"swim":
+		animated_sprite.frame = animated_sprite.sprite_frames.get_frame_count(animated_sprite.animation) - 2
 #endregion
