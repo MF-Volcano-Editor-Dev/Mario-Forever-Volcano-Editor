@@ -4,8 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://d2a3jxasggppj" path="res://objects/entities/characters/mario/power-ups/mario_small.tscn" id="2_04tbc"]
 
 [node name="Mario" type="EntityBody2D" groups=["character"]]
-gravity_scale = 1.0
-max_falling_speed = 500.0
 collision_mask = 2
 script = ExtResource("1_es2gk")
 

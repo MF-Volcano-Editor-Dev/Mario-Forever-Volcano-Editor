@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=5 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_bvcda"]
 [ext_resource type="PackedScene" uid="uid://dm1au2ar8wp71" path="res://objects/entities/characters/mario/mario.tscn" id="3_2xf2e"]
-[ext_resource type="PackedScene" uid="uid://ber4ghptyioeg" path="res://objects/entities/areas/fluid/water/water.tscn" id="3_jersl"]
 [ext_resource type="Script" path="res://scripts/entities/areas/area_climbable.gd" id="3_nagda"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mdf2w"]
@@ -17,7 +16,8 @@ layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969,
 metadata/_edit_lock_ = true
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
-position = Vector2(384, 408)
+gravity_scale = 1.0
+position = Vector2(384, 64)
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(264, 208)
@@ -32,6 +32,3 @@ metadata/_edit_group_ = true
 position = Vector2(-8, 16)
 shape = SubResource("RectangleShape2D_mdf2w")
 debug_color = Color(0.796078, 0.423529, 0, 0.419608)
-
-[node name="AreaWater" parent="." instance=ExtResource("3_jersl")]
-position = Vector2(64, 64)

@@ -1,5 +1,9 @@
 extends State
 
+## 
+##
+## If you want to customize the behavior based on this script, please override the related method(s).
+
 @export_category("Character Non-climbing State")
 @export_group("References")
 @export var animated_sprite: AnimatedSprite2D
@@ -11,6 +15,7 @@ extends State
 @export var key_down: StringName = &"down"
 @export var key_jump: StringName = &"jump"
 @export var key_run: StringName = &"run"
+@export_group("Physics")
 @export_subgroup("Walking")
 ## Initial walking speed.
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_speed: float = 50
@@ -61,12 +66,21 @@ func _state_process(delta: float) -> void:
 	_walk()
 	_jump(delta)
 	_swim(delta)
+	_climbing_check()
 	_animation.call_deferred(delta) # Called at the end of a frame to make sure the animation will be correctly played if the character is walking against a wall
 
 func _state_physics_process(_delta: float) -> void:
 	_character.calculate_gravity()
 	_character.move_and_slide()
 
+
+func _climbing_check() -> void:
+	if !_character.is_in_group(&"state_climbable"):
+		return
+	if !_character.get_input_just_pressed(key_up):
+		return
+	_character.add_to_group(&"state_climbing")
+	_state_machine.change_state(&"climbing")
 
 #region == Movement ==
 func _crouch() -> void:
@@ -84,7 +98,7 @@ func _crouch() -> void:
 	
 	# Detection for crouching
 	var small_crhable: bool = ProjectSettings.get_setting("game/control/player/crouchable_in_small_suit", false)
-	var small_crhable_for_self: bool = is_in_group(&"state_machine_state_small_crouchable")
+	var small_crhable_for_self: bool = is_in_group(&"state_machine_state_small")
 	if _character.is_on_floor() && _character.get_input_pressed(key_down) && (!small_crhable_for_self || (small_crhable_for_self && small_crhable)):
 		_character.add_to_group(&"state_crouching")
 	
@@ -115,7 +129,7 @@ func _walk() -> void:
 			_character.add_to_group(&"state_running")
 		else:
 			_character.remove_from_group(&"state_running")
-		var max_spd: float = max_running_speed if _character.is_in_group(&"state_running") else max_walking_speed if !crh_walkable else max_walking_speed * 0.2
+		var max_spd: float = max_running_speed if _character.is_in_group(&"state_running") else max_walking_speed if !crh else max_walking_speed * 0.2
 		_character.accelerate_local_x(acceleration, max_spd * _character.direction)
 	# Turning back
 	elif lr == -_character.direction:

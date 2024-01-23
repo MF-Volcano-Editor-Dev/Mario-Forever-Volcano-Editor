@@ -35,7 +35,7 @@ signal powerup_exited ## Emitted when the powerup exits from being current.
 ## See [member gravity_scale_override] for details
 @export var max_falling_speed_override: float = 500:
 	set(value):
-		gravity_scale_override = value
+		max_falling_speed_override = value
 		if !is_instance_valid(_character):
 			return
 		if !_character.is_node_ready():

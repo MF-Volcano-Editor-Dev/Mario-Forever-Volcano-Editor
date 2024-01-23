@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_underwater.gd" id="3_2jggs"]
 [ext_resource type="Script" path="res://scripts/components/state_machine/class_state_machine.gd" id="4_boade"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_non_climbing.gd" id="4_j3ux2"]
-[ext_resource type="Script" path="res://scripts/components/state_machine/class_state.gd" id="5_sk46f"]
+[ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_climbing.gd" id="6_nfgd5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_on2rw"]
 size = Vector2(20, 26)
@@ -382,20 +382,22 @@ current_state = NodePath("NonClimbing")
 root = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"root", &"current_state"]
 
-[node name="NonClimbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite", "shape_controller", "root") groups=["state_machine_state_small_crouchable"]]
+[node name="NonClimbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite", "shape_controller", "root") groups=["state_machine_state_small"]]
 editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`"
 script = ExtResource("4_j3ux2")
 animated_sprite = NodePath("../../AnimatedSprite2D")
 shape_controller = NodePath("../../ShapeController")
 state_id = &"non_climbing"
 root = NodePath("../..")
-metadata/_edit_pinned_properties_ = [&"state_id"]
-
-[node name="Climbing" type="Node" parent="StateMachine"]
-editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`"
-script = ExtResource("5_sk46f")
-state_id = &"climbing"
 metadata/_edit_pinned_properties_ = [&"state_id", &"root"]
+
+[node name="Climbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_non_climbing", "root")]
+editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`"
+script = ExtResource("6_nfgd5")
+state_non_climbing = NodePath("../NonClimbing")
+state_id = &"climbing"
+root = NodePath("../..")
+metadata/_edit_pinned_properties_ = [&"state_id", &"root", &"state_non_climbing"]
 
 [node name="ShapeController" type="AnimationPlayer" parent="."]
 libraries = {

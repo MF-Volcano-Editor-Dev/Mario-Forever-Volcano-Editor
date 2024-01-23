@@ -13,3 +13,4 @@ func _on_body_entered(body: Node2D) -> void:
 func _on_body_exited(body: Node2D) -> void:
 	if body is Character:
 		body.remove_from_group(&"state_climbable")
+		body.remove_from_group(&"state_climbing")

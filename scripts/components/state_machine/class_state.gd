@@ -14,6 +14,8 @@ signal state_exited ## Emitted when this node ends up being current.
 ## When [method StateMachine.change_state] is called, this property will get into usage to match if the given [param to] matches this. If [code]true[/code], this state will become current state.
 @export var state_id: StringName
 
+@onready var _state_machine: StateMachine = get_parent()
+
 
 ## [code]virtual[/code] Called when the state becomes current. 
 func _state_enter() -> void: pass

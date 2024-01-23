@@ -10,7 +10,7 @@ Before starting working on your TF-states for `Nodes`, it is better to learn abo
 * Continuing the previous one, if the state is a past tense or a kind of status, then use -ed forms; if the state is about a passive action going on, use "being" + -ed forms. E.g. "state_being_attacked", "state_defensed".
 * Continuing, again, the previous one, if the state is about to come true, use "to_be". E.g. "state_to_be_working"
 * In principle, the modal verbs is not allowed to use for naming states.
-* Prepositional phrases is allowed. E.g. "state_on_wall", "state_in_progress".
+* Prepositional and adjective phrases is allowed as well. E.g. "state_on_wall", "state_in_progress".
 
 ### Naming with objects
 * Unless the state is applied for certain or general objects, we advise to add the object name between the verb/noun and the prefix "state". E.g. "state_goomba_walking", "state_chip_jumping"
