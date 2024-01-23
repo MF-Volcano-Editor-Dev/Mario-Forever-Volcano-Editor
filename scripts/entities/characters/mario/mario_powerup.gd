@@ -1,17 +1,49 @@
 class_name MarioPowerup extends Node2D
 
+## [MarioPowerup] is used to provide sprites and behaviors for [Character], which are implemented in the form of [Node]s.
+##
+## This node is required to be a direct child of [Character] so that the character may detect and get access to this node together with its children.[br]
+## [br]
+## To provide specific data for a character that the powerup is tracking on, such as sprites and behaviors, please use relevant nodes and add them as the children of this node.
+
 signal powerup_entered ## Emitted when the powerup becomes current.
 signal powerup_exited ## Emitted when the powerup exits from being current.
 
-@export var mario: Mario
+## Id of the powerup.[br]
+## This is used to make this node identified by the character, and gives the node an real identity of a [u]unique[/u] powerup.
 @export var powerup_id: StringName = &"small"
 @export_group("References")
+## [CollisionShape2D]s that the node is going to set for the character.[br]
+## [br]
+## [b]Note:[/b] Before Godot 4.3 to be released, [CollisionShape2D] doesn't support indirect reference to a [PhysicsBody2D], which is the ancestor class of [Character] and even [Mario].
+## That is to say, the [CollisionShape2D]s work only when they are direct children of it. 
+## See [method set_shapes_for_character] for more details.
 @export var collision_shapes: Array[CollisionShape2D]
 @export_group("Physics")
-@export var gravity_scale_override: float = 1
-@export var max_falling_speed_override: float = 500
+## Overrides [member EntityBody2D.gravity_scale] of the character.[br]
+## [br]
+## [b]Note[/b]: This property works only at the moment the powerup becomes current, or the moment the value gets changed.
+@export var gravity_scale_override: float = 1:
+	set(value):
+		gravity_scale_override = value
+		if !is_instance_valid(_character):
+			return
+		if !_character.is_node_ready():
+			return
+		_character.gravity_scale = gravity_scale_override
+## Overrides [member EntityBody2D.max_falling_speed] of the character.[br]
+## See [member gravity_scale_override] for details
+@export var max_falling_speed_override: float = 500:
+	set(value):
+		gravity_scale_override = value
+		if !is_instance_valid(_character):
+			return
+		if !_character.is_node_ready():
+			return
+		_character.max_falling_speed = max_falling_speed_override
 
 @onready var _character: Character = get_parent() as Character
+
 
 ## [code]virtual[/code], [code]mutable[/code] Called when the powerup becomes current.
 func _powerup_entered() -> void:
@@ -20,18 +52,12 @@ func _powerup_entered() -> void:
 	if !collision_shapes.is_empty():
 		set_shapes_for_character.call_deferred()
 	
-	_character.gravity_scale = gravity_scale_override
-	_character.max_falling_speed = max_falling_speed_override
+	gravity_scale_override = gravity_scale_override # Triggers the setter of this property to set the value for the character
+	max_falling_speed_override = max_falling_speed_override # Same as previous one
 
 ## [code]virtual[/code], [code]mutable[/code] Called when the powerup exits from being current.
 func _powerup_exited() -> void:
 	powerup_exited.emit()
-
-
-## Overrides given [param properties] with values
-func overriding_properties_scale(properties: Dictionary) -> void:
-	for i in properties:
-		_character.set_indexed(i, _character.get_indexed(i) * properties[i])
 
 
 ## Sets the shapes for the character.[br]

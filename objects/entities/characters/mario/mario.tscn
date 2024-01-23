@@ -9,5 +9,4 @@ max_falling_speed = 500.0
 collision_mask = 2
 script = ExtResource("1_es2gk")
 
-[node name="MarioSmall" parent="." node_paths=PackedStringArray("mario") instance=ExtResource("2_04tbc")]
-mario = NodePath("..")
+[node name="MarioSmall" parent="." instance=ExtResource("2_04tbc")]

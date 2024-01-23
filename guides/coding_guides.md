@@ -6,15 +6,15 @@ We prefer to assign a `class_name` for such node that have significant applicati
 
 ## Type specification
 To insist typed coding, we here requires that the typed coding should be always used, even if it comes a situation where the untyped should go into application:
-	- For variables assignment: use ```var a: TypeName = value```
-	- For functions assignment: use ```func method() -> TypeName/void```
-	- For parameters, see "for variables", without `var`
+- For variables assignment: use ```var a: TypeName = value```
+- For functions assignment: use ```func method() -> TypeName/void```
+- For parameters, see "for variables", without `var`
 It's NOT RECOMMENDED to remove any spaces in previous examples.
 
 However, as the typed coding gets taken, in some situation the type specification is not required:
-	- For local variables in a function, you can use ":=" if the right value is type-inferrable by the first sight of a human.
-		- For arrays, misuse of the feature will cause error. For example, an array assigned with [] will throw an error when it is prefixed with ":=".
-	- When assigning a for loop, you needn't speficy the type for the loop variable `i`, `j`, `k`, etc..
+- For local variables in a function, you can use ":=" if the right value is type-inferrable by the first sight of a human.
+- For arrays, misuse of the feature will cause error. For example, an array assigned with [] will throw an error when it is prefixed with ":=".
+- When assigning a for loop, you needn't speficy the type for the loop variable `i`, `j`, `k`, etc..
 
 The type specification can also be done by interring with ":=" plus for variables, and in such circumstance, a value should be given so that the inferring may work. However, we do not recommend to use such form since it may sometimes cause trouble with tracking issues.
 
@@ -23,7 +23,7 @@ Since Godot does not support access attributes, we, according to what Godot advi
 
 ## Assignment order
 In order to make a script clean and clear, here is a template about how to write a tidy script:
-
+```GDScript
 @icon/@tool/@static_unload
 class_name <ClassName> extends <ParentClass>
 
@@ -92,7 +92,7 @@ func set_xxx_2() -> void:
 
 func get_xxx_2() -> void:
 	...
-
+```
 And, if possible, we recommend to use code region to quote your codes with a general title about how your codes work for. 
 
 ## Setters and getters
@@ -100,10 +100,12 @@ Since 4.0, we can now make inline setters and getters. However, if possible, we 
 
 ## Single-line code in flow controlling
 Though we can put the signle-line code into the same line as the control flow, like this one,
+```GDScript
 	if expression: return value
 It's not advised, to be honest, since your monitor will cut off the words, which will lead to inconvenience when reading codes. Thus, we'd like to resort to this form:
 	if expression:
 		return value
+```
 The structure is clearer and more obvious than the previous one and your monitor will have tiny chance to hide the words out of the edge of screen.
 However, sometimes this structure will lead to another problem that the structure will become another factor to pollute your script. To avoid it as possible as we can, we do not recommend to overuse such forms.
 
@@ -113,19 +115,26 @@ In the template is provided a `Component` class for such usage.
 
 ## Proper use of `if`
 See the following examples:
+```GDScript
 	if !expression:
 		return
 	<codes>
+```
 compared with
+```GDScript
 	if expression:
 		<codes>
-See the difference? The first one will break ALL THE REST OF FUNCTION when the expression is false, while the second one won't.
-However, if you have got into such a situation:
+```
+The first one will break ALL THE REST OF FUNCTION when the expression is false, while the second one won't.
+So, if you have got into such a situation:
+```GDScript
 	if expression:
 		<codes>
 	# then nothing
+```
 though it's the same as the first example, sometimes, however, this would break the tidiness of your code. So if a codeblock only contains one if-condition, then why not reverse its condition? Compare these two examples:
 I.
+```GDScript
 	if expression:
 		<code1>
 		<code2>
@@ -138,7 +147,9 @@ I.
 				<codeN+1>
 				<codeN+2>
 				...
+```
 II.
+```GDScript
 	if !expression:
 		return/continue/break # Choose one that fits your situation
 	<code1>
@@ -153,4 +164,5 @@ II.
 	<codeN+1>
 	<codeN+2>
 	...
+```
 In conclusion, we prefer the second style in order to keep the cleaness and tidiness of the code structure.

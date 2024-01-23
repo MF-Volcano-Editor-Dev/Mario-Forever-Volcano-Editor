@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/entities/areas/area_fluid.gd" id="1_1vbic"]
 
 [node name="AreaWater" type="Area2D" groups=["area_swimmable"]]
-position = Vector2(64, 256)
+editor_description = "Note: Needs CollisionShape2D(s) or CollisionPolygon2D(s) to work"
 collision_layer = 16
 gravity_space_override = 3
 gravity = 250.0
