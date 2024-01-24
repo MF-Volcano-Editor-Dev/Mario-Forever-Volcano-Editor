@@ -17,7 +17,7 @@ metadata/_edit_lock_ = true
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
 gravity_scale = 1.0
-position = Vector2(384, 64)
+position = Vector2(448, 192)
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(264, 208)
