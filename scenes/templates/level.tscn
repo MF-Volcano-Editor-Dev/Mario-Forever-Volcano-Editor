@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=11 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_bvcda"]
 [ext_resource type="PackedScene" uid="uid://dm1au2ar8wp71" path="res://objects/entities/characters/mario/mario.tscn" id="3_2xf2e"]
@@ -11,6 +11,46 @@ size = Vector2(128, 320)
 [sub_resource type="CircleShape2D" id="CircleShape2D_7wif7"]
 radius = 24.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ssy2d"]
+size = Vector2(64, 64)
+
+[sub_resource type="Animation" id="Animation_akgyb"]
+resource_name = "new_animation"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(320, 351), Vector2(512, 351)]
+}
+
+[sub_resource type="Animation" id="Animation_dk0nf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(320, 351)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k7q4w"]
+_data = {
+"RESET": SubResource("Animation_dk0nf"),
+"new_animation": SubResource("Animation_akgyb")
+}
+
 [node name="Level" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -20,12 +60,13 @@ layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969,
 metadata/_edit_lock_ = true
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
-position = Vector2(512, 384)
+position = Vector2(472, 256)
 current_powerup = &"big"
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(264, 208)
 collision_layer = 0
+gravity_space_override = 3
 gravity_point_center = Vector2(-1, 0)
 gravity_direction = Vector2(-1, 0)
 gravity = 2500.0
@@ -38,10 +79,26 @@ shape = SubResource("RectangleShape2D_mdf2w")
 debug_color = Color(0.796078, 0.423529, 0, 0.419608)
 
 [node name="Area2D2" type="Area2D" parent="."]
-position = Vector2(448, 256)
+position = Vector2(320, 184)
 script = ExtResource("4_tql4t")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
 shape = SubResource("CircleShape2D_7wif7")
 debug_color = Color(0.627451, 0.364706, 0.968627, 0.419608)
+
+[node name="AnimatableBody2D" type="AnimatableBody2D" parent="."]
+position = Vector2(320, 351)
+collision_layer = 2
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D"]
+position = Vector2(32, 32)
+shape = SubResource("RectangleShape2D_ssy2d")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimatableBody2D"]
+libraries = {
+"": SubResource("AnimationLibrary_k7q4w")
+}
+autoplay = "new_animation"
