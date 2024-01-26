@@ -39,7 +39,7 @@ func _state_physics_process(delta: float) -> void:
 	if kc && kc.get_collider():
 		_character.velocity = _character.velocity.slide(kc.get_normal())
 		# Climbing down onto the ground means going back to non-climbing state
-		if kc.get_normal().dot(_character.get_floor_normal()) < 0:
+		if kc.get_normal().dot(_character.up_direction) > 0:
 			_character.remove_from_group(&"state_climbing")
 
 

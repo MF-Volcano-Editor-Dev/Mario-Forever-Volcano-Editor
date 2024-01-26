@@ -14,8 +14,30 @@ enum Mode {
 	GLOBAL ## The sound player will be added as the child node of the [u]root[/u] of the scene tree. This won't break the playing of the sound even if the owner of the sound player gets removed or deleted, or the current scene gets changed.
 }
 
+## Plays a sound in the 1D space.
+static func play_1d(stream: AudioStream, owner: Node2D, mode: Mode = Mode.SCENIAL) -> AudioStreamPlayer:
+	if !stream || !is_instance_valid(owner) || !owner.is_inside_tree():
+		return null
+	
+	var snd: AudioStreamPlayer = AudioStreamPlayer.new()
+	snd.stream = stream
+	
+	(func() -> void: # Called deferredly to make sure the sound player will be safely added
+		match mode:
+			Mode.AS_CHILD:
+				owner.add_child(snd)
+			Mode.SCENIAL:
+				owner.get_tree().current_scene.add_child(snd)
+			Mode.GLOBAL:
+				owner.get_tree().root.add_child(snd)
+		snd.finished.connect(snd.queue_free)
+		snd.play()
+	).call_deferred()
+	
+	return snd
+
 ## Plays a sound in the 2D space.
-static func play_2d(stream: AudioStream, owner: Node2D, area_mask: int = int(ProjectSettings.get_setting("game/data/sound/default_area_mask", 1)), mode: Mode = Mode.SCENIAL) -> AudioStreamPlayer2D:
+static func play_2d(stream: AudioStream, owner: Node2D, mode: Mode = Mode.SCENIAL, area_mask: int = int(ProjectSettings.get_setting("game/data/sound/default_area_mask", 1))) -> AudioStreamPlayer2D:
 	if !stream || !is_instance_valid(owner) || !owner.is_inside_tree():
 		return null
 	

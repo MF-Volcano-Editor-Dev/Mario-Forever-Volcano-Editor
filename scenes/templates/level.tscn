@@ -1,11 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=7 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_bvcda"]
 [ext_resource type="PackedScene" uid="uid://dm1au2ar8wp71" path="res://objects/entities/characters/mario/mario.tscn" id="3_2xf2e"]
 [ext_resource type="Script" path="res://scripts/entities/areas/area_climbable.gd" id="3_nagda"]
+[ext_resource type="Script" path="res://scenes/templates/Area2D2.gd" id="4_tql4t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mdf2w"]
 size = Vector2(128, 320)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7wif7"]
+radius = 24.0
 
 [node name="Level" type="Node2D"]
 
@@ -16,8 +20,8 @@ layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969,
 metadata/_edit_lock_ = true
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
-gravity_scale = 1.0
-position = Vector2(448, 192)
+position = Vector2(512, 384)
+current_powerup = &"big"
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(264, 208)
@@ -32,3 +36,12 @@ metadata/_edit_group_ = true
 position = Vector2(-8, 16)
 shape = SubResource("RectangleShape2D_mdf2w")
 debug_color = Color(0.796078, 0.423529, 0, 0.419608)
+
+[node name="Area2D2" type="Area2D" parent="."]
+position = Vector2(448, 256)
+script = ExtResource("4_tql4t")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D2"]
+shape = SubResource("CircleShape2D_7wif7")
+debug_color = Color(0.627451, 0.364706, 0.968627, 0.419608)

@@ -4,6 +4,8 @@ extends State
 ##
 ## If you want to customize the behavior based on this script, please override the related method(s).
 
+signal crouch_stage_changed ## Emitted when the character crouches or stops from crouching
+
 @export_category("Character Non-climbing State")
 @export_group("References")
 @export var animated_sprite: AnimatedSprite2D
@@ -72,6 +74,8 @@ func _state_process(delta: float) -> void:
 func _state_physics_process(_delta: float) -> void:
 	_character.calculate_gravity()
 	_character.move_and_slide()
+	_character.correct_onto_floor()
+	_character.correct_on_wall_corner()
 
 
 func _climbing_check() -> void:
@@ -84,28 +88,31 @@ func _climbing_check() -> void:
 
 #region == Movement ==
 func _crouch() -> void:
-	# Reset to default shape
-	_character.remove_from_group(&"state_crouching")
-	if shape_controller:
-		shape_controller.play(&"RESET")
-		_powerup.set_shapes_for_character()
-	
 	if !_powerup:
-		return
-	if _character.is_in_group(&"state_completed"):
-		_character.remove_from_group(&"state_crouching")
 		return
 	
 	# Detection for crouching
 	var small_crhable: bool = ProjectSettings.get_setting("game/control/player/crouchable_in_small_suit", false)
-	var small_crhable_for_self: bool = is_in_group(&"state_machine_state_small")
-	if _character.is_on_floor() && _character.get_input_pressed(key_down) && (!small_crhable_for_self || (small_crhable_for_self && small_crhable)):
-		_character.add_to_group(&"state_crouching")
+	if _character.is_on_floor() && \
+		_character.get_input_pressed(key_down) && \
+		(!_powerup.features.is_small || \
+		(_powerup.features.is_small && small_crhable)):
+			_character.add_to_group(&"state_crouching")
+	else:
+		_character.remove_from_group(&"state_crouching")
+	
+	if _character.is_in_group(&"state_completed"):
+		_character.remove_from_group(&"state_crouching")
 	
 	# Updates shapes to one in crouching state
-	if _character.is_in_group(&"state_crouching") && shape_controller:
-		shape_controller.play(&"CROUCH")
-		_powerup.set_shapes_for_character()
+	if shape_controller:
+		if _character.is_in_group(&"state_crouching") && shape_controller.current_animation != &"CROUCH":
+			shape_controller.play(&"CROUCH")
+			_powerup.set_shapes_for_character()
+		elif !_character.is_in_group(&"state_crouching") && shape_controller.current_animation != &"RESET":
+			shape_controller.play(&"RESET")
+			_powerup.set_shapes_for_character()
+			crouch_stage_changed.emit()
 
 func _walk() -> void:
 	var lr: int = _character.get_udlr_directions(key_left, key_right, key_up, key_down).x # Acceleration
@@ -197,7 +204,7 @@ func _animation(delta: float) -> void:
 		else:
 			var real_vel: Vector2 = _character.get_real_velocity()
 			if !real_vel.slide(_character.get_floor_normal()).is_zero_approx():
-				animated_sprite.play(&"walk", absf(_character.velocality.x) * delta * 10)
+				animated_sprite.play(&"walk", absf(_character.velocality.x) * delta * 12.5)
 			else:
 				animated_sprite.play(&"default")
 	elif _character.is_in_group(&"state_swimming"):

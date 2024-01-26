@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://bg6twsen2esmj"]
+
+[ext_resource type="PackedScene" uid="uid://d28wktlfkunys" path="res://objects/uis/counters/scores_label.tscn" id="1_rgqai"]
+[ext_resource type="LabelSettings" uid="uid://cg120buu05qij" path="res://objects/uis/counters/lives_label_font.tres" id="2_qa51s"]
+
+[node name="Lives" instance=ExtResource("1_rgqai")]
+label_settings = ExtResource("2_qa51s")

@@ -18,12 +18,6 @@ The character is crouching.
 The character has completed the level.  
 This will stops the player from controlling the character.
 
-## state_machine_state_small
-
-*Only used for `State` in a character powerup*
-Marks the state is small suit.  
-Only when the project setting `"game/control/player/crouchable_in_small_suit"` is `true` is the character able to crouch in the state of powerup.
-
 ## state_running
 
 The character is running.

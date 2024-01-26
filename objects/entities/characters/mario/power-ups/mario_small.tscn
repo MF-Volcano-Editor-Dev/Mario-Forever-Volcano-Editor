@@ -1,190 +1,19 @@
-[gd_scene load_steps=31 format=3 uid="uid://d2a3jxasggppj"]
+[gd_scene load_steps=13 format=3 uid="uid://d2a3jxasggppj"]
 
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_powerup.gd" id="1_igb6y"]
-[ext_resource type="Texture2D" uid="uid://boyhdrc8eefo7" path="res://assets/gfx/objects/entities/characters/mario_small.png" id="2_hajdj"]
+[ext_resource type="Shape2D" uid="uid://6oma0liuhhjr" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_small.tres" id="2_bu1ev"]
+[ext_resource type="SpriteFrames" uid="uid://dx5y52kdx4f4m" path="res://objects/entities/characters/mario/power-ups/animations/anim_mario_small.tres" id="2_pbsaf"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_underwater.gd" id="3_2jggs"]
+[ext_resource type="Shape2D" uid="uid://dypbl1pshqi13" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_head.tres" id="3_gvdfx"]
 [ext_resource type="Script" path="res://scripts/components/state_machine/class_state_machine.gd" id="4_boade"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_non_climbing.gd" id="4_j3ux2"]
+[ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_stuck_to_death.gd" id="4_t511y"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_climbing.gd" id="6_nfgd5"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_on2rw"]
-size = Vector2(20, 26)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xgts8"]
-size = Vector2(20, 2)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5birf"]
-size = Vector2(20, 26)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jnfra"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(96, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cb2bu"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(128, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jxocr"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(0, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jiwlo"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(160, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_wi2gl"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(384, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_e6clw"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(224, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vjadw"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(0, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_quk2l"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(192, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_q0cu5"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(192, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jdh2q"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(256, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gfmu3"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(288, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pdq5k"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(320, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3v66b"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(256, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_k0kdp"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(352, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ohyoo"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(32, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_o3bp3"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(64, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_axcwg"]
-atlas = ExtResource("2_hajdj")
-region = Rect2(0, 0, 32, 64)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_shfxv"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jnfra")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_cb2bu")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jxocr")
-}],
-"loop": true,
-"name": &"appear",
-"speed": 30.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jiwlo")
-}],
-"loop": false,
-"name": &"attack",
-"speed": 20.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_wi2gl")
-}],
-"loop": true,
-"name": &"climb",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_e6clw")
-}],
-"loop": true,
-"name": &"crouch",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vjadw")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_quk2l")
-}],
-"loop": true,
-"name": &"fall",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_q0cu5")
-}],
-"loop": true,
-"name": &"jump",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jdh2q")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gfmu3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pdq5k")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3v66b")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_k0kdp")
-}],
-"loop": true,
-"name": &"swim",
-"speed": 8.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ohyoo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_o3bp3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_axcwg")
-}],
-"loop": true,
-"name": &"walk",
-"speed": 5.0
-}]
-
-[sub_resource type="Animation" id="Animation_ofs2s"]
+[sub_resource type="Animation" id="Animation_h00pe"]
 resource_name = "CROUCH"
+length = 0.001
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -200,38 +29,38 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Body/BodyCB:position")
+tracks/1/path = NodePath("Body/BodyCB:shape")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -7)]
+"update": 1,
+"values": [ExtResource("2_bu1ev")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Body/BodyCB:shape:size")
+tracks/2/path = NodePath("Body/BodyCB:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(20, 26)]
+"values": [Vector2(0, -7)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("CollisionShape2D:shape:size")
+tracks/3/path = NodePath("CollisionShape2D:shape")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(20, 26)]
+"update": 1,
+"values": [ExtResource("2_bu1ev")]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -246,55 +75,56 @@ tracks/4/keys = {
 "values": [Vector2(0, -5)]
 }
 
-[sub_resource type="Animation" id="Animation_ciaa0"]
+[sub_resource type="Animation" id="Animation_84fd7"]
 length = 0.001
+loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Body/BodyCB:shape:size")
+tracks/0/path = NodePath("Head/HeadCB:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(20, 26)]
+"values": [Vector2(0, -19)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Body/BodyCB:position")
+tracks/1/path = NodePath("Body/BodyCB:shape")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -7)]
+"update": 1,
+"values": [ExtResource("2_bu1ev")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Head/HeadCB:position")
+tracks/2/path = NodePath("Body/BodyCB:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -19)]
+"values": [Vector2(0, -7)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("CollisionShape2D:shape:size")
+tracks/3/path = NodePath("CollisionShape2D:shape")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(20, 26)]
+"update": 1,
+"values": [ExtResource("2_bu1ev")]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -308,47 +138,40 @@ tracks/4/keys = {
 "update": 0,
 "values": [Vector2(0, -5)]
 }
-tracks/5/type = "method"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath(".")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"set_shapes_for_character"
-}]
-}
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_8igf2"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xgudl"]
 _data = {
-"CROUCH": SubResource("Animation_ofs2s"),
-"RESET": SubResource("Animation_ciaa0")
+"CROUCH": SubResource("Animation_h00pe"),
+"RESET": SubResource("Animation_84fd7")
 }
 
-[node name="MarioSmall" type="Node2D" node_paths=PackedStringArray("collision_shapes")]
+[node name="MarioSmall" type="Node2D" node_paths=PackedStringArray("collision_shapes", "animated_sprite")]
 script = ExtResource("1_igb6y")
 collision_shapes = [NodePath("CollisionShape2D")]
-metadata/_edit_pinned_properties_ = [&"collision_shapes"]
+animated_sprite = NodePath("AnimatedSprite2D")
+features = {
+"is_small": true
+}
+metadata/_edit_pinned_properties_ = [&"collision_shapes", &"features", &"animated_sprite"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -5)
-shape = SubResource("RectangleShape2D_on2rw")
+shape = ExtResource("2_bu1ev")
 
 [node name="Head" type="Area2D" parent="."]
+visible = false
 collision_mask = 50
 metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
 [node name="HeadCB" type="CollisionShape2D" parent="Head"]
 position = Vector2(0, -19)
-shape = SubResource("RectangleShape2D_xgts8")
+shape = ExtResource("3_gvdfx")
 debug_color = Color(0.878431, 0.341176, 0, 0.419608)
 
 [node name="Body" type="Area2D" parent="."]
+visible = false
 position = Vector2(0, 2)
 collision_mask = 52
 metadata/_edit_group_ = true
@@ -356,12 +179,18 @@ metadata/_edit_lock_ = true
 
 [node name="BodyCB" type="CollisionShape2D" parent="Body"]
 position = Vector2(0, -7)
-shape = SubResource("RectangleShape2D_5birf")
+shape = ExtResource("2_bu1ev")
 debug_color = Color(0.984314, 0, 0.356863, 0.419608)
+
+[node name="StuckToDeath" type="Area2D" parent="."]
+visible = false
+script = ExtResource("4_t511y")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StuckToDeath"]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -24)
-sprite_frames = SubResource("SpriteFrames_shfxv")
+sprite_frames = ExtResource("2_pbsaf")
 autoplay = "default"
 metadata/_edit_group_ = true
 
@@ -376,14 +205,16 @@ body = NodePath("../Body")
 metadata/_edit_pinned_properties_ = [&"head", &"body"]
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state", "root")]
-editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`"
+editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`."
 script = ExtResource("4_boade")
 current_state = NodePath("NonClimbing")
 root = NodePath("..")
 metadata/_edit_pinned_properties_ = [&"current_state", &"root"]
 
-[node name="NonClimbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite", "shape_controller", "root") groups=["state_machine_state_small"]]
-editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`"
+[node name="NonClimbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite", "shape_controller", "root")]
+editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`.
+
+If you don't expect the powerup crouchable, please add an metadata \"is_small\" and set its value to `true`, or set it, if existing, to `true`."
 script = ExtResource("4_j3ux2")
 animated_sprite = NodePath("../../AnimatedSprite2D")
 shape_controller = NodePath("../../ShapeController")
@@ -392,7 +223,7 @@ root = NodePath("../..")
 metadata/_edit_pinned_properties_ = [&"state_id", &"animated_sprite", &"shape_controller", &"root"]
 
 [node name="Climbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_non_climbing", "root")]
-editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`"
+editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`."
 script = ExtResource("6_nfgd5")
 state_non_climbing = NodePath("../NonClimbing")
 state_id = &"climbing"
@@ -401,6 +232,6 @@ metadata/_edit_pinned_properties_ = [&"state_id", &"root", &"state_non_climbing"
 
 [node name="ShapeController" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_8igf2")
+"": SubResource("AnimationLibrary_xgudl")
 }
 autoplay = "RESET"
