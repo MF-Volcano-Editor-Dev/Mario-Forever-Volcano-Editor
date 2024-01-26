@@ -26,6 +26,7 @@ current_powerup = &"big"
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(264, 208)
 collision_layer = 0
+gravity_space_override = 3
 gravity_point_center = Vector2(-1, 0)
 gravity_direction = Vector2(-1, 0)
 gravity = 2500.0
@@ -38,7 +39,7 @@ shape = SubResource("RectangleShape2D_mdf2w")
 debug_color = Color(0.796078, 0.423529, 0, 0.419608)
 
 [node name="Area2D2" type="Area2D" parent="."]
-position = Vector2(448, 256)
+position = Vector2(320, 184)
 script = ExtResource("4_tql4t")
 metadata/_edit_group_ = true
 
