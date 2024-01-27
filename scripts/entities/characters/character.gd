@@ -12,6 +12,7 @@ class_name Character extends EntityBody2D
 ## [br]
 ## [b]Note:[/b] Each character has different ids, and the characters with the same id will be considered as the same character and lead to problems.
 @export_range(0, 3) var id: int
+@export var nickname: StringName = &"Player"
 @export_group("Physics", "physics_")
 @export_enum("Left:-1", "Right:1") var direction: int = 1:
 	set(value):
@@ -56,6 +57,74 @@ func get_udlr_directions(left: StringName, right: StringName, up: StringName, do
 	)
 #endregion
 
+
+## A subclass that stores the data of characters
+##
+## The subclass contains another subclass which is used to emit signals, so that you can connect it with the functions in other objects to make them
+## listen to the update of the data, because each data has a setter that emits signal when it gets updated.
+class Data:
+	## Help with emitting the signal of [Character.Data]
+	##
+	## Due to lack of supporting static signals, this is currently applied for such functionality and will be removed once that feature gets implemented in Godot.
+	class DataSignal:
+		## Type of value to be emitted
+		enum Value {
+			LIVES,
+			SCORES,
+			COINS,
+			TOTAL_COINS,
+			DEATH_COUNTS
+		}
+		
+		signal data_updated(type: Value, value: Variant) ## Emitted when the data gets updated
+	
+	static var _data_signal: DataSignal = DataSignal.new()
+	
+	## Lives of all characters
+	static var lives: int = ProjectSettings.get_setting("game/data/player/default_lives", 0):
+		set(value):
+			lives = maxi(0, value)
+			_data_signal.data_updated.emit(DataSignal.Value.LIVES, lives)
+	## Scores of all characters
+	static var scores: int:
+		set(value):
+			scores = maxi(0, value)
+			_data_signal.data_updated.emit(DataSignal.Value.SCORES, scores)
+	## Coins of all characters[br]
+	## [br]
+	## [b]Note:[/b] This can be reverted to 0 by external functions. If you want to get ones that won't get reverted, see [member total_coins].
+	static var coins: int:
+		set(value):
+			total_coins += value - coins
+			coins = maxi(0, value)
+			_data_signal.data_updated.emit(DataSignal.Value.COINS, coins)
+	## Total coins of all characters[br]
+	## [br]
+	## [b]Note:[/b] This should NOT be reverted to 0 by external functions. If you want to get ones reverted, see [member coins].
+	static var total_coins: int:
+		set(value):
+			total_coins = maxi(0, value)
+			_data_signal.data_updated.emit(DataSignal.Value.TOTAL_COINS, total_coins)
+	## Death counts of all characters[br]
+	## [br]
+	## [b]Note:[/b] This value [u]should be reverted to 0[/u] after confirmation in game over screen.
+	static var death_counts: int:
+		set(value):
+			death_counts = maxi(0, value)
+			_data_signal.data_updated.emit(DataSignal.Value.DEATH_COUNTS, death_counts)
+	
+	
+	## Initialization for each data
+	static func init_data() -> void:
+		lives = lives
+		scores = scores
+		coins = coins
+		total_coins = total_coins
+		death_counts = death_counts
+	
+	## Returns an object that helps emit signals when the values in this object gets updated.
+	static func get_data_signal() -> DataSignal:
+		return _data_signal
 
 ## A subclass that allows you to get characters.
 ##

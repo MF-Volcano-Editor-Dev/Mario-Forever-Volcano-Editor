@@ -202,9 +202,9 @@ func _animation(delta: float) -> void:
 		if _character.is_in_group(&"state_crouching"):
 			animated_sprite.play(&"crouch")
 		else:
-			var real_vel: Vector2 = _character.get_real_velocity()
-			if !real_vel.slide(_character.get_floor_normal()).is_zero_approx():
-				animated_sprite.play(&"walk", absf(_character.velocality.x) * delta * 12.5)
+			var real_vel: Vector2 = _character.velocity
+			if !real_vel.slide(_character.get_floor_normal()).is_zero_approx() && !_character.is_on_wall():
+				animated_sprite.play(&"walk", absf(_character.velocality.x) * delta * 20)
 			else:
 				animated_sprite.play(&"default")
 	elif _character.is_in_group(&"state_swimming"):

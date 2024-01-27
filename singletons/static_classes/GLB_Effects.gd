@@ -1,7 +1,12 @@
 class_name Effects
 
+## Static class that provides static functions for [CanvasItem], especially [Node2D]
+##
+## Because of being static, the functions in this class are all static, which means that the first param of these functions are ALWAYS [CanvasItem].
 
-static func flash(node: Node2D, duration: float, interval: float = 0.06) -> void:
+## Makes a node flash.[br]
+## Flash effect means a body gets its alpha loops between fading out and fading in, the lower value the [param interval] is, the faster the node flashes.
+static func flash(node: CanvasItem, duration: float, interval: float = 0.06) -> void:
 	if !is_instance_valid(node):
 		return
 	

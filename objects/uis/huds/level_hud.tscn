@@ -1,0 +1,87 @@
+[gd_scene load_steps=9 format=3 uid="uid://crnx40c7hevum"]
+
+[ext_resource type="Script" path="res://scripts/uis/huds/level_hud.gd" id="1_miil0"]
+[ext_resource type="FontFile" uid="uid://bfwu40p3hdvgu" path="res://assets/fonts/hud_font.png" id="1_or783"]
+[ext_resource type="Texture2D" uid="uid://dsyjs6cnau2sf" path="res://assets/gfx/huds/hud_coin.png" id="2_140qo"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_la1fl"]
+font = ExtResource("1_or783")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xnhei"]
+atlas = ExtResource("2_140qo")
+region = Rect2(0, 0, 28, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c0ndj"]
+atlas = ExtResource("2_140qo")
+region = Rect2(0, 16, 28, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o7vkw"]
+atlas = ExtResource("2_140qo")
+region = Rect2(0, 32, 28, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5wm8c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xnhei")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0ndj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o7vkw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c0ndj")
+}],
+"loop": true,
+"name": &"default",
+"speed": 15.0
+}]
+
+[node name="LevelHUD" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_miil0")
+
+[node name="Frame" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 480.0
+metadata/_edit_lock_ = true
+
+[node name="Lives" type="Label" parent="Frame"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 150.0
+offset_bottom = 41.0
+text = "MARIO × X"
+label_settings = SubResource("LabelSettings_la1fl")
+
+[node name="Scores" type="Label" parent="Frame/Lives"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 19.0
+offset_bottom = 36.0
+text = "0"
+label_settings = SubResource("LabelSettings_la1fl")
+horizontal_alignment = 2
+
+[node name="CoinX" type="AnimatedSprite2D" parent="Frame"]
+position = Vector2(230, 52)
+sprite_frames = SubResource("SpriteFrames_5wm8c")
+autoplay = "default"
+
+[node name="Coins" type="Label" parent="Frame/CoinX"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 18.0
+offset_top = -9.0
+offset_right = 22.0
+offset_bottom = 8.0
+grow_horizontal = 2
+text = "0"
+label_settings = SubResource("LabelSettings_la1fl")
+horizontal_alignment = 2
