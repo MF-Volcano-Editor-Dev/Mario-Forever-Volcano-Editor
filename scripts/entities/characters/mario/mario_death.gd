@@ -42,5 +42,7 @@ func death_effect_start() -> void:
 	_velocity = Vector2.UP.rotated(global_rotation) * initial_speed
 	
 	await sound.finished
+	await get_tree().create_timer(1, false).timeout
 	# TODO: After-death executions
+	Events.EventCharacter.current_game_over(get_tree())
 	queue_free()

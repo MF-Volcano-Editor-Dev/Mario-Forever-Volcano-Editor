@@ -148,16 +148,15 @@ _data = {
 "RESET": SubResource("Animation_84fd7")
 }
 
-[node name="MarioSmall" type="Node2D" node_paths=PackedStringArray("collision_shapes", "animated_sprite")]
+[node name="MarioSmall" type="Node2D"]
 script = ExtResource("1_igb6y")
-collision_shapes = [NodePath("CollisionShape2D")]
-animated_sprite = NodePath("AnimatedSprite2D")
 features = {
 "is_small": true
 }
-metadata/_edit_pinned_properties_ = [&"collision_shapes", &"features", &"animated_sprite"]
+metadata/_edit_pinned_properties_ = [&"features"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -5)
 shape = ExtResource("2_bu1ev")
 
@@ -211,31 +210,27 @@ head = NodePath("../Head")
 body = NodePath("../Body")
 metadata/_edit_pinned_properties_ = [&"head", &"body"]
 
-[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("current_state", "root")]
+[node name="StateMachine" type="Node" parent="."]
 editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`."
 script = ExtResource("4_boade")
-current_state = NodePath("NonClimbing")
-root = NodePath("..")
-metadata/_edit_pinned_properties_ = [&"current_state", &"root"]
+current_state_path = NodePath("NonClimbing")
+metadata/_edit_pinned_properties_ = [&"current_state_path"]
 
-[node name="NonClimbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite", "shape_controller", "root")]
+[node name="NonClimbing" type="Node" parent="StateMachine"]
 editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`.
 
 If you don't expect the powerup crouchable, please add an metadata \"is_small\" and set its value to `true`, or set it, if existing, to `true`."
 script = ExtResource("4_j3ux2")
-animated_sprite = NodePath("../../AnimatedSprite2D")
-shape_controller = NodePath("../../ShapeController")
 state_id = &"non_climbing"
-root = NodePath("../..")
-metadata/_edit_pinned_properties_ = [&"state_id", &"animated_sprite", &"shape_controller", &"root"]
+root_path = NodePath("../..")
+metadata/_edit_pinned_properties_ = [&"state_id", &"root_path"]
 
-[node name="Climbing" type="Node" parent="StateMachine" node_paths=PackedStringArray("state_non_climbing", "root")]
+[node name="Climbing" type="Node" parent="StateMachine"]
 editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`."
 script = ExtResource("6_nfgd5")
-state_non_climbing = NodePath("../NonClimbing")
 state_id = &"climbing"
-root = NodePath("../..")
-metadata/_edit_pinned_properties_ = [&"state_id", &"root", &"state_non_climbing"]
+root_path = NodePath("../..")
+metadata/_edit_pinned_properties_ = [&"state_id", &"root_path"]
 
 [node name="ShapeController" type="AnimationPlayer" parent="."]
 libraries = {

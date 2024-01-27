@@ -59,8 +59,7 @@ layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969,
 metadata/_edit_lock_ = true
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
-position = Vector2(40, 408)
-current_powerup = &"big"
+position = Vector2(128, 320)
 
 [node name="AreaDeath" type="Area2D" parent="."]
 position = Vector2(64, 64)

@@ -78,43 +78,43 @@ class Data:
 		
 		signal data_updated(type: Value, value: Variant) ## Emitted when the data gets updated
 	
-	static var _data_signal: DataSignal = DataSignal.new()
+	static var _signals: DataSignal = DataSignal.new()
 	
-	## Lives of all characters
-	static var lives: int = ProjectSettings.get_setting("game/data/player/default_lives", 0):
+	## Lives of all characters.
+	static var lives: int = ProjectSettings.get_setting("game/data/player/default_lives", 4):
 		set(value):
 			lives = maxi(0, value)
-			_data_signal.data_updated.emit(DataSignal.Value.LIVES, lives)
-	## Scores of all characters
+			_signals.data_updated.emit(DataSignal.Value.LIVES, lives)
+	## Scores of all characters.
 	static var scores: int:
 		set(value):
 			scores = maxi(0, value)
-			_data_signal.data_updated.emit(DataSignal.Value.SCORES, scores)
-	## Coins of all characters[br]
+			_signals.data_updated.emit(DataSignal.Value.SCORES, scores)
+	## Coins of all characters.[br]
 	## [br]
 	## [b]Note:[/b] This can be reverted to 0 by external functions. If you want to get ones that won't get reverted, see [member total_coins].
 	static var coins: int:
 		set(value):
 			total_coins += value - coins
 			coins = maxi(0, value)
-			_data_signal.data_updated.emit(DataSignal.Value.COINS, coins)
-	## Total coins of all characters[br]
+			_signals.data_updated.emit(DataSignal.Value.COINS, coins)
+	## Total coins of all characters.[br]
 	## [br]
 	## [b]Note:[/b] This should NOT be reverted to 0 by external functions. If you want to get ones reverted, see [member coins].
 	static var total_coins: int:
 		set(value):
 			total_coins = maxi(0, value)
-			_data_signal.data_updated.emit(DataSignal.Value.TOTAL_COINS, total_coins)
-	## Death counts of all characters[br]
+			_signals.data_updated.emit(DataSignal.Value.TOTAL_COINS, total_coins)
+	## Death counts of all characters.[br]
 	## [br]
 	## [b]Note:[/b] This value [u]should be reverted to 0[/u] after confirmation in game over screen.
 	static var death_counts: int:
 		set(value):
 			death_counts = maxi(0, value)
-			_data_signal.data_updated.emit(DataSignal.Value.DEATH_COUNTS, death_counts)
+			_signals.data_updated.emit(DataSignal.Value.DEATH_COUNTS, death_counts)
 	
 	
-	## Initialization for each data
+	## Initialization for each data.
 	static func init_data() -> void:
 		lives = lives
 		scores = scores
@@ -123,8 +123,8 @@ class Data:
 		death_counts = death_counts
 	
 	## Returns an object that helps emit signals when the values in this object gets updated.
-	static func get_data_signal() -> DataSignal:
-		return _data_signal
+	static func get_signals() -> DataSignal:
+		return _signals
 
 ## A subclass that allows you to get characters.
 ##

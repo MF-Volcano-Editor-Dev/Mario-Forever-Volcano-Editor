@@ -144,15 +144,13 @@ _data = {
 "RESET": SubResource("Animation_u8npf")
 }
 
-[node name="MarioBig" node_paths=PackedStringArray("collision_shapes", "animated_sprite") instance=ExtResource("1_rhhpn")]
+[node name="MarioBig" instance=ExtResource("1_rhhpn")]
 powerup_id = &"big"
 down_to_powerup_id = &"small"
-collision_shapes = [NodePath("CollisionShape2D")]
-animated_sprite = NodePath("AnimatedSprite2D")
 features = {
 "is_small": false
 }
-metadata/_edit_pinned_properties_ = [&"powerup_id", &"features", &"down_to_powerup_id", &"collision_shapes", &"animated_sprite"]
+metadata/_edit_pinned_properties_ = [&"powerup_id", &"features", &"down_to_powerup_id"]
 
 [node name="CollisionShape2D" parent="." index="0"]
 position = Vector2(0, -20)

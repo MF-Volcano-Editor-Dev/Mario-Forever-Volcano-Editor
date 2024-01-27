@@ -9,5 +9,13 @@ class_name Component extends Node
 ## var specific: Type = root as Type # Type should be the child of Node!
 ## [/codeblock]
 
-## The [Node] that the component takes effect on
-@export var root: Node
+## Path to the [Node] that the component takes effect on
+@export_node_path("Node") var root_path: NodePath = ^".."
+
+## See [member root_path].
+@onready var root: Node = get_root()
+
+
+## Returns the root node of the component
+func get_root() -> Node:
+	return get_node_or_null(root_path)

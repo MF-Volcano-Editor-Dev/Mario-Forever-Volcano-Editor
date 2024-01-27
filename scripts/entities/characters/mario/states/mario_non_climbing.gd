@@ -7,9 +7,6 @@ extends State
 signal crouch_stage_changed ## Emitted when the character crouches or stops from crouching
 
 @export_category("Character Non-climbing State")
-@export_group("References")
-@export var animated_sprite: AnimatedSprite2D
-@export var shape_controller: AnimationPlayer
 @export_group("Controls", "key_")
 @export var key_left: StringName = &"left"
 @export var key_right: StringName = &"right"
@@ -55,13 +52,15 @@ signal crouch_stage_changed ## Emitted when the character crouches or stops from
 
 var _has_jumped: bool
 
-@onready var _powerup: MarioPowerup = root
-@onready var _character: Mario = root.get_parent()
+@onready var _powerup: MarioPowerup = get_root()
+@onready var _animated_sprite: AnimatedSprite2D = _powerup.get_animated_sprite()
+@onready var _shape_controller: AnimationPlayer = _powerup.get_shape_controller()
+@onready var _character: Mario = _powerup.get_character()
 
 
 func _ready() -> void:
-	if animated_sprite:
-		animated_sprite.animation_looped.connect(_on_animation_looped)
+	if _animated_sprite:
+		_animated_sprite.animation_looped.connect(_on_animation_looped)
 
 func _state_process(delta: float) -> void:
 	_crouch() # Should be executed before all the following methods to make sure the following ones can be executed as expected
@@ -105,12 +104,12 @@ func _crouch() -> void:
 		_character.remove_from_group(&"state_crouching")
 	
 	# Updates shapes to one in crouching state
-	if shape_controller:
-		if _character.is_in_group(&"state_crouching") && shape_controller.current_animation != &"CROUCH":
-			shape_controller.play(&"CROUCH")
+	if _shape_controller:
+		if _character.is_in_group(&"state_crouching") && _shape_controller.current_animation != &"CROUCH":
+			_shape_controller.play(&"CROUCH")
 			_powerup.set_shapes_for_character()
-		elif !_character.is_in_group(&"state_crouching") && shape_controller.current_animation != &"RESET":
-			shape_controller.play(&"RESET")
+		elif !_character.is_in_group(&"state_crouching") && _shape_controller.current_animation != &"RESET":
+			_shape_controller.play(&"RESET")
 			_powerup.set_shapes_for_character()
 			crouch_stage_changed.emit()
 
@@ -190,31 +189,33 @@ func _swim(delta: float) -> void:
 
 #region == Animations ==
 func _animation(delta: float) -> void:
-	if !animated_sprite:
+	if !_animated_sprite:
 		return
 	
-	animated_sprite.scale.x = _character.direction # Facing
+	_animated_sprite.speed_scale = 1
+	_animated_sprite.scale.x = _character.direction # Facing
 	
-	if animated_sprite.animation in [&"appear", &"attack"]:
+	if _animated_sprite.animation in [&"appear", &"attack"]:
 		return
 	
 	if _character.is_on_floor():
 		if _character.is_in_group(&"state_crouching"):
-			animated_sprite.play(&"crouch")
+			_animated_sprite.play(&"crouch")
 		else:
 			var real_vel: Vector2 = _character.velocity
 			if !real_vel.slide(_character.get_floor_normal()).is_zero_approx() && !_character.is_on_wall():
-				animated_sprite.play(&"walk", absf(_character.velocality.x) * delta * 20)
+				_animated_sprite.play(&"walk")
+				_animated_sprite.speed_scale = clampf(absf(_character.velocality.x) * delta * 9, 0, 5)
 			else:
-				animated_sprite.play(&"default")
+				_animated_sprite.play(&"default")
 	elif _character.is_in_group(&"state_swimming"):
-		animated_sprite.play(&"swim")
+		_animated_sprite.play(&"swim")
 	elif _character.is_falling():
-		animated_sprite.play(&"fall")
+		_animated_sprite.play(&"fall")
 	else:
-		animated_sprite.play(&"jump")
+		_animated_sprite.play(&"jump")
 
 func _on_animation_looped() -> void:
-	if animated_sprite.animation == &"swim":
-		animated_sprite.frame = animated_sprite.sprite_frames.get_frame_count(animated_sprite.animation) - 2
+	if _animated_sprite.animation == &"swim":
+		_animated_sprite.frame = _animated_sprite.sprite_frames.get_frame_count(_animated_sprite.animation) - 2
 #endregion

@@ -1,11 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://crnx40c7hevum"]
+[gd_scene load_steps=8 format=3 uid="uid://crnx40c7hevum"]
 
 [ext_resource type="Script" path="res://scripts/uis/huds/level_hud.gd" id="1_miil0"]
-[ext_resource type="FontFile" uid="uid://bfwu40p3hdvgu" path="res://assets/fonts/hud_font.png" id="1_or783"]
 [ext_resource type="Texture2D" uid="uid://dsyjs6cnau2sf" path="res://assets/gfx/huds/hud_coin.png" id="2_140qo"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_la1fl"]
-font = ExtResource("1_or783")
+[ext_resource type="LabelSettings" uid="uid://joejtvag3pdw" path="res://objects/uis/huds/level_hud_theme.tres" id="2_kw8o3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_xnhei"]
 atlas = ExtResource("2_140qo")
@@ -45,7 +42,6 @@ script = ExtResource("1_miil0")
 
 [node name="Frame" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
 offset_right = 640.0
 offset_bottom = 480.0
 metadata/_edit_lock_ = true
@@ -57,7 +53,7 @@ offset_top = 24.0
 offset_right = 150.0
 offset_bottom = 41.0
 text = "MARIO × X"
-label_settings = SubResource("LabelSettings_la1fl")
+label_settings = ExtResource("2_kw8o3")
 
 [node name="Scores" type="Label" parent="Frame/Lives"]
 layout_mode = 1
@@ -65,8 +61,9 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_top = 19.0
 offset_bottom = 36.0
+grow_horizontal = 2
 text = "0"
-label_settings = SubResource("LabelSettings_la1fl")
+label_settings = ExtResource("2_kw8o3")
 horizontal_alignment = 2
 
 [node name="CoinX" type="AnimatedSprite2D" parent="Frame"]
@@ -83,5 +80,17 @@ offset_right = 22.0
 offset_bottom = 8.0
 grow_horizontal = 2
 text = "0"
-label_settings = SubResource("LabelSettings_la1fl")
+label_settings = ExtResource("2_kw8o3")
 horizontal_alignment = 2
+
+[node name="GameOver" type="Label" parent="."]
+visible = false
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 0.483
+offset_right = 320.0
+offset_bottom = 248.16
+text = "GAME OVER"
+label_settings = ExtResource("2_kw8o3")
+horizontal_alignment = 1
+vertical_alignment = 1

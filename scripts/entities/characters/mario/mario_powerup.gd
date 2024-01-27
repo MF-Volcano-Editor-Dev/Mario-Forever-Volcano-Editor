@@ -16,14 +16,16 @@ signal powerup_exited ## Emitted when the powerup exits from being current.
 ## If this keeps empty, the character will die when he gets hurt.
 @export var down_to_powerup_id: StringName = &""
 @export_group("References")
-## [CollisionShape2D]s that the node is going to set for the character.[br]
+## Paths to [CollisionShape2D]s that the node is going to set for the character.[br]
 ## [br]
 ## [b]Note:[/b] Before Godot 4.3 to be released, [CollisionShape2D] doesn't support indirect reference to a [PhysicsBody2D], which is the ancestor class of [Character] and even [Mario].
 ## That is to say, the [CollisionShape2D]s work only when they are direct children of it. 
 ## See [method set_shapes_for_character] for more details.
-@export var collision_shapes: Array[CollisionShape2D]
-## [AnimatedSprite2D] of the powerup to help display the character's sprites.
-@export var animated_sprite: AnimatedSprite2D
+@export var collision_shapes_path: Array[NodePath] = [^"CollisionShape2D"]
+## Path to [AnimatedSprite2D] of the powerup to help display the character's sprites.
+@export_node_path("AnimatedSprite2D") var animated_sprite_path: NodePath = ^"AnimatedSprite2D"
+## Path to [AnimatedPlayer] of the powerup to help control the character's shapes.
+@export_node_path("AnimationPlayer") var shape_controller_path: NodePath = ^"ShapeController"
 @export_group("Physics")
 ## Overrides [member EntityBody2D.gravity_scale] of the character.[br]
 ## [br]
@@ -47,6 +49,10 @@ signal powerup_exited ## Emitted when the powerup exits from being current.
 			return
 		character.max_falling_speed = max_falling_speed_override
 @export_group("Features")
+## Features of the powerup.[br]
+## [br]
+## [b]Note:[/b] By default there are some features which should NOT be removed:[br]
+## * is_small: Marks the powerup as small, which decides if the powerup allows character to crouch.
 @export var features: Dictionary = {
 	is_small = false,
 }
@@ -54,7 +60,17 @@ signal powerup_exited ## Emitted when the powerup exits from being current.
 @export var sound_hurt: AudioStream = preload("res://assets/sounds/power_down.wav")
 @export var sound_death: AudioStream = preload("res://assets/sounds/death.ogg")
 
-
+@onready var animated_sprite: AnimatedSprite2D = get_animated_sprite()
+@onready var shape_controller: AnimationPlayer = get_shape_controller()
+@onready var collision_shapes: Array[CollisionShape2D] = (func() -> Array[CollisionShape2D]:
+	var rst: Array[CollisionShape2D] = []
+	for i in collision_shapes_path:
+		var collision_shape: CollisionShape2D = get_node_or_null(i) as CollisionShape2D
+		if !collision_shape:
+			continue
+		rst.append(collision_shape)
+	return rst
+).call()
 @onready var character: Mario = get_parent()
 
 
@@ -103,4 +119,10 @@ func set_shapes_for_character() -> void:
 #region == Getters ==
 func get_character() -> Mario:
 	return get_parent() as Mario
+
+func get_animated_sprite() -> AnimatedSprite2D:
+	return get_node_or_null(animated_sprite_path)
+
+func get_shape_controller() -> AnimationPlayer:
+	return get_node_or_null(shape_controller_path)
 #endregion

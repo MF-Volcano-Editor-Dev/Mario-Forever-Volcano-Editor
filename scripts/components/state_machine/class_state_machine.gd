@@ -9,13 +9,20 @@ class_name StateMachine extends Component
 signal state_changed ## Emitted when [member current_state] gets changed
 
 ## Current [State] of the state machine
-@export var current_state: State:
+@export_node_path("State") var current_state_path: NodePath:
 	set(value):
+		current_state_path = value
+		current_state = get_node_or_null(current_state_path) as State
+
+var current_state: State:
+	set(value):
+		if !value:
+			current_state = null
+			return
 		if Engine.is_editor_hint():
 			if value.get_parent() != self:
 				printerr("Cannot set the non-child state as current: %s" % get_path_to(value))
 				return
-			current_state = value
 			return
 		# Previous state calls finishing functions and emits a relevant signal
 		if current_state:
@@ -31,6 +38,8 @@ signal state_changed ## Emitted when [member current_state] gets changed
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	
+	current_state_path = current_state_path # Triggers its setter to initialize `current_state`
 	if current_state:
 		change_state(current_state.state_id)
 

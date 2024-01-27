@@ -15,12 +15,13 @@ enum Mode {
 }
 
 ## Plays a sound in the 1D space.
-static func play_1d(stream: AudioStream, owner: Node2D, mode: Mode = Mode.SCENIAL) -> AudioStreamPlayer:
+static func play_1d(stream: AudioStream, owner: Node, mode: Mode = Mode.SCENIAL) -> AudioStreamPlayer:
 	if !stream || !is_instance_valid(owner) || !owner.is_inside_tree():
 		return null
 	
 	var snd: AudioStreamPlayer = AudioStreamPlayer.new()
 	snd.stream = stream
+	snd.bus = &"Sound"
 	
 	(func() -> void: # Called deferredly to make sure the sound player will be safely added
 		match mode:
@@ -44,6 +45,7 @@ static func play_2d(stream: AudioStream, owner: Node2D, mode: Mode = Mode.SCENIA
 	var snd: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
 	snd.area_mask = area_mask
 	snd.stream = stream
+	snd.bus = &"Sound"
 	
 	(func() -> void: # Called deferredly to make sure the sound player will be safely added
 		match mode:

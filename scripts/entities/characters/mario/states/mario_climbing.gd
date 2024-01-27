@@ -8,15 +8,15 @@ const _NonClimbing: Script = preload("./mario_non_climbing.gd")
 
 @export_category("Character Climbing State")
 @export_group("References")
-@export var state_non_climbing: State
+@export_node_path("State") var state_non_climbing_path: NodePath
 @export_group("Physics")
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var climbing_speed: float = 100
 
 var _dir: Vector2
 var _animation_count: float
 
-@onready var _character: Mario = root.get_parent()
-@onready var _state_non_climbing: _NonClimbing = state_non_climbing as _NonClimbing
+@onready var _character: Mario = get_root().get_character()
+@onready var _state_non_climbing: _NonClimbing = get_node_or_null(state_non_climbing_path)
 
 
 func _state_entered() -> void:
@@ -30,6 +30,7 @@ func _state_exited() -> void:
 	_state_non_climbing.animated_sprite.scale.x = _character.direction
 
 func _state_process(delta: float) -> void:
+	_shape()
 	_climb()
 	_animation(delta)
 	_non_climbing_check()
@@ -47,6 +48,12 @@ func _non_climbing_check() -> void:
 	if !_character.is_in_group(&"state_climbing"):
 		_state_machine.change_state(&"non_climbing")
 
+
+func _shape() -> void:
+	if !_state_non_climbing:
+		return
+	if _state_non_climbing._shape_controller.current_animation != &"RESET":
+		_state_non_climbing._shape_controller.play(&"RESET")
 
 func _climb() -> void:
 	if !_state_non_climbing:
@@ -75,6 +82,9 @@ func _animation(delta: float) -> void:
 		return
 	if !_state_non_climbing.animated_sprite:
 		return
+	
+	_state_non_climbing.animated_sprite.speed_scale = 1
+	
 	if _state_non_climbing.animated_sprite.animation in [&"appear", &"attack"]:
 		return
 	

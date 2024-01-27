@@ -2,12 +2,19 @@ class_name Mario extends Character
 
 ## Character that behaves similarly to Mario
 ##
-##
+## [Mario] here is not a specific character, but a type of characters that behaves similar to Mario.
+## You can specify a powerup that makes the character be in such suit and get powerful skills.
 
 const _MarioDeath: Script = preload("./mario_death.gd")
 
+## Id of current powerup.[br]
+## [br]
+## [b]Note:[/b] This will automatically set the powerup of the mario to one that contains the same [member current_powerup] matched.
+## If a dismatched powerup id is set, some unexpected behaviors would happen, so please ensure this value valid in terms of existing powerups.
 @export var current_powerup: StringName = &"small":
 	set = set_powerup
+## If [code]true[/code], the powerup will not play [code]&"appear"[/code] animation.[br]
+## If [member current_powerup] is invalid, nothing is going to happen.
 @export var no_appearing_animation_when_ready: bool = true
 
 @onready var _death: _MarioDeath = $MarioDeath # Death effect of the character 
