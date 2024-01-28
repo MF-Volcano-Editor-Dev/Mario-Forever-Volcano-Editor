@@ -138,40 +138,63 @@ class Getter:
 	## Returns an [Array] with [Character]s.
 	static func get_characters(scene_tree: SceneTree) -> Array[Character]:
 		var result: Array[Character] = []
+		
 		for i in scene_tree.get_nodes_in_group(&"character"):
 			if i is Character:
 				result.append(i)
+		
 		return result
 	
 	## Returns a character with given [param character_id]. See [member Character.id].
 	static func get_character(scene_tree: SceneTree, character_id: int) -> Character:
 		var characters := get_characters(scene_tree)
+		
 		for i in characters:
 			if i.id != character_id:
 				continue
 			return i
+		
 		return null
 	
 	## Returns a character nearest to [param to_gpos].
 	static func get_nearest(scene_tree: SceneTree, to_gpos: Vector2) -> Character:
 		var characters := get_characters(scene_tree)
 		var distances: Array[float] = [] # The packed array doesn't support max() nor min()
+		
 		for i in characters:
 			distances.append(i.global_position.distance_squared_to(to_gpos))
+		
 		return characters[distances.find(distances.min())]
 	
 	## Returns a character farest from [param to_gpos].
 	static func get_farest(scene_tree: SceneTree, to_gpos: Vector2) -> Character:
 		var characters := get_characters(scene_tree)
 		var distances: Array[float] = [] # The packed array doesn't support max() nor min()
+		
 		for i in characters:
 			distances.append(i.global_position.distance_squared_to(to_gpos))
+		
 		return characters[distances.find(distances.max())]
 	
 	## Returns character(s) by random [param amount].
 	static func get_random(scene_tree: SceneTree, amount: int) -> Array[Character]:
 		var characters := get_characters(scene_tree)
 		var result: Array[Character] = []
+		
 		for i in amount:
 			result.append(characters.pop_at(characters.size() - 1))
+		
 		return result
+	
+	## Returns the average global position of characters.[br]
+	## If no characters available, the [param default] will be returned.
+	static func get_average_global_position(scene_tree: SceneTree, default: Vector2 = Vector2.ZERO) -> Vector2:
+		var characters := get_characters(scene_tree)
+		if characters.is_empty():
+			return default
+		
+		var result: Vector2
+		for i in characters:
+			result += i.global_position
+		
+		return result / float(characters.size())

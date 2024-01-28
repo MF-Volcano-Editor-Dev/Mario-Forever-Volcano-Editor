@@ -40,6 +40,8 @@ func death_effect_start() -> void:
 	if _character:
 		_gravity = _character.get_gravity_vector().normalized()
 	
+	Events.EventCharacter.notify_character_death(get_tree(), _character.id)
+	
 	var sound: AudioStreamPlayer = Sound.play_1d(sound_death, _character)
 	
 	set_process(false)

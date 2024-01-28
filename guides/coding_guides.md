@@ -12,7 +12,7 @@ To insist typed coding, we here requires that the typed coding should be always 
 It's NOT RECOMMENDED to remove any spaces in previous examples.
 
 However, as the typed coding gets taken, in some situation the type specification is not required:
-- For local variables in a function, you can use ":=" if the right value is type-inferrable by the first sight of a human.
+- For local variables in a function, you can use ":=" if the right value is type-inferrable by the first sight of human.
 - For arrays, misuse of the feature will cause error. For example, an array assigned with [] will throw an error when it is prefixed with ":=".
 - When assigning a for loop, you needn't speficy the type for the loop variable `i`, `j`, `k`, etc..
 
