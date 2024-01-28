@@ -21,6 +21,11 @@ class_name Character extends EntityBody2D
 			direction = [-1, 1].pick_random()
 
 
+## [code]abstract[/code] Makes the character die.
+func die() -> void:
+	pass
+
+
 #region == Getters ==
 ## Returns an [param action] with [member id].[br]
 ## E.g.: If an [param action] is [code]&"jump"[/code] and the [member id] is 0, the returned value is to be [code]&"jump0"[/code].[br]

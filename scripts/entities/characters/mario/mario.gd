@@ -100,6 +100,7 @@ func die() -> void:
 		_death.reparent(get_parent())
 		get_parent().move_child(_death, get_index())
 		_death.death_effect_start()
+		Events.EventCharacter.notify_character_death(get_tree(), id)
 	).call_deferred()
 	
 	queue_free()

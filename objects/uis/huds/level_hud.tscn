@@ -42,6 +42,7 @@ script = ExtResource("1_miil0")
 
 [node name="Frame" type="Control" parent="."]
 layout_mode = 3
+anchors_preset = 0
 offset_right = 640.0
 offset_bottom = 480.0
 metadata/_edit_lock_ = true
@@ -50,7 +51,7 @@ metadata/_edit_lock_ = true
 layout_mode = 0
 offset_left = 32.0
 offset_top = 24.0
-offset_right = 150.0
+offset_right = 165.0
 offset_bottom = 41.0
 text = "MARIO × X"
 label_settings = ExtResource("2_kw8o3")
@@ -65,6 +66,7 @@ grow_horizontal = 2
 text = "0"
 label_settings = ExtResource("2_kw8o3")
 horizontal_alignment = 2
+autowrap_mode = 2
 
 [node name="CoinX" type="AnimatedSprite2D" parent="Frame"]
 position = Vector2(230, 52)
@@ -82,6 +84,7 @@ grow_horizontal = 2
 text = "0"
 label_settings = ExtResource("2_kw8o3")
 horizontal_alignment = 2
+autowrap_mode = 2
 
 [node name="GameOver" type="Label" parent="."]
 visible = false
