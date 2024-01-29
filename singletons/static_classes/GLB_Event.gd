@@ -30,7 +30,6 @@ class EventCharacter:
 	## This call will trigger the emission of [Events.EventCharacter.EventCharacterSignals.character_dead], and even [Events.EventCharacter.EventCharacterSignals.all_characters_dead] when all players are dead.
 	static func notify_character_death(scene_tree: SceneTree, id: int) -> void:
 		_signals.character_dead.emit(id)
-		
 		if Character.Getter.get_characters(scene_tree).is_empty():
 			_signals.all_characters_dead.emit()
 	

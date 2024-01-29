@@ -5,8 +5,9 @@ extends CanvasLayer
 @export var sound_game_over: AudioStream = preload("res://assets/sounds/game_over.ogg")
 
 @onready var frame: Control = $Frame
-@onready var lives: Label = $Frame/Lives
-@onready var scores: Label = $Frame/Lives/Scores
+@onready var player_name: Label = $Frame/PlayerName
+@onready var lives: Label = $Frame/PlayerName/X/Lives
+@onready var scores: Label = $Frame/PlayerName/X/Lives/Scores
 @onready var coins: Label = $Frame/CoinX/Coins
 @onready var game_over: Label = $GameOver
 
@@ -17,7 +18,8 @@ func _ready() -> void:
 			match type:
 				Character.Data.DataSignal.Value.LIVES:
 					const DEFAULT: StringName = &"PLAYER"
-					lives.text = DEFAULT if Character.Getter.get_characters(get_tree()).is_empty() else Character.Getter.get_character(get_tree(), 0).nickname.to_upper() + &" × " + str(value)
+					player_name.text = (DEFAULT if Character.Getter.get_characters(get_tree()).is_empty() else Character.Getter.get_character(get_tree(), 0).nickname.to_upper()).left(8)
+					lives.text = str(value)
 				Character.Data.DataSignal.Value.SCORES:
 					scores.text = str(value)
 				Character.Data.DataSignal.Value.COINS:

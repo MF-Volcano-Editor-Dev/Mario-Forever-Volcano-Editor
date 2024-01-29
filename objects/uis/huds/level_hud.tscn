@@ -45,18 +45,43 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 640.0
 offset_bottom = 480.0
-metadata/_edit_lock_ = true
 
-[node name="Lives" type="Label" parent="Frame"]
+[node name="PlayerName" type="Label" parent="Frame"]
 layout_mode = 0
 offset_left = 32.0
 offset_top = 24.0
-offset_right = 165.0
+offset_right = 104.0
 offset_bottom = 41.0
-text = "MARIO × X"
+text = "MARIO"
+label_settings = ExtResource("2_kw8o3")
+justification_flags = 227
+
+[node name="X" type="Label" parent="Frame/PlayerName"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.941
+offset_left = 8.0
+offset_right = 24.0
+offset_bottom = 1.003
+grow_horizontal = 2
+text = "×"
 label_settings = ExtResource("2_kw8o3")
 
-[node name="Scores" type="Label" parent="Frame/Lives"]
+[node name="Lives" type="Label" parent="Frame/PlayerName/X"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 0.941
+offset_left = 6.0
+offset_right = 21.0
+offset_bottom = 1.003
+text = "X"
+label_settings = ExtResource("2_kw8o3")
+
+[node name="Scores" type="Label" parent="Frame/PlayerName/X/Lives"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0

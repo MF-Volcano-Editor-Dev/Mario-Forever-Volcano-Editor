@@ -19,7 +19,7 @@ metadata/_edit_pinned_properties_ = [&"nickname"]
 process_mode = 4
 visible = false
 
-[node name="MarioDeath" parent="." instance=ExtResource("4_bceee")]
+[node name="MarioDeath" parent="." groups=["character_death"] instance=ExtResource("4_bceee")]
 process_mode = 4
 visible = false
 position = Vector2(0, -7)

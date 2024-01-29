@@ -38,9 +38,11 @@ func _process(delta: float) -> void:
 ## See [Events.EventCharacter] for more details.
 func death_effect_start() -> void:
 	if _character:
+		_character.remove_from_group(&"character")
+		
 		_gravity = _character.get_gravity_vector().normalized()
-	
-	Events.EventCharacter.notify_character_death(get_tree(), _character.id)
+		
+		Events.EventCharacter.notify_character_death(get_tree(), _character.id)
 	
 	var sound: AudioStreamPlayer = Sound.play_1d(sound_death, _character)
 	
@@ -52,5 +54,10 @@ func death_effect_start() -> void:
 	await sound.finished
 	await get_tree().create_timer(1, false).timeout
 	# TODO: After-death executions
-	Events.EventCharacter.current_game_over(get_tree())
+	
+	var tree: SceneTree = get_tree()
+	remove_from_group(&"character_death")
+	if tree.get_nodes_in_group(&"character_death").is_empty(): # Prevent from quick restart when there are two or more characters who die in different time
+		Events.EventCharacter.current_game_over(tree)
+	
 	queue_free()
