@@ -1,11 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=9 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="PackedScene" uid="uid://crnx40c7hevum" path="res://objects/uis/huds/level_hud.tscn" id="1_brdbf"]
 [ext_resource type="PackedScene" uid="uid://c2kh1hrui8lpl" path="res://objects/units/general/unit_falling_death.tscn" id="2_b46gs"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_bvcda"]
 [ext_resource type="PackedScene" uid="uid://c8beh6lwuqjvp" path="res://objects/units/general/unit_time_down.tscn" id="2_yrtq0"]
 [ext_resource type="PackedScene" uid="uid://dm1au2ar8wp71" path="res://objects/entities/characters/mario/mario.tscn" id="3_2xf2e"]
-[ext_resource type="Script" path="res://scripts/units/camera/unit_cam_game.gd" id="4_7wpip"]
 [ext_resource type="Script" path="res://scripts/units/camera/unit_cam_autoscroll.gd" id="4_rfmdi"]
 [ext_resource type="Script" path="res://scenes/templates/Area2D.gd" id="7_vwi8c"]
 
@@ -20,30 +19,12 @@ radius = 16.0
 
 [node name="FallingDeath" parent="." instance=ExtResource("2_b46gs")]
 
-[node name="GameCamera2D" type="Camera2D" parent="."]
+[node name="AutoScrollCamera2D" type="Camera2D" parent="."]
 limit_left = 0
 limit_top = 0
 limit_right = 640
 limit_bottom = 480
 editor_draw_limits = true
-script = ExtResource("4_7wpip")
-_initialized = true
-
-[node name="GameCamera2D2" type="Camera2D" parent="."]
-limit_left = 640
-limit_top = 0
-limit_right = 2560
-limit_bottom = 1280
-editor_draw_limits = true
-script = ExtResource("4_7wpip")
-transition_initial_speed = 17.677
-_initialized = true
-
-[node name="AutoScrollCamera2D" type="Camera2D" parent="GameCamera2D2"]
-limit_left = 0
-limit_top = 0
-limit_right = 640
-limit_bottom = 480
 script = ExtResource("4_rfmdi")
 focus_characters = false
 _initialized = true
