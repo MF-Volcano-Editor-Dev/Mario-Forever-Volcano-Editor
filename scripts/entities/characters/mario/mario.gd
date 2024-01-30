@@ -102,6 +102,7 @@ func die() -> void:
 		_death.death_effect_start()
 	).call_deferred()
 	
+	remove_from_group(&"character")
 	queue_free()
 
 ## Returns [code]true[/code] if the character is invulnerable.

@@ -4,7 +4,8 @@ extends State
 ##
 ## If you want to customize the behavior based on this script, please override the related method(s).
 
-signal crouch_stage_changed ## Emitted when the character crouches or stops from crouching
+signal stand_up ## Emitted when the character stops from crouching.
+signal crouch ## Emitted when the character crouches.
 
 @export_category("Character Non-climbing State")
 @export_group("Controls", "key_")
@@ -68,9 +69,13 @@ func _state_process(delta: float) -> void:
 	_jump(delta)
 	_swim(delta)
 	_climbing_check()
+	
 	_animation.call_deferred(delta) # Called at the end of a frame to make sure the animation will be correctly played if the character is walking against a wall
 
 func _state_physics_process(_delta: float) -> void:
+	if _character.is_in_group(&"state_immovable"):
+		return
+	
 	_character.calculate_gravity()
 	_character.move_and_slide()
 	_character.correct_onto_floor()
@@ -108,10 +113,11 @@ func _crouch() -> void:
 		if _character.is_in_group(&"state_crouching") && _shape_controller.current_animation != &"CROUCH":
 			_shape_controller.play(&"CROUCH")
 			_powerup.set_shapes_for_character()
+			crouch.emit()
 		elif !_character.is_in_group(&"state_crouching") && _shape_controller.current_animation != &"RESET":
 			_shape_controller.play(&"RESET")
 			_powerup.set_shapes_for_character()
-			crouch_stage_changed.emit()
+			stand_up.emit()
 
 func _walk() -> void:
 	var lr: int = _character.get_udlr_directions(key_left, key_right, key_up, key_down).x # Acceleration

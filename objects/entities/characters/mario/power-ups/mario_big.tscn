@@ -160,7 +160,7 @@ shape = ExtResource("2_fs0vx")
 position = Vector2(0, -22)
 shape = ExtResource("2_fs0vx")
 
-[node name="StuckHead" type="Area2D" parent="." index="4"]
+[node name="StuckHead" type="Area2D" parent="." index="3"]
 visible = false
 collision_layer = 0
 collision_mask = 2
@@ -171,14 +171,15 @@ position = Vector2(0, -33)
 shape = SubResource("RectangleShape2D_117ip")
 debug_color = Color(0.498039, 0.431373, 1, 0.419608)
 
-[node name="AnimatedSprite2D" parent="." index="5"]
+[node name="AnimatedSprite2D" parent="." index="4"]
 sprite_frames = ExtResource("2_0k235")
 metadata/_edit_pinned_properties_ = [&"sprite_frames"]
 
-[node name="ShapeController" parent="." index="8"]
+[node name="ShapeController" parent="." index="7"]
 libraries = {
 "": SubResource("AnimationLibrary_u0mky")
 }
 
 [connection signal="powerup_entered" from="." to="StuckHead" method="stop_head_overlapping_body" flags=3]
-[connection signal="crouch_stage_changed" from="StateMachine/NonClimbing" to="StuckHead" method="stop_head_overlapping_body" flags=3]
+[connection signal="crouch" from="StateMachine/NonClimbing" to="StuckHead" method="stop_pushing"]
+[connection signal="stand_up" from="StateMachine/NonClimbing" to="StuckHead" method="check_and_push"]

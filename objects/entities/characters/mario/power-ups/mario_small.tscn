@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://d2a3jxasggppj"]
+[gd_scene load_steps=12 format=3 uid="uid://d2a3jxasggppj"]
 
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_powerup.gd" id="1_igb6y"]
 [ext_resource type="Shape2D" uid="uid://6oma0liuhhjr" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_small.tres" id="2_bu1ev"]
@@ -7,11 +7,7 @@
 [ext_resource type="Shape2D" uid="uid://dypbl1pshqi13" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_head.tres" id="3_gvdfx"]
 [ext_resource type="Script" path="res://scripts/components/state_machine/class_state_machine.gd" id="4_boade"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_non_climbing.gd" id="4_j3ux2"]
-[ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_stuck_to_death.gd" id="4_t511y"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_climbing.gd" id="6_nfgd5"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_rbyyk"]
-size = Vector2(16, 16)
 
 [sub_resource type="Animation" id="Animation_h00pe"]
 resource_name = "CROUCH"
@@ -182,17 +178,6 @@ metadata/_edit_lock_ = true
 position = Vector2(0, -7)
 shape = ExtResource("2_bu1ev")
 debug_color = Color(0.984314, 0, 0.356863, 0.419608)
-
-[node name="StuckToDeath" type="Area2D" parent="."]
-visible = false
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("4_t511y")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StuckToDeath"]
-position = Vector2(0, -8)
-shape = SubResource("RectangleShape2D_rbyyk")
-debug_color = Color(0.384314, 0.0901961, 0, 0.419608)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -24)
