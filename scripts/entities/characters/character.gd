@@ -193,7 +193,7 @@ class Getter:
 		if characters.is_empty():
 			return default
 		
-		var result: Vector2
+		var result: Vector2 = Vector2.ZERO
 		for i in characters:
 			result += i.global_position
 		

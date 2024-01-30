@@ -14,6 +14,7 @@ signal state_exited ## Emitted when this node ends up being current.
 ## When [method StateMachine.change_state] is called, this property will get into usage to match if the given [param to] matches this. If [code]true[/code], this state will become current state.
 @export var state_id: StringName
 
+@warning_ignore("unused_private_class_variable")
 @onready var _state_machine: StateMachine = get_parent()
 
 

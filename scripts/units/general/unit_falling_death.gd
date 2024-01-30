@@ -4,7 +4,7 @@ extends Node
 @export_range(-1, 1, 0.001, "or_less", "or_greater", "hide_slider", "suffix:px") var margin: float = 48
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var characters: Array[Character] = Character.Getter.get_characters(get_tree())
 	for i in characters:
 		var cvs_pos: Vector2 = i.get_global_transform_with_canvas().get_origin() # Canvas position

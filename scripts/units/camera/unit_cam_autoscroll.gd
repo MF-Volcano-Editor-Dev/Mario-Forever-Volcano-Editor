@@ -6,6 +6,8 @@ class_name AutoScrollCamera2D extends GameCamera2D
 ## Margin to push the character at the edge of the screen.
 @export_range(-32, 32, 0.001, "suffix:px") var margin: float = 16
 
+var _no_characters: bool # When all characters are dead, this will be turned on
+
 @onready var _camera_follower: PathFollow2D = get_node_or_null(camera_follower_path) as PathFollow2D
 
 
@@ -16,8 +18,16 @@ func _init_overridden_properties() -> void:
 #endregion
 
 
-func _process(delta: float) -> void:
+func _ready() -> void:
+	Events.EventCharacter.get_signals().all_characters_dead.connect(
+		func() -> void:
+			_no_characters = true
+	)
+
+func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
+		return
+	if _no_characters:
 		return
 	if focus_process_mode != CAMERA2D_PROCESS_IDLE:
 		return
@@ -25,8 +35,10 @@ func _process(delta: float) -> void:
 		global_position = _camera_follower.global_position
 	_player_edgeblock.call_deferred()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint():
+		return
+	if _no_characters:
 		return
 	if focus_process_mode != CAMERA2D_PROCESS_PHYSICS:
 		return
@@ -38,20 +50,25 @@ func _physics_process(delta: float) -> void:
 func _player_edgeblock() -> void:
 	var width := get_viewport_rect().size.x # Viewport width
 	var canvas_rot := get_viewport_transform().get_rotation() # Canvas rotation
-	print(canvas_rot)
 	var characters: Array[Character] = Character.Getter.get_characters(get_tree())
 	for i in characters:
 		if !get_limit_rect().has_point(i.global_position):
 			continue
-		var pposx := i.get_global_transform_with_canvas().get_origin().x ## X position in canvas
-		while pposx < margin && !i.is_on_wall():
-			i.global_position += Vector2.RIGHT.rotated(i.canvas_rot)
-		while pposx > width - margin && !i.is_on_wall():
-			i.global_position += Vector2.LEFT.rotated(i.canvas_rot)
+		
+		var edge: bool = false
+		var kc: KinematicCollision2D
+		while i.get_global_transform_with_canvas().get_origin().x < margin && !kc:
+			kc = i.move_and_collide(Vector2.RIGHT.rotated(canvas_rot))
+			edge = true
+		while i.get_global_transform_with_canvas().get_origin().x > width - margin && !kc:
+			kc = i.move_and_collide(Vector2.LEFT.rotated(canvas_rot))
+			edge = true
+		if edge:
+			i.velocality.x = 0
 		
 		# Character being squeezed to death
-		pposx = i.get_global_transform_with_canvas().get_origin().x
-		if pposx < -margin || pposx > width + margin:
+		var pposx := i.get_global_transform_with_canvas().get_origin().x # X position in canvas
+		if (pposx < margin || pposx > width - margin) && kc.get_collider():
 			i.die()
 
 #region == Setgets ==

@@ -18,7 +18,10 @@ func _ready() -> void:
 			match type:
 				Character.Data.DataSignal.Value.LIVES:
 					const DEFAULT: StringName = &"PLAYER"
+					
+					@warning_ignore("incompatible_ternary")
 					player_name.text = (DEFAULT if Character.Getter.get_characters(get_tree()).is_empty() else Character.Getter.get_character(get_tree(), 0).nickname.to_upper()).left(8)
+					
 					lives.text = str(value)
 				Character.Data.DataSignal.Value.SCORES:
 					scores.text = str(value)

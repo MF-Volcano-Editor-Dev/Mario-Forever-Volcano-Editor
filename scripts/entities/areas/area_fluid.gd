@@ -23,7 +23,7 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	_property_update() # This will be called BEFORE all nodes get the virtual method called
 	_property_revert.call_deferred() # This will be called AFTER all nodes get the virtual method called
 

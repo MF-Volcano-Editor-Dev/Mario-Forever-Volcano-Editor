@@ -194,7 +194,7 @@ func _swim(delta: float) -> void:
 
 
 #region == Animations ==
-func _animation(delta: float) -> void:
+func _animation(_delta: float) -> void:
 	if !_animated_sprite:
 		return
 	
