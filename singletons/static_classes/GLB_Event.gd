@@ -14,17 +14,18 @@ class_name Events
 ## EventCharacter.get_signals().game_over.connect(...)
 ## [/codeblock]
 
+
 ## Subclass of [Events], which is used to manage the events related to characters, including game over and completion of a level.
 ##
 ## To listen to the signals, please call [method get_signals] and see [Events.EventCharacter.EventCharacterSignals]
 class EventCharacter:
-	## Subclass of [Events.EventCharacter] that helps store signals
-	class EventCharacterSignals:
+	## Subclass of [Events.EventCharacter] that helps store signals.
+	class Signals:
 		signal character_dead(id: int) ## Emitted when a characters dies.
 		signal all_characters_dead ## Emitted when all characters are dead.
 		signal game_over ## Emitted when event "game over" is triggered.
 	
-	static var _signals: EventCharacterSignals = EventCharacterSignals.new()
+	static var _signals: Signals = Signals.new()
 	
 	## Notify that a character dies.[br]
 	## This call will trigger the emission of [Events.EventCharacter.EventCharacterSignals.character_dead], and even [Events.EventCharacter.EventCharacterSignals.all_characters_dead] when all players are dead.
@@ -32,6 +33,7 @@ class EventCharacter:
 		_signals.character_dead.emit(id)
 		if Character.Getter.get_characters(scene_tree).is_empty():
 			_signals.all_characters_dead.emit()
+			EventTimeDown.get_signals().time_down_paused.emit()
 	
 	## Triggers the event "current game over".[br]
 	## [br]
@@ -46,18 +48,33 @@ class EventCharacter:
 		else:
 			_signals.game_over.emit()
 	
-	## Returns [Events.EventCharacter.EventCharacterSignals]
-	static func get_signals() -> EventCharacterSignals:
+	## Returns [Events.EventCharacter.Signals]
+	static func get_signals() -> Signals:
 		return _signals
 
-
+## Subclass of [Events], which is used to manage the events related to timer down.
+##
+## To listen to the signals, please call [method get_signals] and see [Events.EventTimeDown.Signals]
 class EventTimeDown:
-	class EventTimeDownSignals:
+	## Subclass of [Events.EventTimeDown] that helps store signals.
+	class Signals:
 		signal time_down_paused ## Emitted when making the timer pause.
 		signal time_down_resume ## Emitted when making the timer resume.
 	
-	static var _signals: EventTimeDownSignals = EventTimeDownSignals.new()
+	static var _signals: Signals = Signals.new()
 	
-	## Returns [Events.EventTimeDown.EventTimeDownSignals]
-	static func get_signals() -> EventTimeDownSignals:
+	## Returns [Events.EventTimeDown.Signals]
+	static func get_signals() -> Signals:
+		return _signals
+
+
+class EventGame:
+	## Subclass of [Events.EventTimeDown] that helps store signals.
+	class Signals:
+		signal completed_level ## Emitted when a level is completed.
+	
+	static var _signals: Signals = Signals.new()
+	
+	## Returns [Events.EventGame.Signals]
+	static func get_signals() -> Signals:
 		return _signals

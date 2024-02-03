@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=9 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="PackedScene" uid="uid://crnx40c7hevum" path="res://objects/uis/huds/level_hud.tscn" id="1_brdbf"]
 [ext_resource type="PackedScene" uid="uid://c2kh1hrui8lpl" path="res://objects/units/general/unit_falling_death.tscn" id="2_b46gs"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_bvcda"]
 [ext_resource type="PackedScene" uid="uid://c8beh6lwuqjvp" path="res://objects/units/general/unit_time_down.tscn" id="2_yrtq0"]
 [ext_resource type="PackedScene" uid="uid://dm1au2ar8wp71" path="res://objects/entities/characters/mario/mario.tscn" id="3_2xf2e"]
-[ext_resource type="Script" path="res://scripts/units/camera/unit_cam_autoscroll.gd" id="4_rfmdi"]
+[ext_resource type="Script" path="res://scripts/units/camera/unit_cam_game.gd" id="4_6nwtf"]
 [ext_resource type="PackedScene" uid="uid://bmjdf645ojtmf" path="res://objects/entities/core/goal/goal.tscn" id="7_anpp2"]
+[ext_resource type="PackedScene" uid="uid://bmwc6v75lebwb" path="res://objects/entities/core/goal/goal_predetector.tscn" id="8_21nmw"]
 
 [node name="Level" type="Node2D"]
 
@@ -16,15 +17,13 @@
 
 [node name="FallingDeath" parent="." instance=ExtResource("2_b46gs")]
 
-[node name="AutoScrollCamera2D" type="Camera2D" parent="."]
+[node name="GameCamera2D" type="Camera2D" parent="."]
 limit_left = 0
 limit_top = 0
 limit_right = 2560
 limit_bottom = 480
 editor_draw_limits = true
-script = ExtResource("4_rfmdi")
-camera_follower_path = NodePath("")
-focus_characters = false
+script = ExtResource("4_6nwtf")
 _initialized = true
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
@@ -37,5 +36,7 @@ layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969,
 metadata/_edit_lock_ = true
 
 [node name="Goal" parent="." instance=ExtResource("7_anpp2")]
-position = Vector2(256, 416)
-detection_area_shape = 1
+position = Vector2(448, 416)
+
+[node name="GoalPreDetector" parent="Goal" instance=ExtResource("8_21nmw")]
+position = Vector2(-192, 0)

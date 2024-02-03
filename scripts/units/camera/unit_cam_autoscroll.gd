@@ -19,6 +19,11 @@ func _init_overridden_properties() -> void:
 
 
 func _ready() -> void:
+	super()
+	
+	if Engine.is_editor_hint():
+		return
+	
 	Events.EventCharacter.get_signals().all_characters_dead.connect(
 		func() -> void:
 			_no_characters = true
@@ -33,7 +38,7 @@ func _process(_delta: float) -> void:
 		return
 	if _camera_follower:
 		global_position = _camera_follower.global_position
-	_player_edgeblock.call_deferred()
+	_character_edgeblock.call_deferred()
 
 func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -44,10 +49,10 @@ func _physics_process(_delta: float) -> void:
 		return
 	if _camera_follower:
 		global_position = _camera_follower.global_position
-	_player_edgeblock.call_deferred()
+	_character_edgeblock.call_deferred()
 
 
-func _player_edgeblock() -> void:
+func _character_edgeblock() -> void:
 	var width := get_viewport_rect().size.x # Viewport width
 	var canvas_rot := get_viewport_transform().get_rotation() # Canvas rotation
 	var characters: Array[Character] = Character.Getter.get_characters(get_tree())

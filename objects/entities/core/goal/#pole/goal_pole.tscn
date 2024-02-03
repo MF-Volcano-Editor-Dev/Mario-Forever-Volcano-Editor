@@ -18,8 +18,9 @@ shape = SubResource("RectangleShape2D_grq6o")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_q20cu")
+metadata/_edit_group_ = true
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenEnabler2D" parent="."]
-modulate = Color(1, 1, 1, 0.0392157)
+modulate = Color(1, 1, 1, 0.0784314)
 rect = Rect2(-24, -8, 48, 16)
 metadata/_edit_lock_ = true

@@ -25,41 +25,47 @@ signal completion_restored ## Emitted when the level completion is restored.
 @export var scores: PackedInt32Array = [200, 500, 1000, 2000, 5000, 10000]
 ## Score to be given if a character fails hitting down the pole.
 @export_range(0, 10000, 1) var default_score: int = 100
-@export_group("References")
-@export_node_path("Node") var level_completion_path: NodePath = ^"../LevelCompletion"
 
 var _has_completed: bool # If true, the complete_level() is not callable, and the pole is unhittable as well.
 var _hit_pole: bool # If true, the score will be `default_score`
 
-@onready var _sprite_gate: Node2D = $SpriteGate
 @onready var _completion_detection: Area2D = $CompletionDetc
-@onready var _completion_area_rectangle: CollisionShape2D = $CompletionDetc/Rectangle
-@onready var _completion_area_rectangle_disabled: bool = _completion_area_rectangle.disabled
-@onready var _completion_area_infinite: CollisionShape2D = $CompletionDetc/Infinite
-@onready var _completion_area_infinite_disabled: bool = _completion_area_rectangle.disabled
 @onready var _instantiater_2d: Instantiater2D = $Instantiater2D
 @onready var _animation_player: AnimationPlayer = $AnimationPlayer
-@onready var _level_completion: = get_node_or_null(level_completion_path)
+
+@onready var completion_area_rectangle: CollisionShape2D = $CompletionDetc/Rectangle
+@onready var completion_area_infinite: CollisionShape2D = $CompletionDetc/Infinite
+@onready var pos_top: Marker2D = $SpriteGate/PosTop
+
+
+func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
 
 
 ## Triggers the completion of current level.
 func complete_level(body: Node2D) -> void:
-	if _has_completed:
-		return
 	if !Character.Checker.is_character(body):
 		return
 	
+	body = body as Character
+	while !_hit_pole && !body.is_on_floor(): # Coroutine loop by physics step until the character is on the floor
+		if !_completion_detection.overlaps_body(body): # Coroutine interruption, stops the execution if, during the loop, the character leaves from the area
+			return
+		await get_tree().process_frame
+	
+	if _has_completed:
+		return
 	_has_completed = true
 	
-	_completion_area_rectangle.set_deferred(&"disabled", true)
-	_completion_area_infinite.set_deferred(&"disabled", true)
+	Events.EventGame.get_signals().completed_level.emit() # This triggers completion of the level
 	
-	# TODO: Level completion
-	
-	var section: int = mini(0, scores.size() * int(roundf(_animation_player.current_animation_position / _animation_player.current_animation_length)) - 1) # Get which score the character can attain
+	var section: int = maxi(0, int(roundf(scores.size() * _animation_player.current_animation_position / _animation_player.current_animation_length)) - 1) # Get which score the character can attain
 	Character.Data.scores += scores[section]
 	(_instantiater_2d.instantiate(0) as _COUNTER).amount = scores[section] if _hit_pole else default_score
 	
-	_animation_player.pause()
+	completion_area_rectangle.queue_free()
+	completion_area_infinite.queue_free()
+	_animation_player.queue_free()
 	
 	completion_triggered.emit()

@@ -43,7 +43,6 @@ var _is_sum: bool # Is summarizing
 func _ready() -> void:
 	rest_time = rest_time # Triggers the setter to initialize the display of `time_count`
 	
-	Events.EventCharacter.get_signals().all_characters_dead.connect(stop_time_down)
 	Events.EventTimeDown.get_signals().time_down_paused.connect(pause_time_down)
 	Events.EventTimeDown.get_signals().time_down_resume.connect(start_time_down)
 
