@@ -16,6 +16,9 @@ class_name Component extends Node
 @onready var root: Node = get_root()
 
 
-## Returns the root node of the component
+## Returns the root node of the component.[br]
+## [br]
+## [b]Note:[/b] In some situation, variables prefixed with [annotation @onready] will fail getting source node because of the speciality of the annotation.
+## For safely getting the node, it's more recommended to use the getter.
 func get_root() -> Node:
 	return get_node_or_null(root_path)

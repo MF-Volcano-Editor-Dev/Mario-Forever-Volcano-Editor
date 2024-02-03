@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://oi5vyigqsaq1" path="res://objects/entities/characters/mario/power-ups/mario_big.tscn" id="3_ck1o5"]
 [ext_resource type="PackedScene" uid="uid://dh2wi5r4ubr2x" path="res://objects/entities/characters/#deaths/mario_death.tscn" id="4_bceee"]
 
-[node name="Mario" type="EntityBody2D" groups=["character"]]
+[node name="Mario" type="EntityBody2D" groups=["character", "entity"]]
 gravity_scale = 1.0
 collision_mask = 2
 platform_on_leave = 1

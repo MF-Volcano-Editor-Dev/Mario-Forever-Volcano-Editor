@@ -133,7 +133,7 @@ class Data:
 
 ## A subclass that allows you to get characters.
 ##
-## [b]Note:[/b] The getters in this subclass are required to be passed in a param of [SceneTree] type. So if the caller is a node, then the param can be [method get_tree].
+## [b]Note:[/b] The methods in this subclass are required to be passed in a param of [SceneTree] type. So if the caller is a node, then the param can be [method get_tree].
 class Getter:
 	## Returns an [Array] with [Character]s.
 	static func get_characters(scene_tree: SceneTree) -> Array[Character]:
@@ -198,3 +198,12 @@ class Getter:
 			result += i.global_position
 		
 		return result / float(characters.size())
+
+
+## A subclass used for checking something in terms of [Character].
+##
+## [b]Note:[/b] Some of methods in this subclass are required to be passed in a param of [SceneTree] type. So if the caller is a node, then the param can be [method get_tree].
+class Checker:
+	## Returns [code]true[/code] if a node [param to_be_checked] is an available instance of [Character].
+	static func is_character(to_be_checked: Node2D) -> bool:
+		return is_instance_valid(to_be_checked) && to_be_checked is Character && to_be_checked.is_in_group(&"character")
