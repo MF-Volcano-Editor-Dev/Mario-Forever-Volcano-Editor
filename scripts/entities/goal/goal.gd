@@ -1,7 +1,7 @@
 @tool
 extends Node2D
 
-const _COUNTER: Script = preload("res://scripts/uis/counters/counter_label.gd")
+const _Counter: Script = preload("res://scripts/uis/counters/counter_label.gd")
 
 signal completion_triggered ## Emitted when the level completion is successfully triggered.
 signal completion_restored ## Emitted when the level completion is restored.
@@ -58,11 +58,15 @@ func complete_level(body: Node2D) -> void:
 		return
 	_has_completed = true
 	
-	Events.EventGame.get_signals().completed_level.emit() # This triggers completion of the level
+	Events.EventGame.complete_level(get_tree(), [body]) # This triggers completion of the level
 	
-	var section: int = maxi(0, int(roundf(scores.size() * _animation_player.current_animation_position / _animation_player.current_animation_length)) - 1) # Get which score the character can attain
-	Character.Data.scores += scores[section]
-	(_instantiater_2d.instantiate(0) as _COUNTER).amount = scores[section] if _hit_pole else default_score
+	var counter: _Counter = _instantiater_2d.instantiate(0) as _Counter
+	if _hit_pole:
+		var section: int = maxi(0, int(roundf(scores.size() * _animation_player.current_animation_position / _animation_player.current_animation_length)) - 1) # Get which score the character can attain
+		counter.amount = scores[section]
+	else:
+		counter.amount = default_score
+	Character.Data.scores += counter.amount
 	
 	completion_area_rectangle.queue_free()
 	completion_area_infinite.queue_free()

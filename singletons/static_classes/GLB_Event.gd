@@ -13,6 +13,8 @@ class_name Events
 ## # Here we take EventCharacter's game_over as an example:
 ## EventCharacter.get_signals().game_over.connect(...)
 ## [/codeblock]
+## [br]
+## [b]Caution:[/b] All events are applied for ONLY ONE SCENE in the runtime, and DO NOT try to make parallel levels in the same scene, which may break the event system!
 
 
 ## Subclass of [Events], which is used to manage the events related to characters, including game over and completion of a level.
@@ -71,9 +73,30 @@ class EventTimeDown:
 class EventGame:
 	## Subclass of [Events.EventTimeDown] that helps store signals.
 	class Signals:
-		signal completed_level ## Emitted when a level is completed.
+		signal completed_level ## Emitted when a level gets completed.
+		signal completion_summary_triggered ## Emitted when a level is going to start summary during the process of completion. (Completion Stage 1)
+		signal completion_accomplished ## Emitted when a level is accomplished. (Completion Stage 2)
 	
 	static var _signals: Signals = Signals.new()
+	
+	
+	## Makes the level completed and removes the characters except the certain one(s).[br]
+	## [br]
+	## [b]Note 1:[/b] You need to pass in [param tree]([SceneTree]) to make sure the [param remove_character_exception] works as expected.[br]
+	## [b]Note 2:[/b] This call will cause other characters disappear ([method Node.queue_free] is called) after a fading of 0.5s, so please ensure the level design is safe to this call.
+	static func complete_level(tree: SceneTree = null, remove_character_exception: Array[Character] = []) -> void:
+		if tree:
+			for i in Character.Getter.get_characters(tree):
+				if i in remove_character_exception:
+					continue # Skips the ones in the exception
+				i.remove_from_group(&"character")
+				i.set_process(false)
+				i.set_physics_process(false)
+				var tw: Tween = i.create_tween()
+				tw.tween_property(i, ^"modulate:a", 0, 0.5)
+				tw.tween_callback(i.queue_free)
+		
+		_signals.completed_level.emit()
 	
 	## Returns [Events.EventGame.Signals]
 	static func get_signals() -> Signals:

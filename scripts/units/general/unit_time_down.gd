@@ -1,9 +1,17 @@
 extends CanvasLayer
 
+## Unit used for a level to add the capability of time count-down.
+##
+## [b]Note:[/b] Each level can contain ONLY ONE of this.
+
+const _LevelCompletion: Script = preload("res://scripts/units/general/unit_level_completion.gd")
+
+signal time_changed(time: int) ## Emitted every time the [member rest_time] gets changed.
 signal time_count_down(amount: int) ## Emitted when the timer counts down.
 signal time_count_up(amount: int) ## Emitted when the timer counts up.
 signal time_warning ## Emitted when not-enough-time warning is triggered.
 signal time_over ## Emitted when the timer is up.
+signal timer_done_summary ## Emitted when the summary is finished.
 
 @export_category("Unit Time Down")
 ## Rest time that the character have to complete the level.
@@ -21,11 +29,14 @@ signal time_over ## Emitted when the timer is up.
 @export_group("Summary", "sum_")
 @export_subgroup("Unit Ticks", "sum_unit_tick_")
 ## [member unit_tick] during the summary.
-@export_range(0, 86400, 0.001, "suffix:ut") var sum_unit_tick: float = 0.05
+@export_range(0, 86400, 0.001, "suffix:ut") var sum_unit_tick: float = 0.01
 ## [member unit_tick_down] during the summary.
-@export_range(-99999, 99999, 1, "suffix:ut") var sum_unit_tick_down: int = 15
+@export_range(-99999, 99999, 1, "suffix:ut") var sum_unit_tick_down: int = 10
 ## Scores that can be gained by the character, per unit tick during the summary.
 @export_range(0, 99999, 1, "suffix:point") var sum_scores_per_ut: int = 10
+@export_group("Reference")
+## Path to level completion unit.
+@export_node_path("Node") var level_completion_path: NodePath = ^"../LevelCompletion"
 @export_group("Sounds", "sound_")
 @export var sound_time_warning: AudioStream = preload("res://assets/sounds/timer_warning.wav")
 @export var sound_summarizing: AudioStream = preload("res://assets/sounds/timer_scoring.wav")
@@ -33,11 +44,12 @@ signal time_over ## Emitted when the timer is up.
 var _has_warned: bool # Has the warning been triggered
 var _is_sum: bool # Is summarizing
 
-@onready var time: Label = $Frame/Time
-@onready var time_count: Label = $Frame/TimeCount
-@onready var animation: AnimationPlayer = $Animation
-@onready var count_down: Timer = $CountDown
-@onready var time_up: Label = $Frame/TimeUp
+@onready var _time: Label = $Frame/Time
+@onready var _time_count: Label = $Frame/TimeCount
+@onready var _animation: AnimationPlayer = $Animation
+@onready var _count_down: Timer = $CountDown
+@onready var _time_up: Label = $Frame/TimeUp
+@onready var _level_completion: _LevelCompletion = get_node_or_null(level_completion_path)
 
 
 func _ready() -> void:
@@ -45,45 +57,77 @@ func _ready() -> void:
 	
 	Events.EventTimeDown.get_signals().time_down_paused.connect(pause_time_down)
 	Events.EventTimeDown.get_signals().time_down_resume.connect(start_time_down)
+	
+	Events.EventGame.get_signals().completed_level.connect(stop_time_down)
+	Events.EventGame.get_signals().completion_summary_triggered.connect(_on_summary_triggered)
 
 
 #region == Timer Controls ==
 ## Makes the timer start counting down.[br]
 ## If the timer is paused, this call will resume it rather than restart it.
 func start_time_down() -> void:
-	if count_down.paused:
-		count_down.wait_time = unit_tick
-		count_down.paused = false
+	if _count_down.paused:
+		_count_down.wait_time = unit_tick
+		_count_down.paused = false
 	else:
-		count_down.start(unit_tick)
+		_count_down.start(sum_unit_tick if _is_sum else unit_tick)
 
 ## Stops the timer from counting down.[br]
 ## [br]
 ## [b]Note:[/b] Once this call is done, the timer will stop counting down and the rest ticks to trigger the counting down will be discarded.
 func stop_time_down() -> void:
-	count_down.stop()
+	_count_down.stop()
 
 ## Pauses the timer from continuing counting down.[br]
 ## [br]
 ## [b]Note:[/b] Similar to [method stop_time_down], but the rest ticks will remain.
 func pause_time_down() -> void:
-	count_down.paused = true
+	_count_down.paused = true
 #endregion
 
 
+#region == Timer ==
 func _on_count_down_timeout() -> void:
 	rest_time -= sum_unit_tick_down if _is_sum else unit_tick_down
+
+func _on_summary_triggered() -> void:
+	_is_sum = true
+	
+	if _level_completion:
+		_level_completion.add_stage_2_blocker(self)
+	
+	# Sound
+	var tw: Tween = create_tween().set_loops()
+	tw.tween_callback(Sound.play_1d.bind(sound_summarizing, self)).set_delay(0.075)
+	tw.tween_callback(
+		func() -> void:
+			if rest_time <= 0:
+				tw.kill()
+	)
+	
+	start_time_down()
+	
+	# Done summary
+	time_changed.connect(
+		func(time: int) -> void:
+			if time <= 0 && _level_completion:
+				_level_completion.remove_stage_2_blocker(self)
+				timer_done_summary.emit()
+				stop_time_down()
+	)
+#endregion
 
 
 #region == Setgets ==
 func set_rest_time(value: int) -> void:
-	var delta: int = value - rest_time # Delta
+	value = maxi(0, value) # The bottom is 0
+	var delta: int = value - rest_time # Delta of the time
 	rest_time = value
 	
 	if !is_node_ready():
 		return
 	
-	time_count.text = str(rest_time)
+	_time_count.text = str(rest_time)
 	
 	# Count down or up
 	if delta < 0:
@@ -91,29 +135,35 @@ func set_rest_time(value: int) -> void:
 	elif delta > 0:
 		time_count_up.emit(delta)
 	
-	# Time warning
-	if _has_warned && rest_time >= warning_line:
-		_has_warned = false
-		animation.play(&"RESET")
-	if !_has_warned && rest_time < warning_line:
-		_has_warned = true
-		animation.play(&"warning")
-		Sound.play_1d(sound_time_warning, self)
+	time_changed.emit(rest_time) # Emits the signal to update listener's relevant property
 	
-	# Time up
-	if rest_time <= 0:
-		time_up.visible = true
-		var a: float = time_up.modulate.a
-		var tw: Tween = time_up.create_tween()
-		tw.tween_interval(2)
-		tw.tween_property(time_up, ^"modulate:a", 0, 1)
-		tw.tween_callback(
-			func() -> void:
-				time_up.visible = false
-				time_up.modulate.a = a
-		)
+	# Adds scores during the summary
+	if _is_sum:
+		Character.Data.scores += absi(delta) * sum_scores_per_ut
+	else:
+		# Time warning
+		if _has_warned && rest_time >= warning_line:
+			_has_warned = false
+			_animation.play(&"RESET")
+		if !_has_warned && rest_time < warning_line:
+			_has_warned = true
+			_animation.play(&"warning")
+			Sound.play_1d(sound_time_warning, self)
 		
-		stop_time_down()
-		
-		time_over.emit()
+		# Time up
+		if rest_time <= 0:
+			_time_up.visible = true
+			var a: float = _time_up.modulate.a
+			var tw: Tween = _time_up.create_tween()
+			tw.tween_interval(2)
+			tw.tween_property(_time_up, ^"modulate:a", 0, 1)
+			tw.tween_callback(
+				func() -> void:
+					_time_up.visible = false
+					_time_up.modulate.a = a
+			)
+			
+			stop_time_down()
+			
+			time_over.emit()
 #endregion

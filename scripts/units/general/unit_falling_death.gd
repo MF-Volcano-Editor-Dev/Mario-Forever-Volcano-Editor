@@ -1,5 +1,9 @@
 extends Node
 
+## Unit used to make a character die when he/she falls out of the screen.
+##
+## [b]Note:[/b] Each level can contain ONLY ONE of this.
+
 @export_category("Unit Falling Death")
 @export_range(-1, 1, 0.001, "or_less", "or_greater", "hide_slider", "suffix:px") var margin: float = 48
 

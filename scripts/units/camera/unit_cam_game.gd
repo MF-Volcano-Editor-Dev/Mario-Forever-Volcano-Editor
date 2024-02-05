@@ -197,11 +197,11 @@ func _smooth_transition(delta: float) -> void:
 	# Shrinks the edges of limitation; thus the camera will get smoothly transited by them.
 	var speed := transition_initial_speed * delta
 	var threshold := int(roundf(transition_initial_speed / 2))
-	while (absi(acam.limit_left - limit_left) > threshold || \
+	while is_inside_tree() && \
+		(absi(acam.limit_left - limit_left) > threshold || \
 		absi(acam.limit_right - limit_right) > threshold || \
 		absi(acam.limit_top - limit_top) > threshold || \
-		absi(acam.limit_bottom - limit_bottom) > threshold) && \
-		is_inside_tree():
+		absi(acam.limit_bottom - limit_bottom) > threshold):
 			acam.limit_left = int(roundf(lerpf(acam.limit_left, limit_left, speed)))
 			acam.limit_right = int(roundf(lerpf(acam.limit_right, limit_right, speed)))
 			acam.limit_top = int(roundf(lerpf(acam.limit_top, limit_top, speed)))
@@ -211,8 +211,8 @@ func _smooth_transition(delta: float) -> void:
 	
 	# Then manages to track to the characters' average global position smoothly
 	acam.global_position = acam.get_screen_center_position()
-	while acam.global_position.is_equal_approx(Character.Getter.get_average_global_position(get_tree(), acam.global_position)) && \
-		is_inside_tree():
+	while is_inside_tree() && \
+		acam.global_position.is_equal_approx(Character.Getter.get_average_global_position(get_tree(), acam.global_position)):
 			acam.global_position = acam.global_position.move_toward(Character.Getter.get_average_global_position(get_tree(), acam.global_position), speed)
 			acam.force_update_scroll()
 			await get_tree().physics_frame
