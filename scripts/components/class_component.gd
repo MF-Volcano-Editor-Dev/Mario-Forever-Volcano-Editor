@@ -10,7 +10,18 @@ class_name Component extends Node
 ## [/codeblock]
 
 ## Path to the [Node] that the component takes effect on
-@export_node_path("Node") var root_path: NodePath = ^".."
+@export_node_path("Node") var root_path: NodePath = ^"..":
+	set(value):
+		root_path = value
+		
+		# For @tool-ed extending classes
+		if !Engine.is_editor_hint():
+			return
+		
+		root = get_root()
+		
+		notify_property_list_changed()
+		update_configuration_warnings()
 
 ## See [member root_path].
 @onready var root: Node = get_root()

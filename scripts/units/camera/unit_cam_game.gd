@@ -144,6 +144,7 @@ func _focus() -> void:
 		_on_transition || \
 		_on_transition_execution: # `_on_transition_execution` prevents camera from focusing on the object when it is doing transition
 			return
+	
 	global_position = Character.Getter.get_average_global_position(get_tree(), global_position)
 
 func _transition(delta: float) -> void:

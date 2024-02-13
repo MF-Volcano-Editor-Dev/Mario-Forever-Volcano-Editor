@@ -4,10 +4,11 @@ extends Node2D
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_speed: float = 600
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:x") var gravity_scale: float = 0.5
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var max_falling_speed: float = 500
+@export_range(-18000, 18000, 0.001, "suffix:°/s") var rotation_speed: float = 500
 
 var _gravity: Vector2
 var _velocity: Vector2
-var _has_rotated: bool
+var _rot_dir: float # Rotating direction
 
 var sound_death: AudioStream ## [i]Passed by [method Mario.die][/i]
 
@@ -23,12 +24,7 @@ func _process(delta: float) -> void:
 	global_position += _velocity * delta
 	
 	## Rotate
-	if !_has_rotated && _velocity.dot(_gravity) > 0:
-		_has_rotated = true
-		
-		var r: float = _sprite.rotation
-		var tw: Tween = create_tween().set_trans(Tween.TRANS_SINE)
-		tw.tween_property(_sprite, ^"rotation", r + PI * [-1.0, 1.0].pick_random(), 0.2)
+	rotate(deg_to_rad(rotation_speed * _rot_dir * delta))
 
 
 ## [i]Called by [method Mario.die].[/i][br]
@@ -47,6 +43,7 @@ func death_effect_start() -> void:
 	set_process(false)
 	await get_tree().create_timer(0.5, false).timeout
 	set_process(true)
+	_rot_dir = [-1.0, 1.0].pick_random()
 	_velocity = Vector2.UP.rotated(global_rotation) * initial_speed
 	
 	await sound.finished

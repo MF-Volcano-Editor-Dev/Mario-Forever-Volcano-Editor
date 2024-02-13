@@ -17,6 +17,7 @@ visible = false
 shape = SubResource("RectangleShape2D_grq6o")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -4
 texture = ExtResource("1_q20cu")
 metadata/_edit_group_ = true
 

@@ -19,11 +19,24 @@ class_name Character extends EntityBody2D
 		direction = value
 		if !direction: # No zero direction
 			direction = [-1, 1].pick_random()
+@export_group("Hitbox")
+## Offset of hitbox center. Useful for some detections like one in [EnemyStompable].
+@export var center_offset: Vector2 = Vector2(0, -16)
 
+
+## [code]abstract[/code] Makes the character hurt.
+func hurt() -> void:
+	pass
 
 ## [code]abstract[/code] Makes the character die.
 func die() -> void:
 	pass
+
+## Returns the global position of the body's center.[br]
+## [br]
+## The center of body is determined by [member Node2D.global_position] + [member center_offset].rotated([Node2D.global_rotation]).
+func get_center() -> Vector2:
+	return global_position + center_offset.rotated(global_rotation)
 
 
 #region == Getters ==

@@ -8,9 +8,12 @@ class_name Instantiater2D extends Component2D
 ## [br]
 ## [b]Note:[/b] This only works for instances instantiated via [PackedScene]. Otherwise, the node will not be registered by this component.
 
-signal instance_created(ins: CanvasItem) ## Emitted when an instance is created.
+## Emitted when an instance is created.[br]
+## [br]
+## [b]Note:[/b] The emission of the signal is [u]before[/u] the creation of an instance by default, so if you want it to be emitted after the creation, please connect the signal in deferred mode.
+signal instance_created(ins: CanvasItem)
 
-var _instances: Array[CanvasItem]
+var _instances: Array[CanvasItem] # A list to store instances
 
 
 func _notification(what: int) -> void:
@@ -20,10 +23,10 @@ func _notification(what: int) -> void:
 				if !i is CanvasItem:
 					continue
 				_instances.append(i)
-				remove_child(i)
-		NOTIFICATION_PREDELETE: # Delete referenced instances
+				remove_child(i) # Removes the child and store them in the list to prevent some unexpected behaviors and improves performance a bit
+		NOTIFICATION_PREDELETE: # Destructor: Delete referenced instances
 			for i in _instances:
-				i.queue_free()
+				i.queue_free() # Must remove the node stored in the list as well. Otherwise it takes the space of RAM which is harmful to the software
 
 
 # Instantiates the instance
@@ -41,7 +44,7 @@ func _instantiate(instance: CanvasItem, as_child_of_root: bool = false) -> Canva
 			(root.add_child if as_child_of_root else root.add_sibling).call(ins)
 		).call_deferred()
 	
-	instance_created.emit(ins)
+	instance_created.emit(ins) # This will be emitted before the previous piece of codes being executed
 	
 	return ins
 
