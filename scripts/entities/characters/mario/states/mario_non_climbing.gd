@@ -8,13 +8,6 @@ signal stand_up ## Emitted when the character stops from crouching.
 signal crouch ## Emitted when the character crouches.
 
 @export_category("Character Non-climbing State")
-@export_group("Controls", "key_")
-@export var key_left: StringName = &"left"
-@export var key_right: StringName = &"right"
-@export var key_up: StringName = &"up"
-@export var key_down: StringName = &"down"
-@export var key_jump: StringName = &"jump"
-@export var key_run: StringName = &"run"
 @export_group("Physics")
 @export_subgroup("Walking")
 ## Initial walking speed.
@@ -85,7 +78,7 @@ func _state_physics_process(_delta: float) -> void:
 func _climbing_check() -> void:
 	if !_character.is_in_group(&"state_climbable"):
 		return
-	if !_character.get_input_just_pressed(key_up):
+	if !_character.get_input_just_pressed(&"up"):
 		return
 	_character.add_to_group(&"state_climbing")
 	_state_machine.change_state(&"climbing")
@@ -98,7 +91,7 @@ func _crouch() -> void:
 	# Detection for crouching
 	var small_crhable: bool = ProjectSettings.get_setting("game/control/player/crouchable_in_small_suit", false)
 	if _character.is_on_floor() && \
-		_character.get_input_pressed(key_down) && \
+		_character.get_input_pressed(&"down") && \
 		(!_powerup.features.is_small || \
 		(_powerup.features.is_small && small_crhable)):
 			_character.add_to_group(&"state_crouching")
@@ -120,7 +113,7 @@ func _crouch() -> void:
 			stand_up.emit()
 
 func _walk() -> void:
-	var lr: int = _character.get_udlr_directions(key_left, key_right, key_up, key_down).x # Acceleration
+	var lr: int = _character.get_udlr_directions(&"left", &"right", &"up", &"down").x # Acceleration
 	var crh: bool = _character.is_in_group(&"state_crouching") # Crouching
 	var crh_walkable: bool = ProjectSettings.get_setting("game/control/player/walkable_when_crouching", false) # Crouch-walkable
 	if _character.is_in_group(&"state_completed") || (!crh_walkable && crh):
@@ -137,7 +130,7 @@ func _walk() -> void:
 		_character.velocality.x = _character.direction * initial_speed
 	# Walking and running
 	if lr == _character.direction:
-		if _character.get_input_pressed(key_run) && !crh: # Crouching-walking should not be applied to running
+		if _character.get_input_pressed(&"run") && !crh: # Crouching-walking should not be applied to running
 			_character.add_to_group(&"state_running")
 		else:
 			_character.remove_from_group(&"state_running")
@@ -160,8 +153,8 @@ func _jump(delta: float) -> void:
 		return
 	
 	# Resets _has_jumped
-	var pj: bool = _character.get_input_just_pressed(key_jump) # Pressing jump
-	var hj: bool = _character.get_input_pressed(key_jump) # Holding jump
+	var pj: bool = _character.get_input_just_pressed(&"jump") # Pressing jump
+	var hj: bool = _character.get_input_pressed(&"jump") # Holding jump
 	if _has_jumped && \
 		(_character.is_falling() && pj) || \
 		(_character.is_on_floor() && !hj):
@@ -182,7 +175,7 @@ func _swim(delta: float) -> void:
 	if !_character.is_in_group(&"state_swimming"):
 		return
 	
-	if _character.get_input_just_pressed(key_jump):
+	if _character.get_input_just_pressed(&"jump"):
 		var swspd: float = swimming_strength if !_character.is_in_group(&"state_swimming_to_jumping") else swimming_strength_jumping_out
 		_character.jump(swspd)
 		Sound.play_2d(sound_swimming, _character)

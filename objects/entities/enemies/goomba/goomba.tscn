@@ -1,8 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://nknpp6qs7t1y"]
+[gd_scene load_steps=12 format=3 uid="uid://nknpp6qs7t1y"]
 
 [ext_resource type="Script" path="res://scripts/entities/_universal/physics/walker_2d.gd" id="1_5hnam"]
 [ext_resource type="Texture2D" uid="uid://bj71tv2ix6ut0" path="res://assets/gfx/objects/entities/enemies/goomba/goomba.png" id="2_54fqe"]
 [ext_resource type="Script" path="res://scripts/components/enemy/class_enemy_stompable.gd" id="2_wh1t8"]
+[ext_resource type="Script" path="res://scripts/components/instantiater/instantiater2d.gd" id="4_sffdf"]
+[ext_resource type="PackedScene" uid="uid://buaqk48dgfoj8" path="res://objects/entities/enemies/#death/goomba/goomba_stomped.tscn" id="6_dasc0"]
+[ext_resource type="PackedScene" uid="uid://d28wktlfkunys" path="res://objects/uis/counters/scores_label.tscn" id="6_ejjdu"]
+[ext_resource type="Script" path="res://scripts/components/enemy/class_enemy_stomp_process.gd" id="7_bjdes"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_50jj2"]
 size = Vector2(30, 30)
@@ -50,6 +54,7 @@ velocality = Vector2(50, -6.82121e-13)
 velocity = Vector2(50, -2.18557e-06)
 threshold_speed_enabled = true
 threshold_speed = 50.0
+gravity_scale = 0.5
 collision_layer = 4
 collision_mask = 8
 velocity = Vector2(50, -2.18557e-06)
@@ -60,9 +65,11 @@ metadata/_edit_pinned_properties_ = [&"initial_direction"]
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(0, 1)
+rotation = -1.57079
 shape = SubResource("RectangleShape2D_50jj2")
 
 [node name="EffectBox" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 collision_mask = 49
 
@@ -73,10 +80,24 @@ debug_color = Color(0.964706, 0.192157, 0, 0.419608)
 
 [node name="EnemyStompable" type="Node" parent="EffectBox"]
 script = ExtResource("2_wh1t8")
-offset = null
+
+[node name="EnemyStompProcess" type="Node" parent="EffectBox/EnemyStompable"]
+script = ExtResource("7_bjdes")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_54fqe")
+
+[node name="Instantiater2D" type="Node2D" parent="."]
+visible = false
+script = ExtResource("4_sffdf")
+
+[node name="GoombaStomped" parent="Instantiater2D" instance=ExtResource("6_dasc0")]
+position = Vector2(0, 8)
+
+[node name="Scores" parent="Instantiater2D" instance=ExtResource("6_ejjdu")]
+text = "100"
+amount = 100
+metadata/_edit_pinned_properties_ = [&"amount"]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite2D")
@@ -86,3 +107,5 @@ libraries = {
 autoplay = "walk"
 
 [connection signal="collided_wall" from="." to="." method="turn_wall"]
+[connection signal="stomp_processed" from="EffectBox/EnemyStompable/EnemyStompProcess" to="." method="queue_free"]
+[connection signal="stomp_processed" from="EffectBox/EnemyStompable/EnemyStompProcess" to="Instantiater2D" method="instantiate_multiple" binds= [0, 1]]

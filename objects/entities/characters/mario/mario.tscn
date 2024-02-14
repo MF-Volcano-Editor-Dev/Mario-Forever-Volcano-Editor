@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dm1au2ar8wp71"]
+[gd_scene load_steps=6 format=3 uid="uid://dm1au2ar8wp71"]
 
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario.gd" id="1_es2gk"]
 [ext_resource type="PackedScene" uid="uid://d2a3jxasggppj" path="res://objects/entities/characters/mario/power-ups/mario_small.tscn" id="2_04tbc"]
 [ext_resource type="PackedScene" uid="uid://oi5vyigqsaq1" path="res://objects/entities/characters/mario/power-ups/mario_big.tscn" id="3_ck1o5"]
 [ext_resource type="PackedScene" uid="uid://dh2wi5r4ubr2x" path="res://objects/entities/characters/#deaths/mario_death.tscn" id="4_bceee"]
+[ext_resource type="PackedScene" uid="uid://jjcm44c8tds3" path="res://objects/entities/characters/mario/power-ups/mario_fireball.tscn" id="4_l4gr0"]
 
 [node name="Mario" type="EntityBody2D" groups=["character", "entity"]]
 gravity_scale = 1.0
@@ -16,6 +17,10 @@ metadata/_edit_pinned_properties_ = [&"nickname"]
 [node name="MarioSmall" parent="." instance=ExtResource("2_04tbc")]
 
 [node name="MarioBig" parent="." instance=ExtResource("3_ck1o5")]
+process_mode = 4
+visible = false
+
+[node name="MarioFireball" parent="." instance=ExtResource("4_l4gr0")]
 process_mode = 4
 visible = false
 

@@ -4,7 +4,7 @@ extends Node2D
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var initial_speed: float = 600
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:x") var gravity_scale: float = 0.5
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var max_falling_speed: float = 500
-@export_range(-18000, 18000, 0.001, "suffix:°/s") var rotation_speed: float = 500
+@export_range(-18000, 18000, 0.001, "suffix:°/s") var rotation_speed: float = 250
 
 var _gravity: Vector2
 var _velocity: Vector2

@@ -29,7 +29,8 @@ script = ExtResource("4_6nwtf")
 _initialized = true
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
-position = Vector2(128, 408)
+position = Vector2(320, 408)
+current_powerup = &"fireball"
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_bvcda")
@@ -38,4 +39,4 @@ layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969,
 metadata/_edit_lock_ = true
 
 [node name="Goomba" parent="." instance=ExtResource("8_5uvww")]
-position = Vector2(464, 400)
+position = Vector2(512, 400)

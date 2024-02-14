@@ -18,6 +18,8 @@ extends Label
 	set(value):
 		suffix = value
 		amount = amount # Triggers the setter of `amount` to update the text
+@export_group("Sound")
+@export var sound_appear: AudioStream
 
 @onready var _posy: float = position.y
 
@@ -25,6 +27,8 @@ extends Label
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+	
+	Sound.play_2d(sound_appear, self)
 	
 	var tw: Tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tw.tween_property(self, ^"position:y", _posy - 128, 0.75)

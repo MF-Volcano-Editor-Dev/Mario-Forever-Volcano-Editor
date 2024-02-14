@@ -38,7 +38,7 @@ static func play_1d(stream: AudioStream, owner: Node, mode: Mode = Mode.SCENIAL)
 	return snd
 
 ## Plays a sound in the 2D space.
-static func play_2d(stream: AudioStream, owner: Node2D, mode: Mode = Mode.SCENIAL, area_mask: int = int(ProjectSettings.get_setting("game/data/sound/default_area_mask", 1))) -> AudioStreamPlayer2D:
+static func play_2d(stream: AudioStream, owner: CanvasItem, mode: Mode = Mode.SCENIAL, area_mask: int = int(ProjectSettings.get_setting("game/data/sound/default_area_mask", 1))) -> AudioStreamPlayer2D:
 	if !stream || !is_instance_valid(owner) || !owner.is_inside_tree():
 		return null
 	
@@ -55,7 +55,7 @@ static func play_2d(stream: AudioStream, owner: Node2D, mode: Mode = Mode.SCENIA
 				owner.get_tree().current_scene.add_child(snd)
 			Mode.GLOBAL:
 				owner.get_tree().root.add_child(snd)
-		snd.global_transform = owner.global_transform
+		snd.global_transform = owner.get_global_transform()
 		snd.finished.connect(snd.queue_free)
 		snd.play()
 	).call_deferred()

@@ -18,7 +18,7 @@ var _instances: Array[CanvasItem] # A list to store instances
 
 func _notification(what: int) -> void:
 	match what:
-		NOTIFICATION_POST_ENTER_TREE: # Register children CanvasItem-s
+		NOTIFICATION_ENTER_TREE: # Register children CanvasItem-s
 			for i in get_children():
 				if !i is CanvasItem:
 					continue
@@ -57,6 +57,21 @@ func instantiate(index: int, as_child_of_root: bool = false) -> CanvasItem:
 			printerr("Invalid index %s for instantiation!" % str(index))
 			return null
 	return _instantiate(_instances[index], as_child_of_root)
+
+## Instantiate multiple instances from [param index_from] to [param index_to].[br]
+## [br]
+## [b]Note:[/b] Unlike [method instantiate], you CANNOT input a minus value for [param index_from] or [param index_to].
+func instantiate_multiple(index_from: int, index_to: int, as_children_of_root: bool = false) -> Array[CanvasItem]:
+	var rst: Array[CanvasItem] = [] # Results
+	
+	if (index_from < 0 || index_to < 0) || (index_from > index_to):
+		printerr("Invalid index range, or minus index(es)!")
+		return rst
+	
+	for i in range(index_from, index_to + 1):
+		rst.append(_instantiate(_instances[i], as_children_of_root)) # Creates instance (deferred) and register the instance into the list
+	
+	return rst # Returns the list
 
 ## Instantiate a child instance by [param type].
 func instantiate_by_type(type: Object, as_child_of_root: bool = false) -> CanvasItem:

@@ -36,6 +36,12 @@ signal on_stomp_succeeded(character: Character)
 ## [br]
 ## This is used to make offset for the hit center of the [Area2D] to ensure the safe stomp.
 @export var offset: Vector2
+## Delay to prevent from damaging the character when a stomp is successful.
+@export_range(0, 2, 0.001, "suffix:s") var stomp_delay: float = 0.08
+@export_group("Sounds", "sound_")
+@export var sound_stomped: AudioStream = preload("res://assets/sounds/stomp.wav")
+
+var _delay: SceneTreeTimer
 
 
 ## [code]virtual[/code] Called when a character collides the [member Component.root] ([Area2D]).
@@ -43,24 +49,29 @@ func _character_touched(character: Character) -> void:
 	if !is_instance_valid(character):
 		return
 	
-	if character_damagible && _is_stomp_success(character):
+	if character_damagible && !_delay && !_is_stomp_success(character):
 		character.hurt()
 
 
 func _is_stomp_success(character: Character) -> bool:
 	var direction := character.get_center().direction_to((root as Area2D).global_position)
-	var angle := direction.dot(-up_direction)
-	return angle < cos(deg_to_rad(tolerance))
+	var dot := direction.dot(-up_direction)
+	return dot >= cos(deg_to_rad(tolerance))
 
 
 func _on_character_touched(body: Node2D) -> void:
 	if !body is Character:
 		return
-	if body in _characters_detected:
-		return
 	
 	var chara := body as Character # Character
 	if _is_stomp_success(chara):
+		Sound.play_2d(sound_stomped, root)
+		
+		_delay = get_tree().create_timer(stomp_delay, false)
+		_delay.timeout.connect(func() -> void:
+			_delay = null
+		)
+		
 		on_stomp_succeeded.emit(chara)
 	else:
 		on_stomp_failed.emit(chara)

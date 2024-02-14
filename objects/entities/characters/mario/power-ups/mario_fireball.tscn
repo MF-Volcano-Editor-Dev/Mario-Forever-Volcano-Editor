@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://jjcm44c8tds3"]
+
+[ext_resource type="PackedScene" uid="uid://oi5vyigqsaq1" path="res://objects/entities/characters/mario/power-ups/mario_big.tscn" id="1_hep3t"]
+[ext_resource type="SpriteFrames" uid="uid://bxwr607ejynqa" path="res://objects/entities/characters/mario/power-ups/animations/anim_mario_fireball.tres" id="2_omltk"]
+
+[node name="MarioFireball" instance=ExtResource("1_hep3t")]
+powerup_id = &"fireball"
+down_to_powerup_id = &"big"
+metadata/_edit_pinned_properties_ = [&"powerup_id", &"down_to_powerup_id"]
+
+[node name="AnimatedSprite2D" parent="." index="4"]
+sprite_frames = ExtResource("2_omltk")

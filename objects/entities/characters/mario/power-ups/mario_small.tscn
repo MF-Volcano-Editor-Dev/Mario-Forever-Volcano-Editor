@@ -189,11 +189,8 @@ metadata/_edit_group_ = true
 position = Vector2(4, 16)
 update_scale = false
 
-[node name="AreaDetection" type="Node" parent="." node_paths=PackedStringArray("head", "body")]
+[node name="AreaDetection" type="Node" parent="."]
 script = ExtResource("3_2jggs")
-head = NodePath("../Head")
-body = NodePath("../Body")
-metadata/_edit_pinned_properties_ = [&"head", &"body"]
 
 [node name="StateMachine" type="Node" parent="."]
 editor_description = "`root` should refer to the owner node that is an instance of `MarioPower`."

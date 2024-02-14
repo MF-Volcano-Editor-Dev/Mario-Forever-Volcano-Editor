@@ -58,12 +58,7 @@ func _shape() -> void:
 func _climb() -> void:
 	if !_state_non_climbing:
 		return
-	_dir = Vector2(_character.get_udlr_directions(
-		_state_non_climbing.key_left, 
-		_state_non_climbing.key_right, 
-		_state_non_climbing.key_up, 
-		_state_non_climbing.key_down
-	))
+	_dir = Vector2(_character.get_udlr_directions(&"left", &"right", &"up", &"down"))
 	if !_dir.is_zero_approx():
 		_dir = _dir.normalized()
 		if _dir.x: # Sets the character's direction by pressing left or right
@@ -71,7 +66,7 @@ func _climb() -> void:
 	_character.velocality = _dir * climbing_speed
 	
 	# Jump to quit the state of climbing
-	if _character.get_input_just_pressed(_state_non_climbing.key_jump):
+	if _character.get_input_just_pressed(&"jump"):
 		_state_non_climbing._has_jumped = true
 		_character.jump(_state_non_climbing.initial_jumping_speed)
 		_character.remove_from_group(&"state_climbing")

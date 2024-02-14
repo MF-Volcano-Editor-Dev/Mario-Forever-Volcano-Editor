@@ -9,6 +9,8 @@ class_name Walker2D extends EntityBody2D
 ## Methods determining the walking direction on the readiness of the body.
 enum InitDirection {
 	BY_VELOCITY, ## Default option. The body will move as the value of [member EntityBody2D.velocality].x, which means that a minus value forces the body to move left while a positive value forces it to move right.
+	FORCED_LEFT, ## The body will move left initially.
+	FORCED_RIGHT, ## The body will move left initially.
 	LOOK_AT_PLAYER, ## The body will move towards the player initially.
 	BACK_TO_PLAYER ## The body will move backwards to the player initially.
 }
@@ -18,19 +20,30 @@ enum InitDirection {
 
 
 func _ready() -> void:
-	initialize_direction.call_deferred() # Called in a deferred manner to ensure the direction will be correctly set no matter where the node is in the scene tree
+	if initial_direction != InitDirection.BY_VELOCITY:
+		initialize_direction.call_deferred() # Called in a deferred manner to ensure the direction will be correctly set no matter where the node is in the scene tree
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
+	calculate_gravity()
+	calculate_damp()
 	move_and_slide()
 
 
 ## Initializes the moving direction of the object.
 func initialize_direction() -> void:
-	var np := Character.Getter.get_nearest(get_tree(), global_position) # Nearest player
-	if !np:
-		if initial_direction != InitDirection.BY_VELOCITY:
-			velocality.x *= [-1, 1].pick_random() # Random direction if no player is in the level
+	# Forced directions
+	if initial_direction == InitDirection.FORCED_LEFT:
+		velocality.x = -1 * absf(velocality.x)
+		return
+	elif initial_direction == InitDirection.FORCED_RIGHT:
+		velocality.x = absf(velocality.x)
 		return
 	
-	velocality.x *= Transform2DAlgo.get_direction_to_regardless_transform(global_position, np.global_position, global_transform)
+	# Auto-detected directions
+	var np := Character.Getter.get_nearest(get_tree(), global_position) # Nearest player
+	if !np:
+		velocality.x *= [-1, 1].pick_random() # Random direction if no player is in the level
+		return
+	
+	velocality.x *= (1 if initial_direction == InitDirection.LOOK_AT_PLAYER else -1) * Transform2DAlgo.get_direction_to_regardless_transform(global_position, np.global_position, global_transform)

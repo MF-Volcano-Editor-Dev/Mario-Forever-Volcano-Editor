@@ -66,7 +66,6 @@ func complete_level(body: Node2D) -> void:
 		counter.amount = scores[section]
 	else:
 		counter.amount = default_score
-	Character.Data.scores += counter.amount
 	
 	completion_area_rectangle.queue_free()
 	completion_area_infinite.queue_free()
