@@ -13,25 +13,38 @@ class_name Instantiater2D extends Component2D
 ## [b]Note:[/b] The emission of the signal is [u]before[/u] the creation of an instance by default, so if you want it to be emitted after the creation, please connect the signal in deferred mode.
 signal instance_created(ins: CanvasItem)
 
-var _instances: Array[CanvasItem] # A list to store instances
+var _instances: Array[PackedScene] # A list to store instances
 
 
-func _notification(what: int) -> void:
-	match what: # To prevent from unexpected behaivors in @tool mode, \when !Engine.is_editor_hint()\ is needed
-		NOTIFICATION_ENTER_TREE when !Engine.is_editor_hint(): # Register children CanvasItem-s
-			for i in get_children():
-				if !i is CanvasItem:
-					continue
-				_instances.append(i)
-				remove_child(i) # Removes the child and store them in the list to prevent some unexpected behaviors and improves performance a bit
-		NOTIFICATION_PREDELETE when !Engine.is_editor_hint(): # Destructor: Delete referenced instances
-			for i in _instances:
-				i.queue_free() # Must remove the node stored in the list as well. Otherwise it takes the space of RAM which is harmful to the software
+func _enter_tree() -> void:
+	for i in get_children():
+		if !i is CanvasItem:
+			continue
+		
+		remove_child(i) # Removes children to stop them from calling `_enter_tree()` and `_ready()`
+		
+		# Packs the instances as PackedScenes to save more RAM
+		(func() -> void:
+			var packed: PackedScene = PackedScene.new()
+			packed.pack(i)
+			_instances.append(packed)
+			i.free()
+		).call_deferred()
+
+#func _notification(what: int) -> void:
+	#match what: # To prevent from unexpected behaivors in @tool mode, \when !Engine.is_editor_hint()\ is needed
+		#NOTIFICATION_ENTER_TREE when !Engine.is_editor_hint(): # Register children CanvasItem-s
+			#pass
+		#NOTIFICATION_PREDELETE when !Engine.is_editor_hint(): # Destructor: Delete referenced instances
+			#_instances = []
 
 
-# Instantiates the instance
-func _instantiate(instance: CanvasItem, as_child_of_root: bool = false) -> CanvasItem:
-	var ins: CanvasItem = instance.duplicate()
+# Instantiates an instance
+func _instantiate(instance: PackedScene, as_child_of_root: bool = false) -> CanvasItem:
+	var ins: CanvasItem = instance.instantiate() as CanvasItem
+	if !ins:
+		ins.free()
+		return null
 	if root:
 		(func() -> void:
 			if ins is Control: # Control doesn't have `transform` or `global_transform` property
