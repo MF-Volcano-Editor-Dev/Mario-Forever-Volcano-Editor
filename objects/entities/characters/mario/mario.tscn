@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dh2wi5r4ubr2x" path="res://objects/entities/characters/#deaths/mario_death.tscn" id="4_bceee"]
 [ext_resource type="PackedScene" uid="uid://jjcm44c8tds3" path="res://objects/entities/characters/mario/power-ups/mario_fireball.tscn" id="4_l4gr0"]
 
-[node name="Mario" type="EntityBody2D" groups=["character", "entity"]]
+[node name="Mario" type="EntityBody2D" groups=["character", "enemy_toucher", "entity"]]
 gravity_scale = 1.0
 collision_mask = 2
 platform_on_leave = 1

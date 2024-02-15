@@ -2,21 +2,23 @@
 @icon("res://icons/enemy_touch.svg")
 class_name EnemyTouch extends Component
 
-## Component used for [Area2D] to provide collision interaction with [Character]. It makes the character hurt as if the character got hit by an enemy.
-##
-## This component allows an [Area2D] to react as a hitbox of an enemy. When a [Character] collides with the area, the character will get hurt ([method Character.hurt] will be called).
+## Component used for [Area2D] to provide collision interaction with other objects that is interactable with this component (touchers). 
+## 
+## If the toucher is character, this will damage him/her as if the character got hit by an enemy.
+## This component needs an [Area2D] to react as the hitbox of an enemy. 
 
-signal on_touched_by_character(character: Character) ## Emitted when a character touches the [member Component.root] ([Area2D]).
-signal character_left(character: Character) ## Emitted when a character leaves from the area.
+signal on_touched_by(toucher: PhysicsBody2D) ## Emitted when a toucher touches the [member Component.root] ([Area2D]).
+signal toucher_left(toucher: PhysicsBody2D) ## Emitted when a toucher leaves from the area.
 
-## If [code]true[/code], the character won't get hurt if he/she gets hit by the area.[br]
+## If [code]false[/code] and the toucher is a character, the character won't get hurt if he/she gets hit by the area.[br]
 ## [br]
-## [b]Note:[/b] For [EnemyStompable], if [code]true[/code], the character won't get hurt even if he/she fails stomping.
+## [b]Note:[/b] For [EnemyStompable], if [code]false[/code], the character won't get hurt even if he/she fails stomping.
 @export var character_damagible: bool = true
 
-var _characters_detected: Array[Character] # Characters detected
+var _detected_bodies: Array[PhysicsBody2D] # Touchers detected
 
 
+#region == Built-in Methods ==
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
@@ -24,17 +26,17 @@ func _ready() -> void:
 		return
 	
 	var area := root as Area2D
-	area.body_entered.connect(_on_character_touched)
-	area.body_exited.connect(_on_character_left)
+	area.body_entered.connect(_on_body_touched)
+	area.body_exited.connect(_on_body_left)
 
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
-	if _characters_detected.is_empty():
+	if _detected_bodies.is_empty():
 		return
 	
-	for i in _characters_detected:
-		_character_touched(i)
+	for i in _detected_bodies:
+		_touched(i)
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
@@ -43,37 +45,44 @@ func _get_configuration_warnings() -> PackedStringArray:
 		warnings.append("The component works only when the \"root\" is an Area2D.")
 	
 	return warnings
+#endregion
 
 
-## [code]virtual[/code] Called when a character collides the [member Component.root] ([Area2D]).
-func _character_touched(character: Character) -> void:
-	if !is_instance_valid(character):
+## [code]virtual[/code] Called when a toucher collides the [member Component.root] ([Area2D]).
+func _touched(toucher: PhysicsBody2D) -> void:
+	if !is_instance_valid(toucher):
 		return
-	character.hurt()
+	
+	if toucher is Character:
+		toucher.hurt()
 
 
 #region == Character entering/exiting the area ==
-func _on_character_touched(body: Node2D) -> void:
-	if !body is Character:
+func _on_body_touched(body: Node2D) -> void:
+	if !body is PhysicsBody2D:
 		return
-	if body in _characters_detected:
+	if !body.is_in_group(&"enemy_toucher"):
+		return
+	if body in _detected_bodies:
 		return
 	
-	var chara := body as Character # Character
+	body = body as PhysicsBody2D
 	
-	_characters_detected.append(chara)
+	_detected_bodies.append(body)
 	
-	on_touched_by_character.emit(chara)
+	on_touched_by.emit(body)
 
-func _on_character_left(body: Node2D) -> void:
-	if !body is Character:
+func _on_body_left(body: Node2D) -> void:
+	if !body is PhysicsBody2D:
 		return
-	if !body in _characters_detected:
+	if !body.is_in_group(&"enemy_toucher"):
+		return
+	if !body in _detected_bodies:
 		return
 	
-	var chara := body as Character # Character
+	body = body as PhysicsBody2D
 	
-	_characters_detected.erase(chara)
+	_detected_bodies.erase(body)
 	
-	character_left.emit(chara)
+	toucher_left.emit(body)
 #endregion

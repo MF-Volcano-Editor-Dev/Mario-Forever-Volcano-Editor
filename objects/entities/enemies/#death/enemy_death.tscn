@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://2eise5wobrbd"]
+
+[ext_resource type="Script" path="res://scripts/entities/enemies/#death/enemy_death.gd" id="1_ar7mb"]
+
+[node name="EnemyDeath" type="EntityBody2D"]
+gravity_scale = 0.25
+max_falling_speed = 500.0
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_ar7mb")

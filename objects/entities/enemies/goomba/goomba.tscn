@@ -1,12 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://nknpp6qs7t1y"]
+[gd_scene load_steps=14 format=3 uid="uid://nknpp6qs7t1y"]
 
 [ext_resource type="Script" path="res://scripts/entities/_universal/physics/walker_2d.gd" id="1_5hnam"]
 [ext_resource type="Texture2D" uid="uid://bj71tv2ix6ut0" path="res://assets/gfx/objects/entities/enemies/goomba/goomba.png" id="2_54fqe"]
 [ext_resource type="Script" path="res://scripts/components/enemy/class_enemy_stompable.gd" id="2_wh1t8"]
-[ext_resource type="Script" path="res://scripts/components/instantiater/instantiater2d.gd" id="4_sffdf"]
+[ext_resource type="Script" path="res://scripts/components/attack/class_attackee.gd" id="4_61spu"]
+[ext_resource type="Script" path="res://scripts/components/instantiater/class_enemy_stomp_process.gd" id="4_x3o2a"]
 [ext_resource type="PackedScene" uid="uid://buaqk48dgfoj8" path="res://objects/entities/enemies/#death/goomba/goomba_stomped.tscn" id="6_dasc0"]
 [ext_resource type="PackedScene" uid="uid://d28wktlfkunys" path="res://objects/uis/counters/scores_label.tscn" id="6_ejjdu"]
-[ext_resource type="Script" path="res://scripts/components/enemy/class_enemy_stomp_process.gd" id="7_bjdes"]
+[ext_resource type="Script" path="res://scripts/components/instantiater/class_enemy_killing_process.gd" id="8_2ug5b"]
+[ext_resource type="PackedScene" uid="uid://jh77s512qfrr" path="res://objects/entities/enemies/#death/goomba/goomba_death.tscn" id="9_au68h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_50jj2"]
 size = Vector2(30, 30)
@@ -78,23 +80,38 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_50jj2")
 debug_color = Color(0.964706, 0.192157, 0, 0.419608)
 
+[node name="Attackee" type="Node" parent="EffectBox"]
+script = ExtResource("4_61spu")
+filter_ids = Array[StringName]([&""])
+filter_ids_mode = 1
+
 [node name="EnemyStompable" type="Node" parent="EffectBox"]
 script = ExtResource("2_wh1t8")
-
-[node name="EnemyStompProcess" type="Node" parent="EffectBox/EnemyStompable"]
-script = ExtResource("7_bjdes")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_54fqe")
 
-[node name="Instantiater2D" type="Node2D" parent="."]
+[node name="EnemyStompProcess2D" type="Node2D" parent="."]
 visible = false
-script = ExtResource("4_sffdf")
+script = ExtResource("4_x3o2a")
 
-[node name="GoombaStomped" parent="Instantiater2D" instance=ExtResource("6_dasc0")]
+[node name="GoombaStomped" parent="EnemyStompProcess2D" instance=ExtResource("6_dasc0")]
 position = Vector2(0, 8)
 
-[node name="Scores" parent="Instantiater2D" instance=ExtResource("6_ejjdu")]
+[node name="Scores" parent="EnemyStompProcess2D" instance=ExtResource("6_ejjdu")]
+text = "100"
+amount = 100
+metadata/_edit_pinned_properties_ = [&"amount"]
+
+[node name="EnemyKillingProcess" type="Node2D" parent="."]
+visible = false
+script = ExtResource("8_2ug5b")
+
+[node name="Success" type="Node2D" parent="EnemyKillingProcess"]
+
+[node name="GoombaDeath" parent="EnemyKillingProcess/Success" instance=ExtResource("9_au68h")]
+
+[node name="Scores2" parent="EnemyKillingProcess/Success" instance=ExtResource("6_ejjdu")]
 text = "100"
 amount = 100
 metadata/_edit_pinned_properties_ = [&"amount"]
@@ -107,5 +124,7 @@ libraries = {
 autoplay = "walk"
 
 [connection signal="collided_wall" from="." to="." method="turn_wall"]
-[connection signal="stomp_processed" from="EffectBox/EnemyStompable/EnemyStompProcess" to="." method="queue_free"]
-[connection signal="stomp_processed" from="EffectBox/EnemyStompable/EnemyStompProcess" to="Instantiater2D" method="instantiate_multiple" binds= [0, 1]]
+[connection signal="on_hit_by_attacker" from="EffectBox/Attackee" to="EnemyKillingProcess" method="killing_process"]
+[connection signal="on_stomp_succeeded" from="EffectBox/EnemyStompable" to="EnemyStompProcess2D" method="stomp_process"]
+[connection signal="stomp_processed" from="EnemyStompProcess2D" to="." method="queue_free"]
+[connection signal="killing_succeeded" from="EnemyKillingProcess" to="." method="queue_free"]

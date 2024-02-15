@@ -17,14 +17,14 @@ var _instances: Array[CanvasItem] # A list to store instances
 
 
 func _notification(what: int) -> void:
-	match what:
-		NOTIFICATION_ENTER_TREE: # Register children CanvasItem-s
+	match what: # To prevent from unexpected behaivors in @tool mode, \when !Engine.is_editor_hint()\ is needed
+		NOTIFICATION_ENTER_TREE when !Engine.is_editor_hint(): # Register children CanvasItem-s
 			for i in get_children():
 				if !i is CanvasItem:
 					continue
 				_instances.append(i)
 				remove_child(i) # Removes the child and store them in the list to prevent some unexpected behaviors and improves performance a bit
-		NOTIFICATION_PREDELETE: # Destructor: Delete referenced instances
+		NOTIFICATION_PREDELETE when !Engine.is_editor_hint(): # Destructor: Delete referenced instances
 			for i in _instances:
 				i.queue_free() # Must remove the node stored in the list as well. Otherwise it takes the space of RAM which is harmful to the software
 
@@ -72,6 +72,27 @@ func instantiate_multiple(index_from: int, index_to: int, as_children_of_root: b
 		rst.append(_instantiate(_instances[i], as_children_of_root)) # Creates instance (deferred) and register the instance into the list
 	
 	return rst # Returns the list
+
+## Instantiate all instances.
+func instantiate_all(as_children_of_root: bool = false) -> Array[CanvasItem]:
+	var rst: Array[CanvasItem] = [] # Result
+	
+	for i in _instances:
+		rst.append(_instantiate(i, as_children_of_root))
+	
+	return rst
+
+## Instantiate all children nodes of a child node of this component with given [param child_name].
+func instantiate_child(child_name: StringName, as_children_of_root: bool = false) -> Array[CanvasItem]:
+	var rst: Array[CanvasItem] = [] # Result
+	
+	for i in _instances:
+		if i.name != child_name:
+			continue
+		for j in i.get_children():
+			rst.append(_instantiate(j, as_children_of_root))
+	
+	return rst
 
 ## Instantiate a child instance by [param type].
 func instantiate_by_type(type: Object, as_child_of_root: bool = false) -> CanvasItem:

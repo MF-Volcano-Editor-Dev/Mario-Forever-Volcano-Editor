@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/entities/goal/goal.gd" id="1_5xwac"]
 [ext_resource type="Texture2D" uid="uid://ret16nysrko2" path="res://assets/gfx/objects/entities/core/goal/goal_gate_left.png" id="1_vxwpx"]
 [ext_resource type="Texture2D" uid="uid://by474ajih6ib6" path="res://assets/gfx/objects/entities/core/goal/goal_gate_right.png" id="2_08bit"]
-[ext_resource type="Script" path="res://scripts/components/instantiater/instantiater2d.gd" id="4_5sivj"]
+[ext_resource type="Script" path="res://scripts/components/instantiater/class_instantiater2d.gd" id="4_5sivj"]
 [ext_resource type="PackedScene" uid="uid://341b246tpam2" path="res://objects/entities/core/goal/#pole/goal_pole.tscn" id="4_oq2td"]
 [ext_resource type="PackedScene" uid="uid://d28wktlfkunys" path="res://objects/uis/counters/scores_label.tscn" id="5_r4hyx"]
 

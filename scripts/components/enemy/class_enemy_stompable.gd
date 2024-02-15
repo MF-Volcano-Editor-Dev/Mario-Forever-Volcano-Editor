@@ -2,19 +2,19 @@
 @icon("res://icons/enemy_touch_stomp.svg")
 class_name EnemyStompable extends EnemyTouch
 
-## Component inheriting [EnemyTouch], but allows the character to stomp onto the [member Component.root] ([Area2D]).
+## Component inheriting [EnemyTouch], but allows the toucher to stomp onto the [member Component.root] ([Area2D]).
 ##
 ## This component works similar to [EnemyTouch]; however, when it comes to such situation where a character stomps onto the [i]head[/i] of the area, the character will not get hurt, with being-stomped event triggered. 
 
 ## Emitted when a stomp is failed.[br]
 ## [br]
 ## [b]Note:[/b] This will be emitted [u]before[/u] the emission of [signal on_touched_by_character].
-signal on_stomp_failed(character: Character)
+signal on_stomp_failed(body: PhysicsBody2D)
 
 ## Emitted when a stomp is successful.
 ## [br]
 ## [b]Note:[/b] This will be emitted [u]before[/u] the emission of [signal on_touched_by_character].
-signal on_stomp_succeeded(character: Character)
+signal on_stomp_succeeded(body: PhysicsBody2D)
 
 @export_group("Stomp")
 ## Angle in tolerance, which stands for the direction that the character stomps onto the enemy.[br]
@@ -44,13 +44,13 @@ signal on_stomp_succeeded(character: Character)
 var _delay: SceneTreeTimer
 
 
-## [code]virtual[/code] Called when a character collides the [member Component.root] ([Area2D]).
-func _character_touched(character: Character) -> void:
-	if !is_instance_valid(character):
+## [code]virtual[/code] Called when a toucher collides the [member Component.root] ([Area2D]).
+func _touched(toucher: PhysicsBody2D) -> void:
+	if !is_instance_valid(toucher):
 		return
 	
-	if character_damagible && !_delay && !_is_stomp_success(character):
-		character.hurt()
+	if character_damagible && !_delay && toucher is Character && !_is_stomp_success(toucher):
+		toucher.hurt()
 
 
 func _is_stomp_success(character: Character) -> bool:
@@ -59,12 +59,14 @@ func _is_stomp_success(character: Character) -> bool:
 	return dot >= cos(deg_to_rad(tolerance))
 
 
-func _on_character_touched(body: Node2D) -> void:
-	if !body is Character:
+func _on_body_touched(body: Node2D) -> void:
+	if !body is PhysicsBody2D:
+		return
+	if !body.is_in_group(&"enemy_toucher"):
 		return
 	
-	var chara := body as Character # Character
-	if _is_stomp_success(chara):
+	body = body as PhysicsBody2D # Character
+	if _is_stomp_success(body):
 		Sound.play_2d(sound_stomped, root)
 		
 		_delay = get_tree().create_timer(stomp_delay, false)
@@ -72,8 +74,8 @@ func _on_character_touched(body: Node2D) -> void:
 			_delay = null
 		)
 		
-		on_stomp_succeeded.emit(chara)
+		on_stomp_succeeded.emit(body)
 	else:
-		on_stomp_failed.emit(chara)
+		on_stomp_failed.emit(body)
 	
-	super(chara)
+	super(body)

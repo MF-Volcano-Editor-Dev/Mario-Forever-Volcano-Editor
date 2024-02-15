@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d4lgogpjxkdck"
-path="res://.godot/imported/attack_receiver.svg-17dbacb05b0e352d9a78d7d7b0a9a24b.ctex"
+path="res://.godot/imported/attackee.svg-ce1273ebc4d6a2d7292fdc0b36c84e43.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://icons/attack_receiver.svg"
-dest_files=["res://.godot/imported/attack_receiver.svg-17dbacb05b0e352d9a78d7d7b0a9a24b.ctex"]
+source_file="res://icons/attackee.svg"
+dest_files=["res://.godot/imported/attackee.svg-ce1273ebc4d6a2d7292fdc0b36c84e43.ctex"]
 
 [params]
 

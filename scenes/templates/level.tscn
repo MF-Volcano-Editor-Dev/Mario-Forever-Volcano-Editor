@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=11 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="PackedScene" uid="uid://crnx40c7hevum" path="res://objects/uis/huds/level_hud.tscn" id="1_brdbf"]
 [ext_resource type="PackedScene" uid="uid://c2kh1hrui8lpl" path="res://objects/units/general/unit_falling_death.tscn" id="2_b46gs"]
@@ -8,6 +8,10 @@
 [ext_resource type="Script" path="res://scripts/units/camera/unit_cam_game.gd" id="4_6nwtf"]
 [ext_resource type="PackedScene" uid="uid://cui35mog5pwf8" path="res://objects/units/general/unit_level_completion.tscn" id="4_an7ri"]
 [ext_resource type="PackedScene" uid="uid://nknpp6qs7t1y" path="res://objects/entities/enemies/goomba/goomba.tscn" id="8_5uvww"]
+[ext_resource type="Script" path="res://scripts/components/attack/class_attacker.gd" id="9_sv4uy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uyr4g"]
+radius = 32.0
 
 [node name="Level" type="Node2D"]
 
@@ -29,7 +33,7 @@ script = ExtResource("4_6nwtf")
 _initialized = true
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
-position = Vector2(320, 408)
+position = Vector2(192, 408)
 current_powerup = &"fireball"
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -39,4 +43,17 @@ layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969,
 metadata/_edit_lock_ = true
 
 [node name="Goomba" parent="." instance=ExtResource("8_5uvww")]
-position = Vector2(512, 400)
+position = Vector2(456, 400)
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(352, 384)
+collision_layer = 0
+collision_mask = 4
+metadata/_edit_group_ = true
+
+[node name="Attacker" type="Node" parent="Area2D"]
+script = ExtResource("9_sv4uy")
+id = &"fireball"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_uyr4g")
