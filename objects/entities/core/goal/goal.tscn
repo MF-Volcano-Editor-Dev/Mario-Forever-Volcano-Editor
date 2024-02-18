@@ -94,10 +94,9 @@ remote_path = NodePath("../../Instantiater2D")
 visible = false
 position = Vector2(0, -24)
 script = ExtResource("4_5sivj")
-root_path = NodePath("..")
-metadata/_edit_pinned_properties_ = [&"root_path"]
 
-[node name="Scores" parent="Instantiater2D" instance=ExtResource("5_r4hyx")]
+[node name="Scores2" parent="Instantiater2D" instance=ExtResource("5_r4hyx")]
+change_relevant_data = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -7,7 +7,7 @@ func _ready() -> void:
 	
 	if Engine.is_editor_hint():
 		return
-	if !change_scores_data:
+	if !change_relevant_data:
 		return
 	
 	Character.Data.lives += amount

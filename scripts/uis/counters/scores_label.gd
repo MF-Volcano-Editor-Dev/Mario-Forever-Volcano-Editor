@@ -2,7 +2,7 @@
 extends "./counter_label.gd"
 
 @export_category("Scores Label")
-@export var change_scores_data: bool = true
+@export var change_relevant_data: bool = true
 
 
 func _ready() -> void:
@@ -10,7 +10,7 @@ func _ready() -> void:
 	
 	if Engine.is_editor_hint():
 		return
-	if !change_scores_data:
+	if !change_relevant_data:
 		return
 	
 	Character.Data.scores += amount

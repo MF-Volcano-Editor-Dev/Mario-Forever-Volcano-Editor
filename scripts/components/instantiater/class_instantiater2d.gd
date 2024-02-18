@@ -6,14 +6,16 @@ class_name Instantiater2D extends Component2D
 ## This component will turn its children [Node]s into [InstancePlaceholder] to prevent them from being ready,
 ## which will greatly help developers visually plan and edit things like projectiles.[br]
 ## [br]
-## [b]Note:[/b] This only works for instances instantiated via [PackedScene]. Otherwise, the node will not be registered by this component.
+## [b]Note 1:[/b] This only works for instances instantiated via [PackedScene]. Otherwise, the node will not be registered by this component.
+## [b]Note 2:[/b] The public functions in this class have two parameters with the same name respectively - [param as_child_of_root] and [param filter_node_groups].
+## The former determines whether the instance created is added as the sibling of the [member Component2D.root], or as the child of it; and the latter decides that only nodes [u]without[/u] the given node group are able to be instantiated.
 
 ## Emitted when an instance is created.[br]
 ## [br]
 ## [b]Note:[/b] The emission of the signal is [u]before[/u] the creation of an instance by default, so if you want it to be emitted after the creation, please connect the signal in deferred mode.
 signal instance_created(ins: CanvasItem)
 
-var _instances: Array[PackedScene] # A list to store instances
+var _instances: Array[PackedScene]
 
 
 func _enter_tree() -> void:
