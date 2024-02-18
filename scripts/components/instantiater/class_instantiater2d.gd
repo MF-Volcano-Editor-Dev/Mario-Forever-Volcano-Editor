@@ -40,11 +40,17 @@ func _enter_tree() -> void:
 
 
 # Instantiates an instance
-func _instantiate(instance: PackedScene, as_child_of_root: bool = false) -> CanvasItem:
+func _instantiate(instance: PackedScene, as_child_of_root: bool = false, filter_node_groups: Array[StringName] = []) -> CanvasItem:
 	var ins: CanvasItem = instance.instantiate() as CanvasItem
+	
 	if !ins:
 		ins.free()
 		return null
+	for i in filter_node_groups:
+		if ins.is_in_group(i):
+			ins.free()
+			return
+	
 	if root:
 		(func() -> void:
 			if ins is Control: # Control doesn't have `transform` or `global_transform` property
@@ -64,17 +70,17 @@ func _instantiate(instance: PackedScene, as_child_of_root: bool = false) -> Canv
 
 #region == Instantiation ==
 ## Instantiate a child instance by [param index].
-func instantiate(index: int, as_child_of_root: bool = false) -> CanvasItem:
+func instantiate(index: int, as_child_of_root: bool = false, filter_node_groups: Array[StringName] = []) -> CanvasItem:
 	if (index >= 0 && index > _instances.size() - 1) || \
 		(index < 0 && absi(index) > _instances.size()):
 			printerr("Invalid index %s for instantiation!" % str(index))
 			return null
-	return _instantiate(_instances[index], as_child_of_root)
+	return _instantiate(_instances[index], as_child_of_root, filter_node_groups)
 
 ## Instantiate multiple instances from [param index_from] to [param index_to].[br]
 ## [br]
 ## [b]Note:[/b] Unlike [method instantiate], you CANNOT input a minus value for [param index_from] or [param index_to].
-func instantiate_multiple(index_from: int, index_to: int, as_children_of_root: bool = false) -> Array[CanvasItem]:
+func instantiate_multiple(index_from: int, index_to: int, as_children_of_root: bool = false, filter_node_groups: Array[StringName] = []) -> Array[CanvasItem]:
 	var rst: Array[CanvasItem] = [] # Results
 	
 	if (index_from < 0 || index_to < 0) || (index_from > index_to):
@@ -82,36 +88,24 @@ func instantiate_multiple(index_from: int, index_to: int, as_children_of_root: b
 		return rst
 	
 	for i in range(index_from, index_to + 1):
-		rst.append(_instantiate(_instances[i], as_children_of_root)) # Creates instance (deferred) and register the instance into the list
+		rst.append(_instantiate(_instances[i], as_children_of_root, filter_node_groups)) # Creates instance (deferred) and register the instance into the list
 	
 	return rst # Returns the list
 
 ## Instantiate all instances.
-func instantiate_all(as_children_of_root: bool = false) -> Array[CanvasItem]:
+func instantiate_all(as_children_of_root: bool = false, filter_node_groups: Array[StringName] = []) -> Array[CanvasItem]:
 	var rst: Array[CanvasItem] = [] # Result
 	
 	for i in _instances:
-		rst.append(_instantiate(i, as_children_of_root))
-	
-	return rst
-
-## Instantiate all children nodes of a child node of this component with given [param child_name].
-func instantiate_child(child_name: StringName, as_children_of_root: bool = false) -> Array[CanvasItem]:
-	var rst: Array[CanvasItem] = [] # Result
-	
-	for i in _instances:
-		if i.name != child_name:
-			continue
-		for j in i.get_children():
-			rst.append(_instantiate(j, as_children_of_root))
+		rst.append(_instantiate(i, as_children_of_root, filter_node_groups))
 	
 	return rst
 
 ## Instantiate a child instance by [param type].
-func instantiate_by_type(type: Object, as_child_of_root: bool = false) -> CanvasItem:
+func instantiate_by_type(type: Object, as_child_of_root: bool = false, filter_node_groups: Array[StringName] = []) -> CanvasItem:
 	for i in _instances:
 		if !is_instance_of(i, type):
 			continue
-		return _instantiate(i, as_child_of_root)
+		return _instantiate(i, as_child_of_root, filter_node_groups)
 	return null
 #endregion

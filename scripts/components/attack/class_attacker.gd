@@ -2,20 +2,17 @@
 @icon("res://icons/attacker.svg")
 class_name Attacker extends Component
 
+## Used as a child of [Area2D] to provide collision reaction like an projectile. Usually works with [Attackee].
+##
+## This is used as a child node of [Area2D] so that it may automatically connect the collision detection to process of attacking [Attackee].
+## Usually works with [Attackee] and see it for more details.
+
 signal attacked_target(target: Attackee) ## Emitted when the area collides with another one containing [Attackee] and the interaction with the [Attackee] is successful.
+signal attack_succeeded ## Emitted when the enemy attacked gets damaged successfully. [br][b]Called by [EnemyKillingProcess2D].[/b]
+signal attack_failed ## Emitted when the enemy attacked defended the attacker. [br][b]Called by [EnemyKillingProcess2D].[/b]
 
-## Types of attack
-enum AttackType {
-	NONE, ## No attack
-	PLAYER, ## Attack by player
-	ENEMY, ## Attack by enemy
-	NEUTRAL, ## Attack by nobody
-}
-
-## Id of the attacker. See [member Attackee.filter_ids] and [enum Attackee.FilterMode] for details.
-@export var id: StringName
-## Types of the attacker. See [member Attackee.filter_types] and [enum Attackee.FilterMode] for deails.
-@export var type: AttackType = AttackType.NONE
+## Id of the attacker. See [enum DataList.AttackId], [member Attackee.filter_ids] and [enum Attackee.FilterMode] for details.
+@export var id: DataList.AttackId = DataList.AttackId.NONE
 
 
 func _ready() -> void:
@@ -35,8 +32,8 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func _on_attacked_attackee(area: Area2D) -> void:
 	for i in area.get_children():
-		if !i is Attackee:
+		if !i is Attackee: # Skip the Area2Ds without Attackee
 			continue
 		
-		i._hit_by_attacker(self)
+		(i as Attackee)._hit_by_attacker(self)
 		break

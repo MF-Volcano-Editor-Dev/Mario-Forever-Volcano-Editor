@@ -1,2 +1,2 @@
-﻿53549
-E:/Programs/Godot/stable/Godot.exe
+﻿61212
+D:/Programs/Godot/stable/Godot_v4.2.1-stable_mono_win64.exe
