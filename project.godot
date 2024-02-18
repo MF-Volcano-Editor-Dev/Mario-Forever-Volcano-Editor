@@ -78,7 +78,7 @@ folder_colors={
 "res://objects/entities/#effects/scraps/textures/": "green",
 "res://objects/entities/#effects/sprays/scripts/": "green",
 "res://objects/entities/#effects/sprays/textures/": "green",
-"res://objects/entities/#projectiles/": "yellow",
+"res://objects/entities/#projectiles/": "red",
 "res://objects/entities/#projectiles/balls/scripts/": "green",
 "res://objects/entities/#projectiles/balls/textures/": "green",
 "res://objects/entities/#projectiles/bumpers/scripts/": "green",

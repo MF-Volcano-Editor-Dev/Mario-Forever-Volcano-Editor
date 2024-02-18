@@ -99,21 +99,19 @@ func _on_summary_triggered() -> void:
 	# Sound
 	var tw: Tween = create_tween().set_loops()
 	tw.tween_callback(Sound.play_1d.bind(sound_summarizing, self)).set_delay(0.075)
-	tw.tween_callback(
-		func() -> void:
-			if rest_time <= 0:
-				tw.kill()
+	tw.tween_callback(func() -> void:
+		if rest_time <= 0:
+			tw.kill()
 	)
 	
 	start_time_down()
 	
 	# Done summary
-	time_changed.connect(
-		func(time: int) -> void:
-			if time <= 0 && _level_completion:
-				_level_completion.remove_stage_2_blocker(self)
-				timer_done_summary.emit()
-				stop_time_down()
+	time_changed.connect(func(time: int) -> void:
+		if time <= 0 && _level_completion:
+			_level_completion.remove_stage_2_blocker(self)
+			timer_done_summary.emit()
+			stop_time_down()
 	)
 #endregion
 
@@ -154,13 +152,13 @@ func set_rest_time(value: int) -> void:
 		if rest_time <= 0:
 			_time_up.visible = true
 			var a: float = _time_up.modulate.a
+			
 			var tw: Tween = _time_up.create_tween()
 			tw.tween_interval(2)
 			tw.tween_property(_time_up, ^"modulate:a", 0, 1)
-			tw.tween_callback(
-				func() -> void:
-					_time_up.visible = false
-					_time_up.modulate.a = a
+			tw.tween_callback(func() -> void:
+				_time_up.visible = false
+				_time_up.modulate.a = a
 			)
 			
 			stop_time_down()

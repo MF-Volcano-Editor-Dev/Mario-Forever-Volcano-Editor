@@ -187,6 +187,7 @@ metadata/_edit_group_ = true
 
 [node name="RemoBubble" type="RemoteTransform2D" parent="AnimatedSprite2D"]
 position = Vector2(4, 16)
+update_rotation = false
 update_scale = false
 
 [node name="AreaDetection" type="Node" parent="."]

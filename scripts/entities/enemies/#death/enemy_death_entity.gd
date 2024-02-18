@@ -8,10 +8,9 @@ func _ready() -> void:
 	super()
 	
 	# Disappearance
-	get_tree().create_timer(disappear_delay, false).timeout.connect(
-		func() -> void:
-			var tw: Tween = create_tween()
-			tw.tween_property(self, ^"modulate:a", 0, 0.2)
-			await tw.finished
-			queue_free()
+	get_tree().create_timer(disappear_delay, false).timeout.connect(func() -> void:
+		var tw: Tween = create_tween()
+		tw.tween_property(self, ^"modulate:a", 0, 0.2)
+		await tw.finished
+		queue_free()
 	)

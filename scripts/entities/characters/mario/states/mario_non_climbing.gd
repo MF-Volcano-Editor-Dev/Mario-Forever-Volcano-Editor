@@ -54,6 +54,7 @@ var _has_jumped: bool
 
 func _ready() -> void:
 	if _animated_sprite:
+		_animated_sprite.animation_finished.connect(_on_animation_finished)
 		_animated_sprite.animation_looped.connect(_on_animation_looped)
 
 func _state_process(delta: float) -> void:
@@ -217,4 +218,8 @@ func _animation(_delta: float) -> void:
 func _on_animation_looped() -> void:
 	if _animated_sprite.animation == &"swim":
 		_animated_sprite.frame = _animated_sprite.sprite_frames.get_frame_count(_animated_sprite.animation) - 2
+
+func _on_animation_finished() -> void:
+	if _animated_sprite.animation == &"attack":
+		_animated_sprite.play(&"default")
 #endregion

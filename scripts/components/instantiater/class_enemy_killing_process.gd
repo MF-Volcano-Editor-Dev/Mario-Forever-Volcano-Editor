@@ -88,5 +88,7 @@ func killing_process(attacker: Attacker) -> void:
 	
 	# Removes filtering groups from the instances
 	for i in instances:
+		if !is_instance_valid(i): # Prevent from immediate deletion that caused unexpected `null` value
+			continue
 		for j in _FilteringGroups:
 			i.remove_from_group(j)

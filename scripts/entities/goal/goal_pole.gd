@@ -17,28 +17,26 @@ func _ready() -> void:
 	set_process(false)
 	set_physics_process(false)
 	
-	area_entered.connect(
-		func(area: Area2D) -> void:
-			_gravity = area.gravity_direction * area.gravity * gravity_scale
+	area_entered.connect(func(area: Area2D) -> void:
+		_gravity = area.gravity_direction * area.gravity * gravity_scale
 	)
 	
 	# Character hitting down the pole
-	body_entered.connect(
-		func(body: Node2D) -> void:
-			if _goal._has_completed:
-				return
-			if !Character.Checker.is_character(body):
-				return
-			
-			set_process(true)
-			# Initial velocity
-			_dir = _goal.facing
-			_velocity = Vector2(_dir, -1).normalized().rotated(global_rotation + randf_range(-PI/12, PI/12)) * randf_range(200, 300)
-			
-			_goal._hit_pole = true
-			_goal.complete_level(body)
-			
-			reparent.call_deferred(_goal.get_parent())
+	body_entered.connect(func(body: Node2D) -> void:
+		if _goal._has_completed:
+			return
+		if !Character.Checker.is_character(body):
+			return
+		
+		set_process(true)
+		# Initial velocity
+		_dir = _goal.facing
+		_velocity = Vector2(_dir, -1).normalized().rotated(global_rotation + randf_range(-PI/12, PI/12)) * randf_range(200, 300)
+		
+		_goal._hit_pole = true
+		_goal.complete_level(body)
+		
+		reparent.call_deferred(_goal.get_parent())
 	, CONNECT_ONE_SHOT)
 
 

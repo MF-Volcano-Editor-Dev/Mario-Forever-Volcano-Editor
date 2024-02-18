@@ -60,9 +60,8 @@ func set_powerup(value: StringName) -> void:
 ## Makes the character invulerable from the damage by enemies.
 func invulnerablize(duration: float = 2) -> void:
 	_invulnerablity_counter = get_tree().create_timer(duration, false)
-	_invulnerablity_counter.timeout.connect(
-		func() -> void:
-			_invulnerablity_counter = null
+	_invulnerablity_counter.timeout.connect(func() -> void:
+		_invulnerablity_counter = null
 	)
 	Effects.flash(self, duration)
 

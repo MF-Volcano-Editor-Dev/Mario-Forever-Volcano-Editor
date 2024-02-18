@@ -6,7 +6,7 @@ class_name AutoScrollCamera2D extends GameCamera2D
 ## Margin to push the character at the edge of the screen.
 @export_range(-32, 32, 0.001, "suffix:px") var margin: float = 16
 
-var _no_characters: bool # When all characters are dead, this will be turned on
+var _no_characters: bool # When all characters are dead, this will be turned on to stop camera tracking null player
 
 @onready var _camera_follower: PathFollow2D = get_node_or_null(camera_follower_path) as PathFollow2D
 
@@ -24,9 +24,8 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	
-	Events.EventCharacter.get_signals().all_characters_dead.connect(
-		func() -> void:
-			_no_characters = true
+	Events.EventCharacter.get_signals().all_characters_dead.connect(func() -> void:
+		_no_characters = true
 	)
 
 func _process(_delta: float) -> void:
