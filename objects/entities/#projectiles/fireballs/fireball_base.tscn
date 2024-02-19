@@ -70,7 +70,7 @@ texture = ExtResource("2_ym67n")
 
 [node name="Rotator" type="Node" parent="Sprite2D"]
 script = ExtResource("4_s11mi")
-rotation_speed = 562.5
+rotation_speed = 800.0
 property_path = "velocality:x"
 root_path = NodePath("../..")
 metadata/_edit_pinned_properties_ = [&"root_path", &"property_path", &"rotation_speed"]
@@ -84,7 +84,6 @@ script = ExtResource("5_80q70")
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 position = Vector2(0, 4.17233e-07)
 rect = Rect2(-8, -8, 16, 16)
-metadata/_edit_lock_ = true
 
 [connection signal="collided_ceiling" from="." to="." method="queue_free"]
 [connection signal="collided_ceiling" from="." to="Instantiater2D" method="instantiate_all"]

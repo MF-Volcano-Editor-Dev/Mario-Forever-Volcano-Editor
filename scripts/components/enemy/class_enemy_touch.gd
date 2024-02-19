@@ -15,6 +15,8 @@ signal toucher_left(toucher: PhysicsBody2D) ## Emitted when a toucher leaves fro
 ## [b]Note:[/b] For [EnemyStompable], if [code]false[/code], the character won't get hurt even if he/she fails stomping.
 @export var character_damagible: bool = true
 
+var _on_detection: bool # To prevent from double calls
+
 var _detected_bodies: Array[PhysicsBody2D] # Touchers detected
 
 
@@ -50,8 +52,12 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 ## [code]virtual[/code] Called when a toucher collides the [member Component.root] ([Area2D]).
 func _touched(toucher: PhysicsBody2D) -> void:
+	if _on_detection:
+		return
 	if !is_instance_valid(toucher):
 		return
+	
+	_on_detection = false
 	
 	if toucher is Character:
 		toucher.hurt()
@@ -69,6 +75,8 @@ func _on_body_touched(body: Node2D) -> void:
 	body = body as PhysicsBody2D
 	
 	_detected_bodies.append(body)
+	_touched(body)
+	_on_detection = true # To prevent from double call
 	
 	on_touched_by.emit(body)
 
@@ -79,6 +87,8 @@ func _on_body_left(body: Node2D) -> void:
 		return
 	if !body in _detected_bodies:
 		return
+	
+	_on_detection = false
 	
 	body = body as PhysicsBody2D
 	

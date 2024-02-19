@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=12 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="PackedScene" uid="uid://crnx40c7hevum" path="res://objects/uis/huds/level_hud.tscn" id="1_brdbf"]
 [ext_resource type="PackedScene" uid="uid://c2kh1hrui8lpl" path="res://objects/units/general/unit_falling_death.tscn" id="2_b46gs"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cui35mog5pwf8" path="res://objects/units/general/unit_level_completion.tscn" id="4_an7ri"]
 [ext_resource type="PackedScene" uid="uid://nknpp6qs7t1y" path="res://objects/entities/enemies/goomba/goomba.tscn" id="8_5uvww"]
 [ext_resource type="Script" path="res://scripts/components/attack/class_attacker.gd" id="9_sv4uy"]
+[ext_resource type="PackedScene" uid="uid://cbuq6ofytbij" path="res://objects/entities/#projectiles/fireballs/fireball_enemy.tscn" id="10_40on3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_uyr4g"]
 radius = 32.0
@@ -57,3 +58,9 @@ shape = SubResource("CircleShape2D_uyr4g")
 
 [node name="Goomba" parent="." instance=ExtResource("8_5uvww")]
 position = Vector2(512, 400)
+
+[node name="FireballEnemy" parent="." instance=ExtResource("10_40on3")]
+velocality = Vector2(-100, 0)
+velocity = Vector2(-100, 4.37114e-06)
+position = Vector2(448, 384)
+velocity = Vector2(-100, 4.37114e-06)

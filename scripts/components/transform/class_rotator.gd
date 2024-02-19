@@ -42,7 +42,7 @@ func _ready() -> void:
 	
 	var prop = root.get_indexed(property_path) # A Variant type
 	if prop is float || prop is int:
-		_dir = int(prop)
+		_dir = int(sign(prop))
 
 func _process(delta: float) -> void:
 	_rotate(delta)
@@ -52,4 +52,4 @@ func _physics_process(delta: float) -> void:
 
 
 func _rotate(delta: float) -> void:
-	_rotating_node.rotate(deg_to_rad(rotation_speed) * delta * _dir)
+	_rotating_node.rotate(deg_to_rad(rotation_speed * delta) * _dir)
