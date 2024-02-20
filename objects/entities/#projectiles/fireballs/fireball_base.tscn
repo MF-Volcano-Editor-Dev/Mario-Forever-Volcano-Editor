@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b7df0l8ps4x6v"]
+[gd_scene load_steps=14 format=3 uid="uid://b7df0l8ps4x6v"]
 
 [ext_resource type="Script" path="res://scripts/entities/_universal/physics/jumping_walker_2d.gd" id="1_3geql"]
 [ext_resource type="Texture2D" uid="uid://3i08m3gbppjg" path="res://assets/gfx/objects/entities/projectiles/fireball_particle.png" id="2_lxa3f"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/components/transform/class_rotator.gd" id="4_s11mi"]
 [ext_resource type="Script" path="res://scripts/components/instantiater/class_instantiater2d.gd" id="5_80q70"]
 [ext_resource type="PackedScene" uid="uid://tog1urcypue2" path="res://objects/entities/#effects/explosion_fire.tscn" id="6_dkidl"]
+[ext_resource type="Script" path="res://scripts/nodes/visible_on_screen/visible_on_screen_directional.gd" id="7_na506"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w2obo"]
 radius = 8.0
@@ -81,12 +82,14 @@ script = ExtResource("5_80q70")
 
 [node name="ExplosionFire" parent="Instantiater2D" instance=ExtResource("6_dkidl")]
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
-position = Vector2(0, 4.17233e-07)
+[node name="VisibleOnScreenNotifierDirectional2D" type="VisibleOnScreenNotifier2D" parent="."]
 rect = Rect2(-8, -8, 16, 16)
+script = ExtResource("7_na506")
+direction = 11
+metadata/_edit_pinned_properties_ = [&"direction"]
 
 [connection signal="collided_ceiling" from="." to="." method="queue_free"]
 [connection signal="collided_ceiling" from="." to="Instantiater2D" method="instantiate_all"]
 [connection signal="collided_wall" from="." to="." method="queue_free"]
 [connection signal="collided_wall" from="." to="Instantiater2D" method="instantiate_all"]
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="queue_free"]
+[connection signal="screen_exited_directionally" from="VisibleOnScreenNotifierDirectional2D" to="." method="queue_free"]

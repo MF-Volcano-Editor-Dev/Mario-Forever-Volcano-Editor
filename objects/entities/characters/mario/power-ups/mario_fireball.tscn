@@ -23,7 +23,7 @@ root_path = NodePath("../..")
 metadata/_edit_pinned_properties_ = [&"root_path"]
 
 [node name="FireballPlayer" parent="Projectile" index="0" instance=ExtResource("4_lk2jk")]
-velocality = Vector2(412.5, 0)
+velocality = Vector2(412.5, 4.72937e-11)
 velocity = Vector2(412.5, -1.80309e-05)
 velocity = Vector2(412.5, -1.80309e-05)
 metadata/_edit_pinned_properties_ = [&"velocality"]

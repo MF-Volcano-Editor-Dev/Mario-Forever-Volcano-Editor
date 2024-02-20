@@ -22,6 +22,11 @@ class_name Character extends EntityBody2D
 @export_group("Hitbox")
 ## Offset of hitbox center. Useful for some detections like one in [EnemyStompable].
 @export var center_offset: Vector2 = Vector2(0, -8)
+@export_group("Status")
+## If true, the character will fall to death.[br]
+## [br]
+## [b]Note:[/b] This is only a switch to control falling to death, and requires manual implementation by code.
+@export var falling_to_death: bool = true
 
 
 ## [code]abstract[/code] Makes the character hurt.

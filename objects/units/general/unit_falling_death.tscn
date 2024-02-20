@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2kh1hrui8lpl"]
-
-[ext_resource type="Script" path="res://scripts/units/general/unit_falling_death.gd" id="1_y4g6s"]
-
-[node name="FallingDeath" type="Node"]
-process_priority = 10
-script = ExtResource("1_y4g6s")

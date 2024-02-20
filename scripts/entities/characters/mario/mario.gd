@@ -109,6 +109,15 @@ func is_invulnerable() -> bool:
 	return is_instance_valid(_invulnerablity_counter)
 #endregion
 
+#region == Signal Methods ==
+# Connected by VisibleOnScreenNotifierDirectional2D.screen_exited_directional
+func _on_falling_to_death() -> void:
+	if !falling_to_death:
+		return
+	
+	die()
+#endregion
+
 
 #region == General Getters ==
 ## Returns the current powerup

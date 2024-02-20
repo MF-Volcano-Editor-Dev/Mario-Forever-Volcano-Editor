@@ -34,3 +34,6 @@ libraries = {
 "": SubResource("AnimationLibrary_i4s0q")
 }
 autoplay = "RESET"
+
+[node name="VisibleOnScreenNotifierDirectional2D" parent="." index="2"]
+rect = Rect2(-16, -16, 32, 32)

@@ -39,6 +39,7 @@ func _process(_delta: float) -> void:
 	
 	for i in _detected_bodies:
 		_touched(i)
+#endregion
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
@@ -47,17 +48,15 @@ func _get_configuration_warnings() -> PackedStringArray:
 		warnings.append("The component works only when the \"root\" is an Area2D.")
 	
 	return warnings
-#endregion
 
 
 ## [code]virtual[/code] Called when a toucher collides the [member Component.root] ([Area2D]).
 func _touched(toucher: PhysicsBody2D) -> void:
 	if _on_detection:
+		_on_detection = false
 		return
 	if !is_instance_valid(toucher):
 		return
-	
-	_on_detection = false
 	
 	if toucher is Character:
 		toucher.hurt()
