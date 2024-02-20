@@ -9,6 +9,7 @@ class_name EntitySolidity extends Component
 
 signal collided_with_entity ## Emitted when the [member Component.root] ([Area2D]) hits other [Area2D]s that are in the node group [code]entity_collidable[/code].
 
+## If [code]true[/code], the area will react on collision with other [Area2D] that is in the group [code]entity_collidable[/code].
 @export var collidable: bool = true
 
 
