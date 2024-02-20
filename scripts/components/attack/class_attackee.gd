@@ -27,6 +27,8 @@ enum FilterMode {
 func _get_configuration_warnings() -> PackedStringArray:
 	var warnings: PackedStringArray = []
 	
+	if !Engine.is_editor_hint():
+		return warnings
 	if !get_root() is Area2D:
 		warnings.append("The component works only when the \"root\" is an Area2D.")
 	

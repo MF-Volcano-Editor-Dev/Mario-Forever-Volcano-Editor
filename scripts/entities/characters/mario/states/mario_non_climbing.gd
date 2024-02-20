@@ -166,7 +166,7 @@ func _jump(delta: float) -> void:
 		_character.jump(initial_jumping_speed)
 		Sound.play_2d(sound_jumping, _character)
 	# Accelerates jumping
-	if _character.is_leaving_ground() && hj:
+	if !_character.is_on_floor() && _character.is_leaving_ground() && hj:
 		_character.jump((jumping_acceleration_dynamic if absf(_character.velocality.x) >= 10 else jumping_acceleration_static) * delta, true)
 
 func _swim(delta: float) -> void:
@@ -193,7 +193,7 @@ func _animation(_delta: float) -> void:
 		return
 	
 	_animated_sprite.speed_scale = 1
-	_animated_sprite.scale.x = _character.direction # Facing
+	_animated_sprite.transform.x.x = _character.direction # Facing
 	
 	if _animated_sprite.animation in [&"appear", &"attack"]:
 		return

@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://nknpp6qs7t1y"]
+[gd_scene load_steps=14 format=3 uid="uid://nknpp6qs7t1y"]
 
 [ext_resource type="Script" path="res://scripts/entities/_universal/physics/walker_2d.gd" id="1_5hnam"]
 [ext_resource type="Texture2D" uid="uid://bj71tv2ix6ut0" path="res://assets/gfx/objects/entities/enemies/goomba/goomba.png" id="2_54fqe"]
 [ext_resource type="Script" path="res://scripts/components/enemy/class_enemy_stompable.gd" id="2_wh1t8"]
 [ext_resource type="Script" path="res://scripts/components/attack/class_attackee.gd" id="4_61spu"]
+[ext_resource type="Script" path="res://scripts/components/entity/entity_solidity.gd" id="4_ncbpl"]
 [ext_resource type="PackedScene" uid="uid://buaqk48dgfoj8" path="res://objects/entities/enemies/#death/goomba/goomba_stomped.tscn" id="6_dasc0"]
 [ext_resource type="PackedScene" uid="uid://d28wktlfkunys" path="res://objects/uis/counters/scores_label.tscn" id="6_ejjdu"]
 [ext_resource type="Script" path="res://scripts/components/instantiater/class_enemy_killing_process.gd" id="8_2ug5b"]
@@ -69,10 +70,10 @@ position = Vector2(0, 1)
 rotation = -1.57079
 shape = SubResource("RectangleShape2D_50jj2")
 
-[node name="EffectBox" type="Area2D" parent="."]
+[node name="EffectBox" type="Area2D" parent="." groups=["entity_collidable"]]
 visible = false
 collision_layer = 4
-collision_mask = 49
+collision_mask = 53
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EffectBox"]
 position = Vector2(0, 1)
@@ -84,6 +85,9 @@ script = ExtResource("4_61spu")
 
 [node name="EnemyStompable" type="Node" parent="EffectBox"]
 script = ExtResource("2_wh1t8")
+
+[node name="EntitySolidity" type="Node" parent="EffectBox"]
+script = ExtResource("4_ncbpl")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_54fqe")
@@ -113,5 +117,6 @@ autoplay = "walk"
 [connection signal="collided_wall" from="." to="." method="turn_wall"]
 [connection signal="on_hit_by_attacker" from="EffectBox/Attackee" to="EnemyKillingProcess" method="killing_process"]
 [connection signal="on_stomp_succeeded" from="EffectBox/EnemyStompable" to="EnemyKillingProcess" method="stomp_process"]
+[connection signal="collided_with_entity" from="EffectBox/EntitySolidity" to="." method="turn_wall"]
 [connection signal="killing_succeeded" from="EnemyKillingProcess" to="." method="queue_free"]
 [connection signal="stomp_processed" from="EnemyKillingProcess" to="." method="queue_free"]

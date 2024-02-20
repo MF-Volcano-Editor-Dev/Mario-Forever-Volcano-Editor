@@ -28,7 +28,7 @@ signal on_stomp_succeeded(body: PhysicsBody2D)
 @export var up_direction: Vector2 = Vector2.UP:
 	set(value):
 		if value.is_zero_approx():
-			printerr("The up_direction should not be a zero vector!")
+			printerr("The up_direction can not be a zero vector!")
 			return
 		
 		up_direction = value.normalized()
