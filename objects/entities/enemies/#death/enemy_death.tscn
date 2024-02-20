@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://2eise5wobrbd"]
 
 [ext_resource type="Script" path="res://scripts/entities/enemies/#death/enemy_death.gd" id="1_ar7mb"]
-[ext_resource type="Script" path="res://scripts/nodes/visible_on_screen/visible_on_screen_directional.gd" id="2_wqbe7"]
+[ext_resource type="Script" path="res://scripts/components/visible_on_screen/visible_on_screen_directional.gd" id="2_wqbe7"]
 
 [node name="EnemyDeath" type="EntityBody2D"]
 gravity_scale = 0.25

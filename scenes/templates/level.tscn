@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=10 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="PackedScene" uid="uid://crnx40c7hevum" path="res://objects/uis/huds/level_hud.tscn" id="1_brdbf"]
 [ext_resource type="TileSet" uid="uid://cjofurfi7cnqq" path="res://TEST.tres" id="2_bvcda"]
@@ -7,6 +7,10 @@
 [ext_resource type="Script" path="res://scripts/units/camera/unit_cam_game.gd" id="4_6nwtf"]
 [ext_resource type="PackedScene" uid="uid://cui35mog5pwf8" path="res://objects/units/general/unit_level_completion.tscn" id="4_an7ri"]
 [ext_resource type="PackedScene" uid="uid://nknpp6qs7t1y" path="res://objects/entities/enemies/goomba/goomba.tscn" id="8_5uvww"]
+[ext_resource type="PackedScene" uid="uid://ber4ghptyioeg" path="res://objects/entities/areas/fluid/water/water.tscn" id="8_g3hsr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_12djm"]
+size = Vector2(394, 138)
 
 [node name="Level" type="Node2D"]
 
@@ -43,3 +47,10 @@ position = Vector2(528, 400)
 
 [node name="Goomba3" parent="." instance=ExtResource("8_5uvww")]
 position = Vector2(568, 400)
+
+[node name="AreaWater" parent="." instance=ExtResource("8_g3hsr")]
+position = Vector2(200, 288)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaWater"]
+position = Vector2(187, 59)
+shape = SubResource("RectangleShape2D_12djm")

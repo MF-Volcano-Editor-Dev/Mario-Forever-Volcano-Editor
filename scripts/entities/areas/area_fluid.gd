@@ -12,6 +12,8 @@ class_name AreaFluid extends Area2D
 ## [br]
 ## [b]Warning:[/b] Only numberic types are supported; otherwise, an error would be thrown!
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:x") var character_max_falling_speed_scale: float = 1.0
+@export_group("Spray")
+@export var spray: PackedScene
 
 var _characters: Array[Character]
 
@@ -38,12 +40,28 @@ func _property_revert() -> void:
 		i.max_falling_speed /= character_max_falling_speed_scale
 #endregion
 
+
+func _spray(body: Node2D) -> void:
+	if !spray:
+		return
+	if !body is PhysicsBody2D:
+		return
+	
+	var e: Node2D = spray.instantiate()
+	e.global_transform = body.global_transform
+	
+	add_sibling.call_deferred(e)
+
+
 #region == Area Detections ==
 func _on_body_entered(body: Node2D) -> void:
+	_spray(body)
 	if body is Character && !body in _characters:
 		_characters.append(body)
 
 func _on_body_exited(body: Node2D) -> void:
+	if !body.is_queued_for_deletion():
+		_spray(body)
 	if body is Mario && body in _characters:
 		_characters.erase(body)
 #endregion

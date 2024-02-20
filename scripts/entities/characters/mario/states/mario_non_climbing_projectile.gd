@@ -18,7 +18,7 @@ extends "./mario_non_climbing.gd"
 func _state_process(delta: float) -> void:
 	super(delta)
 	
-	if !_character.is_in_group(&"state_crouching"):
+	if _character.is_in_group(&"state_crouching"):
 		return
 	if !_character.get_input_just_pressed(&"fire"):
 		return

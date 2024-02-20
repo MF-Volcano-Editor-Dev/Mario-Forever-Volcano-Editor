@@ -2,7 +2,7 @@ extends Node
 
 @export_category("Character Underwater")
 @export_node_path("Area2D") var head_path: NodePath = ^"../Head"
-@export_node_path("Area2D") var body_path: NodePath = ^"../Head"
+@export_node_path("Area2D") var body_path: NodePath = ^"../Body"
 
 @onready var head: Area2D = get_node(head_path)
 @onready var body: Area2D = get_node(body_path)

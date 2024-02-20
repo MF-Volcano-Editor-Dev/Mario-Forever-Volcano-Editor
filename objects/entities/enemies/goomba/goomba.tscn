@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://nknpp6qs7t1y"]
 
-[ext_resource type="Script" path="res://scripts/entities/_universal/physics/walker_2d.gd" id="1_5hnam"]
+[ext_resource type="Script" path="res://scripts/entities/#universal/physics/walker_2d.gd" id="1_j0h4q"]
 [ext_resource type="Texture2D" uid="uid://bj71tv2ix6ut0" path="res://assets/gfx/objects/entities/enemies/goomba/goomba.png" id="2_54fqe"]
 [ext_resource type="Script" path="res://scripts/components/enemy/class_enemy_stompable.gd" id="2_wh1t8"]
 [ext_resource type="Script" path="res://scripts/components/attack/class_attackee.gd" id="4_61spu"]
@@ -60,7 +60,7 @@ gravity_scale = 0.5
 collision_layer = 4
 collision_mask = 8
 velocity = Vector2(50, -2.18557e-06)
-script = ExtResource("1_5hnam")
+script = ExtResource("1_j0h4q")
 initial_direction = 1
 metadata/_edit_pinned_properties_ = [&"initial_direction"]
 

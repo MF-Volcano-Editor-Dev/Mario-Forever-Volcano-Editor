@@ -135,7 +135,7 @@ func _walk() -> void:
 			_character.add_to_group(&"state_running")
 		else:
 			_character.remove_from_group(&"state_running")
-		var max_spd: float = max_running_speed if _character.is_in_group(&"state_running") else max_walking_speed if !crh else max_walking_speed * 0.2
+		var max_spd: float = max_running_speed if _character.is_in_group(&"state_running") && !_character.is_in_group(&"state_swimming") else max_walking_speed if !crh else max_walking_speed * 0.2
 		_character.accelerate_local_x(acceleration, max_spd * _character.direction)
 	# Turning back
 	elif lr == -_character.direction:
@@ -179,6 +179,10 @@ func _swim(delta: float) -> void:
 	if _character.get_input_just_pressed(&"jump"):
 		var swspd: float = swimming_strength if !_character.is_in_group(&"state_swimming_to_jumping") else swimming_strength_jumping_out
 		_character.jump(swspd)
+		
+		if _animated_sprite.animation == &"swim":
+			_animated_sprite.frame = 0 # Resets animation frame
+		
 		Sound.play_2d(sound_swimming, _character)
 	
 	var max_swspd: float = -absf(swimming_up_max_speed) # Max swimming speed

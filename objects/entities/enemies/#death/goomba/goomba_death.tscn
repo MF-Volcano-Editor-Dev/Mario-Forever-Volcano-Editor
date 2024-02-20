@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://jh77s512qfrr"]
+[gd_scene load_steps=6 format=3 uid="uid://jh77s512qfrr"]
 
 [ext_resource type="PackedScene" uid="uid://2eise5wobrbd" path="res://objects/entities/enemies/#death/enemy_death.tscn" id="1_yotuv"]
 [ext_resource type="Texture2D" uid="uid://bj71tv2ix6ut0" path="res://assets/gfx/objects/entities/enemies/goomba/goomba.png" id="2_1yiha"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3hcme"]
+radius = 16.0
 
 [sub_resource type="Animation" id="Animation_sfp00"]
 resource_name = "RESET"
@@ -26,14 +29,19 @@ _data = {
 
 [node name="GoombaDeath" instance=ExtResource("1_yotuv")]
 
-[node name="Sprite2D" type="Sprite2D" parent="." index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
+shape = SubResource("CircleShape2D_3hcme")
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="1"]
 texture = ExtResource("2_1yiha")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="1"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
 libraries = {
 "": SubResource("AnimationLibrary_i4s0q")
 }
 autoplay = "RESET"
 
-[node name="VisibleOnScreenNotifierDirectional2D" parent="." index="2"]
+[node name="VisibleOnScreenNotifierDirectional2D" parent="." index="3"]
+visible = false
 rect = Rect2(-16, -16, 32, 32)
+_is_initialized = true

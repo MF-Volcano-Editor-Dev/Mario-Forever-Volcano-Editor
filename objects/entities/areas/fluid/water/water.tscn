@@ -1,12 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://ber4ghptyioeg"]
+[gd_scene load_steps=3 format=3 uid="uid://ber4ghptyioeg"]
 
 [ext_resource type="Script" path="res://scripts/entities/areas/area_fluid.gd" id="1_1vbic"]
+[ext_resource type="PackedScene" uid="uid://delxto2dfc3fa" path="res://objects/entities/#effects/spray_water.tscn" id="2_8mmc0"]
 
-[node name="AreaWater" type="Area2D" groups=["area_swimmable"]]
+[node name="AreaWater" type="Area2D" groups=["area_swimmable", "water"]]
 process_physics_priority = -10
 editor_description = "Note: Needs CollisionShape2D(s) or CollisionPolygon2D(s) to work"
 collision_layer = 16
+collision_mask = 5
 gravity_space_override = 3
 gravity = 250.0
 script = ExtResource("1_1vbic")
+character_max_falling_speed_scale = 0.3
+spray = ExtResource("2_8mmc0")
 metadata/_edit_group_ = true
+metadata/_edit_pinned_properties_ = [&"spray", &"character_max_falling_speed_scale"]

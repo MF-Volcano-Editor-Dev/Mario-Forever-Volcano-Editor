@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://oi5vyigqsaq1" path="res://objects/entities/characters/mario/power-ups/mario_big.tscn" id="3_ck1o5"]
 [ext_resource type="PackedScene" uid="uid://dh2wi5r4ubr2x" path="res://objects/entities/characters/#deaths/mario_death.tscn" id="4_bceee"]
 [ext_resource type="PackedScene" uid="uid://jjcm44c8tds3" path="res://objects/entities/characters/mario/power-ups/mario_fireball.tscn" id="4_l4gr0"]
-[ext_resource type="Script" path="res://scripts/nodes/visible_on_screen/visible_on_screen_directional.gd" id="6_aicd8"]
+[ext_resource type="Script" path="res://scripts/components/visible_on_screen/visible_on_screen_directional.gd" id="6_u31oc"]
 
 [node name="Mario" type="EntityBody2D" groups=["character", "enemy_toucher", "entity"]]
 gravity_scale = 1.0
@@ -34,7 +34,7 @@ position = Vector2(0, -7)
 visible = false
 position = Vector2(0, -40)
 rect = Rect2(-8, -8, 16, 16)
-script = ExtResource("6_aicd8")
+script = ExtResource("6_u31oc")
 direction = 8
 with_global_transform = true
 _is_initialized = true
