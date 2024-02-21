@@ -127,8 +127,8 @@ radius = 12.0
 sprite_frames = SubResource("SpriteFrames_xcgj5")
 autoplay = "default"
 script = ExtResource("1_egt3s")
-liquid_group = &"water"
-metadata/_edit_pinned_properties_ = [&"liquid_group"]
+fluid_group = &"water"
+metadata/_edit_pinned_properties_ = [&"fluid_group"]
 
 [node name="Rotator" type="ShapeCast2D" parent="."]
 visible = false

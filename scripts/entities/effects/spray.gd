@@ -12,9 +12,10 @@ extends AnimatedSprite2D
 
 func _ready() -> void:
 	_rotator.force_shapecast_update()
+	
 	# Able to appear
 	# Rotator detects with a longer radius than PushOrPull
-	if _rotator.is_colliding():
+	if !fluid_group.is_empty() && _rotator.is_colliding():
 		# Rotation
 		var rcol: Node2D = _rotator.get_collider(0)
 		if rcol && rcol.is_in_group(fluid_group):
@@ -31,10 +32,11 @@ func _ready() -> void:
 		# Pull
 		else:
 			var pcol: Node2D = null
-			while !pcol || !pcol.is_in_group(fluid_group):
+			while !(pcol && pcol.is_in_group(fluid_group)):
 				global_position += Vector2.DOWN.rotated(global_rotation)
 				# Updates information about the collider
 				pcol = _get_collider(_push_or_pull, 0)
+				await get_tree().physics_frame
 	# Or disappear at once
 	else:
 		queue_free()

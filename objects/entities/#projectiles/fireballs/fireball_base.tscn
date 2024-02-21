@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://b7df0l8ps4x6v"]
 
-[ext_resource type="Script" path="res://scripts/entities/physics/jumping_walker_2d.gd" id="1_3geql"]
+[ext_resource type="Script" path="res://scripts/entities/physics/jumping_walker_2d.gd" id="1_o0yl1"]
 [ext_resource type="Texture2D" uid="uid://3i08m3gbppjg" path="res://assets/gfx/objects/entities/projectiles/fireball_particle.png" id="2_lxa3f"]
 [ext_resource type="Texture2D" uid="uid://dxr0dxmh544lj" path="res://assets/gfx/objects/entities/projectiles/fireball.png" id="2_ym67n"]
 [ext_resource type="Script" path="res://scripts/components/transform/class_rotator.gd" id="4_s11mi"]
@@ -41,7 +41,7 @@ damp_min_speed = 50.0
 gravity_scale = 0.5
 collision_layer = 4
 collision_mask = 8
-script = ExtResource("1_3geql")
+script = ExtResource("1_o0yl1")
 jumping_times = 20
 jumping_speed = 250.0
 metadata/_edit_pinned_properties_ = [&"jumping_times", &"jumping_speed"]
@@ -83,9 +83,11 @@ script = ExtResource("5_80q70")
 [node name="ExplosionFire" parent="Instantiater2D" instance=ExtResource("6_dkidl")]
 
 [node name="VisibleOnScreenNotifierDirectional2D" type="VisibleOnScreenNotifier2D" parent="."]
+visible = false
 rect = Rect2(-8, -8, 16, 16)
 script = ExtResource("7_na506")
 direction = 11
+_is_initialized = true
 metadata/_edit_pinned_properties_ = [&"direction"]
 
 [connection signal="collided_ceiling" from="." to="." method="queue_free"]

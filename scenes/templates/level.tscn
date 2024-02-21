@@ -49,7 +49,7 @@ position = Vector2(528, 400)
 position = Vector2(568, 400)
 
 [node name="AreaWater" parent="." instance=ExtResource("8_g3hsr")]
-position = Vector2(200, 288)
+position = Vector2(208, 288)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaWater"]
 position = Vector2(187, 59)
