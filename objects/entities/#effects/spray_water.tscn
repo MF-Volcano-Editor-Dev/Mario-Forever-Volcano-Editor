@@ -1,7 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://delxto2dfc3fa"]
+[gd_scene load_steps=22 format=3 uid="uid://delxto2dfc3fa"]
 
 [ext_resource type="Script" path="res://scripts/entities/effects/spray.gd" id="1_egt3s"]
 [ext_resource type="Texture2D" uid="uid://ha6ecnlp2u3k" path="res://assets/gfx/objects/entities/effects/spray_water.png" id="1_nb2mh"]
+[ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="3_i7gva"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7otwq"]
 atlas = ExtResource("1_nb2mh")
@@ -116,8 +117,11 @@ animations = [{
 "speed": 40.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_uugt7"]
-radius = 16.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gj8y"]
+radius = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8cwbo"]
+radius = 12.0
 
 [node name="SprayWater" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_xcgj5")
@@ -128,9 +132,27 @@ metadata/_edit_pinned_properties_ = [&"liquid_group"]
 
 [node name="Rotator" type="ShapeCast2D" parent="."]
 visible = false
-shape = SubResource("CircleShape2D_uugt7")
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_4gj8y")
 target_position = Vector2(0, 0)
 max_results = 2
 collision_mask = 16
 collide_with_areas = true
 collide_with_bodies = false
+
+[node name="PushOrPull" type="ShapeCast2D" parent="."]
+visible = false
+position = Vector2(0, 4)
+shape = SubResource("CircleShape2D_8cwbo")
+target_position = Vector2(0, 0)
+max_results = 2
+collision_mask = 16
+collide_with_areas = true
+collide_with_bodies = false
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+visible = false
+rect = Rect2(-16, -16, 32, 32)
+script = ExtResource("3_i7gva")
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="queue_free"]

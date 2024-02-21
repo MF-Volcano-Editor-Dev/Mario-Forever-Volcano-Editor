@@ -24,7 +24,7 @@ func _process(delta: float) -> void:
 	global_position += _velocity * delta
 	
 	## Rotate
-	rotate(deg_to_rad(rotation_speed * _rot_dir * delta))
+	_sprite.rotate(deg_to_rad(rotation_speed * _rot_dir * delta))
 
 
 ## [i]Called by [method Mario.die].[/i][br]

@@ -166,3 +166,20 @@ II.
 	...
 ```
 In conclusion, we prefer the second style in order to keep the cleaness and tidiness of the code structure.
+
+## Safe lambda functions
+Lambda functions, or lambdas, introduced in Godot 4.0, is a powerful tool during your coding. However, there are some situations that this tool may lead to problems.
+Suppose the following situation where `body` is being deleted or has been removed:
+```GDScript
+(func() -> void:
+	body.position += Vector2.RIGHT * 500
+).call() # or .call_deferred()
+```
+In this situation, the body is actually a `null` value being passed in, and an error will be thrown:  
+`Lambda captured a null index at...`
+Owing to the lambda catching the static environment of a piece of code, we recommend a safer method:
+(func(p: Node2D) -> void:
+	p.position += Vector2.RIGHT * 500
+).call(body) # or.call_deferred(body)
+This will tell the executor that we have a param body to be passed in, but it found your param is a null value and will not lead to any execution. Therefore, no errors will be thrown.
+Apart from this situation, you can use the first version as it's more simple and direct.

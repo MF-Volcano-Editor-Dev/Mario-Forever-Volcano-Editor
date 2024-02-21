@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=3 uid="uid://b7df0l8ps4x6v"]
 
-[ext_resource type="Script" path="res://scripts/entities/#universal/physics/jumping_walker_2d.gd" id="1_3geql"]
+[ext_resource type="Script" path="res://scripts/entities/physics/jumping_walker_2d.gd" id="1_3geql"]
 [ext_resource type="Texture2D" uid="uid://3i08m3gbppjg" path="res://assets/gfx/objects/entities/projectiles/fireball_particle.png" id="2_lxa3f"]
 [ext_resource type="Texture2D" uid="uid://dxr0dxmh544lj" path="res://assets/gfx/objects/entities/projectiles/fireball.png" id="2_ym67n"]
 [ext_resource type="Script" path="res://scripts/components/transform/class_rotator.gd" id="4_s11mi"]

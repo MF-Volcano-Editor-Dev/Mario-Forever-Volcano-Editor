@@ -15,6 +15,8 @@ class_name AreaFluid extends Area2D
 @export_group("Spray")
 @export var spray: PackedScene
 
+var _bodies_count: int
+var _prev_bodies_count: int
 var _characters: Array[Character]
 
 
@@ -41,6 +43,15 @@ func _property_revert() -> void:
 #endregion
 
 
+func _bodies_count_changed() -> bool:
+	# Ready requires 5 frames
+	if get_tree().get_frame() > 5 && _prev_bodies_count != _bodies_count:
+		_prev_bodies_count = _bodies_count
+		return true
+	
+	_prev_bodies_count = _bodies_count
+	return false
+
 func _spray(body: Node2D) -> void:
 	if !spray:
 		return
@@ -55,13 +66,22 @@ func _spray(body: Node2D) -> void:
 
 #region == Area Detections ==
 func _on_body_entered(body: Node2D) -> void:
-	_spray(body)
+	_bodies_count += 1
+	
 	if body is Character && !body in _characters:
 		_characters.append(body)
+	
+	await get_tree().physics_frame
+	if _bodies_count_changed():
+		_spray(body)
 
 func _on_body_exited(body: Node2D) -> void:
-	if !body.is_queued_for_deletion():
-		_spray(body)
+	_bodies_count -= 1
+	
 	if body is Mario && body in _characters:
 		_characters.erase(body)
+	
+	await get_tree().physics_frame
+	if _bodies_count_changed() && is_instance_valid(body):
+		_spray(body)
 #endregion

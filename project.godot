@@ -116,6 +116,7 @@ folder_colors={
 "res://objects/entities/warps/scripts/": "green",
 "res://objects/entities/warps/textures/": "green",
 "res://scripts/": "red",
+"res://scripts/#universal/": "orange",
 "res://singletons/": "red"
 }
 

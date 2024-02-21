@@ -44,7 +44,6 @@ signal timer_done_summary ## Emitted when the summary is finished.
 var _has_warned: bool # Has the warning been triggered
 var _is_sum: bool # Is summarizing
 
-@onready var _time: Label = $Frame/Time
 @onready var _time_count: Label = $Frame/TimeCount
 @onready var _animation: AnimationPlayer = $Animation
 @onready var _count_down: Timer = $CountDown
