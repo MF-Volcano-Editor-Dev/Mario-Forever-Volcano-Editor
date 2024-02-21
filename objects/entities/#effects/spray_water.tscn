@@ -2,7 +2,15 @@
 
 [ext_resource type="Script" path="res://scripts/entities/effects/spray.gd" id="1_egt3s"]
 [ext_resource type="Texture2D" uid="uid://ha6ecnlp2u3k" path="res://assets/gfx/objects/entities/effects/spray_water.png" id="1_nb2mh"]
-[ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="3_i7gva"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_winci"]
+radius = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_u042u"]
+radius = 8.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gpj7p"]
+radius = 8.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7otwq"]
 atlas = ExtResource("1_nb2mh")
@@ -117,42 +125,40 @@ animations = [{
 "speed": 40.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_4gj8y"]
-radius = 24.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_8cwbo"]
-radius = 12.0
-
-[node name="SprayWater" type="AnimatedSprite2D"]
-sprite_frames = SubResource("SpriteFrames_xcgj5")
-autoplay = "default"
+[node name="SprayWater" type="Node2D"]
 script = ExtResource("1_egt3s")
 fluid_group = &"water"
 metadata/_edit_pinned_properties_ = [&"fluid_group"]
 
 [node name="Rotator" type="ShapeCast2D" parent="."]
 visible = false
-position = Vector2(0, 4)
-shape = SubResource("CircleShape2D_4gj8y")
+shape = SubResource("CircleShape2D_winci")
 target_position = Vector2(0, 0)
 max_results = 2
 collision_mask = 16
 collide_with_areas = true
 collide_with_bodies = false
 
-[node name="PushOrPull" type="ShapeCast2D" parent="."]
+[node name="Disappearer" type="ShapeCast2D" parent="."]
 visible = false
-position = Vector2(0, 4)
-shape = SubResource("CircleShape2D_8cwbo")
+position = Vector2(0, -24)
+shape = SubResource("CircleShape2D_u042u")
 target_position = Vector2(0, 0)
 max_results = 2
 collision_mask = 16
 collide_with_areas = true
 collide_with_bodies = false
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="PullOrPush" type="ShapeCast2D" parent="."]
 visible = false
-rect = Rect2(-16, -16, 32, 32)
-script = ExtResource("3_i7gva")
+shape = SubResource("CircleShape2D_gpj7p")
+target_position = Vector2(0, 0)
+max_results = 2
+collision_mask = 16
+collide_with_areas = true
+collide_with_bodies = false
 
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="queue_free"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -8)
+sprite_frames = SubResource("SpriteFrames_xcgj5")
+autoplay = "default"

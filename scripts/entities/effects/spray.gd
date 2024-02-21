@@ -1,4 +1,8 @@
-extends AnimatedSprite2D
+extends Node2D
+
+## Spray effect
+##
+## [b]Note:[/b] Because of detection for being underwater and rotation, this object may heavily consume performance in a large amount.
 
 @export_category("Liquid Group")
 ## Fluid group that makes the spray able to be generated
@@ -6,48 +10,51 @@ extends AnimatedSprite2D
 ## Depth of pulling to the surface of fluid
 @export_range(0, 64) var depth: int = 16
 
+@onready var _disappearer: ShapeCast2D = $Disappearer
 @onready var _rotator: ShapeCast2D = $Rotator
-@onready var _push_or_pull: ShapeCast2D = $PushOrPull
+@onready var _pull_or_push: ShapeCast2D = $PullOrPush
+@onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 
 func _ready() -> void:
 	_rotator.force_shapecast_update()
 	
-	# Able to appear
-	# Rotator detects with a longer radius than PushOrPull
-	if !fluid_group.is_empty() && _rotator.is_colliding():
-		# Rotation
-		var rcol: Node2D = _rotator.get_collider(0)
-		if rcol && rcol.is_in_group(fluid_group):
+	if _rotator.is_colliding():
+		var area := _rotator.get_collider(0) as Area2D
+		if _is_colliding_with_fluid(area):
 			global_rotation = _rotator.get_collision_normal(0).angle() + PI/2
 		
-		_push_or_pull.force_shapecast_update()
+		# Disappear underwater
+		_disappearer.force_shapecast_update()
+		if _disappearer.is_colliding():
+			var d_area := _disappearer.get_collider(0) as Area2D
+			if _is_colliding_with_fluid(d_area):
+				queue_free()
+				return
+		
+		_pull_or_push.force_shapecast_update()
 		# Push
-		if _push_or_pull.is_colliding():
-			var pcol: Node2D = _push_or_pull.get_collider(0)
-			while pcol && pcol.is_in_group(fluid_group):
+		if _pull_or_push.is_colliding():
+			while _is_colliding_with_fluid_while_loop(_pull_or_push):
 				global_position += Vector2.UP.rotated(global_rotation)
-				# Updates information about the collider
-				pcol = _get_collider(_push_or_pull, 0)
-		# Pull
+				_pull_or_push.force_shapecast_update()
 		else:
-			var pcol: Node2D = null
-			while !(pcol && pcol.is_in_group(fluid_group)):
+			while !_is_colliding_with_fluid_while_loop(_pull_or_push):
 				global_position += Vector2.DOWN.rotated(global_rotation)
-				# Updates information about the collider
-				pcol = _get_collider(_push_or_pull, 0)
-				await get_tree().physics_frame
-	# Or disappear at once
+				_pull_or_push.force_shapecast_update()
 	else:
 		queue_free()
 		return
 	
 	# Effect for disappearance
-	animation_finished.connect(queue_free)
+	_sprite.animation_finished.connect(queue_free)
 
-# Auto updates cast and returns the collider (if existing).
-func _get_collider(caster: ShapeCast2D, index: int) -> Node2D:
-	caster.force_shapecast_update()
-	if !caster.is_colliding():
-		return null
-	return caster.get_collider(index) as Node2D
+
+func _is_colliding_with_fluid(collider: Area2D) -> bool:
+	return collider && collider.is_in_group(fluid_group)
+
+func _is_colliding_with_fluid_while_loop(shape_caster: ShapeCast2D) -> bool:
+	if !shape_caster.is_colliding():
+		return false
+	var area := shape_caster.get_collider(0) as Area2D
+	return area && area.is_in_group(fluid_group)
