@@ -17,7 +17,10 @@ enum InitDirection {
 
 ## Initial walking direction. See [enum InitDirection] for details.
 @export var initial_direction: InitDirection = InitDirection.BY_VELOCITY
-
+## Enables real velocity mode.[br]
+## [br]
+## [b]Note:[/b] Once this mode is enabled, the body will simulate the physics in realler way. For example, the body will slide down with acceleration from a slope.
+@export var enable_real_velocity: bool
 
 func _ready() -> void:
 	if initial_direction != InitDirection.BY_VELOCITY:
@@ -27,7 +30,7 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	calculate_gravity()
 	calculate_damp()
-	move_and_slide()
+	move_and_slide(enable_real_velocity)
 
 
 ## Initializes the moving direction of the object.

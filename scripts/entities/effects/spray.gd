@@ -10,7 +10,6 @@ extends Node2D
 ## Depth of pulling to the surface of fluid
 @export_range(0, 64) var depth: int = 16
 
-@onready var _disappearer: ShapeCast2D = $Disappearer
 @onready var _rotator: ShapeCast2D = $Rotator
 @onready var _pull_or_push: ShapeCast2D = $PullOrPush
 @onready var _sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -23,14 +22,6 @@ func _ready() -> void:
 		var area := _rotator.get_collider(0) as Area2D
 		if _is_colliding_with_fluid(area):
 			global_rotation = _rotator.get_collision_normal(0).angle() + PI/2
-		
-		# Disappear underwater
-		_disappearer.force_shapecast_update()
-		if _disappearer.is_colliding():
-			var d_area := _disappearer.get_collider(0) as Area2D
-			if _is_colliding_with_fluid(d_area):
-				queue_free()
-				return
 		
 		_pull_or_push.force_shapecast_update()
 		# Push

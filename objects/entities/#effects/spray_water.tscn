@@ -1,13 +1,10 @@
-[gd_scene load_steps=22 format=3 uid="uid://delxto2dfc3fa"]
+[gd_scene load_steps=21 format=3 uid="uid://delxto2dfc3fa"]
 
 [ext_resource type="Script" path="res://scripts/entities/effects/spray.gd" id="1_egt3s"]
 [ext_resource type="Texture2D" uid="uid://ha6ecnlp2u3k" path="res://assets/gfx/objects/entities/effects/spray_water.png" id="1_nb2mh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_winci"]
 radius = 24.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_u042u"]
-radius = 8.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gpj7p"]
 radius = 8.0
@@ -133,16 +130,6 @@ metadata/_edit_pinned_properties_ = [&"fluid_group"]
 [node name="Rotator" type="ShapeCast2D" parent="."]
 visible = false
 shape = SubResource("CircleShape2D_winci")
-target_position = Vector2(0, 0)
-max_results = 2
-collision_mask = 16
-collide_with_areas = true
-collide_with_bodies = false
-
-[node name="Disappearer" type="ShapeCast2D" parent="."]
-visible = false
-position = Vector2(0, -24)
-shape = SubResource("CircleShape2D_u042u")
 target_position = Vector2(0, 0)
 max_results = 2
 collision_mask = 16

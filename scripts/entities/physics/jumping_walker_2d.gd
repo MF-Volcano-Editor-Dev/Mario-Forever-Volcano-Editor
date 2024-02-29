@@ -2,7 +2,7 @@ class_name JumpingWalker2D extends Walker2D
 
 ## [Walker2D] with capability to jump.
 ##
-## This component will get [signal EntityBody2D.collided_floor] connected to [method EntityBody2D.jump], so you should not connect the signal to the method manually.
+## This node will get [signal EntityBody2D.collided_floor] connected to [method EntityBody2D.jump], so you should not connect the signal to the method manually.
 
 signal jumping_times_over ## Emitted when [member jumping_times] reaches down to zero.
 

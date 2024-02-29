@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://dm1au2ar8wp71"]
+[gd_scene load_steps=8 format=3 uid="uid://dm1au2ar8wp71"]
 
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario.gd" id="1_es2gk"]
 [ext_resource type="PackedScene" uid="uid://d2a3jxasggppj" path="res://objects/entities/characters/mario/power-ups/mario_small.tscn" id="2_04tbc"]
 [ext_resource type="PackedScene" uid="uid://oi5vyigqsaq1" path="res://objects/entities/characters/mario/power-ups/mario_big.tscn" id="3_ck1o5"]
 [ext_resource type="PackedScene" uid="uid://dh2wi5r4ubr2x" path="res://objects/entities/characters/#deaths/mario_death.tscn" id="4_bceee"]
 [ext_resource type="PackedScene" uid="uid://jjcm44c8tds3" path="res://objects/entities/characters/mario/power-ups/mario_fireball.tscn" id="4_l4gr0"]
+[ext_resource type="PackedScene" uid="uid://eohpty3ehpcp" path="res://objects/entities/characters/mario/power-ups/mario_beetroot.tscn" id="6_j62c3"]
 [ext_resource type="Script" path="res://scripts/components/visible_on_screen/visible_on_screen_directional.gd" id="6_u31oc"]
 
 [node name="Mario" type="EntityBody2D" groups=["character", "enemy_toucher", "entity"]]
@@ -22,6 +23,10 @@ process_mode = 4
 visible = false
 
 [node name="MarioFireball" parent="." instance=ExtResource("4_l4gr0")]
+process_mode = 4
+visible = false
+
+[node name="MarioBeetroot" parent="." instance=ExtResource("6_j62c3")]
 process_mode = 4
 visible = false
 

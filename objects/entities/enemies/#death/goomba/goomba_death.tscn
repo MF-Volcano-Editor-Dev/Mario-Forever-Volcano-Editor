@@ -30,6 +30,7 @@ _data = {
 [node name="GoombaDeath" instance=ExtResource("1_yotuv")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
+visible = false
 shape = SubResource("CircleShape2D_3hcme")
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="1"]

@@ -15,7 +15,7 @@ metadata/_edit_pinned_properties_ = [&"powerup_id", &"down_to_powerup_id"]
 [node name="AnimatedSprite2D" parent="." index="4"]
 sprite_frames = ExtResource("2_omltk")
 
-[node name="Projectile" type="Node2D" parent="." index="5"]
+[node name="Projectile" type="Node2D" parent="." index="6"]
 visible = false
 position = Vector2(6, -34)
 script = ExtResource("3_4ik2q")

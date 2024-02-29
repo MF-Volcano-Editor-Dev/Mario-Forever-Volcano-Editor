@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://d2a3jxasggppj"]
+[gd_scene load_steps=13 format=3 uid="uid://d2a3jxasggppj"]
 
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_powerup.gd" id="1_igb6y"]
 [ext_resource type="Shape2D" uid="uid://6oma0liuhhjr" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_small.tres" id="2_bu1ev"]
@@ -7,6 +7,7 @@
 [ext_resource type="Shape2D" uid="uid://dypbl1pshqi13" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_head.tres" id="3_gvdfx"]
 [ext_resource type="Script" path="res://scripts/components/state_machine/class_state_machine.gd" id="4_boade"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_non_climbing.gd" id="4_j3ux2"]
+[ext_resource type="PackedScene" uid="uid://o1jx3mi81p3t" path="res://objects/units/particle/particle_bubble.tscn" id="5_8kxji"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_climbing.gd" id="6_nfgd5"]
 
 [sub_resource type="Animation" id="Animation_h00pe"]
@@ -187,8 +188,14 @@ metadata/_edit_group_ = true
 
 [node name="RemoBubble" type="RemoteTransform2D" parent="AnimatedSprite2D"]
 position = Vector2(4, 16)
+remote_path = NodePath("../../Bubble")
 update_rotation = false
 update_scale = false
+
+[node name="Bubble" parent="." instance=ExtResource("5_8kxji")]
+position = Vector2(4, -8)
+manual_emission = true
+metadata/_edit_pinned_properties_ = [&"manual_emission"]
 
 [node name="AreaDetection" type="Node" parent="."]
 script = ExtResource("3_2jggs")
