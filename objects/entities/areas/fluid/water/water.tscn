@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/entities/areas/area_fluid.gd" id="1_1vbic"]
 
-[node name="AreaWater" type="Area2D" groups=["area_swimmable", "water"]]
+[node name="Water" type="Area2D" groups=["area_swimmable", "water"]]
 process_physics_priority = -10
 editor_description = "Note: Needs CollisionShape2D(s) or CollisionPolygon2D(s) to work"
 collision_layer = 16
