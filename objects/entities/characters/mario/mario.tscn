@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://scripts/components/visible_on_screen/visible_on_screen_directional.gd" id="6_u31oc"]
 [ext_resource type="PackedScene" uid="uid://etl2pig40wms" path="res://objects/entities/characters/mario/power-ups/mario_green_lui.tscn" id="7_mehkr"]
 
-[node name="Mario" type="EntityBody2D" groups=["character", "enemy_toucher", "entity"]]
+[node name="Mario" type="EntityBody2D" groups=["character", "enemy_toucher", "entity", "hit_block_head"]]
 gravity_scale = 1.0
 collision_mask = 2
 platform_on_leave = 1
@@ -31,14 +31,14 @@ visible = false
 process_mode = 4
 visible = false
 
+[node name="MarioGreenLui" parent="." instance=ExtResource("7_mehkr")]
+process_mode = 4
+visible = false
+
 [node name="MarioDeath" parent="." groups=["character_death"] instance=ExtResource("4_bceee")]
 process_mode = 4
 visible = false
 position = Vector2(0, -7)
-
-[node name="MarioGreenLui" parent="." instance=ExtResource("7_mehkr")]
-process_mode = 4
-visible = false
 
 [node name="VisibleOnScreenNotifierDirectional2D" type="VisibleOnScreenNotifier2D" parent="."]
 visible = false

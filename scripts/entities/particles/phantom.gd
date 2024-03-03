@@ -37,8 +37,6 @@ func _phantom_generated() -> void:
 	
 	for i in ph.get_children(): # May cause performance loss
 		i.free()
-	for j in sync_props: # May lead to it as well
-		ph.set_deferred(j, source.get(j))
 	
 	ph.global_transform = global_transform
 	
@@ -49,4 +47,7 @@ func _phantom_generated() -> void:
 		var tw: Tween = ph.create_tween()
 		tw.tween_property(ph, ^"modulate:a", 0, lifetime)
 		tw.finished.connect(ph.queue_free)
+		
+		for j in sync_props: # May lead to it as well
+			ph.set(j, source.get(j))
 	).call_deferred() # Since the phantom is added to the tree in a deferred way
