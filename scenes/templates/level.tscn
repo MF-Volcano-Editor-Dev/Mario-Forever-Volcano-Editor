@@ -26,6 +26,7 @@ _initialized = true
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
 position = Vector2(128, 408)
+current_powerup = &"green_lui"
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource("2_bvcda")
