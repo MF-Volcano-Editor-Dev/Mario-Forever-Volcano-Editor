@@ -32,12 +32,9 @@ func _bump_process(_bumper: Node2D, _touch_spot: Vector2) -> void:
 		bump_over.emit()
 	)
 	await bump_over
-	_is_on_bumping = false
+	
 
 
-## Call for bumping, needs a [param bumper] and a [KinematicCollision2D] to provide collision information.[br]
-## [br]
-## [b]Note:[/b] This requires to be called only by bumpers. DO NOT CALL IT in this script or scripts that inherits from this class!
 func _bump(bumper: Node2D, _touch_spot: Vector2) -> void:
 	if !bumper:
 		return
@@ -62,5 +59,6 @@ func _bump(bumper: Node2D, _touch_spot: Vector2) -> void:
 	_bump_process(bumper, _touch_spot)
 
 
-func _on_bumped() -> void:
-	print(name + " is bumped!")
+## Called in [method _bump_process] to restore the status of being bumped.
+func restore_bump() -> void:
+	_is_on_bumping = false

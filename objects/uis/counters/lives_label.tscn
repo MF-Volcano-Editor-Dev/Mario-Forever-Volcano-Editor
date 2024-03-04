@@ -11,6 +11,6 @@ pivot_offset = Vector2(5, 8)
 text = "0UP"
 label_settings = ExtResource("2_qa51s")
 script = ExtResource("3_8jntk")
-change_scores_data = -8.0
+change_relevant_data = true
 suffix = "UP"
 metadata/_edit_pinned_properties_ = [&"text", &"label_settings"]

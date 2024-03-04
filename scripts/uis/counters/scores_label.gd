@@ -6,10 +6,11 @@ extends "./counter_label.gd"
 
 
 func _ready() -> void:
-	super()
-	
 	if Engine.is_editor_hint():
 		return
+	
+	_movement()
+	
 	if !change_relevant_data:
 		return
 	
