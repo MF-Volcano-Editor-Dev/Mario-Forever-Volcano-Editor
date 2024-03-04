@@ -190,7 +190,6 @@ func _swim(delta: float) -> void:
 		_character.velocality.y = lerpf(_character.velocality.y, max_swspd, 16 * delta)
 #endregion
 
-
 #region == Animations ==
 func _animation(_delta: float) -> void:
 	if !_animated_sprite:

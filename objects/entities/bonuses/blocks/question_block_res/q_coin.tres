@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="QuestionBlockItem" load_steps=3 format=3 uid="uid://b7qn1x3xdip30"]
+
+[ext_resource type="PackedScene" uid="uid://da8osf4x77m36" path="res://objects/entities/bonuses/items/coin.tscn" id="1_eg2sx"]
+[ext_resource type="Script" path="res://scripts/entities/bonuses/blocks/resources/question_block_item.gd" id="1_onf47"]
+
+[resource]
+script = ExtResource("1_onf47")
+default = ExtResource("1_eg2sx")
+required_powerup_level = 0

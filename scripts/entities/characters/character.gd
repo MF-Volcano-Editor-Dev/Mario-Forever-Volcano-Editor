@@ -148,6 +148,12 @@ class Data:
 	## Returns an object that helps emit signals when the values in this object gets updated.
 	static func get_signals() -> DataSignal:
 		return _signals
+	
+	
+	## Restores death count
+	static func restore_death_count() -> void:
+		death_counts = 0
+
 
 ## A subclass that allows you to get characters.
 ##

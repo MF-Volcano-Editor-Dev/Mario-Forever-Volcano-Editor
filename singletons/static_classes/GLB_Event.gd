@@ -46,6 +46,7 @@ class EventCharacter:
 		
 		if Character.Data.lives > 0:
 			Character.Data.lives -= 1
+			Character.Data.death_counts += 1
 			scene_tree.reload_current_scene.call_deferred()
 		else:
 			_signals.game_over.emit()

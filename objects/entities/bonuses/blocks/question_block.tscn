@@ -48,7 +48,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_sfudq")
 }],
 "loop": true,
-"name": &"empty",
+"name": &"hit",
 "speed": 5.0
 }]
 
@@ -68,7 +68,7 @@ tracks/0/keys = {
 }
 
 [sub_resource type="Animation" id="Animation_docu5"]
-resource_name = "new_animation"
+resource_name = "hit"
 length = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -86,26 +86,21 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_x58u5"]
 _data = {
 "RESET": SubResource("Animation_45u3s"),
-"new_animation": SubResource("Animation_docu5")
+"hit": SubResource("Animation_docu5")
 }
 
 [node name="QuestionBlock" type="AnimatableBody2D"]
 collision_layer = 10
-collision_mask = 0
+collision_mask = 5
 script = ExtResource("1_v50tp")
-detector_path = NodePath("Detector")
+animated_sprite_path = NodePath("AnimatedSprite2D")
+visible_node_path = NodePath("AnimatedSprite2D")
+invisible_collision_layer = 64
+metadata/_edit_pinned_properties_ = [&"animated_sprite_path", &"visible_node_path"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
 shape = SubResource("RectangleShape2D_4o21w")
-
-[node name="Detector" type="ShapeCast2D" parent="."]
-visible = false
-shape = SubResource("RectangleShape2D_4o21w")
-target_position = Vector2(0, 0)
-margin = 0.08
-max_results = 4
-collision_mask = 5
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_0o40n")
@@ -121,3 +116,5 @@ script = ExtResource("4_vs0v7")
 libraries = {
 "": SubResource("AnimationLibrary_x58u5")
 }
+
+[connection signal="bumped" from="." to="AnimationPlayer" method="play" binds= [&"hit"]]

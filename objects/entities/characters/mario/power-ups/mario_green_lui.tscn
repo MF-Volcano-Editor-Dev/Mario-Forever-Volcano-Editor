@@ -7,7 +7,8 @@
 [node name="MarioGreenLui" instance=ExtResource("1_qv73g")]
 powerup_id = &"green_lui"
 down_to_powerup_id = &"big"
-metadata/_edit_pinned_properties_ = [&"powerup_id", &"down_to_powerup_id"]
+powerup_level = 2
+metadata/_edit_pinned_properties_ = [&"powerup_id", &"down_to_powerup_id", &"powerup_level"]
 
 [node name="AnimatedSprite2D" parent="." index="4"]
 sprite_frames = ExtResource("2_u530u")

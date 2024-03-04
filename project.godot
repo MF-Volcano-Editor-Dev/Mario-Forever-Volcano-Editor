@@ -216,6 +216,7 @@ fire1={
 2d_physics/layer_4="block_npc"
 2d_physics/layer_5="environment"
 2d_physics/layer_6="facilities"
+2d_physics/layer_7="block_invisible"
 
 [physics]
 

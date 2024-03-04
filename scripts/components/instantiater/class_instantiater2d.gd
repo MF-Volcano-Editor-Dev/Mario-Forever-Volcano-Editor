@@ -19,26 +19,7 @@ var _instances: Array[PackedScene]
 
 
 func _enter_tree() -> void:
-	for i in get_children():
-		if !i is CanvasItem:
-			continue
-		
-		remove_child(i) # Removes children to stop them from calling `_enter_tree()` and `_ready()`
-		
-		# Packs the instances as PackedScenes to save more RAM
-		(func() -> void:
-			var packed: PackedScene = PackedScene.new()
-			packed.pack(i)
-			_instances.append(packed)
-			i.free()
-		).call_deferred()
-
-#func _notification(what: int) -> void:
-	#match what: # To prevent from unexpected behaivors in @tool mode, \when !Engine.is_editor_hint()\ is needed
-		#NOTIFICATION_ENTER_TREE when !Engine.is_editor_hint(): # Register children CanvasItem-s
-			#pass
-		#NOTIFICATION_PREDELETE when !Engine.is_editor_hint(): # Destructor: Delete referenced instances
-			#_instances = []
+	force_instances_register()
 
 
 # Instantiates an instance
@@ -111,3 +92,19 @@ func instantiate_by_type(type: Object, as_child_of_root: bool = false, filter_no
 		return _instantiate(i, as_child_of_root, filter_node_groups)
 	return null
 #endregion
+
+## Forces registering the children nodes as its instances to be instantiated.
+func force_instances_register() -> void:
+	for i in get_children():
+		if !i is CanvasItem:
+			continue
+		
+		remove_child(i) # Removes children to stop them from calling `_enter_tree()` and `_ready()`
+		
+		# Packs the instances as PackedScenes to save more RAM
+		(func() -> void:
+			var packed: PackedScene = PackedScene.new()
+			packed.pack(i)
+			_instances.append(packed)
+			i.free()
+		).call_deferred()

@@ -2,40 +2,52 @@ class_name BumpBlock2D extends AnimatableBody2D
 
 ## Abstract class used for blocks that are interactable with other [PhysicsBody2D] by bumping.
 ##
-## 
+## To bump the block, it requires a [Bumper2D] in certain node group:[br]
+## * [code]bumper[/code]: The bumper can hit the block from all sides.
 
 signal bumped ## Emitted when the block gets bumped.
 signal bump_over ## Emitted when the bumping is over.
 
-@export_node_path("ShapeCast2D") var detector_path: NodePath
-@export_range(0, 45, 0.001, "degrees") var tolerance: float = 45
-@export_range(-180, 180, 0.001, "degrees") var up_direction_angle: float = 0
+const _HeadHit: PackedScene = preload("res://objects/entities/#projectiles/head/head.tscn")
 
-@onready var detector: ShapeCast2D = get_node(detector_path)
+## Up direction offset angle
+@export_range(-180, 180, 0.001, "degrees") var up_direction_angle: float = 0
+## Hitting tolerance angle based on up direction
+@export_range(0, 90, 0.001, "degrees") var tolerance: float = 45.25
+## Delay of restoring bumping status
+@export_range(0, 20, 0.001, "suffix:s") var restoring_delay: float = 0.1
+@export_group("References")
+## Path to a node to be hidden by [member visible_at_beginning]
+@export_node_path("Node2D") var visible_node_path: NodePath
+@export_group("Settings")
+## If [code]false[/code], the block will be invisible at the beginning of the game, which may also cause the collision invalidity of the block until its reappearance.
+@export var block_visible: bool = true
+## [member CollisionObject2D.collision_layer] when invisible
+@export_flags_2d_physics var invisible_collision_layer: int = 0b1
+## [member CollisionObject2D.collision_mask] when invisible
+@export_flags_2d_physics var invisible_collision_mask: int = 0b0
+## If [code]false[/code], the block will disappear when the death amount of character is greater than zero
+@export var disappear_after_death: bool
 
 var _is_on_bumping: bool
 
+@onready var _layer: int = collision_layer
+@onready var _mask: int = collision_mask
 
-func _physics_process(_delta: float) -> void:
-	if !detector:
+@onready var _visible_node: Node2D = get_node_or_null(visible_node_path)
+
+
+func _ready() -> void:
+	if disappear_after_death:
+		queue_free()
 		return
 	
-	for i in detector.get_collision_count():
-		var col := detector.get_collider(i) as Node2D
-		var col_pos := detector.get_collision_point(i)
-		_bump(col, col_pos)
+	_set_visibility_and_collision()
 
 
-## [code]virtual[/code] Called on getting bumped by a bumper.
-func _bump_process(_bumper: Node2D, _touch_spot: Vector2) -> void:
-	get_tree().create_timer(0.1, false).timeout.connect(func() -> void:
-		bump_over.emit()
-	)
-	await bump_over
-	
-
-
-func _bump(bumper: Node2D, _touch_spot: Vector2) -> void:
+## Called by [Bumper2D].
+## @deprecated
+func bump(bumper: Bumper2D, touch_spot: Vector2) -> void:
 	if !bumper:
 		return
 	if _is_on_bumping:
@@ -44,21 +56,58 @@ func _bump(bumper: Node2D, _touch_spot: Vector2) -> void:
 	_is_on_bumping = true
 	
 	var up := Vector2.UP.rotated(global_rotation + deg_to_rad(up_direction_angle))
-	var dir_to_c := _touch_spot.direction_to(global_position)
+	var dir_to_c := touch_spot.direction_to(global_position)
 	var tol := deg_to_rad(tolerance)
 	
-	if bumper.is_in_group(&"hit_block"):
+	var on_bump: bool = false
+	if bumper.is_in_group(&"bumper"):
 		bumped.emit()
-	elif bumper.is_in_group(&"hit_block_head") && dir_to_c.dot(up) > cos(tol):
+		on_bump = true
+	elif bumper.is_in_group(&"bumper_head") && dir_to_c.dot(up) > cos(tol):
 		bumped.emit()
-	elif bumper.is_in_group(&"hit_block_feet") && dir_to_c.dot(-up) > cos(tol):
+		on_bump = true
+	elif bumper.is_in_group(&"bumper_feet") && dir_to_c.dot(-up) > cos(tol):
 		bumped.emit()
-	elif bumper.is_in_group(&"hit_block_side") && (dir_to_c.dot(up.orthogonal()) > cos(tol) || dir_to_c.dot(-up.orthogonal()) > cos(tol)):
+		on_bump = true
+	elif bumper.is_in_group(&"bumper_side") && (dir_to_c.dot(up.orthogonal()) > cos(tol) || dir_to_c.dot(-up.orthogonal()) > cos(tol)):
 		bumped.emit()
+		on_bump = true
+	else:
+		_is_on_bumping = false
 	
-	_bump_process(bumper, _touch_spot)
+	if on_bump:
+		_bump_process(bumper, touch_spot)
+		
+		if !block_visible:
+			block_visible = true
+			_set_visibility_and_collision() # Restores collision
+		
+		var heights: Array[float] = []
+		for i in get_shape_owners():
+			for j in shape_owner_get_shape_count(i):
+				heights.append(shape_owner_get_shape(i, j).get_rect().size.y / 2)
+		
+		var h := _HeadHit.instantiate()
+		h.global_transform = global_transform.translated_local(Vector2.UP * heights.max())
+		add_sibling.call_deferred(h)
+
+## [code]virtual[/code] Called on getting bumped by a bumper.
+func _bump_process(_bumper: Bumper2D, _touch_spot: Vector2) -> void:
+	restore_bump()
+
+
+func _set_visibility_and_collision() -> void:
+	if _visible_node:
+		_visible_node.visible = block_visible
+	
+	collision_layer = _layer if block_visible else invisible_collision_layer
+	collision_mask = _mask if block_visible else invisible_collision_mask
 
 
 ## Called in [method _bump_process] to restore the status of being bumped.
 func restore_bump() -> void:
+	get_tree().create_timer(restoring_delay, false).timeout.connect(func() -> void:
+		bump_over.emit()
+	)
+	await bump_over
 	_is_on_bumping = false

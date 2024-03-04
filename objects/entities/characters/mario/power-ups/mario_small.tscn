@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d2a3jxasggppj"]
+[gd_scene load_steps=15 format=3 uid="uid://d2a3jxasggppj"]
 
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_powerup.gd" id="1_igb6y"]
 [ext_resource type="Shape2D" uid="uid://6oma0liuhhjr" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_small.tres" id="2_bu1ev"]
@@ -7,6 +7,8 @@
 [ext_resource type="Shape2D" uid="uid://dypbl1pshqi13" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_head.tres" id="3_gvdfx"]
 [ext_resource type="Script" path="res://scripts/components/state_machine/class_state_machine.gd" id="4_boade"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_non_climbing.gd" id="4_j3ux2"]
+[ext_resource type="Script" path="res://scripts/components/collision/bumper_2d.gd" id="4_qv516"]
+[ext_resource type="Shape2D" uid="uid://nt4e4ksken1" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_head_detector.tres" id="4_vc5iu"]
 [ext_resource type="PackedScene" uid="uid://o1jx3mi81p3t" path="res://objects/units/particle/particle_bubble.tscn" id="5_8kxji"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_climbing.gd" id="6_nfgd5"]
 
@@ -168,6 +170,17 @@ position = Vector2(0, -19)
 shape = ExtResource("3_gvdfx")
 debug_color = Color(0.878431, 0.341176, 0, 0.419608)
 
+[node name="HeadDetc" type="ShapeCast2D" parent="Head/HeadCB" groups=["bumper_head"]]
+position = Vector2(0, 2)
+shape = ExtResource("4_vc5iu")
+target_position = Vector2(0, 0)
+margin = 0.5
+max_results = 2
+collision_mask = 66
+script = ExtResource("4_qv516")
+body_path = NodePath("../../../..")
+metadata/_edit_pinned_properties_ = [&"body_path"]
+
 [node name="Body" type="Area2D" parent="."]
 visible = false
 position = Vector2(0, 2)
@@ -211,6 +224,19 @@ editor_description = "`root` should refer to the owner node that is an instance 
 
 If you don't expect the powerup crouchable, please add an metadata \"is_small\" and set its value to `true`, or set it, if existing, to `true`."
 script = ExtResource("4_j3ux2")
+initial_speed = null
+acceleration = null
+deceleration = null
+deceleration_scale_crouch = null
+walking_turning_deceleration = null
+max_walking_speed = null
+max_running_speed = null
+initial_jumping_speed = null
+jumping_acceleration_static = null
+jumping_acceleration_dynamic = null
+swimming_strength = null
+swimming_strength_jumping_out = null
+swimming_up_max_speed = null
 state_id = &"non_climbing"
 root_path = NodePath("../..")
 metadata/_edit_pinned_properties_ = [&"state_id", &"root_path"]

@@ -15,6 +15,8 @@ signal powerup_exited ## Emitted when the powerup exits from being current.
 ## Id of the powerup when the character gets hurt. See [powerup_id] for more details.[br]
 ## If this keeps empty, the character will die when he gets hurt.
 @export var down_to_powerup_id: StringName = &""
+## Level of the powerup. Used to prevent from getting lower powerups.
+@export_range(-5, 5) var powerup_level: int
 @export_group("References")
 ## Paths to [CollisionShape2D]s that the node is going to set for the character.[br]
 ## [br]

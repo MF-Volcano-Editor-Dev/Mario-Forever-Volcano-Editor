@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://da8osf4x77m36"]
+[gd_scene load_steps=18 format=3 uid="uid://da8osf4x77m36"]
 
 [ext_resource type="Script" path="res://scripts/entities/bonuses/items/coin.gd" id="1_876hi"]
 [ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="1_d4a7o"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://scripts/components/instantiater/class_instantiater2d.gd" id="3_012et"]
 [ext_resource type="Texture2D" uid="uid://cviaa5cvksf33" path="res://assets/gfx/objects/entities/bonus/items/coin_hit.png" id="3_fyecf"]
 [ext_resource type="PackedScene" uid="uid://c1a60p1qvmepc" path="res://objects/entities/#effects/coin_effect.tscn" id="4_i83v2"]
+[ext_resource type="PackedScene" uid="uid://d28wktlfkunys" path="res://objects/uis/counters/scores_label.tscn" id="6_05kln"]
+[ext_resource type="Script" path="res://scripts/components/attack/class_attackee.gd" id="8_rh6xn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_83306"]
 size = Vector2(16, 28)
@@ -75,86 +77,7 @@ animations = [{
 "speed": 20.0
 }]
 
-[sub_resource type="Animation" id="Animation_mo3e2"]
-resource_name = "hit"
-length = 0.6
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, -75), Vector2(0, -48)]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatedSprite2D")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [&"hit", 1.0, false],
-"method": &"play"
-}]
-}
-tracks/2/type = "method"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Instantiater2D")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0.6),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [false, null],
-"method": &"instantiate_all"
-}]
-}
-tracks/3/type = "method"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath(".")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.6),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"queue_free"
-}]
-}
-
-[sub_resource type="Animation" id="Animation_q6ds6"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedSprite2D:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_1l012"]
-_data = {
-"RESET": SubResource("Animation_q6ds6"),
-"hit": SubResource("Animation_mo3e2")
-}
-
-[node name="Coin" type="Area2D"]
+[node name="Coin" type="Area2D" groups=["item"]]
 collision_layer = 4
 collision_mask = 5
 script = ExtResource("1_876hi")
@@ -173,16 +96,25 @@ script = ExtResource("3_012et")
 
 [node name="CoinEffect" parent="Instantiater2D" instance=ExtResource("4_i83v2")]
 
+[node name="Scores" parent="Instantiater2D" instance=ExtResource("6_05kln")]
+text = "200"
+change_relevant_data = true
+amount = 200
+metadata/_edit_pinned_properties_ = [&"amount"]
+
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
 visible = false
 position = Vector2(4.76837e-07, 1.43051e-06)
 scale = Vector2(1.6, 1.6)
 script = ExtResource("1_d4a7o")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_1l012")
-}
+[node name="HeadHit" type="Node" parent="."]
+script = ExtResource("8_rh6xn")
+filter_ids = Array[int]([1])
+filter_ids_mode = 0
 
 [connection signal="coin_got" from="." to="." method="queue_free"]
-[connection signal="coin_got" from="." to="Instantiater2D" method="instantiate_all"]
+[connection signal="coin_got" from="." to="Instantiater2D" method="instantiate" binds= [0]]
+[connection signal="coin_hit" from="." to="." method="queue_free"]
+[connection signal="coin_hit" from="." to="Instantiater2D" method="instantiate_all"]
+[connection signal="on_hit_by_attacker" from="HeadHit" to="." method="hit" unbinds=1]

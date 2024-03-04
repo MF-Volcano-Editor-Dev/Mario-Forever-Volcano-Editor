@@ -10,7 +10,8 @@
 [node name="MarioBeetroot" instance=ExtResource("1_1qpb7")]
 powerup_id = &"beetroot"
 down_to_powerup_id = &"big"
-metadata/_edit_pinned_properties_ = [&"down_to_powerup_id", &"powerup_id"]
+powerup_level = 2
+metadata/_edit_pinned_properties_ = [&"down_to_powerup_id", &"powerup_id", &"powerup_level"]
 
 [node name="AnimatedSprite2D" parent="." index="4"]
 sprite_frames = ExtResource("2_x51bi")
