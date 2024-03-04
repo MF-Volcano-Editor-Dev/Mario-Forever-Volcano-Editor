@@ -28,7 +28,7 @@ func _bump_process(bumper: Bumper2D, _touch_spot: Vector2) -> void:
 		
 		var hit := Callable(i, &"hit")
 		if hit.is_valid():
-			hit.call_deferred()
+			hit.call_deferred(self)
 	
 	if items.is_empty():
 		if _animated_sprite:

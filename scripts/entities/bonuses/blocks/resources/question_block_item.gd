@@ -10,6 +10,8 @@ class_name QuestionBlockItem extends Resource
 @export var fallback: PackedScene
 ## If [code]true[/code], the fallback item will appear when the character's powerup is not greater than this value
 @export_range(-5, 5) var required_powerup_level: int
+## Icon to be shown in some of the bumpable blocks
+@export var icon: Texture2D
 
 ## Returns default item, or fallback option if the fallback is triggered.
 func get_item(body: Node2D) -> PackedScene:

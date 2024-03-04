@@ -10,6 +10,7 @@ collision_layer = 0
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("RectangleShape2D_pekwa")
 
 [node name="Attacker" type="Node" parent="."]

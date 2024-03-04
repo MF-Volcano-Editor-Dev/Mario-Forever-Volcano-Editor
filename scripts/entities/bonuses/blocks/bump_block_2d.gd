@@ -30,6 +30,8 @@ const _HeadHit: PackedScene = preload("res://objects/entities/#projectiles/head/
 @export var disappear_after_death: bool
 
 var _is_on_bumping: bool
+var _up: Vector2
+var _dir_to_c: Vector2
 
 @onready var _layer: int = collision_layer
 @onready var _mask: int = collision_mask
@@ -38,7 +40,7 @@ var _is_on_bumping: bool
 
 
 func _ready() -> void:
-	if disappear_after_death:
+	if disappear_after_death && Character.Data.death_counts > 0:
 		queue_free()
 		return
 	
@@ -55,25 +57,26 @@ func bump(bumper: Bumper2D, touch_spot: Vector2) -> void:
 	
 	_is_on_bumping = true
 	
-	var up := Vector2.UP.rotated(global_rotation + deg_to_rad(up_direction_angle))
-	var dir_to_c := touch_spot.direction_to(global_position)
+	_up = Vector2.UP.rotated(global_rotation + deg_to_rad(up_direction_angle))
+	_dir_to_c = touch_spot.direction_to(global_position)
 	var tol := deg_to_rad(tolerance)
 	
 	var on_bump: bool = false
 	if bumper.is_in_group(&"bumper"):
 		bumped.emit()
 		on_bump = true
-	elif bumper.is_in_group(&"bumper_head") && dir_to_c.dot(up) > cos(tol):
+	elif bumper.is_in_group(&"bumper_head") && _dir_to_c.dot(_up) > cos(tol):
 		bumped.emit()
 		on_bump = true
-	elif bumper.is_in_group(&"bumper_feet") && dir_to_c.dot(-up) > cos(tol):
+	elif bumper.is_in_group(&"bumper_feet") && _dir_to_c.dot(-_up) > cos(tol):
 		bumped.emit()
 		on_bump = true
-	elif bumper.is_in_group(&"bumper_side") && (dir_to_c.dot(up.orthogonal()) > cos(tol) || dir_to_c.dot(-up.orthogonal()) > cos(tol)):
+	elif bumper.is_in_group(&"bumper_side") && (_dir_to_c.dot(_up.orthogonal()) > cos(tol) || _dir_to_c.dot(-_up.orthogonal()) > cos(tol)):
 		bumped.emit()
 		on_bump = true
 	else:
 		_is_on_bumping = false
+		return
 	
 	if on_bump:
 		_bump_process(bumper, touch_spot)
@@ -90,6 +93,11 @@ func bump(bumper: Bumper2D, touch_spot: Vector2) -> void:
 		var h := _HeadHit.instantiate()
 		h.global_transform = global_transform.translated_local(Vector2.UP * heights.max())
 		add_sibling.call_deferred(h)
+	
+	get_tree().physics_frame.connect(func() -> void:
+		_up = Vector2.ZERO
+		_dir_to_c = Vector2.ZERO
+	)
 
 ## [code]virtual[/code] Called on getting bumped by a bumper.
 func _bump_process(_bumper: Bumper2D, _touch_spot: Vector2) -> void:
@@ -111,3 +119,9 @@ func restore_bump() -> void:
 	)
 	await bump_over
 	_is_on_bumping = false
+
+## Returns the dot product between direction from touching position to the center of the block, and up direction.[br]
+## [br]
+## [b]Note:[/b] This call can be called ONLY in [method _bump_process]!
+func get_dot_to_up() -> float:
+	return _dir_to_c.dot(_up)

@@ -1,6 +1,6 @@
 class_name Mario extends Character
 
-## Character that behaves similarly to Mario
+## Character that behaves similarly to Mario.
 ##
 ## [Mario] here is not a specific character, but a type of characters that behaves similar to Mario.
 ## You can specify a powerup that makes the character be in such suit and get powerful skills.
