@@ -11,7 +11,7 @@ class_name Bumper2D extends ShapeCast2D
 @onready var body: Node2D = get_node(body_path)
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	for i in get_collision_count():
 		var col := get_collider(i)
 		if col is BumpBlock2D:

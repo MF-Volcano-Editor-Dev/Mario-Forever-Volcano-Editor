@@ -47,9 +47,8 @@ script = ExtResource("1_nkarn")
 
 [node name="Frame" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 640.0
-offset_bottom = 480.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 
 [node name="Time" type="Label" parent="Frame"]
 layout_mode = 1

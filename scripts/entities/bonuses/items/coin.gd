@@ -26,7 +26,7 @@ func _ready() -> void:
 
 ## Called by [BumpBlock2D].
 ## @deprecated
-func hit(block: BumpBlock2D) -> void:
+func hit(_block: BumpBlock2D) -> void:
 	_animated_sprite.play(&"hit")
 	
 	collision_layer = 0

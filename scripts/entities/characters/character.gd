@@ -222,6 +222,18 @@ class Getter:
 			result += i.global_position
 		
 		return result / float(characters.size())
+	
+	## Returns the average canvas position of characters. Similar to [method get_average_global_position].
+	static func get_average_canvas_position(scene_tree: SceneTree, default: Vector2 = Vector2.ZERO) -> Vector2:
+		var characters := get_characters(scene_tree)
+		if characters.is_empty():
+			return default
+		
+		var result: Vector2 = Vector2.ZERO
+		for i in characters:
+			result += i.get_global_transform_with_canvas().get_origin()
+		
+		return result / float(characters.size())
 
 
 ## A subclass used for checking something in terms of [Character].

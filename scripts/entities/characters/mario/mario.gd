@@ -5,6 +5,10 @@ class_name Mario extends Character
 ## [Mario] here is not a specific character, but a type of characters that behaves similar to Mario.
 ## You can specify a powerup that makes the character be in such suit and get powerful skills.
 
+signal on_starman(duration: float) ## Emitted when the character gets into starman state.
+signal damaged ## Emitted when the character gets hurt.
+signal died ## Emitted when the charcter dies.
+
 const _MarioDeath: Script = preload("./mario_death.gd")
 
 ## Id of current powerup.[br]
@@ -27,6 +31,7 @@ func _ready() -> void:
 	current_powerup = current_powerup # Triggers "set_powerup" to set initial powerup
 	
 	Events.EventGame.get_signals().completed_level.connect(add_to_group.bind(&"state_completed")) # Level completion
+
 
 #region == Setgets ==
 func set_powerup(value: StringName) -> void:
@@ -65,6 +70,12 @@ func invulnerablize(duration: float = 2) -> void:
 	)
 	Effects.flash(self, duration)
 
+## Makes the character a starman.
+func starman(duration: float = 10) -> void:
+	invulnerablize(duration)
+	# TODO: Music
+	on_starman.emit(duration)
+
 ## Makes the character hurt.[br]
 ## By default, this call will be blocked if [param forced] is [code]false[/code] while the character has been invulnerable.[br]
 ## If [param invincibility] is passed in with [code]false[/code], the character won't be invulnerable because of this call.[br]
@@ -87,6 +98,8 @@ func hurt(duration: float = 2, forced: bool = false, invincibility: bool = true,
 	
 	if invincibility:
 		invulnerablize(duration)
+	
+	damaged.emit()
 
 ## Makes the character die.
 func die() -> void:
@@ -103,6 +116,12 @@ func die() -> void:
 	
 	remove_from_group(&"character")
 	queue_free()
+	
+	died.emit()
+
+## Returns [code]true[/code] if the character is in starman status
+func is_starman() -> bool:
+	return false
 
 ## Returns [code]true[/code] if the character is invulnerable.
 func is_invulnerable() -> bool:

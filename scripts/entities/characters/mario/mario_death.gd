@@ -39,18 +39,27 @@ func death_effect_start() -> void:
 		Events.EventCharacter.notify_character_death(get_tree(), _character.id)
 	
 	var sound: AudioStreamPlayer = Sound.play_1d(sound_death, _character)
+	var death_canvas_pos := get_global_transform_with_canvas().get_origin()
 	
 	set_process(false)
 	await get_tree().create_timer(0.5, false).timeout
 	set_process(true)
+	
 	_rot_dir = [-1.0, 1.0].pick_random()
 	_velocity = Vector2.UP.rotated(global_rotation) * initial_speed
+	
+	# Transmission
+	var tree: SceneTree = get_tree()
+	get_tree().create_timer(2, false, false, true).timeout.connect(func() -> void:
+		if !Character.Getter.get_characters(tree).is_empty():
+			return
+		Transmission.circle_transmission(death_canvas_pos)
+	)
 	
 	await sound.finished
 	await get_tree().create_timer(1, false).timeout
 	# TODO: After-death executions
 	
-	var tree: SceneTree = get_tree()
 	remove_from_group(&"character_death")
 	if tree.get_nodes_in_group(&"character_death").is_empty(): # Prevent from quick restart when there are two or more characters who die in different time
 		Events.EventCharacter.current_game_over(tree)

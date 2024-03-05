@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d2a3jxasggppj"]
+[gd_scene load_steps=17 format=3 uid="uid://d2a3jxasggppj"]
 
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_powerup.gd" id="1_igb6y"]
 [ext_resource type="Shape2D" uid="uid://6oma0liuhhjr" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_small.tres" id="2_bu1ev"]
@@ -10,7 +10,9 @@
 [ext_resource type="Script" path="res://scripts/components/collision/bumper_2d.gd" id="4_qv516"]
 [ext_resource type="Shape2D" uid="uid://nt4e4ksken1" path="res://objects/entities/characters/mario/power-ups/shapes/shape_mario_head_detector.tres" id="4_vc5iu"]
 [ext_resource type="PackedScene" uid="uid://o1jx3mi81p3t" path="res://objects/units/particle/particle_bubble.tscn" id="5_8kxji"]
+[ext_resource type="Script" path="res://scripts/components/attack/class_attacker.gd" id="6_mmgss"]
 [ext_resource type="Script" path="res://scripts/entities/characters/mario/states/mario_climbing.gd" id="6_nfgd5"]
+[ext_resource type="Script" path="res://scripts/entities/characters/mario/mario_starman_combo.gd" id="6_phcw5"]
 
 [sub_resource type="Animation" id="Animation_h00pe"]
 resource_name = "CROUCH"
@@ -193,6 +195,15 @@ position = Vector2(0, -7)
 shape = ExtResource("2_bu1ev")
 debug_color = Color(0.984314, 0, 0.356863, 0.419608)
 
+[node name="Attacker" type="Node" parent="Body" groups=["combo"]]
+script = ExtResource("6_mmgss")
+
+[node name="Combo" type="Node" parent="Body"]
+script = ExtResource("6_phcw5")
+enabled = false
+body_path = NodePath("../../..")
+metadata/_edit_pinned_properties_ = [&"enabled", &"body_path"]
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -24)
 sprite_frames = ExtResource("2_pbsaf")
@@ -253,3 +264,5 @@ libraries = {
 "": SubResource("AnimationLibrary_xgudl")
 }
 autoplay = "RESET"
+
+[connection signal="attack_succeeded" from="Body/Attacker" to="Body/Combo" method="combo"]

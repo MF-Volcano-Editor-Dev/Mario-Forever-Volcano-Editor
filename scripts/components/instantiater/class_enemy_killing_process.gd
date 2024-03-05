@@ -54,7 +54,7 @@ func stomp_process(body: PhysicsBody2D) -> void:
 ## [b]Note 1:[/b] Please connect [signal EnemyStompable.on_stomp_succeeded] to this call.[br]
 ## [b]Note 2:[/b] For instances not to be created on failed attack, please merge them in the group [code]instantiate_no_success[/code].
 ## And for ones not to be created on successful attack, please merge them in the group [code]instantiate_no_failure[/code].
-## For ones not to be created on successful attack by attacker who is in the grouop [code]combo[/code], please merge them in the group [code]instantiate_no_success_combo[/code].
+## For ones not to be created on successful attack by attacker who is in the group [code]combo[/code], please merge them in the group [code]instantiate_no_success_combo[/code].
 ## Meanwhile, for ones not to be created on stomping, please merge them in the group [code]instantiate_no_attack[/code].
 func killing_process(attacker: Attacker) -> void:
 	killing_processed.emit()

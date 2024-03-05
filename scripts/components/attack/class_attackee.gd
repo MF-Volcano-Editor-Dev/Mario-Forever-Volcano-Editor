@@ -41,6 +41,8 @@ func _hit_by_attacker(attacker: Attacker) -> void:
 		return
 	
 	# Filtering
+	if attacker.id == DataList.AttackId.NONE:
+		return
 	for i in filter_ids:
 		if i == DataList.AttackId.NONE || \
 			(filter_ids_mode == FilterMode.EXCLUSION && attacker.id in filter_ids) || \
