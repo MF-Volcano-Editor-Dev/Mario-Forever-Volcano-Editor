@@ -26,9 +26,8 @@ signal completion_stage_2_done ## Emitted when the completion is accomplished.
 @export_group("Scene")
 ## Next scene to go to after the completion
 @export var next_scene: PackedScene
-@export_group("Music", "music_")
-## Music to play at the completion
-@export var music_completion: AudioStream = preload("res://assets/sounds/level_complete.ogg")
+@export_group("Sounds", "sound_")
+@export var sound_completion: AudioStream = preload("res://assets/sounds/level_complete.ogg")
 
 var _objects_blocks_stage_2: Array[Object]
 var _character_to_walk: Array[Character]
@@ -41,6 +40,11 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	for i in _character_to_walk: # Make characters walk
+		if !is_instance_valid(i):
+			i = null # Invalid item cannot be freed directly
+			_character_to_walk.erase(i)
+			continue
+		
 		i.direction = character_direction
 		i.velocality.x = character_direction * character_walking_speed
 		
@@ -61,6 +65,9 @@ func _on_level_completed() -> void:
 		set_process(true) # Activates _process()
 	
 	completed.emit()
+	
+	var snd := Sound.play_1d(sound_completion, self)
+	Events.EventCharacter.get_signals().all_characters_dead.connect(snd.queue_free)
 	
 	await get_tree().create_timer(completion_delay, false).timeout
 	

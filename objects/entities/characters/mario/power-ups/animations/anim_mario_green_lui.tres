@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=18 format=3 uid="uid://rj2xd5rkaigr"]
+[gd_resource type="SpriteFrames" load_steps=20 format=3 uid="uid://rj2xd5rkaigr"]
 
 [ext_resource type="Texture2D" uid="uid://cocxr73hu6lx3" path="res://assets/gfx/objects/entities/characters/mario_green_lui.png" id="1_5k537"]
 
@@ -33,6 +33,14 @@ region = Rect2(240, 0, 48, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_oqnad"]
 atlas = ExtResource("1_5k537")
 region = Rect2(240, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xgiv"]
+atlas = ExtResource("1_5k537")
+region = Rect2(624, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jp82l"]
+atlas = ExtResource("1_5k537")
+region = Rect2(576, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nuuw7"]
 atlas = ExtResource("1_5k537")
@@ -125,6 +133,22 @@ animations = [{
 }],
 "loop": true,
 "name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8xgiv")
+}],
+"loop": true,
+"name": &"pipe",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jp82l")
+}],
+"loop": true,
+"name": &"slide",
 "speed": 5.0
 }, {
 "frames": [{

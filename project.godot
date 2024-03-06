@@ -27,7 +27,7 @@ Transmission="*res://singletons/packed_scenes/Transmission.tscn"
 window/size/viewport_width=640
 window/size/viewport_height=480
 window/stretch/mode="viewport"
-window/vsync/vsync_mode=2
+window/vsync/vsync_mode=0
 
 [dotnet]
 
@@ -42,6 +42,7 @@ enabled=PackedStringArray("res://addons/abfi/plugin.cfg")
 folder_colors={
 "res://assets/": "green",
 "res://gdextension/": "red",
+"res://guides/": "pink",
 "res://icons/": "green",
 "res://objects/": "blue",
 "res://objects/#attachments/level_use/level_huds/scripts/": "green",

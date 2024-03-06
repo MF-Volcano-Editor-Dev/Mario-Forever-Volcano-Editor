@@ -21,7 +21,7 @@ class_name Character extends EntityBody2D
 			direction = [-1, 1].pick_random()
 @export_group("Hitbox")
 ## Offset of hitbox center. Useful for some detections like one in [EnemyStompable].
-@export var center_offset: Vector2 = Vector2(0, -8)
+@export var center_offset: Vector2
 @export_group("Status")
 ## If true, the character will fall to death.[br]
 ## [br]

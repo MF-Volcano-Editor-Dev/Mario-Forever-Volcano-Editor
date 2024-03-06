@@ -9,7 +9,7 @@ class_name QuestionBlockItem extends Resource
 ## Fallback item that takes the place of [member default] if it does not exist or the situation in the documentation of [member required_powerup_level] happens.
 @export var fallback: PackedScene
 ## If [code]true[/code], the fallback item will appear when the character's powerup is not greater than this value
-@export_range(-5, 5) var required_powerup_level: int
+@export_range(-5, 5) var required_powerup_level: int = -5
 ## Icon to be shown in some of the bumpable blocks
 @export var icon: Texture2D
 

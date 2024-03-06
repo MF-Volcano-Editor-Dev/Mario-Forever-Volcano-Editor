@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqxm8q4lrhsin"]
+
+[ext_resource type="Script" path="res://scripts/entities/warps/pipe_entrance.gd" id="1_av76c"]
+[ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="2_8rrtq"]
+[ext_resource type="Script" path="res://scripts/entities/warps/pipe_entrance_tool.gd" id="2_tggpj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cf6ra"]
+size = Vector2(32, 16)
+
+[node name="PipeEntrance" type="Area2D"]
+collision_layer = 0
+monitorable = false
+script = ExtResource("1_av76c")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_cf6ra")
+debug_color = Color(0.286275, 0.858824, 0, 0.419608)
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(0, 15)
+color = Color(0, 1, 0, 1)
+polygon = PackedVector2Array(-4, -32, -4, -3, -11, -3, 0, 8, 11, -3, 4, -3, 4, -32)
+
+[node name="Tool" type="Node2D" parent="."]
+script = ExtResource("2_tggpj")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+visible = false
+position = Vector2(1.90735e-06, 0)
+scale = Vector2(6.4, 0.8)
+script = ExtResource("2_8rrtq")

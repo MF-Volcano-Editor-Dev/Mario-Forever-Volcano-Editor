@@ -7,5 +7,5 @@
 [resource]
 script = ExtResource("3_a2toy")
 default = ExtResource("1_76ajm")
-required_powerup_level = 0
+required_powerup_level = -5
 icon = ExtResource("2_ol3oh")

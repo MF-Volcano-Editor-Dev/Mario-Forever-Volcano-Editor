@@ -89,6 +89,8 @@ func starman(duration: float = 10) -> void:
 ## If [param invincibility] is passed in with [code]false[/code], the character won't be invulnerable because of this call.[br]
 ## [param override_down_to] can be set to non-empty values, but needs to be a valid id of existing powerups for the character.
 func hurt(duration: float = 2, forced: bool = false, invincibility: bool = true, override_down_to: StringName = &"") -> void:
+	if is_in_group(&"state_frozen"):
+		return
 	if !forced && is_invulnerable():
 		return
 	if !_powerup:
@@ -111,6 +113,9 @@ func hurt(duration: float = 2, forced: bool = false, invincibility: bool = true,
 
 ## Makes the character die.
 func die() -> void:
+	if is_in_group(&"state_frozen"):
+		return
+	
 	_death.visible = true
 	
 	if _powerup:

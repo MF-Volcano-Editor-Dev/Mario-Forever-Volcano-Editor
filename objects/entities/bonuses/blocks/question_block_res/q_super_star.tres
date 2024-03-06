@@ -11,5 +11,5 @@ region = Rect2(99, 0, 33, 32)
 [resource]
 script = ExtResource("3_qjky6")
 default = ExtResource("1_8oghn")
-required_powerup_level = 0
+required_powerup_level = -5
 icon = SubResource("AtlasTexture_lo47f")

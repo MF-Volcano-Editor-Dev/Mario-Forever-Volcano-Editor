@@ -3,6 +3,8 @@ extends CanvasLayer
 @onready var circle_trans_anim: AnimationPlayer = $TransCircle/TransAnim
 @onready var circle_trans: ColorRect = $TransCircle
 
+signal circular_trans_done ## Emitted when circular transmission is accomplished.
+
 
 func trans_reset() -> void:
 	circle_trans_anim.play(&"RESET")
@@ -19,4 +21,5 @@ func circle_transmission(canvas_position: Vector2, duration: float = 1, fade_in_
 	circle_trans_anim.animation_finished.connect(func(_anim: StringName) -> void:
 		if circle_trans_anim.get_playing_speed() < 0:
 			circle_trans_anim.play(&"RESET")
+		circular_trans_done.emit()
 	)

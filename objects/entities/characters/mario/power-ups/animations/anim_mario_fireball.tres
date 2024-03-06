@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=18 format=3 uid="uid://bxwr607ejynqa"]
+[gd_resource type="SpriteFrames" load_steps=20 format=3 uid="uid://bxwr607ejynqa"]
 
 [ext_resource type="Texture2D" uid="uid://cwkux0laot2xk" path="res://assets/gfx/objects/entities/characters/mario_fireball.png" id="1_n5uy2"]
 
@@ -33,6 +33,14 @@ region = Rect2(240, 0, 48, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_7wshr"]
 atlas = ExtResource("1_n5uy2")
 region = Rect2(240, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ljg00"]
+atlas = ExtResource("1_n5uy2")
+region = Rect2(624, 0, 48, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jo1x8"]
+atlas = ExtResource("1_n5uy2")
+region = Rect2(576, 0, 48, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ikbto"]
 atlas = ExtResource("1_n5uy2")
@@ -125,6 +133,22 @@ animations = [{
 }],
 "loop": true,
 "name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ljg00")
+}],
+"loop": true,
+"name": &"pipe",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jo1x8")
+}],
+"loop": true,
+"name": &"slide",
 "speed": 5.0
 }, {
 "frames": [{

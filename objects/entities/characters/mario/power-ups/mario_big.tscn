@@ -33,7 +33,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -19)]
+"values": [Vector2(0, -11)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -57,7 +57,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -7)]
+"values": [Vector2(0, 1)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -81,7 +81,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -5)]
+"values": [Vector2(0, 3)]
 }
 
 [sub_resource type="Animation" id="Animation_u8npf"]
@@ -97,7 +97,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -49)]
+"values": [Vector2(0, -41)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -121,7 +121,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -22)]
+"values": [Vector2(0, -14)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -145,7 +145,7 @@ tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(0, -20)]
+"values": [Vector2(0, -12)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u0mky"]
@@ -166,7 +166,7 @@ metadata/_edit_pinned_properties_ = [&"powerup_id", &"features", &"down_to_power
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2(0, -20)
+position = Vector2(0, -12)
 shape = ExtResource("2_fs0vx")
 
 [node name="Head" type="Area2D" parent="."]
@@ -176,7 +176,7 @@ metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
 [node name="HeadCB" type="CollisionShape2D" parent="Head"]
-position = Vector2(0, -49)
+position = Vector2(0, -41)
 shape = ExtResource("3_dulmo")
 debug_color = Color(0.878431, 0.341176, 0, 0.419608)
 
@@ -199,7 +199,7 @@ metadata/_edit_group_ = true
 metadata/_edit_lock_ = true
 
 [node name="BodyCB" type="CollisionShape2D" parent="Body"]
-position = Vector2(0, -22)
+position = Vector2(0, -14)
 shape = ExtResource("2_fs0vx")
 debug_color = Color(0.984314, 0, 0.356863, 0.419608)
 
@@ -213,7 +213,7 @@ metadata/_edit_pinned_properties_ = [&"enabled"]
 
 [node name="StuckHead" type="ShapeCast2D" parent="."]
 visible = false
-position = Vector2(0, -32)
+position = Vector2(0, -24)
 shape = SubResource("RectangleShape2D_upt2b")
 target_position = Vector2(0, 0)
 max_results = 1
@@ -221,7 +221,7 @@ collision_mask = 2
 script = ExtResource("3_w2rt4")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -24)
+position = Vector2(0, -16)
 sprite_frames = ExtResource("2_0k235")
 autoplay = "default"
 metadata/_edit_group_ = true
@@ -235,7 +235,7 @@ update_scale = false
 metadata/_edit_pinned_properties_ = [&"position"]
 
 [node name="Bubble" parent="." instance=ExtResource("6_u3ov6")]
-position = Vector2(4, -30)
+position = Vector2(4, -22)
 manual_emission = true
 metadata/_edit_pinned_properties_ = [&"manual_emission"]
 

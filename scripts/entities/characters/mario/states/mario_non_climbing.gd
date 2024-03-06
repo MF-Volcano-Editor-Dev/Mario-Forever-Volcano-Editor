@@ -58,16 +58,17 @@ func _ready() -> void:
 		_animated_sprite.animation_looped.connect(_on_animation_looped)
 
 func _state_process(delta: float) -> void:
-	_crouch() # Should be executed before all the following methods to make sure the following ones can be executed as expected
-	_walk()
-	_jump(delta)
-	_swim(delta)
-	_climbing_check()
+	if !_character.is_in_group(&"state_frozen"):
+		_crouch() # Should be executed before all the following methods to make sure the following ones can be executed as expected
+		_walk()
+		_jump(delta)
+		_swim(delta)
+		_climbing_check()
 	
 	_animation.call_deferred(delta) # Called at the end of a frame to make sure the animation will be correctly played if the character is walking against a wall
 
 func _state_physics_process(_delta: float) -> void:
-	if _character.is_in_group(&"state_immovable"):
+	if _character.is_in_group(&"state_frozen"):
 		return
 	
 	_character.calculate_gravity()
@@ -197,6 +198,14 @@ func _animation(_delta: float) -> void:
 	
 	_animated_sprite.speed_scale = 1
 	_animated_sprite.transform.x.x = _character.direction # Facing
+	
+	if _character.is_in_group(&"state_pipe_h"):
+		_animated_sprite.play(&"walk")
+		_animated_sprite.speed_scale = 2
+		return
+	if _character.is_in_group(&"state_pipe_v"):
+		_animated_sprite.play(&"pipe")
+		return
 	
 	if _animated_sprite.animation in [&"appear", &"attack"]:
 		return
