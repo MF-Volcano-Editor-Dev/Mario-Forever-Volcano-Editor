@@ -20,6 +20,8 @@ const _MarioDeath: Script = preload("./mario_death.gd")
 ## If [code]true[/code], the powerup will not play [code]&"appear"[/code] animation.[br]
 ## If [member current_powerup] is invalid, nothing is going to happen.
 @export var no_appearing_animation_when_ready: bool = true
+@export_group("Sounds", "sound_")
+@export var sound_starman: AudioStream = preload("res://assets/sounds/starman.ogg")
 
 @onready var _death: _MarioDeath = $MarioDeath # Death effect of the character 
 
@@ -73,8 +75,14 @@ func invulnerablize(duration: float = 2) -> void:
 ## Makes the character a starman.
 func starman(duration: float = 10) -> void:
 	invulnerablize(duration)
-	# TODO: Music
 	on_starman.emit(duration)
+	
+	var snd := Sound.play_1d(sound_starman, self)
+	get_tree().create_timer(duration - 2, false).timeout.connect(func() -> void:
+		var tw := snd.create_tween()
+		tw.tween_property(snd, ^"volume_db", -50, 2)
+		tw.finished.connect(snd.queue_free)
+	)
 
 ## Makes the character hurt.[br]
 ## By default, this call will be blocked if [param forced] is [code]false[/code] while the character has been invulnerable.[br]

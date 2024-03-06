@@ -15,18 +15,22 @@ signal coin_hit ## Emitted when the coin is hit (out).
 func _ready() -> void:
 	body_entered.connect(func(body: Node2D) -> void:
 		if body is Character:
-			Character.Data.coins += amount
-			Character.Data.scores += scores
-			
-			Sound.play_2d(sound_coin, self)
-			
+			_coin()
 			coin_got.emit()
 	)
+
+
+func _coin() -> void:
+	Sound.play_2d(sound_coin, self)
+	Character.Data.coins += amount
+	Character.Data.scores += scores
 
 
 ## Called by [BumpBlock2D].
 ## @deprecated
 func hit(_block: BumpBlock2D) -> void:
+	_coin()
+	
 	_animated_sprite.play(&"hit")
 	
 	collision_layer = 0

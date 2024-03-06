@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dsmnib25rmbv3"]
+[gd_scene load_steps=9 format=3 uid="uid://dsmnib25rmbv3"]
 
 [ext_resource type="Script" path="res://scripts/entities/physics/item_walker_2d.gd" id="1_427xa"]
 [ext_resource type="Script" path="res://scripts/entities/bonuses/items/item_powerup.gd" id="2_s6jwe"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://dxg5kc3bpqmxp" path="res://assets/sounds/life_up.wav" id="3_w1xwd"]
 [ext_resource type="Script" path="res://scripts/components/instantiater/class_instantiater2d.gd" id="4_yvy32"]
 [ext_resource type="PackedScene" uid="uid://bg6twsen2esmj" path="res://objects/uis/counters/lives_label.tscn" id="5_chmbc"]
+[ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="7_37tid"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3c1ts"]
 size = Vector2(32, 30)
@@ -53,6 +54,12 @@ script = ExtResource("4_yvy32")
 [node name="Lives" parent="Instantiater2D" instance=ExtResource("5_chmbc")]
 text = "1UP"
 amount = 1
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+visible = false
+position = Vector2(2.08616e-07, 1.43051e-06)
+scale = Vector2(1.6, 1.6)
+script = ExtResource("7_37tid")
 
 [connection signal="collided_wall" from="." to="." method="turn_wall"]
 [connection signal="powerup_got" from="EffectBox" to="." method="queue_free"]

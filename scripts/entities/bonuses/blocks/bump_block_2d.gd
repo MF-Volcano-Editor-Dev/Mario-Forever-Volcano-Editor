@@ -62,10 +62,7 @@ func bump(bumper: Bumper2D, touch_spot: Vector2) -> void:
 	var tol := deg_to_rad(tolerance)
 	
 	var on_bump: bool = false
-	if bumper.is_in_group(&"bumper"):
-		bumped.emit()
-		on_bump = true
-	elif bumper.is_in_group(&"bumper_head") && _dir_to_c.dot(_up) > cos(tol):
+	if bumper.is_in_group(&"bumper_head") && _dir_to_c.dot(_up) > cos(tol):
 		bumped.emit()
 		on_bump = true
 	elif bumper.is_in_group(&"bumper_feet") && _dir_to_c.dot(-_up) > cos(tol):
@@ -75,8 +72,8 @@ func bump(bumper: Bumper2D, touch_spot: Vector2) -> void:
 		bumped.emit()
 		on_bump = true
 	else:
-		_is_on_bumping = false
-		return
+		bumped.emit()
+		on_bump = true
 	
 	if on_bump:
 		_bump_process(bumper, touch_spot)

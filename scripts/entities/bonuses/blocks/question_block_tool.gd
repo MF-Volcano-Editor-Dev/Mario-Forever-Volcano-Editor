@@ -1,7 +1,8 @@
 @tool
 extends Node2D
 
-var par: QuestionBlock2D
+var _font := FontFile.new()
+var _par: QuestionBlock2D
 
 
 func _ready() -> void:
@@ -11,19 +12,27 @@ func _ready() -> void:
 	visibility_changed.connect(set_process.bind(visible))
 
 func _draw() -> void:
-	if !par:
+	if !_par:
 		return
-	if par.items.is_empty():
-		return
-	if !par.items[0]:
+	if _par.items.is_empty():
 		return
 	
-	draw_texture(par.items[0].icon, Vector2.ZERO)
+	var first_item := _par.items[0]
+	if !first_item:
+		return
+	
+	draw_texture(first_item.icon, Vector2.ZERO)
+	if first_item is QuestionBlockItemAbundant:
+		match first_item.limitation:
+			0: # Time limit
+				draw_string(_font, Vector2(24, 24), str(first_item.time) + "sec", HORIZONTAL_ALIGNMENT_LEFT, -1, int(roundf(16 / scale.x)), Color.GOLD)
+			1: # Amount limit
+				draw_string(_font, Vector2(24, 24), str(first_item.amount) + "x", HORIZONTAL_ALIGNMENT_LEFT, -1, int(roundf(16 / scale.x)), Color.LAWN_GREEN)
 
 func _process(_delta: float) -> void:
-	if !par:
-		par = get_parent() as QuestionBlock2D
-	if !par:
+	if !_par:
+		_par = get_parent() as QuestionBlock2D
+	if !_par:
 		return
 	
 	queue_redraw()

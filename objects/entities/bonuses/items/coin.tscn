@@ -86,6 +86,11 @@ script = ExtResource("1_876hi")
 visible = false
 shape = SubResource("RectangleShape2D_83306")
 
+[node name="HeadHit" type="Node" parent="."]
+script = ExtResource("8_rh6xn")
+filter_ids = Array[int]([1])
+filter_ids_mode = 0
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_6nwt1")
 autoplay = "default"
@@ -98,7 +103,6 @@ script = ExtResource("3_012et")
 
 [node name="Scores" parent="Instantiater2D" instance=ExtResource("6_05kln")]
 text = "200"
-change_relevant_data = true
 amount = 200
 metadata/_edit_pinned_properties_ = [&"amount"]
 
@@ -107,11 +111,6 @@ visible = false
 position = Vector2(4.76837e-07, 1.43051e-06)
 scale = Vector2(1.6, 1.6)
 script = ExtResource("1_d4a7o")
-
-[node name="HeadHit" type="Node" parent="."]
-script = ExtResource("8_rh6xn")
-filter_ids = Array[int]([1])
-filter_ids_mode = 0
 
 [connection signal="coin_got" from="." to="." method="queue_free"]
 [connection signal="coin_got" from="." to="Instantiater2D" method="instantiate" binds= [0]]

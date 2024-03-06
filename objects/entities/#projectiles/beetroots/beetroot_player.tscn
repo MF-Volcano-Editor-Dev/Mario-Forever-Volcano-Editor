@@ -23,4 +23,4 @@ id = 5
 metadata/_edit_pinned_properties_ = [&"id"]
 
 [connection signal="bumped_over" from="." to="EffectBox" method="queue_free"]
-[connection signal="attacked_target" from="EffectBox/Attacker" to="." method="bump" unbinds=1]
+[connection signal="attacked_target" from="EffectBox/Attacker" to="." method="bump"]

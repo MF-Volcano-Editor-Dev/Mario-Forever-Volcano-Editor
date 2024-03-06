@@ -6,7 +6,7 @@ class_name ItemPowerup2D extends Area2D
 
 signal powerup_got ## Emitted when the powerup is got by [Mario].
 
-## If the [member MarioPowerup.powerup_level] of [Mario]'s current powerup is greater or equal(see [member same_powerup_level_tolerance]) to this value,
+## If the [member MarioPowerup.powerup_level] of [Mario]'s current powerup is greater than this value,
 ## the character will turn into [member default_powerup]; other wise [member fallback_powerup] will be transformed into.
 @export_range(-5, 5) var requirement_powerup_level: int
 ## Id of default powerup. See [member requirement_powerup_level].

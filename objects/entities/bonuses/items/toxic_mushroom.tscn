@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://dimaup6ouxgst"]
+[gd_scene load_steps=11 format=3 uid="uid://dimaup6ouxgst"]
 
 [ext_resource type="Script" path="res://scripts/entities/physics/item_walker_2d.gd" id="1_fpf4r"]
 [ext_resource type="Script" path="res://scripts/entities/enemies/universal/killer.gd" id="2_da64k"]
 [ext_resource type="Texture2D" uid="uid://4blcadyfnfle" path="res://assets/gfx/objects/entities/bonus/items/toxic_mushroom.png" id="4_p1nsu"]
 [ext_resource type="PackedScene" uid="uid://tog1urcypue2" path="res://objects/entities/#effects/explosion_fire.tscn" id="5_40dqh"]
 [ext_resource type="Script" path="res://scripts/components/instantiater/class_instantiater2d.gd" id="5_tc70y"]
+[ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="6_1lseq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3c1ts"]
 size = Vector2(32, 30)
@@ -70,6 +71,12 @@ visible = false
 script = ExtResource("5_tc70y")
 
 [node name="ExplosionFire" parent="Instantiater2D" instance=ExtResource("5_40dqh")]
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+visible = false
+position = Vector2(2.08616e-07, 1.43051e-06)
+scale = Vector2(1.6, 1.6)
+script = ExtResource("6_1lseq")
 
 [connection signal="collided_wall" from="." to="." method="turn_wall"]
 [connection signal="killed_character" from="EffectBox" to="." method="queue_free"]
