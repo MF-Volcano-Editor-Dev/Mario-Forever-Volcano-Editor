@@ -14,8 +14,6 @@ size = Vector2(32, 30)
 [node name="GreenMushroom" type="EntityBody2D"]
 velocality = Vector2(100, -1.36424e-12)
 velocity = Vector2(100, -4.37114e-06)
-threshold_speed_enabled = true
-threshold_speed = 100.0
 gravity_scale = 0.4
 collision_layer = 4
 collision_mask = 8

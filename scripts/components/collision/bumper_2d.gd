@@ -2,7 +2,7 @@ class_name Bumper2D extends ShapeCast2D
 
 ## A collision caster used to activate [BumpBlock2D].
 ##
-##
+## See [BumpBlock2D] for more details.
 
 signal bumped_block ## Emitted when the bumper bumps a block.
 

@@ -47,8 +47,6 @@ animations = [{
 [node name="SuperStar" type="EntityBody2D"]
 velocality = Vector2(150, 0)
 velocity = Vector2(150, -6.55671e-06)
-threshold_speed_enabled = true
-threshold_speed = 150.0
 gravity_scale = 0.15
 collision_layer = 4
 collision_mask = 8

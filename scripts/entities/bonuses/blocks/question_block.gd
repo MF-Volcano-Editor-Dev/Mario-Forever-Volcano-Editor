@@ -29,9 +29,9 @@ func _bump_process(bumper: Bumper2D, _touch_spot: Vector2) -> void:
 		if !items[0]: # Null object
 			items.remove_at(0)
 		elif items[0] is QuestionBlockItemAbundant:
-			_abundant_items_creation(bumper)
+			_abundant_items_creation(0, bumper)
 		else:
-			_normal_item_creation(bumper)
+			_normal_item_creation(0, bumper)
 	
 	if items.is_empty():
 		if _animated_sprite:
@@ -40,15 +40,16 @@ func _bump_process(bumper: Bumper2D, _touch_spot: Vector2) -> void:
 		restore_bump()
 
 
-func _normal_item_creation(bumper: Bumper2D) -> void:
-	var item_scene := (items.pop_front() as QuestionBlockItem).get_item(bumper.body) as PackedScene
+func _normal_item_creation(items_index: int, bumper: Bumper2D, offset: Vector2 = Vector2.ZERO) -> void:
+	var item_scene := (items[items_index] as QuestionBlockItem).get_item(bumper.body) as PackedScene
 	if !item_scene:
 		return
 	
-	_hit(item_scene)
+	_hit(item_scene, offset)
+	items.remove_at(items_index)
 
-func _abundant_items_creation(bumper: Bumper2D) -> void:
-	var item_pack := items[0] as QuestionBlockItemAbundant
+func _abundant_items_creation(items_index: int, bumper: Bumper2D, offset: Vector2 = Vector2.ZERO) -> void:
+	var item_pack := items[items_index] as QuestionBlockItemAbundant
 	var item_scene := item_pack.get_item(bumper.body) as PackedScene
 	if !item_scene:
 		return
@@ -64,18 +65,18 @@ func _abundant_items_creation(bumper: Bumper2D) -> void:
 			if _amount >= item_pack.amount:
 				_run_out = true
 	
-	_hit(item_scene)
+	_hit(item_scene, offset)
 	
 	if _run_out:
-		items.remove_at(0)
+		items.remove_at(items_index)
 		_timer = null
 		_amount = 0
 		_run_out = false
 
 
-func _hit(ins: PackedScene) -> void:
+func _hit(ins: PackedScene, offset: Vector2 = Vector2.ZERO) -> void:
 	var i := ins.instantiate()
-	i.global_transform = global_transform
+	i.global_transform = global_transform.translated_local(offset)
 	add_sibling.call_deferred(i)
 	get_parent().move_child.call_deferred(i, get_index())
 	

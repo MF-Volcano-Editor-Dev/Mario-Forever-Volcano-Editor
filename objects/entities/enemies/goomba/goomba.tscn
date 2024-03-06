@@ -61,7 +61,7 @@ collision_layer = 4
 collision_mask = 8
 velocity = Vector2(50, -2.18557e-06)
 script = ExtResource("1_j0h4q")
-initial_direction = 1
+initial_direction = 3
 metadata/_edit_pinned_properties_ = [&"initial_direction"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
