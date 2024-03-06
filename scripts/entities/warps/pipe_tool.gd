@@ -12,8 +12,14 @@ var _exit: Node2D
 var _way_points: Array[Marker2D]
 
 
+func _ready() -> void:
+	if !Engine.is_editor_hint():
+		queue_free()
+
 func _draw() -> void:
 	if !_par:
+		return
+	if !_par.preview:
 		return
 	
 	draw_set_transform(Vector2.ZERO, -global_rotation, Vector2.ONE / global_scale)
@@ -43,7 +49,7 @@ func _draw() -> void:
 		# Line of waypoints
 		if _way_points != _par.waypoints:
 			_way_points = _par.waypoints
-		if _way_points:
+		if !_way_points.is_empty():
 			var points: PackedVector2Array = []
 			points.append(Vector2.ZERO) # Origin
 			for i in _way_points:

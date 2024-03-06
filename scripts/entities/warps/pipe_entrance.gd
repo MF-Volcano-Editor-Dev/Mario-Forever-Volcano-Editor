@@ -4,6 +4,8 @@ const _Exit: Script = preload("./pipe_exit.gd")
 
 @export_category("Pipe Entrance")
 @export_group("Warp")
+## If [code]true[/code], you can preview the effect.
+@export var preview: bool
 ## Path to the exit node
 @export_node_path("Area2D") var exit_path: NodePath
 ## Direction of warping in
@@ -27,6 +29,7 @@ var _characters: Array[Character]
 
 
 func _ready() -> void:
+	visible = false
 	# Registering a character when it enters
 	body_entered.connect(func(body: Node2D) -> void:
 		if body is Character && !body in _characters:

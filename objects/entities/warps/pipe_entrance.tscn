@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/entities/warps/pipe_entrance.gd" id="1_av76c"]
 [ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="2_8rrtq"]
-[ext_resource type="Script" path="res://scripts/entities/warps/pipe_entrance_tool.gd" id="2_tggpj"]
+[ext_resource type="Script" path="res://scripts/entities/warps/pipe_tool.gd" id="2_r3b3c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cf6ra"]
 size = Vector2(32, 16)
@@ -22,7 +22,7 @@ color = Color(0, 1, 0, 1)
 polygon = PackedVector2Array(-4, -32, -4, -3, -11, -3, 0, 8, 11, -3, 4, -3, 4, -32)
 
 [node name="Tool" type="Node2D" parent="."]
-script = ExtResource("2_tggpj")
+script = ExtResource("2_r3b3c")
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
 visible = false

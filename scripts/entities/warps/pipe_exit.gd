@@ -2,9 +2,8 @@ extends Area2D
 
 @export_category("Pipe Exit")
 @export_group("Warp")
-
-@export_category("Pipe Entrance")
-@export_group("Warp")
+## If [code]true[/code], you can preview the effect.
+@export var preview: bool
 ## Direction of warping out
 @export_enum("Up", "Down", "Left", "Right") var direction: int
 @export_group("Effects")
@@ -15,6 +14,9 @@ extends Area2D
 
 var _on_trans: bool
 
+
+func _ready() -> void:
+	visible = false
 
 ## Called by entrance.
 ## @deprecated
