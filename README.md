@@ -21,6 +21,9 @@ Since signals help with transmission of messages from one node to the other one(
 E.g. You have an EntityBody2D that should jump when it touches the ground. In this situation, you can connect its `collided_floor` signal to its method `jump` with a certain `float` passed in in advanced signal connection panel, and when the object hits the ground, it will jump. If you don't need this feature, just remove the connection. Therefore, you don't have to write two copies of scripts to separately code these behaviors.
 ## Guidebooks
 To help freshmen users to operate this template, in `guides` folder are placed .md files which may help and guide them what to know about this template, and how to use, code this it, which may greately reduce the difficulty of learning from zero.
+## Simple Multiplayers
+In Thunder Engine, developers have to overhaul the structure of the engine to implement multiplayer system, but now in Thunder Editor Refactored, it has been installed as a built-in feature! By creating at most 4 instances of the player, with their id differs from this of each other, you will have multiple players in the same level. Of course, anything has pros and cons. The multiple player system is so complex that it requires developers to code for multiplayers, and some behaviors, such as level completion and pipe warping, will behave in an incommon way. For example, if there are 3 players in the level while one of them checked the goal, then other two will disappear and the only one alive will behave walking for the completion. Another instance is that when one triggers pipe warping, the other ones will immediately teleport to this one and then start warping.  
+We advice to take careful application of this feature, as it may not only lead to problems, but also performance loss due to the high cpu cost of one player.
 
 # Credits
 * ElectronicBoy(Lazy-Rabbit-2001): Major creator, coder, constructurer.
