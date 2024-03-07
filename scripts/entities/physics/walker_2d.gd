@@ -31,6 +31,8 @@ func _physics_process(_delta: float) -> void:
 	calculate_gravity()
 	calculate_damp()
 	move_and_slide(enable_real_velocity)
+	
+	set_meta(&"facing", signf(velocality.x)) # Useful for sprite_flip_facing_h.gd
 
 
 ## Initializes the moving direction of the object.
@@ -46,7 +48,8 @@ func initialize_direction() -> void:
 	# Auto-detected directions
 	var np := Character.Getter.get_nearest(get_tree(), global_position) # Nearest player
 	if !np:
-		velocality.x *= [-1, 1].pick_random() # Random direction if no player is in the level
+		velocality.x = absf(velocality.x) * [-1, 1].pick_random() # Random direction if no player is in the level
 		return
 	
-	velocality.x *= (1 if initial_direction == InitDirection.LOOK_AT_PLAYER else -1) * Transform2DAlgo.get_direction_to_regardless_transform(global_position, np.global_position, global_transform)
+	var dir := (1 if initial_direction == InitDirection.LOOK_AT_PLAYER else -1) * Transform2DAlgo.get_direction_to_regardless_transform(global_position, np.global_position, global_transform)
+	velocality.x = absf(velocality.x) * dir

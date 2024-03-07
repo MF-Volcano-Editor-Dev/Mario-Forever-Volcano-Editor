@@ -13,12 +13,12 @@ signal on_combo ## Emitted when a combo is triggered.
 ## Path to the body on which effects are created
 @export_node_path("Node2D") var body_path: NodePath = ^".."
 
+var _count: int
+
 @onready var _body: Node2D = get_node(body_path)
 
 
-var _count: int
-
-
+## Counts up 1 combo count.
 func combo() -> void:
 	if !enabled:
 		return
@@ -35,3 +35,7 @@ func combo() -> void:
 		_count = 0
 	
 	on_combo.emit()
+
+## Resets the combo count.
+func reset() -> void:
+	_count = 0

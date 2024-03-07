@@ -7,6 +7,7 @@ class_name DataList
 ## Id of attack by [Attackers].[br]
 enum AttackId {
 	NONE,
+	FORCED,
 	HEAD,
 	STARMAN,
 	SHELL,

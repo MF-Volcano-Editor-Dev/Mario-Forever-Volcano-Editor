@@ -4,8 +4,7 @@ class_name EnemyAttackProcess2D extends Instantiater2D
 ## 
 ## This component will instantiate objects based on [member root]. When a character stomps on
 ## [br]
-## [b]Note 1:[/b] This works only when [signal Attackee.on_hit_by_attacker] is connected to [method killing_process].[br]
-## [b]Note 2:[/b] You need to and can only add [u]two[/u] [Node2D]s under this component as its children nodes. One should be named as "Success" while the other one as "Defense".
+## [b]Note:[/b] This works only when [signal Attackee.on_hit_by_attacker] is connected to [method killing_process].[br]
 
 signal stomp_processed ## Emitted when the stomp is processed.
 signal killing_processed ## Emitted when the killing is processed.
@@ -28,10 +27,11 @@ const _FilteringGroups: Dictionary = {
 ## Make the enemy immune to the attackers with given ids in the list.[br]
 ## When an attacker in the list try damaging the enemy, the attack will be defended and [signal killing_defended] will be emitted.
 @export_group("Attack")
+## [Attacker]s with [mmeber Attacker.id] in this list will be blocked and the attack fails.
 @export var immune_to_ids: Array[DataList.AttackId]
 @export_group("Sounds", "sound_")
 @export var sound_killed: AudioStream = preload("res://assets/sounds/kick.wav")
-@export var sound_killing_defended: AudioStream = preload("res://assets/sounds/kick.wav")
+@export var sound_killing_defended: AudioStream = preload("res://assets/sounds/bump.wav")
 
 
 ## Called to process stomp and instantiate relevant objects.[br]
@@ -41,6 +41,7 @@ const _FilteringGroups: Dictionary = {
 func stomp_process(body: PhysicsBody2D) -> void:
 	if !is_instance_valid(body):
 		return
+	
 	if body is Character:
 		var jumping_speed: float = stomp_jumping_speed_max if body.get_input_pressed(&"jump") else stomp_jumping_speed_min
 		body.jump(jumping_speed)
@@ -52,9 +53,10 @@ func stomp_process(body: PhysicsBody2D) -> void:
 ## Called to process killing and instantiate relevant objects.[br]
 ## [br]
 ## [b]Note 1:[/b] Please connect [signal EnemyStompable.on_stomp_succeeded] to this call.[br]
-## [b]Note 2:[/b] For instances not to be created on failed attack, please merge them in the group [code]instantiate_no_success[/code].
-## And for ones not to be created on successful attack, please merge them in the group [code]instantiate_no_failure[/code].
-## For ones not to be created on successful attack by attacker who is in the group [code]combo[/code], please merge them in the group [code]instantiate_no_success_combo[/code].
+## [b]Note 2:[/b][br]
+## For instances not to be created on failed attack, please merge them in the group [code]instantiate_no_success[/code].[br]
+## And for ones not to be created on successful attack, please merge them in the group [code]instantiate_no_failure[/code].[br]
+## For ones not to be created on successful attack by attacker who is in the group [code]combo[/code], please merge them in the group [code]instantiate_no_success_combo[/code].[br]
 ## Meanwhile, for ones not to be created on stomping, please merge them in the group [code]instantiate_no_attack[/code].
 func killing_process(attacker: Attacker) -> void:
 	killing_processed.emit()
@@ -62,14 +64,15 @@ func killing_process(attacker: Attacker) -> void:
 	var filters: Array[StringName] = [_FilteringGroups.NO_ATTACK]
 	var instances: Array[CanvasItem] = []
 	
-	if attacker.id in immune_to_ids:
-		Sound.play_2d(sound_killing_defended, self)
-		
-		filters.append(_FilteringGroups.ATTACK_NO_FAILURE)
-		instances = instantiate_all(false, filters)
-		
-		killing_defended.emit()
-		attacker.attack_failed.emit()
+	if attacker.id == DataList.AttackId.NONE || \
+		(attacker.id != DataList.AttackId.FORCED && attacker.id in immune_to_ids):
+			Sound.play_2d(sound_killing_defended, self)
+			
+			filters.append(_FilteringGroups.ATTACK_NO_FAILURE)
+			instances = instantiate_all(false, filters)
+			
+			killing_defended.emit()
+			attacker.attack_failed.emit()
 	else:
 		var is_combo: = false
 		
@@ -92,3 +95,14 @@ func killing_process(attacker: Attacker) -> void:
 			continue
 		for j in _FilteringGroups:
 			i.remove_from_group(j)
+
+## Forces the enemy to be killed.
+func forced_kill(combo: bool = false) -> void:
+	var attacker: Attacker = Attacker.new()
+	attacker.id = DataList.AttackId.FORCED
+	
+	if combo:
+		attacker.add_to_group(&"combo")
+	
+	killing_process(attacker)
+	attacker.free()

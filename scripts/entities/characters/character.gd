@@ -4,9 +4,9 @@ class_name Character extends EntityBody2D
 ## Abstract class of controllable characters
 ##
 ## This class provides [member id] that is necessary for each character. In general situation, you can regard this class as a codical group of characters, which helps provide type hints so that it can improve your development efficiency a bit.[br]
-## To get the character(s) with condition or not, it also provides [Character.CharacterGetter] got by calling [method get_character_getter], which contains several methods that allow you to get the character(s) by such way(s).
+## To get the character(s) with condition or not, it also provides [Character.Getter] got by calling [method get_character_getter], which contains several methods that allow you to get the character(s) by such way(s).
 ## [br]
-## [b]Note:[/b] To make the [Character.CharacterGetter] work, you must set the character to the group [i]character[/i].
+## [b]Note:[/b] To make the [Character.Getter] work, you must set the character to the group [i]character[/i].
 
 ## Id of the character.[br]
 ## [br]
@@ -21,7 +21,7 @@ class_name Character extends EntityBody2D
 			direction = [-1, 1].pick_random()
 @export_group("Hitbox")
 ## Offset of hitbox center. Useful for some detections like one in [EnemyStompable].
-@export var center_offset: Vector2
+@export var center_offset: Vector2 = Vector2(0, -4)
 @export_group("Status")
 ## If true, the character will fall to death.[br]
 ## [br]
@@ -39,9 +39,9 @@ func die() -> void:
 
 ## Returns the global position of the body's center.[br]
 ## [br]
-## The center of body is determined by [member Node2D.global_position] + [member center_offset].rotated([Node2D.global_rotation]).
+## The center of body is determined by [member Node2D.global_position] - [method CharacterBody2D.get_position_delta] + [member center_offset].rotated([member Node2D.global_rotation]).
 func get_center() -> Vector2:
-	return global_position + center_offset.rotated(global_rotation)
+	return global_position - get_position_delta() + center_offset.rotated(global_rotation)
 
 
 #region == Getters ==
@@ -188,6 +188,9 @@ class Getter:
 		for i in characters:
 			distances.append(i.global_position.distance_squared_to(to_gpos))
 		
+		if distances.is_empty():
+			return null
+		
 		return characters[distances.find(distances.min())]
 	
 	## Returns a character farest from [param to_gpos].
@@ -197,6 +200,9 @@ class Getter:
 		
 		for i in characters:
 			distances.append(i.global_position.distance_squared_to(to_gpos))
+		
+		if distances.is_empty():
+			return null
 		
 		return characters[distances.find(distances.max())]
 	

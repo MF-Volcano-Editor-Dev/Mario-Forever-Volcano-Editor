@@ -13,7 +13,9 @@ signal attack_failed ## Emitted when the enemy attacked defended the attacker. [
 
 ## Id of the attacker. See [enum DataList.AttackId], [member Attackee.filter_ids] and [enum Attackee.FilterMode] for details.
 @export var id: DataList.AttackId = DataList.AttackId.NONE
-
+## Damage level of the attacker.[br]
+## This may cause [Attackee] with lower [member Attackee.defense_level] value fail blocking the attack.
+@export_range(0, 20) var damage_level: int
 
 func _ready() -> void:
 	if Engine.is_editor_hint():

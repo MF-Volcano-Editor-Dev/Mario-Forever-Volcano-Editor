@@ -16,6 +16,8 @@ signal on_stomp_failed(body: PhysicsBody2D)
 ## [b]Note:[/b] This will be emitted [u]before[/u] the emission of [signal on_touched_by_character].
 signal on_stomp_succeeded(body: PhysicsBody2D)
 
+## Enables stompability; otherwsie this compoenent will behave similarly to [EnemyTouch].
+@export var stompable: bool = true
 @export_group("Stomp")
 ## Angle in tolerance, which stands for the direction that the character stomps onto the enemy.[br]
 ## [br]
@@ -53,9 +55,14 @@ func _touched(toucher: PhysicsBody2D) -> void:
 		toucher.hurt()
 
 
-func _is_stomp_success(character: Character) -> bool:
-	var direction := character.get_center().direction_to((root as Area2D).global_position)
+func _is_stomp_success(body: Node2D) -> bool:
+	if !stompable:
+		return false
+	
+	var center: Vector2 = body.get_center() if body is Character else body.global_position
+	var direction := center.direction_to((root as Area2D).global_position)
 	var dot := direction.dot(-up_direction)
+	
 	return dot >= cos(deg_to_rad(tolerance))
 
 

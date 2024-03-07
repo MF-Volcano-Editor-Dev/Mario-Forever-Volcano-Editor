@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://nknpp6qs7t1y"]
+[gd_scene load_steps=15 format=3 uid="uid://nknpp6qs7t1y"]
 
 [ext_resource type="Script" path="res://scripts/entities/physics/walker_2d.gd" id="1_j0h4q"]
 [ext_resource type="Texture2D" uid="uid://bj71tv2ix6ut0" path="res://assets/gfx/objects/entities/enemies/goomba/goomba.png" id="2_54fqe"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://d28wktlfkunys" path="res://objects/uis/counters/scores_label.tscn" id="6_ejjdu"]
 [ext_resource type="Script" path="res://scripts/components/instantiater/class_enemy_killing_process.gd" id="8_2ug5b"]
 [ext_resource type="PackedScene" uid="uid://jh77s512qfrr" path="res://objects/entities/enemies/#death/goomba/goomba_death.tscn" id="9_au68h"]
+[ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="10_vbpxw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_50jj2"]
 size = Vector2(30, 30)
@@ -60,6 +61,7 @@ gravity_scale = 0.5
 collision_layer = 4
 collision_mask = 8
 velocity = Vector2(50, -2.18557e-06)
+floor_snap_length = 4.0
 script = ExtResource("1_j0h4q")
 initial_direction = 3
 metadata/_edit_pinned_properties_ = [&"initial_direction"]
@@ -101,7 +103,7 @@ position = Vector2(0, 8)
 
 [node name="GoombaDeath" parent="EnemyKillingProcess" groups=["instantiate_no_stomp"] instance=ExtResource("9_au68h")]
 
-[node name="Scores2" parent="EnemyKillingProcess" groups=["instantiate_no_success_combo"] instance=ExtResource("6_ejjdu")]
+[node name="Scores" parent="EnemyKillingProcess" groups=["instantiate_no_success_combo"] instance=ExtResource("6_ejjdu")]
 text = "100"
 amount = 100
 metadata/_edit_pinned_properties_ = [&"amount"]
@@ -112,6 +114,12 @@ libraries = {
 "": SubResource("AnimationLibrary_vcqae")
 }
 autoplay = "walk"
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+visible = false
+position = Vector2(1.43051e-06, 4.76837e-07)
+scale = Vector2(1.6, 1.6)
+script = ExtResource("10_vbpxw")
 
 [connection signal="collided_wall" from="." to="." method="turn_wall"]
 [connection signal="on_hit_by_attacker" from="EffectBox/Attackee" to="EnemyKillingProcess" method="killing_process"]

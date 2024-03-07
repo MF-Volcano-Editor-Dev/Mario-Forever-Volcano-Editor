@@ -9,9 +9,10 @@
 [ext_resource type="Script" path="res://scripts/components/visible_on_screen/visible_on_screen_directional.gd" id="6_u31oc"]
 [ext_resource type="PackedScene" uid="uid://etl2pig40wms" path="res://objects/entities/characters/mario/power-ups/mario_green_lui.tscn" id="7_mehkr"]
 
-[node name="Mario" type="EntityBody2D" groups=["character", "enemy_toucher", "entity", "hit_block_head"]]
+[node name="Mario" type="EntityBody2D" groups=["character", "enemy_toucher", "shell_kickable"]]
 gravity_scale = 1.0
 collision_mask = 2
+floor_snap_length = 12.0
 platform_on_leave = 1
 script = ExtResource("1_es2gk")
 nickname = &"Mario"

@@ -20,6 +20,10 @@ enum FilterMode {
 @export var filter_ids: Array[DataList.AttackId]
 ## Filter mode of [member filter_ids]. See [enum FilterMode] for details.
 @export var filter_ids_mode: FilterMode = FilterMode.EXCLUSION
+@export_group("Defense")
+## Defense level of the attackee.[br]
+## This may cause [Attacker] with lower [member Attacker.damage_level] value fail attack.
+@export_range(0, 20) var defense_level: int
 @export_group("Sounds", "sound_")
 @export var sound_attacked: AudioStream
 
@@ -45,8 +49,9 @@ func _hit_by_attacker(attacker: Attacker) -> void:
 		return
 	for i in filter_ids:
 		if i == DataList.AttackId.NONE || \
-			(filter_ids_mode == FilterMode.EXCLUSION && attacker.id in filter_ids) || \
-			(filter_ids_mode == FilterMode.INCLUSION && !attacker.id in filter_ids):
+			(attacker.id != DataList.AttackId.FORCED && 
+			(filter_ids_mode == FilterMode.EXCLUSION && attacker.id in filter_ids) || 
+			(filter_ids_mode == FilterMode.INCLUSION && !attacker.id in filter_ids)):
 				return
 	
 	Sound.play_2d(sound_attacked, root)
