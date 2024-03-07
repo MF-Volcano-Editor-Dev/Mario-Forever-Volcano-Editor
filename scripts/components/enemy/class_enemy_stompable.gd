@@ -43,7 +43,17 @@ signal on_stomp_succeeded(body: PhysicsBody2D)
 @export_group("Sounds", "sound_")
 @export var sound_stomped: AudioStream = preload("res://assets/sounds/stomp.wav")
 
-var _delay: SceneTreeTimer
+@onready var _delay: SceneTreeTimer
+
+
+func _ready() -> void:
+	super()
+	# To prevent from fast stomping during multicreation of the same object
+	# E.g. A troopa created a koopa and dashes into creating a shell
+	_delay = get_tree().create_timer(stomp_delay, false)
+	_delay.timeout.connect(func() -> void:
+		_delay = null
+	)
 
 
 ## [code]virtual[/code] Called when a toucher collides the [member Component.root] ([Area2D]).
@@ -67,6 +77,8 @@ func _is_stomp_success(body: Node2D) -> bool:
 
 
 func _on_body_touched(body: Node2D) -> void:
+	if _delay:
+		return
 	if !body is PhysicsBody2D:
 		return
 	if !body.is_in_group(&"enemy_toucher"):

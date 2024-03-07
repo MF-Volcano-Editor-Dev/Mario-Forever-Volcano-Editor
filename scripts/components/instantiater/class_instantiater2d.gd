@@ -15,40 +15,51 @@ class_name Instantiater2D extends Component2D
 ## [b]Note:[/b] The emission of the signal is [u]before[/u] the creation of an instance by default, so if you want it to be emitted after the creation, please connect the signal in deferred mode.
 signal instance_created(ins: CanvasItem)
 
-var _instances: Array[PackedScene]
+var _instances: Array[CanvasItem]
 
 
-func _enter_tree() -> void:
-	force_instances_register()
+func _notification(what: int) -> void:
+	match what:
+		NOTIFICATION_ENTER_TREE:
+			force_instances_register()
+		NOTIFICATION_PREDELETE:
+			pass
 
 
 # Instantiates an instance
-func _instantiate(instance: PackedScene, as_child_of_root: bool = false, filter_node_groups: Array[StringName] = []) -> CanvasItem:
-	var ins: CanvasItem = instance.instantiate() as CanvasItem
-	
-	if !ins:
-		ins.free()
-		return null
+func _instantiate(instance: CanvasItem, as_child_of_root: bool = false, filter_node_groups: Array[StringName] = []) -> CanvasItem:
+	#var ins: CanvasItem = instance.instantiate() as CanvasItem
+	#
+	#if !ins:
+		#ins.free()
+		#return null
 	for i in filter_node_groups:
-		if ins.is_in_group(i):
-			ins.free()
-			return
+		if instance.is_in_group(i):
+			#ins.free()
+			return null
 	
 	if root:
+		var ins := instance.duplicate()
 		(func() -> void:
 			if ins is Control: # Control doesn't have `transform` or `global_transform` property
 				var trans: Transform2D = global_transform * ins.get_transform()
 				ins.position = trans.get_origin()
 				ins.rotation = trans.get_rotation()
 				ins.scale = trans.get_scale()
-			elif ins is Node2D:
+			else:
 				ins.global_transform = global_transform * ins.transform
-			(root.add_child if as_child_of_root else root.add_sibling).call(ins)
+			
+			if as_child_of_root:
+				root.add_child(ins)
+			else:
+				root.add_sibling(ins)
+				ins.get_parent().move_child(ins, root.get_index() + 1)
+			
+			instance_created.emit(ins) # This will be emitted before the previous piece of codes being executed
 		).call_deferred()
-	
-	instance_created.emit(ins) # This will be emitted before the previous piece of codes being executed
-	
-	return ins
+		return ins
+	else:
+		return null
 
 
 #region == Instantiation ==
@@ -99,12 +110,14 @@ func force_instances_register() -> void:
 		if !i is CanvasItem:
 			continue
 		
-		remove_child(i) # Removes children to stop them from calling `_enter_tree()` and `_ready()`
+		remove_child(i)
 		
-		# Packs the instances as PackedScenes to save more RAM
-		(func() -> void:
-			var packed: PackedScene = PackedScene.new()
-			packed.pack(i)
-			_instances.append(packed)
-			i.free()
-		).call_deferred()
+		_instances.append(i as CanvasItem)
+		
+		#
+		#remove_child(i) # Removes children to stop them from calling `_enter_tree()` and `_ready()`
+		#
+		## Packs the instances as PackedScenes to save more RAM
+		#(func() -> void:
+			#
+		#).call_deferred()

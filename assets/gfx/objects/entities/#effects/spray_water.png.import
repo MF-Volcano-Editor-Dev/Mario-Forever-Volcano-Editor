@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://mgatn1aijeet"
-path="res://.godot/imported/coin_gained.png-b73682dcc06fd3d1a4f28f84a0282c56.ctex"
+uid="uid://ha6ecnlp2u3k"
+path="res://.godot/imported/spray_water.png-230be89d163823cecabc5ad7896c25bc.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gfx/objects/entities/effects/coin_gained.png"
-dest_files=["res://.godot/imported/coin_gained.png-b73682dcc06fd3d1a4f28f84a0282c56.ctex"]
+source_file="res://assets/gfx/objects/entities/#effects/spray_water.png"
+dest_files=["res://.godot/imported/spray_water.png-230be89d163823cecabc5ad7896c25bc.ctex"]
 
 [params]
 

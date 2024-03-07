@@ -66,7 +66,7 @@ animations = [{
 }]
 
 [node name="KoopaShellGreen" type="EntityBody2D"]
-velocality = Vector2(350, 0)
+velocality = Vector2(350, -1.45519e-11)
 velocity = Vector2(350, -1.5299e-05)
 gravity_scale = 0.5
 collision_layer = 4

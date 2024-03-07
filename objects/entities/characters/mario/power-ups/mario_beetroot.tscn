@@ -18,7 +18,7 @@ sprite_frames = ExtResource("2_x51bi")
 
 [node name="Projectile" type="Node2D" parent="." index="6"]
 visible = false
-position = Vector2(6, -34)
+position = Vector2(6, -22)
 script = ExtResource("3_af06e")
 root_path = NodePath("../..")
 metadata/_edit_pinned_properties_ = [&"root_path"]

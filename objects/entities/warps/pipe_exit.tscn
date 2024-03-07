@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bcv1yi1osliv2"]
+[gd_scene load_steps=4 format=3 uid="uid://bcv1yi1osliv2"]
 
 [ext_resource type="Script" path="res://scripts/entities/warps/pipe_exit.gd" id="1_vphiw"]
 [ext_resource type="Script" path="res://scripts/entities/warps/pipe_tool.gd" id="2_cjta2"]
-[ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="3_i4xds"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_cf6ra"]
 size = Vector2(32, 16)
@@ -24,9 +23,3 @@ polygon = PackedVector2Array(-4, -32, -4, -3, -11, -3, 0, 8, 11, -3, 4, -3, 4, -
 
 [node name="Tool" type="Node2D" parent="."]
 script = ExtResource("2_cjta2")
-
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
-visible = false
-position = Vector2(1.90735e-06, 0)
-scale = Vector2(6.4, 0.8)
-script = ExtResource("3_i4xds")

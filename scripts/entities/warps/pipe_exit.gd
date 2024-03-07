@@ -24,6 +24,7 @@ func exit(character: Character) -> void:
 	if direction in [0, 1]:
 		character.add_to_group(&"state_pipe_v")
 	else:
+		character.direction = -1 if direction == 2 else 1
 		character.add_to_group(&"state_pipe_h")
 	
 	# Moving the character

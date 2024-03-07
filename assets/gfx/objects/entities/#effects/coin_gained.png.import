@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bs3fdld15i20s"
-path="res://.godot/imported/spray_lava.png-e77b406743c1371db0ff80f9ee4f4d49.ctex"
+uid="uid://mgatn1aijeet"
+path="res://.godot/imported/coin_gained.png-59c48ca3458e55f8c55e8366078b1e23.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gfx/objects/entities/effects/spray_lava.png"
-dest_files=["res://.godot/imported/spray_lava.png-e77b406743c1371db0ff80f9ee4f4d49.ctex"]
+source_file="res://assets/gfx/objects/entities/#effects/coin_gained.png"
+dest_files=["res://.godot/imported/coin_gained.png-59c48ca3458e55f8c55e8366078b1e23.ctex"]
 
 [params]
 

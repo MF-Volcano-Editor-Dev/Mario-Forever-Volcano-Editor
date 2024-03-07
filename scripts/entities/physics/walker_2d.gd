@@ -52,4 +52,6 @@ func initialize_direction() -> void:
 		return
 	
 	var dir := (1 if initial_direction == InitDirection.LOOK_AT_PLAYER else -1) * Transform2DAlgo.get_direction_to_regardless_transform(global_position, np.global_position, global_transform)
+	if dir == 0:
+		dir = [-1, 1].pick_random()
 	velocality.x = absf(velocality.x) * dir

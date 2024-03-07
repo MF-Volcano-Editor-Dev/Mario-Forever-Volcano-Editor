@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhav4nrn60gxv"
-path="res://.godot/imported/bubble_cracked.png-3a6b7e8bbcced8cb5ddef6229a31eade.ctex"
+uid="uid://crkfj2c4iqj7m"
+path="res://.godot/imported/brick_scrap.png-89859f0789be440a9574ff581bd32da8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gfx/objects/entities/effects/bubble_cracked.png"
-dest_files=["res://.godot/imported/bubble_cracked.png-3a6b7e8bbcced8cb5ddef6229a31eade.ctex"]
+source_file="res://assets/gfx/objects/entities/#effects/brick_scrap.png"
+dest_files=["res://.godot/imported/brick_scrap.png-89859f0789be440a9574ff581bd32da8.ctex"]
 
 [params]
 

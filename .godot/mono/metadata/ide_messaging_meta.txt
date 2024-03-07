@@ -1,2 +1,0 @@
-﻿62884
-E:/Programs/Godot/stable/Godot.exe

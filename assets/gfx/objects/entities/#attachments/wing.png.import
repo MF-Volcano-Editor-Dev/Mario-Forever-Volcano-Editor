@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://crkfj2c4iqj7m"
-path="res://.godot/imported/brick_scrap.png-abdc97b4b68e4f0c1424cc9948ed1ac8.ctex"
+uid="uid://drbf5f01r0vq4"
+path="res://.godot/imported/wing.png-543fb36183acd5ad6bc9630de3a47b38.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gfx/objects/entities/effects/brick_scrap.png"
-dest_files=["res://.godot/imported/brick_scrap.png-abdc97b4b68e4f0c1424cc9948ed1ac8.ctex"]
+source_file="res://assets/gfx/objects/entities/#attachments/wing.png"
+dest_files=["res://.godot/imported/wing.png-543fb36183acd5ad6bc9630de3a47b38.ctex"]
 
 [params]
 

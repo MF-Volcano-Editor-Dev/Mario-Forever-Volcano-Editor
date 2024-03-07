@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ha6ecnlp2u3k"
-path="res://.godot/imported/spray_water.png-37eb866dc684acdc761d9bff8ca8fe02.ctex"
+uid="uid://omvpxqty1buy"
+path="res://.godot/imported/explosion_fire.png-626d45299d6f3842e7fc44485812881a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gfx/objects/entities/effects/spray_water.png"
-dest_files=["res://.godot/imported/spray_water.png-37eb866dc684acdc761d9bff8ca8fe02.ctex"]
+source_file="res://assets/gfx/objects/entities/#effects/explosion_fire.png"
+dest_files=["res://.godot/imported/explosion_fire.png-626d45299d6f3842e7fc44485812881a.ctex"]
 
 [params]
 
