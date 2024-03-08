@@ -35,6 +35,8 @@ var _on_transition_execution: bool
 var _on_transition: bool
 var _shaking: Tween
 
+var _delay_of_beginning_smooth_transition: SceneTreeTimer
+
 
 #region == Property Overriders ==
 func _set(property: StringName, value: Variant) -> bool:
@@ -99,6 +101,12 @@ func _ready() -> void:
 	# Initialization of properties to be overridden
 	if _initialized || !Engine.is_editor_hint():
 		return
+	
+	_delay_of_beginning_smooth_transition = get_tree().create_timer(0.1, false)
+	_delay_of_beginning_smooth_transition.timeout.connect(func() -> void:
+		_delay_of_beginning_smooth_transition = null
+	)
+	
 	_initialized = true
 	_init_overridden_properties()
 
@@ -165,7 +173,7 @@ func _transition(delta: float) -> void:
 	if characters_amount_in < characters.size():
 		return
 	
-	if transition_initial_speed <= 0:
+	if transition_initial_speed <= 0 || _delay_of_beginning_smooth_transition: # To prevent from smooth transition at the beginning of the game (Visually safe for check point)
 		_hard_transition()
 	else:
 		_smooth_transition(delta)

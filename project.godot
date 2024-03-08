@@ -99,6 +99,7 @@ folder_colors={
 "res://objects/entities/bonuses/items/textures/": "green",
 "res://objects/entities/characters/#deaths/": "red",
 "res://objects/entities/characters/mario/power-ups/": "red",
+"res://objects/entities/core/checkpoint/#effect/": "red",
 "res://objects/entities/core/checkpoint/scripts/": "green",
 "res://objects/entities/core/checkpoint/textures/": "green",
 "res://objects/entities/core/goal/#components/": "yellow",
