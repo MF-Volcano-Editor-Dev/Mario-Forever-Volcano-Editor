@@ -210,14 +210,7 @@ sprite_frames = ExtResource("2_pbsaf")
 autoplay = "default"
 metadata/_edit_group_ = true
 
-[node name="RemoBubble" type="RemoteTransform2D" parent="AnimatedSprite2D"]
-position = Vector2(4, 16)
-remote_path = NodePath("../../Bubble")
-update_rotation = false
-update_scale = false
-
 [node name="Bubble" parent="." instance=ExtResource("5_8kxji")]
-position = Vector2(4, 0)
 manual_emission = true
 metadata/_edit_pinned_properties_ = [&"manual_emission"]
 
@@ -235,19 +228,6 @@ editor_description = "`root` should refer to the owner node that is an instance 
 
 If you don't expect the powerup crouchable, please add an metadata \"is_small\" and set its value to `true`, or set it, if existing, to `true`."
 script = ExtResource("4_j3ux2")
-initial_speed = null
-acceleration = null
-deceleration = null
-deceleration_scale_crouch = null
-walking_turning_deceleration = null
-max_walking_speed = null
-max_running_speed = null
-initial_jumping_speed = null
-jumping_acceleration_static = null
-jumping_acceleration_dynamic = null
-swimming_strength = null
-swimming_strength_jumping_out = null
-swimming_up_max_speed = null
 state_id = &"non_climbing"
 root_path = NodePath("../..")
 metadata/_edit_pinned_properties_ = [&"state_id", &"root_path"]

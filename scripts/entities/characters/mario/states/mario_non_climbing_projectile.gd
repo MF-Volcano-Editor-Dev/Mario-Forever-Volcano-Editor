@@ -34,7 +34,10 @@ func _state_process(delta: float) -> void:
 	_animated_sprite.play(&"attack")
 	
 	var projectiles: Array[CanvasItem] = _projectile_instantiater.instantiate_all()
-	for i in projectiles:
-		i.add_to_group(projectile_group)
-		if i is EntityBody2D:
-			i.velocality.x = absf(i.velocality.x) * _character.direction
+	
+	(func() -> void:
+		for i in projectiles:
+			i.add_to_group(projectile_group)
+			if i is EntityBody2D:
+				i.velocality.x = absf(i.velocality.x) * _character.direction
+	).call_deferred()

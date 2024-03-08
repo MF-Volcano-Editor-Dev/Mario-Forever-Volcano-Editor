@@ -26,6 +26,7 @@ metadata/_edit_pinned_properties_ = [&"root_path"]
 [node name="BeetrootPlayer" parent="Projectile" index="0" instance=ExtResource("4_is2mw")]
 velocality = Vector2(100, -250)
 velocity = Vector2(100, -250)
+position = Vector2(-6, 0)
 velocity = Vector2(100, -250)
 metadata/_edit_pinned_properties_ = [&"velocality"]
 

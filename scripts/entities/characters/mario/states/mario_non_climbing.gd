@@ -197,7 +197,7 @@ func _animation(_delta: float) -> void:
 		return
 	
 	_animated_sprite.speed_scale = 1
-	_animated_sprite.transform.x.x = _character.direction # Facing
+	_animated_sprite.flip_h = _character.direction < 0 # Facing
 	
 	if _character.is_in_group(&"state_pipe_h"):
 		_animated_sprite.play(&"walk")

@@ -23,7 +23,8 @@ func _notification(what: int) -> void:
 		NOTIFICATION_ENTER_TREE:
 			force_instances_register()
 		NOTIFICATION_PREDELETE:
-			pass
+			for i in _instances:
+				i.queue_free()
 
 
 # Instantiates an instance

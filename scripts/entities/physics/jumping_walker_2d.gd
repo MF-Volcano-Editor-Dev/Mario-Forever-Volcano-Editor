@@ -14,6 +14,12 @@ signal jumping_times_over ## Emitted when [member jumping_times] reaches down to
 
 
 func _ready() -> void:
+	super()
+	
+	# To avoid awkward and weird bug when fireball was created, disappearing, and Mario will lose every collision
+	for i in 2:
+		await get_tree().physics_frame
+	
 	# To prevent from static call of jump() that leads to still of parameter passed in
 	collided_floor.connect(func() -> void:
 		jump(jumping_speed)

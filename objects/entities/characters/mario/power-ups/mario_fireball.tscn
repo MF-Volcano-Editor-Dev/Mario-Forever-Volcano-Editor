@@ -18,15 +18,15 @@ sprite_frames = ExtResource("2_omltk")
 
 [node name="Projectile" type="Node2D" parent="." index="6"]
 visible = false
-position = Vector2(6, -22)
+position = Vector2(0, -22)
 script = ExtResource("3_4ik2q")
 root_path = NodePath("../..")
 metadata/_edit_pinned_properties_ = [&"root_path"]
 
 [node name="FireballPlayer" parent="Projectile" index="0" instance=ExtResource("4_lk2jk")]
-velocality = Vector2(412.5, 4.72937e-11)
-velocity = Vector2(412.5, -1.80309e-05)
-velocity = Vector2(412.5, -1.80309e-05)
+velocality = Vector2(412.5, -1)
+velocity = Vector2(412.5, -1.00002)
+velocity = Vector2(412.5, -1.00002)
 metadata/_edit_pinned_properties_ = [&"velocality"]
 
 [node name="NonClimbing" parent="StateMachine" index="0"]

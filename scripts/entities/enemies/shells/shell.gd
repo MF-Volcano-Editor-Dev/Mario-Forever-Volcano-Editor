@@ -57,7 +57,7 @@ signal shell_stopped ## Emitted when the shell stops.
 func _ready() -> void:
 	super()
 	
-	moving = moving # Triggers setter to set behavior
+	moving = moving # Triggers setter to initialize behavior
 	
 	_effect_box.monitoring = false
 	await get_tree().create_timer(0.1, false).timeout
