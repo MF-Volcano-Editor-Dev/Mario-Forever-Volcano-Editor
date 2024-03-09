@@ -16,3 +16,5 @@ func _physics_process(_delta: float) -> void:
 	calculate_gravity()
 	calculate_damp()
 	move_and_slide()
+	
+	set_meta(&"facing", int(signf(velocality.x)) if !is_zero_approx(velocality.x) else 1)

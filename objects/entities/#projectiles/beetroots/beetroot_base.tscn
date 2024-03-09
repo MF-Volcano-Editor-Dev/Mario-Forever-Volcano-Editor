@@ -30,7 +30,7 @@ shape = SubResource("RectangleShape2D_si8wc")
 visible = false
 shape = SubResource("RectangleShape2D_si8wc")
 target_position = Vector2(0, 0)
-margin = 0.5
+margin = 0.08
 max_results = 4
 collision_mask = 72
 script = ExtResource("2_r7joc")
@@ -57,4 +57,5 @@ metadata/_edit_pinned_properties_ = [&"direction"]
 
 [connection signal="bump_called" from="." to="Instantiater2D" method="instantiate_all"]
 [connection signal="bumped_over" from="." to="Bumper2D" method="queue_free"]
+[connection signal="bumped_block" from="Bumper2D" to="." method="bump"]
 [connection signal="screen_exited_directionally" from="VisibleOnScreenNotifierDirectional2D" to="." method="queue_free"]

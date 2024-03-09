@@ -1,10 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://d33jhjao1hoee"]
 
-[ext_resource type="Script" path="res://objects/entities/bonuses/blocks/bricks.gd" id="1_dn52m"]
+[ext_resource type="Script" path="res://scripts/entities/bonuses/blocks/bricks.gd" id="1_dn52m"]
 [ext_resource type="Texture2D" uid="uid://bmol3lccppr3x" path="res://assets/gfx/objects/entities/bonus/blocks/bricks.png" id="2_ti6ka"]
 [ext_resource type="Material" uid="uid://bxn4axwj3cqpy" path="res://assets/particles/bricks.tres" id="3_r1gtu"]
 [ext_resource type="Texture2D" uid="uid://dm1d7d58iemnb" path="res://assets/gfx/objects/entities/bonus/blocks/hittable_empty.png" id="3_uan0g"]
-[ext_resource type="Texture2D" uid="uid://crkfj2c4iqj7m" path="res://assets/gfx/objects/entities/effects/brick_scrap.png" id="4_7mbty"]
+[ext_resource type="Texture2D" uid="uid://crkfj2c4iqj7m" path="res://assets/gfx/objects/entities/#effects/brick_scrap.png" id="4_7mbty"]
 [ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="6_s6wav"]
 [ext_resource type="Script" path="res://scripts/entities/bonuses/blocks/question_block_tool.gd" id="7_mr4ml"]
 
