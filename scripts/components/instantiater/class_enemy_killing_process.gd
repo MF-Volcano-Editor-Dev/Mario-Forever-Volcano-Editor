@@ -23,7 +23,7 @@ const _FilteringGroups: Dictionary = {
 ## Jumping speed of the character stomping onto the enemy without the jumping key being held.
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var stomp_jumping_speed_min: float = 400
 ## Jumping speed of the character stomping onto the enemy with the jumping key being held.
-@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var stomp_jumping_speed_max: float = 600
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var stomp_jumping_speed_max: float = 700
 ## Make the enemy immune to the attackers with given ids in the list.[br]
 ## When an attacker in the list try damaging the enemy, the attack will be defended and [signal killing_defended] will be emitted.
 @export_group("Attack")
