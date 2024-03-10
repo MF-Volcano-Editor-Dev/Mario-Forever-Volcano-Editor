@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://jtmvnbkli0rx" path="res://assets/gfx/objects/entities/enemies/koopas/koopa_red.png" id="5_5t4nq"]
 [ext_resource type="Script" path="res://scripts/#universal/sprite_flip_facing_h.gd" id="6_b7hek"]
 [ext_resource type="Script" path="res://scripts/components/instantiater/class_enemy_killing_process.gd" id="7_jka6l"]
-[ext_resource type="PackedScene" uid="uid://b5jgjomd6auh2" path="res://objects/entities/enemies/shells/koopa_shells/koopa_shell_red.tscn" id="8_ybvhd"]
+[ext_resource type="PackedScene" uid="uid://b5jgjomd6auh2" path="res://objects/entities/enemies/shells/koopa_shell_red.tscn" id="8_ybvhd"]
 [ext_resource type="PackedScene" uid="uid://bnl67vxi1wbhs" path="res://objects/entities/enemies/#death/shells/shell_koopa_red_death.tscn" id="9_tss38"]
 [ext_resource type="PackedScene" uid="uid://d28wktlfkunys" path="res://objects/uis/counters/scores_label.tscn" id="10_qunam"]
 [ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="11_nhukf"]

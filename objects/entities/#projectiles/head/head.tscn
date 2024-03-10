@@ -16,6 +16,8 @@ shape = SubResource("RectangleShape2D_pekwa")
 [node name="Attacker" type="Node" parent="."]
 script = ExtResource("1_hluyq")
 id = 1
+damage_level = 5
+metadata/_edit_pinned_properties_ = [&"damage_level", &"id"]
 
 [node name="Destroy" type="Timer" parent="."]
 wait_time = 0.1

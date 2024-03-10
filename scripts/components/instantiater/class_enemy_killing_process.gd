@@ -29,6 +29,8 @@ const _FilteringGroups: Dictionary = {
 @export_group("Attack")
 ## [Attacker]s with [mmeber Attacker.id] in this list will be blocked and the attack fails.
 @export var immune_to_ids: Array[DataList.AttackId]
+## Lower than this value, the damage by an [Attacker] will be regarded as failed one.
+@export_range(0, 20) var defense_damage_level: int
 @export_group("Sounds", "sound_")
 @export var sound_killed: AudioStream = preload("res://assets/sounds/kick.wav")
 @export var sound_killing_defended: AudioStream = preload("res://assets/sounds/bump.wav")
@@ -65,7 +67,7 @@ func killing_process(attacker: Attacker) -> void:
 	var instances: Array[CanvasItem] = []
 	
 	if attacker.id == DataList.AttackId.NONE || \
-		(attacker.id != DataList.AttackId.FORCED && attacker.id in immune_to_ids):
+		(attacker.id != DataList.AttackId.FORCED && (attacker.id in immune_to_ids || attacker.damage_level < defense_damage_level)):
 			Sound.play_2d(sound_killing_defended, self)
 			
 			filters.append(_FilteringGroups.ATTACK_NO_FAILURE)

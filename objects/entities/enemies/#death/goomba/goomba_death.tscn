@@ -1,31 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://jh77s512qfrr"]
+[gd_scene load_steps=5 format=3 uid="uid://jh77s512qfrr"]
 
 [ext_resource type="PackedScene" uid="uid://2eise5wobrbd" path="res://objects/entities/enemies/#death/enemy_death.tscn" id="1_yotuv"]
 [ext_resource type="Texture2D" uid="uid://bj71tv2ix6ut0" path="res://assets/gfx/objects/entities/enemies/goomba/goomba.png" id="2_1yiha"]
+[ext_resource type="Script" path="res://scripts/#universal/sprite_flip_facing_h.gd" id="3_6avny"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3hcme"]
 radius = 16.0
-
-[sub_resource type="Animation" id="Animation_sfp00"]
-resource_name = "RESET"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 6.28319]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_i4s0q"]
-_data = {
-"RESET": SubResource("Animation_sfp00")
-}
 
 [node name="GoombaDeath" instance=ExtResource("1_yotuv")]
 
@@ -35,14 +15,11 @@ shape = SubResource("CircleShape2D_3hcme")
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="1"]
 texture = ExtResource("2_1yiha")
+script = ExtResource("3_6avny")
+flip_rotaiton_speed = 400.0
+metadata/_edit_pinned_properties_ = [&"flip_rotaiton_speed"]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2"]
-libraries = {
-"": SubResource("AnimationLibrary_i4s0q")
-}
-autoplay = "RESET"
-
-[node name="VisibleOnScreenNotifierDirectional2D" parent="." index="3"]
+[node name="VisibleOnScreenNotifierDirectional2D" parent="." index="2"]
 visible = false
 rect = Rect2(-16, -16, 32, 32)
 _is_initialized = true
