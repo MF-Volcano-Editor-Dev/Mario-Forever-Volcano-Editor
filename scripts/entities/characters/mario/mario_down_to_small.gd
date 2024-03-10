@@ -14,7 +14,7 @@ func check_and_push() -> void:
 	_character.add_to_group(&"state_immovable")
 	
 	if _character.is_on_floor():
-		while get_collision_count() && is_inside_tree():
+		while is_colliding() && is_inside_tree():
 			_character.global_position += Vector2.LEFT.rotated(_character.global_rotation) * _character.direction
 			force_shapecast_update()
 			if !_stop_stuck_push:
@@ -22,7 +22,7 @@ func check_and_push() -> void:
 			else:
 				break
 	else:
-		while get_collision_count():
+		while is_colliding():
 			_character.global_position -= _character.up_direction
 			force_shapecast_update()
 	

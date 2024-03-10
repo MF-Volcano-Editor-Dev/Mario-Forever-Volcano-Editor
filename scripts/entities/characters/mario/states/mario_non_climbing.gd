@@ -71,10 +71,11 @@ func _state_physics_process(_delta: float) -> void:
 	if _character.is_in_group(&"state_frozen"):
 		return
 	
-	_character.calculate_gravity()
-	_character.move_and_slide()
-	_character.correct_onto_floor()
-	_character.correct_on_wall_corner()
+	if !_character.is_in_group(&"state_immovable"):
+		_character.calculate_gravity()
+		_character.move_and_slide()
+		_character.correct_onto_floor()
+		_character.correct_on_wall_corner()
 
 
 func _climbing_check() -> void:
@@ -217,7 +218,7 @@ func _animation(_delta: float) -> void:
 			var real_vel: Vector2 = _character.velocity
 			if !real_vel.slide(_character.get_floor_normal()).is_zero_approx() && !_character.is_on_wall():
 				_animated_sprite.play(&"walk")
-				_animated_sprite.speed_scale = clampf(absf(_character.velocality.x) * get_physics_process_delta_time() * 0.67, 0, 5)
+				_animated_sprite.speed_scale = clampf(absf(_character.velocality.x) * get_process_delta_time() * 3.5, 0, 5)
 			else:
 				_animated_sprite.play(&"default")
 	elif _character.is_in_group(&"state_swimming"):

@@ -67,6 +67,7 @@ func _on_level_completed() -> void:
 	completed.emit()
 	
 	var snd := Sound.play_1d(sound_completion, self)
+	snd.volume_db = -10
 	Events.EventCharacter.get_signals().all_characters_dead.connect(snd.queue_free)
 	
 	await get_tree().create_timer(completion_delay, false).timeout
