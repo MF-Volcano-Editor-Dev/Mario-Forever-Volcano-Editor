@@ -26,6 +26,8 @@ class EventCharacter:
 		signal character_dead(id: int) ## Emitted when a characters dies.
 		signal all_characters_dead ## Emitted when all characters are dead.
 		signal game_over ## Emitted when event "game over" is triggered.
+		signal character_on_starman ## Emitted when a character gets starman.
+		signal character_off_starman ## Emitted when a character stops starman.
 	
 	static var _signals: Signals = Signals.new()
 	
@@ -36,6 +38,7 @@ class EventCharacter:
 		if Character.Getter.get_characters(scene_tree).is_empty():
 			_signals.all_characters_dead.emit()
 			EventTimeDown.get_signals().time_down_paused.emit()
+			EventMusic.get_signals().music_all_stop.emit()
 	
 	## Triggers the event "current game over".[br]
 	## [br]
@@ -98,7 +101,20 @@ class EventGame:
 				tw.tween_callback(i.queue_free)
 		
 		_signals.completed_level.emit()
+		EventMusic.get_signals().music_all_stop.emit()
 	
 	## Returns [Events.EventGame.Signals]
+	static func get_signals() -> Signals:
+		return _signals
+
+
+class EventMusic:
+	## Subclass that manages the events of music
+	class Signals:
+		signal music_all_stop ## Emitted when musics should stop
+	
+	static var _signals: Signals = Signals.new()
+	
+	## Returns [Events.EventMusic.Signals]
 	static func get_signals() -> Signals:
 		return _signals

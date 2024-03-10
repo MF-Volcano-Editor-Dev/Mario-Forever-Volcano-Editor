@@ -77,12 +77,29 @@ func starman(duration: float = 10) -> void:
 	invulnerablize(duration)
 	on_starman.emit(duration)
 	
+	add_to_group(&"state_starman") # Tags the character as being starman
+	
 	var snd := Sound.play_1d(sound_starman, self)
 	get_tree().create_timer(duration - 2, false).timeout.connect(func() -> void:
 		var tw := snd.create_tween()
 		tw.tween_property(snd, ^"volume_db", -50, 2)
 		tw.finished.connect(snd.queue_free)
+		await tw.finished
+		
+		remove_from_group(&"state_starman") # Removes the tag of starman
+		
+		await get_tree().process_frame # To make sure all characters have got that tag removed
+		
+		var chrs: Array[Character] = Character.Getter.get_characters(get_tree())
+		var chrs_off_starman: int = 0 # Checks the amount of characters with starman tag
+		for i in chrs:
+			if i is Mario && i.is_in_group(&"state_starman"):
+				chrs_off_starman += 1
+		if chrs_off_starman == 0: # As long as there is no character with that tag, it will be regarded as the status of "character_off_starman"
+			Events.EventCharacter.get_signals().character_off_starman.emit()
 	)
+	
+	Events.EventCharacter.get_signals().character_on_starman.emit()
 
 ## Makes the character hurt.[br]
 ## By default, this call will be blocked if [param forced] is [code]false[/code] while the character has been invulnerable.[br]

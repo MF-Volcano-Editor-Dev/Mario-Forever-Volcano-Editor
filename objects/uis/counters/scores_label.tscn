@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://scripts/uis/counters/scores_label.gd" id="2_ao7xj"]
 
 [node name="Scores" type="Label"]
+z_index = 50
 offset_left = -4.0
 offset_top = -8.0
 offset_right = 4.0

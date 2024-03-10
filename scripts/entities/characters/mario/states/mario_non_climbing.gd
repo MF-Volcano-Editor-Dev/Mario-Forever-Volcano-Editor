@@ -90,6 +90,8 @@ func _climbing_check() -> void:
 func _crouch() -> void:
 	if !_powerup:
 		return
+	if _character.is_in_group(&"state_completed"):
+		return
 	
 	# Detection for crouching
 	var small_crhable: bool = ProjectSettings.get_setting("game/control/player/crouchable_in_small_suit", false)

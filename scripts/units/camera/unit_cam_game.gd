@@ -35,7 +35,7 @@ var _on_transition_execution: bool
 var _on_transition: bool
 var _shaking: Tween
 
-var _delay_of_beginning_smooth_transition: SceneTreeTimer
+var _delay_of_beginning_smooth_transition: int = 6
 
 
 #region == Property Overriders ==
@@ -99,16 +99,18 @@ func _get_property_list() -> Array[Dictionary]:
 #region == Built-in Process ==
 func _ready() -> void:
 	# Initialization of properties to be overridden
-	if _initialized || !Engine.is_editor_hint():
+	if _initialized:
 		return
 	
-	_delay_of_beginning_smooth_transition = get_tree().create_timer(0.1, false)
-	_delay_of_beginning_smooth_transition.timeout.connect(func() -> void:
-		_delay_of_beginning_smooth_transition = null
-	)
-	
 	_initialized = true
-	_init_overridden_properties()
+	
+	if Engine.is_editor_hint():
+		_init_overridden_properties()
+		return
+	else:
+		while _delay_of_beginning_smooth_transition > 0:
+			_delay_of_beginning_smooth_transition -= 1
+			await get_tree().process_frame
 
 func _draw() -> void:
 	if !Engine.is_editor_hint():

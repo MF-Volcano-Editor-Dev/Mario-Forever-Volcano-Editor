@@ -41,6 +41,7 @@ const _LakituDeath := preload("res://scripts/entities/enemies/#death/lakitu_deat
 	preload("res://assets/sounds/lakitu_myu.ogg")
 ]
 
+var _dir: int
 var _parent: Node # Used for rebirth
 var _death_spot: Vector2
 var _activated: bool
@@ -72,18 +73,21 @@ func _process(delta: float) -> void:
 		var avepos := Character.Getter.get_average_global_position(tree, global_position) # Average character position
 		var t_avepos_x := global_transform.affine_inverse().basis_xform(avepos).x # X component of transformed `avepos`
 		var t_gpos_x := global_transform.affine_inverse().basis_xform(global_position).x # X component oftransformed `global_position`
-		var t_dir := signf(t_avepos_x - t_gpos_x)
+		_dir = signf(t_avepos_x - t_gpos_x)
 		
 		# Chasing (fast)
 		if t_gpos_x < t_avepos_x - hovering_margin - hovering_margin_extra || t_gpos_x > t_avepos_x + hovering_margin + hovering_margin_extra:
-			_speed = move_toward(_speed, t_dir * out_margin_speed, acceleration * delta)
+			_speed = move_toward(_speed, _dir * out_margin_speed, acceleration * delta)
 		# Hover (slow)
-		elif t_dir != 0 && ((t_gpos_x < t_avepos_x - hovering_margin && _speed < in_margin_speed) || (t_gpos_x > t_avepos_x + hovering_margin && _speed > -in_margin_speed)):
-			_speed = move_toward(_speed, t_dir * in_margin_speed, acceleration * 0.5 * delta)
+		elif _dir != 0 && ((t_gpos_x < t_avepos_x - hovering_margin && _speed < in_margin_speed) || (t_gpos_x > t_avepos_x + hovering_margin && _speed > -in_margin_speed)):
+			_speed = move_toward(_speed, _dir * in_margin_speed, acceleration * 0.5 * delta)
 	else:
 		_speed = move_toward(_speed, exitting_speed * exitting_direction, acceleration * delta)
 	
 	move_local_x(_speed * delta)
+	
+	if _dir != 0:
+		set_meta(&"facing", _dir)
 
 
 func rebirth() -> void:

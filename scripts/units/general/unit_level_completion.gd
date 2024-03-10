@@ -24,8 +24,10 @@ signal completion_stage_2_done ## Emitted when the completion is accomplished.
 ## Walking speed of the character at the completion
 @export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var character_walking_speed: float = 125
 @export_group("Scene")
-## Next scene to go to after the completion
-@export var next_scene: PackedScene
+## Next scene to go to after the completion.[br]
+## [br]
+## [b]Note:[/b] Needs to give the scene file a prefix [b]"room_"[b]!
+@export_file("room_*.tscn") var next_scene: String
 @export_group("Sounds", "sound_")
 @export var sound_completion: AudioStream = preload("res://assets/sounds/level_complete.ogg")
 
@@ -84,8 +86,11 @@ func _on_level_completed() -> void:
 	
 	await get_tree().create_timer(1, false).timeout
 	
+	Transmission.circle_transmission(Transmission.circle_trans.get_viewport_rect().get_center(), 1)
+	await Transmission.circular_trans_done
+	
 	if next_scene:
-		get_tree().change_scene_to_packed(next_scene)
+		get_tree().change_scene_to_file(next_scene)
 	else:
 		printerr("[LevelCompletion] Invalid or empty next_scene!")
 

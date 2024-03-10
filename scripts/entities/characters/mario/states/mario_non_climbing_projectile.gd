@@ -22,6 +22,8 @@ func _state_process(delta: float) -> void:
 		return
 	if _character.is_in_group(&"state_crouching"):
 		return
+	if _character.is_in_group(&"state_completed"):
+		return
 	if !_character.get_input_just_pressed(&"fire"):
 		return
 	
