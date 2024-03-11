@@ -104,4 +104,3 @@ script = ExtResource("10_1rbt0")
 [connection signal="on_hit_by_attacker" from="EffectBox/Attackee" to="EnemyKillingProcess" method="killing_process"]
 [connection signal="collided_with_entity" from="EffectBox/EntitySolidity" to="." method="turn_wall"]
 [connection signal="killing_succeeded" from="EnemyKillingProcess" to="." method="queue_free"]
-[connection signal="stomp_processed" from="EnemyKillingProcess" to="." method="queue_free"]

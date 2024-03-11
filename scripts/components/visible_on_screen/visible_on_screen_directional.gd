@@ -13,6 +13,7 @@ signal screen_exited_directionally ## Emitted when the node leaves the screen al
 @export_flags("Left", "Right", "Up", "Down") var direction: int
 @export var with_global_transform: bool = false
 
+var _delay: int = 1
 var _is_initialized: bool
 
 
@@ -55,17 +56,20 @@ func _process(_delta: float) -> void:
 		return
 	if is_on_screen():
 		return
+	if _delay > 0:
+		_delay -= 1
+		return
 	
-	var trans := global_transform.affine_inverse() if with_global_transform else Transform2D()
-	var cvs_pos := trans * get_global_transform_with_canvas().get_origin() # Canvas position, transformed by the global transform or unit transform of the node
-	var border := trans * get_viewport_rect().size # Border position, transformed by the global transform or unit transform of the node
+	var t := global_transform.affine_inverse() if with_global_transform else Transform2D()
+	var c := t.basis_xform(get_global_transform_with_canvas().get_origin()) # Canvas position, transformed by the global transform or unit transform of the node
+	var b := t.basis_xform(get_viewport_rect().size) # Border position, transformed by the global transform or unit transform of the node
 	
 	match direction:
-		var d when d & 1 && cvs_pos.x < 0:
+		var d when d & 1 && c.x < 0:
 			screen_exited_directionally.emit()
-		var d when (d >> 1) & 1 && cvs_pos.x > border.x:
+		var d when (d >> 1) & 1 && c.x > b.x:
 			screen_exited_directionally.emit()
-		var d when (d >> 2) & 1 && cvs_pos.y < 0:
+		var d when (d >> 2) & 1 && c.y < 0:
 			screen_exited_directionally.emit()
-		var d when (d >> 3) & 1 && cvs_pos.y > border.y:
+		var d when (d >> 3) & 1 && c.y > b.y:
 			screen_exited_directionally.emit()

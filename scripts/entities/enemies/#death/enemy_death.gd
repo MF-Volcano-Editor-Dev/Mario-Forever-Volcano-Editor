@@ -10,7 +10,7 @@ extends EntityBody2D
 
 
 func _ready() -> void:
-	velocality = (initial_speed + randf_range(0, extra_speed_rand)) * Vector2.UP.rotated(global_rotation + deg_to_rad(randf_range(-angle, angle)))
+	velocality = (initial_speed + randf_range(0, extra_speed_rand)) * Vector2.UP.rotated(get_gravity_rotation_angle() + deg_to_rad(randf_range(-angle, angle)))
 
 func _physics_process(_delta: float) -> void:
 	calculate_gravity()

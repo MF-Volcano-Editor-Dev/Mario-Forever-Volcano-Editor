@@ -32,10 +32,12 @@ func _ready() -> void:
 
 
 func _movement() -> void:
+	rotation = 0 # Reset rotation of label
+	
 	Sound.play_2d(sound_appear, self)
 	
 	var tw: Tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tw.tween_property(self, ^"global_position", _gpos + 64 * Vector2.UP.rotated(get_global_transform().get_rotation()), 0.75)
+	tw.tween_property(self, ^"position", position + 64 * Vector2.UP, 0.75)
 	tw.tween_interval(0.5)
 	tw.tween_property(self, ^"modulate:a", 0, 0.25)
 	

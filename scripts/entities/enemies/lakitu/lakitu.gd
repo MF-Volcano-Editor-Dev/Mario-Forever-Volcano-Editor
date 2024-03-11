@@ -165,7 +165,6 @@ func _on_killing(ins: CanvasItem) -> void:
 	(func() -> void:
 		if death_times == 0:
 			death.last_one = true
-			print(1)
 	).call_deferred()
 
 func _on_killed_processed() -> void:
