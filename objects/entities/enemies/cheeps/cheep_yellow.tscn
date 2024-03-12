@@ -35,9 +35,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_jse0p"]
-a = Vector2(0, -16)
-b = Vector2(0, 16)
+[sub_resource type="CircleShape2D" id="CircleShape2D_pexd5"]
+radius = 1.0
 
 [node name="CheepYellow" type="Node2D"]
 script = ExtResource("1_y47o7")
@@ -68,7 +67,7 @@ script = ExtResource("5_bpi7m")
 
 [node name="Collider" type="ShapeCast2D" parent="."]
 visible = false
-shape = SubResource("SegmentShape2D_jse0p")
+shape = SubResource("CircleShape2D_pexd5")
 target_position = Vector2(0, 0)
 max_results = 2
 collision_mask = 24
@@ -93,7 +92,7 @@ script = ExtResource("9_o51bw")
 
 [node name="TimerInterval" type="Timer" parent="."]
 
-[connection signal="cheep_collided_wall" from="." to="." method="collide_wall"]
+[connection signal="cheep_collided_wall" from="." to="." method="return_to_water"]
 [connection signal="cheep_out_of_fluid" from="." to="EnemyKillingProcess" method="forced_kill"]
 [connection signal="on_hit_by_attacker" from="EffectBox/Attackee" to="EnemyKillingProcess" method="killing_process"]
 [connection signal="killing_succeeded" from="EnemyKillingProcess" to="." method="queue_free"]

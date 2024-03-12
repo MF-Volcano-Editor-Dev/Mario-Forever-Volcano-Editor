@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://xdkt00n8hitv"]
+[gd_scene load_steps=14 format=3 uid="uid://xdkt00n8hitv"]
 
 [ext_resource type="Script" path="res://scripts/entities/physics/walker_2d.gd" id="1_gpuac"]
 [ext_resource type="Script" path="res://scripts/components/attack/class_attackee.gd" id="2_pdf2g"]
@@ -35,10 +35,6 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_jse0p"]
-a = Vector2(0, -16)
-b = Vector2(0, 16)
-
 [node name="CheepRedLeap" type="EntityBody2D"]
 gravity_scale = 0.25
 collision_layer = 4
@@ -69,14 +65,6 @@ script = ExtResource("3_f3qmr")
 sprite_frames = SubResource("SpriteFrames_hyhxs")
 autoplay = "default"
 script = ExtResource("5_33mlf")
-
-[node name="Collider" type="ShapeCast2D" parent="."]
-visible = false
-shape = SubResource("SegmentShape2D_jse0p")
-target_position = Vector2(0, 0)
-max_results = 2
-collision_mask = 24
-collide_with_areas = true
 
 [node name="EnemyKillingProcess" type="Node2D" parent="."]
 visible = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=12 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="PackedScene" uid="uid://crnx40c7hevum" path="res://objects/uis/huds/level_hud.tscn" id="1_brdbf"]
 [ext_resource type="Script" path="res://scripts/scenes/room.gd" id="1_p1njg"]
@@ -9,9 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://cui35mog5pwf8" path="res://objects/units/general/unit_level_completion.tscn" id="4_an7ri"]
 [ext_resource type="PackedScene" uid="uid://mlw61ix1dmoo" path="res://objects/units/general/unit_coin_to_life.tscn" id="4_vw81q"]
 [ext_resource type="PackedScene" uid="uid://ber4ghptyioeg" path="res://objects/entities/areas/fluid/water/water.tscn" id="9_xh884"]
+[ext_resource type="PackedScene" uid="uid://f2odvfw05me7" path="res://objects/entities/enemies/bloopers/blooper.tscn" id="10_yp24t"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fyqy2"]
-size = Vector2(768, 160)
+size = Vector2(768, 288)
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_p1njg")
@@ -47,6 +48,9 @@ current_powerup = &"fireball"
 position = Vector2(192, 256)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Water"]
-position = Vector2(384, 80)
+position = Vector2(384, 16)
 shape = SubResource("RectangleShape2D_fyqy2")
 debug_color = Color(0, 0.231373, 0.027451, 0.419608)
+
+[node name="Blooper" parent="." instance=ExtResource("10_yp24t")]
+position = Vector2(456, 232)

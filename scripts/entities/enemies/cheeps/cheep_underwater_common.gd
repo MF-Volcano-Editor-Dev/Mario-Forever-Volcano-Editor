@@ -5,7 +5,7 @@ signal cheep_collided_wall ## Emitted when the cheep collides with wall.
 
 @export_category("Cheep Swimming")
 @export var fluid_group: StringName = &"water"
-@export var facing_character: bool = true
+@export var initially_facing_character: bool = true
 @export_group("References")
 @export_node_path("ShapeCast2D") var collider_path: NodePath = ^"Collider"
 @export_node_path("Area2D") var effect_box_path: NodePath = ^"EffectBox"
@@ -31,8 +31,8 @@ signal cheep_collided_wall ## Emitted when the cheep collides with wall.
 @export_range(0, 60, 0.001, "suffix:s") var homing_interval: float = 1
 
 var velocity: Vector2
-
 var _local_velocity: Vector2
+
 var _delayed: int = 8
 var _normal: Vector2
 var _nearest_player: Character
@@ -47,7 +47,7 @@ func _ready() -> void:
 	
 	_timer_interval.timeout.connect(_on_interval)
 	
-	if facing_character:
+	if initially_facing_character:
 		_nearest_player = Character.Getter.get_nearest(get_tree(), global_position)
 		if _nearest_player:
 			var dir := Transform2DAlgo.get_direction_to_regardless_transform(global_position, _nearest_player.global_position, global_transform)
@@ -62,7 +62,7 @@ func _process(delta: float) -> void:
 			if collidable && (!col is AreaFluid || (col is AreaFluid && !col.is_in_group(fluid_group))):
 				cheep_collided_wall.emit()
 	elif _normal.is_normalized(): # Turn back to prevent from going out of water
-		collide_wall() 
+		return_to_water() 
 	
 	global_position += velocity * delta
 	_local_velocity = velocity.rotated(-global_rotation)
@@ -86,7 +86,7 @@ func _process(delta: float) -> void:
 		return
 
 
-func collide_wall() -> void:
+func return_to_water() -> void:
 	if !_normal.is_normalized():
 		return
 	velocity = velocity.bounce(_normal)
