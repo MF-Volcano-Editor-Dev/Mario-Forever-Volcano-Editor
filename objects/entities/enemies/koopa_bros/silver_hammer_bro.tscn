@@ -119,19 +119,19 @@ position = Vector2(0, -8)
 texture = ExtResource("4_ei784")
 vframes = 3
 script = ExtResource("5_itkc1")
+flip_position_x = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Sprite2D"]
 position = Vector2(8, -8)
 remote_path = NodePath("../../Thrower")
 script = ExtResource("5_itkc1")
-flip_posion_x = true
 
 [node name="Weapon" type="Sprite2D" parent="Sprite2D"]
 visible = false
 position = Vector2(6, -8)
 texture = ExtResource("6_m5kvd")
 script = ExtResource("5_itkc1")
-flip_posion_x = true
+flip_position_x = true
 
 [node name="Thrower" type="Node2D" parent="."]
 visible = false

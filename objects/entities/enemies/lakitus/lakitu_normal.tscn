@@ -330,6 +330,7 @@ position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_7c2gq")
 autoplay = "default"
 script = ExtResource("5_otqdv")
+flip_position_x = true
 
 [node name="StopPitching" type="RayCast2D" parent="."]
 visible = false
@@ -342,7 +343,7 @@ visible = false
 script = ExtResource("6_hbb3k")
 
 [node name="SpinyRedEgg" parent="Pitcher" instance=ExtResource("7_tmgwk")]
-velocality = Vector2(0, -150)
+velocality = Vector2(-1.81899e-12, -150)
 velocity = Vector2(-6.55671e-06, -150)
 position = Vector2(0, -17)
 velocity = Vector2(-6.55671e-06, -150)

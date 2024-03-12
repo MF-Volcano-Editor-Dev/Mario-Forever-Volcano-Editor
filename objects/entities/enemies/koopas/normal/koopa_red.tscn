@@ -87,12 +87,14 @@ position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_2mqn0")
 autoplay = "default"
 script = ExtResource("6_b7hek")
+flip_position_x = true
 
 [node name="EnemyKillingProcess" type="Node2D" parent="."]
 visible = false
 script = ExtResource("7_jka6l")
 
 [node name="KoopaShellRed" parent="EnemyKillingProcess" groups=["instantiate_no_attack"] instance=ExtResource("8_ybvhd")]
+velocality = Vector2(350, -1.45519e-11)
 
 [node name="ShellKoopaRedDeath" parent="EnemyKillingProcess" groups=["instantiate_no_stomp"] instance=ExtResource("9_tss38")]
 

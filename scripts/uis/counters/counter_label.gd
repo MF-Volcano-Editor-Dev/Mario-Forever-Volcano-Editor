@@ -21,8 +21,6 @@ extends Label
 @export_group("Sound")
 @export var sound_appear: AudioStream
 
-@onready var _gpos: Vector2 = global_position
-
 
 func _ready() -> void:
 	if Engine.is_editor_hint():

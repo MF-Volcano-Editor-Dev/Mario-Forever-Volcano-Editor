@@ -25,4 +25,5 @@ offset = Vector2(0, -8)
 hframes = 12
 vframes = 4
 script = ExtResource("3_lefhr")
+flip_position_x = true
 flip_rotaiton_speed = 400.0

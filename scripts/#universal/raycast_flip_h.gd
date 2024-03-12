@@ -1,15 +1,15 @@
-extends Node2D
+extends RayCast2D
 
-@export_category("Sprite Flip Facing H")
+@export_category("Raycast Flip H")
 @export_node_path("Node2D") var root_path: NodePath = ^".."
-@export var flip_position_x: bool
-@export_range(-18000, 18000, 0.001, "degrees") var flip_rotaiton_speed: float
+@export var flip_position_x: bool = true
 
 @onready var _sgnx: float = signf(position.x)
+@onready var _sgntgx: float = signf(target_position.x)
 @onready var _root: Node2D = get_node(root_path)
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var facing := int(roundf(_root.get_meta(&"facing", 1)))
 	if facing in [-1, 1]:
 		set(&"flip_h", facing < 0)
@@ -17,5 +17,4 @@ func _process(delta: float) -> void:
 		
 		if flip_position_x: 
 			position.x = facing * _sgnx * absf(position.x)
-		if !is_zero_approx(flip_rotaiton_speed):
-			rotate(deg_to_rad(flip_rotaiton_speed * delta) * facing)
+			target_position.x = facing * _sgntgx * absf(target_position.x)

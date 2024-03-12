@@ -66,12 +66,12 @@ position = Vector2(0, -7)
 sprite_frames = SubResource("SpriteFrames_1vpfo")
 autoplay = "default"
 script = ExtResource("5_dmj30")
+flip_position_x = true
 
 [node name="Wings" parent="AnimatedSprite2D" instance=ExtResource("6_fstpv")]
 position = Vector2(-8, -8)
 script = ExtResource("5_dmj30")
-flip_posion_x = true
-metadata/_edit_pinned_properties_ = [&"flip_posion_x"]
+flip_position_x = true
 
 [node name="EnemyKillingProcess" type="Node2D" parent="."]
 visible = false

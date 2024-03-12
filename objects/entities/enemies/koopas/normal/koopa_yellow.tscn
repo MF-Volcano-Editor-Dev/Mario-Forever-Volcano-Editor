@@ -39,7 +39,7 @@ animations = [{
 }]
 
 [node name="KoopaYellow" type="EntityBody2D"]
-velocality = Vector2(100, 0)
+velocality = Vector2(100, -1.36424e-12)
 velocity = Vector2(100, -4.37114e-06)
 threshold_speed_enabled = true
 threshold_speed = 100.0
@@ -87,6 +87,7 @@ position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_3so2l")
 autoplay = "default"
 script = ExtResource("7_bvd1w")
+flip_position_x = true
 
 [node name="EnemyKillingProcess" type="Node2D" parent="."]
 visible = false

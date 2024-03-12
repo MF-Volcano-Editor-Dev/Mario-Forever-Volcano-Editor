@@ -38,7 +38,7 @@ animations = [{
 }]
 
 [node name="KoopaTroopaBlue" type="EntityBody2D"]
-velocality = Vector2(50, 0)
+velocality = Vector2(50, -6.82121e-13)
 velocity = Vector2(50, -2.18557e-06)
 gravity_scale = 0.4
 collision_layer = 4
@@ -75,18 +75,20 @@ position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_ulw1n")
 autoplay = "default"
 script = ExtResource("5_8bcs4")
+flip_position_x = true
 metadata/_edit_pinned_properties_ = [&"sprite_frames"]
 
 [node name="Wings" parent="AnimatedSprite2D" instance=ExtResource("6_tahax")]
 position = Vector2(-8, -6)
 script = ExtResource("5_8bcs4")
-flip_posion_x = true
+flip_position_x = true
 
 [node name="EnemyKillingProcess" type="Node2D" parent="."]
 visible = false
 script = ExtResource("7_4t6s7")
 
 [node name="KoopaBlue" parent="EnemyKillingProcess" groups=["instantiate_no_attack"] instance=ExtResource("8_a75l0")]
+velocality = Vector2(100, -1.36424e-12)
 
 [node name="ShellKoopaBlueDeath" parent="EnemyKillingProcess" groups=["instantiate_no_stomp"] instance=ExtResource("9_m4pxg")]
 

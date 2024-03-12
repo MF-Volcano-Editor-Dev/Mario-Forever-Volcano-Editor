@@ -81,6 +81,7 @@ script = ExtResource("4_5qiqs")
 sprite_frames = SubResource("SpriteFrames_fds1c")
 autoplay = "default"
 script = ExtResource("6_xqbte")
+flip_position_x = true
 
 [node name="EnemyKillingProcess" type="Node2D" parent="."]
 visible = false

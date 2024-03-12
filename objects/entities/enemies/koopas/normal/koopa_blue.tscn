@@ -81,6 +81,7 @@ position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_cl2mr")
 autoplay = "default"
 script = ExtResource("6_sle6x")
+flip_position_x = true
 metadata/_edit_pinned_properties_ = [&"sprite_frames"]
 
 [node name="EnemyKillingProcess" type="Node2D" parent="."]

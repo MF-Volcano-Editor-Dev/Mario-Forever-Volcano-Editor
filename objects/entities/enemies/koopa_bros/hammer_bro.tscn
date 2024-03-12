@@ -115,20 +115,19 @@ position = Vector2(0, -8)
 texture = ExtResource("5_oktur")
 vframes = 3
 script = ExtResource("6_ntkvb")
+flip_position_x = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Sprite2D"]
 position = Vector2(8, -8)
 remote_path = NodePath("../../Thrower")
 script = ExtResource("6_ntkvb")
-flip_posion_x = true
-metadata/_edit_pinned_properties_ = [&"flip_posion_x"]
 
 [node name="Weapon" type="Sprite2D" parent="Sprite2D"]
 visible = false
 position = Vector2(6, -8)
 texture = ExtResource("6_u7vp7")
 script = ExtResource("6_ntkvb")
-flip_posion_x = true
+flip_position_x = true
 
 [node name="Thrower" type="Node2D" parent="."]
 visible = false

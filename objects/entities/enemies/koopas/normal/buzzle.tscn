@@ -79,6 +79,7 @@ script = ExtResource("4_hru0e")
 sprite_frames = SubResource("SpriteFrames_c4md5")
 autoplay = "default"
 script = ExtResource("6_liqa3")
+flip_position_x = true
 metadata/_edit_pinned_properties_ = [&"sprite_frames"]
 
 [node name="EnemyKillingProcess" type="Node2D" parent="."]

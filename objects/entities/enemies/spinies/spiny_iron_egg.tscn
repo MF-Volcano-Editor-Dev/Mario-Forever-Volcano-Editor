@@ -52,6 +52,7 @@ script = ExtResource("4_wp4d1")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("5_nt15i")
 script = ExtResource("6_eycqb")
+flip_position_x = true
 flip_rotaiton_speed = 562.5
 
 [node name="Spawn" type="Node2D" parent="."]

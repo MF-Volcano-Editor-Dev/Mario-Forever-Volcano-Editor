@@ -24,6 +24,7 @@ texture = ExtResource("2_mbcni")
 vframes = 2
 frame = 1
 script = ExtResource("3_em6nk")
+flip_position_x = true
 flip_rotaiton_speed = 400.0
 metadata/_edit_pinned_properties_ = [&"flip_rotaiton_speed"]
 

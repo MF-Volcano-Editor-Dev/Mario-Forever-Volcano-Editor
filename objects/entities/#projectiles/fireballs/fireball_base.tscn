@@ -70,6 +70,7 @@ lifetime = 0.1
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_ym67n")
 script = ExtResource("4_0ihwn")
+flip_position_x = true
 flip_rotaiton_speed = 650.0
 metadata/_edit_pinned_properties_ = [&"flip_rotaiton_speed"]
 
