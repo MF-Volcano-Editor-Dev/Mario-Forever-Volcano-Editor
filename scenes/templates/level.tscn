@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=9 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="PackedScene" uid="uid://crnx40c7hevum" path="res://objects/uis/huds/level_hud.tscn" id="1_brdbf"]
 [ext_resource type="Script" path="res://scripts/scenes/room.gd" id="1_p1njg"]
@@ -8,10 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://cui35mog5pwf8" path="res://objects/units/general/unit_level_completion.tscn" id="4_an7ri"]
 [ext_resource type="PackedScene" uid="uid://mlw61ix1dmoo" path="res://objects/units/general/unit_coin_to_life.tscn" id="4_vw81q"]
 [ext_resource type="TileSet" uid="uid://7f4u48gspyof" path="res://assets/tilesets/overworld.tres" id="7_6y41o"]
-[ext_resource type="PackedScene" uid="uid://ber4ghptyioeg" path="res://objects/entities/areas/fluid/water/water.tscn" id="9_xh884"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fyqy2"]
-size = Vector2(768, 288)
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_p1njg")
@@ -42,11 +38,3 @@ metadata/_edit_lock_ = true
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
 position = Vector2(128, 400)
 current_powerup = &"fireball"
-
-[node name="Water" parent="." instance=ExtResource("9_xh884")]
-position = Vector2(192, 256)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Water"]
-position = Vector2(384, 16)
-shape = SubResource("RectangleShape2D_fyqy2")
-debug_color = Color(0, 0.231373, 0.027451, 0.419608)
