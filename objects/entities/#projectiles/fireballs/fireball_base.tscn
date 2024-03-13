@@ -61,7 +61,7 @@ monitorable = false
 shape = SubResource("CircleShape2D_w2obo")
 debug_color = Color(0.980392, 0.133333, 0, 0.419608)
 
-[node name="AnimatedSprite2D" type="GPUParticles2D" parent="."]
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 amount = 4
 process_material = SubResource("ParticleProcessMaterial_v5jod")
 texture = ExtResource("2_lxa3f")

@@ -1,13 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://delxto2dfc3fa"]
+[gd_scene load_steps=19 format=3 uid="uid://delxto2dfc3fa"]
 
-[ext_resource type="Script" path="res://scripts/entities/effects/spray.gd" id="1_egt3s"]
-[ext_resource type="Texture2D" uid="uid://ha6ecnlp2u3k" path="res://assets/gfx/objects/entities/effects/spray_water.png" id="1_nb2mh"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_winci"]
-radius = 24.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_gpj7p"]
-radius = 8.0
+[ext_resource type="Texture2D" uid="uid://ha6ecnlp2u3k" path="res://assets/gfx/objects/entities/#effects/spray_water.png" id="1_nb2mh"]
+[ext_resource type="Script" path="res://scripts/entities/effects/once_only_animation_effect.gd" id="2_5p8fl"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7otwq"]
 atlas = ExtResource("1_nb2mh")
@@ -122,30 +116,8 @@ animations = [{
 "speed": 40.0
 }]
 
-[node name="SprayWater" type="Node2D"]
-script = ExtResource("1_egt3s")
-fluid_group = &"water"
-metadata/_edit_pinned_properties_ = [&"fluid_group"]
-
-[node name="Rotator" type="ShapeCast2D" parent="."]
-visible = false
-shape = SubResource("CircleShape2D_winci")
-target_position = Vector2(0, 0)
-max_results = 2
-collision_mask = 16
-collide_with_areas = true
-collide_with_bodies = false
-
-[node name="PullOrPush" type="ShapeCast2D" parent="."]
-visible = false
-shape = SubResource("CircleShape2D_gpj7p")
-target_position = Vector2(0, 0)
-max_results = 2
-collision_mask = 16
-collide_with_areas = true
-collide_with_bodies = false
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -8)
+[node name="SprayWater" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_xcgj5")
 autoplay = "default"
+offset = Vector2(0, -16)
+script = ExtResource("2_5p8fl")
