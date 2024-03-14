@@ -66,7 +66,7 @@ animations = [{
 }]
 
 [node name="KoopaShellRed" type="EntityBody2D"]
-velocality = Vector2(350, 0)
+velocality = Vector2(350, -1.45519e-11)
 velocity = Vector2(350, -1.5299e-05)
 gravity_scale = 0.5
 collision_layer = 4
@@ -110,6 +110,8 @@ script = ExtResource("4_timcl")
 
 [node name="Attacker" type="Node" parent="EffectBox" groups=["combo"]]
 script = ExtResource("5_osyf7")
+id = 4
+metadata/_edit_pinned_properties_ = [&"id"]
 
 [node name="Attackee" type="Node" parent="EffectBox"]
 script = ExtResource("6_vp0jx")

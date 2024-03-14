@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=10 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="PackedScene" uid="uid://crnx40c7hevum" path="res://objects/uis/huds/level_hud.tscn" id="1_brdbf"]
 [ext_resource type="Script" path="res://scripts/scenes/room.gd" id="1_p1njg"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cui35mog5pwf8" path="res://objects/units/general/unit_level_completion.tscn" id="4_an7ri"]
 [ext_resource type="PackedScene" uid="uid://mlw61ix1dmoo" path="res://objects/units/general/unit_coin_to_life.tscn" id="4_vw81q"]
 [ext_resource type="TileSet" uid="uid://7f4u48gspyof" path="res://assets/tilesets/overworld.tres" id="7_6y41o"]
+[ext_resource type="PackedScene" uid="uid://7twip8mvvk7n" path="res://objects/entities/enemies/bullet_bill/launcher/missile_bill_launcher.tscn" id="9_onbju"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_p1njg")
@@ -38,3 +39,7 @@ metadata/_edit_lock_ = true
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
 position = Vector2(128, 400)
 current_powerup = &"fireball"
+
+[node name="MissileBillLauncher" parent="." instance=ExtResource("9_onbju")]
+position = Vector2(512, 320)
+rotation = 0.785397

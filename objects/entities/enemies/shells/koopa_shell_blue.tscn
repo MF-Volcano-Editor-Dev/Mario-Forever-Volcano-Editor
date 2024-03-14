@@ -110,6 +110,8 @@ script = ExtResource("4_tputa")
 
 [node name="Attacker" type="Node" parent="EffectBox" groups=["combo"]]
 script = ExtResource("5_7gvwg")
+id = 4
+metadata/_edit_pinned_properties_ = [&"id"]
 
 [node name="Attackee" type="Node" parent="EffectBox"]
 script = ExtResource("6_u0uox")

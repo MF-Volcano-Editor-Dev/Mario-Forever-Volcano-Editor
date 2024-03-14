@@ -4,6 +4,7 @@ signal platform_stomped ## Emitted when the platform is stomped by bodies in gro
 
 @export_category("Platform")
 @export_node_path("PlatformPathFollower2D") var follower_path: NodePath = ^"../PlatformPathFollower2D"
+@export_node_path("VisibleOnScreenNotifier2D") var vision_detector_path: NodePath = ^"VisibleOnScreenNotifier2D"
 @export var triggers_on_stomping: bool
 @export var up_direction: Vector2 = Vector2.UP:
 	set(value):
@@ -16,6 +17,7 @@ var _stomp_count: int
 var _velocity: Vector2
 
 @onready var _follower: PlatformPathFollower2D = get_node_or_null(follower_path)
+@onready var _vision_detector: VisibleOnScreenNotifier2D = get_node(vision_detector_path)
 
 @onready var _rid: RID = get_rid()
 
@@ -50,6 +52,9 @@ func fall() -> void:
 
 
 func _detect_being_stomped() -> void:
+	if !_vision_detector.is_on_screen():
+		return
+	
 	var up := Vector2.UP.rotated(global_rotation)
 	
 	# Platform detects stomper

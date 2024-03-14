@@ -10,7 +10,7 @@ collision_mask = 4
 
 [node name="Attacker" type="Node" parent="EffectBox" index="1"]
 script = ExtResource("2_8davd")
-id = 4
+id = 5
 metadata/_edit_pinned_properties_ = [&"id"]
 
 [connection signal="jumping_times_over" from="." to="." method="queue_free"]
