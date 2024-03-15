@@ -78,7 +78,7 @@ script = ExtResource("6_2fa71")
 
 [node name="CheepBlueDeath" parent="EnemyKillingProcess" groups=["instantiate_no_failure"] instance=ExtResource("7_7fgjn")]
 
-[node name="Scores" parent="EnemyKillingProcess" groups=["instantiate_no_success_combo"] instance=ExtResource("8_nl5j4")]
+[node name="Scores" parent="EnemyKillingProcess" groups=["instantiate_no_failure", "instantiate_no_success_combo"] instance=ExtResource("8_nl5j4")]
 text = "200"
 amount = 200
 metadata/_edit_pinned_properties_ = [&"amount"]

@@ -7,13 +7,16 @@ class_name Phantom2D extends Component2D
 ## Path to the source node that provides phantom.
 @export_node_path("Node2D") var source_path: NodePath:
 	set(value):
+		source_path = value
 		if !is_node_ready():
 			await ready
-		source = get_node(value)
+		source = get_node(source_path)
 ## Properties to sync
 @export var sync_props: Array[StringName]
 ## If [code]true[/code], the phantom is enabled to be generated
 @export var enabled: bool = true
+## If [code]true[/code], the phantom will have no script
+@export var phantom_no_script: bool = true
 ## Lifetime of the phantom
 @export_range(0, 20, 0.001, "suffix:s") var lifetime: float = 0.5
 ## Interval of creating a phantom
@@ -39,6 +42,8 @@ func _phantom_generated() -> void:
 		i.free()
 	
 	ph.global_transform = global_transform
+	if phantom_no_script:
+		ph.set_script(null)
 	
 	root.add_sibling.call_deferred(ph)
 	root.get_parent().move_child.call_deferred(ph, root.get_index())

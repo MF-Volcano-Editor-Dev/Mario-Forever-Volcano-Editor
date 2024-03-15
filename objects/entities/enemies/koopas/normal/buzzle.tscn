@@ -89,11 +89,10 @@ defense_damage_level = 1
 metadata/_edit_pinned_properties_ = [&"defense_damage_level"]
 
 [node name="KoopaShellGreen2" parent="EnemyKillingProcess" groups=["instantiate_no_attack"] instance=ExtResource("8_srkdj")]
-velocality = Vector2(350, -1.45519e-11)
 
 [node name="ShellBuzzleDeath" parent="EnemyKillingProcess" groups=["instantiate_no_stomp"] instance=ExtResource("9_1hb7s")]
 
-[node name="Scores" parent="EnemyKillingProcess" groups=["instantiate_no_success_combo"] instance=ExtResource("10_dftve")]
+[node name="Scores" parent="EnemyKillingProcess" groups=["instantiate_no_failure", "instantiate_no_success_combo"] instance=ExtResource("10_dftve")]
 text = "100"
 amount = 100
 

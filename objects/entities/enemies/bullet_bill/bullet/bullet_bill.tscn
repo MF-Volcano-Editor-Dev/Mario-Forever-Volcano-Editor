@@ -14,7 +14,7 @@
 radius = 16.0312
 
 [node name="BulletBill" type="EntityBody2D"]
-velocality = Vector2(162.5, 4.54747e-13)
+velocality = Vector2(162.5, -7.1031e-06)
 velocity = Vector2(162.5, -7.1031e-06)
 global_rotation_to_gravity_direction = false
 collision_layer = 4
@@ -59,7 +59,7 @@ metadata/_edit_pinned_properties_ = [&"immune_to_ids"]
 
 [node name="BulletBillDeath" parent="EnemyKillingProcess" groups=["instantiate_no_failure"] instance=ExtResource("6_tqoyq")]
 
-[node name="Scores" parent="EnemyKillingProcess" groups=["instantiate_no_success_combo"] instance=ExtResource("9_sua3s")]
+[node name="Scores" parent="EnemyKillingProcess" groups=["instantiate_no_failure", "instantiate_no_success_combo"] instance=ExtResource("9_sua3s")]
 text = "100"
 amount = 100
 

@@ -134,7 +134,7 @@ metadata/_edit_pinned_properties_ = [&"defense_damage_level"]
 
 [node name="ShellBuzzleDeath" parent="EnemyAttackProcess2D" groups=["instantiate_no_stomp"] instance=ExtResource("11_hb1id")]
 
-[node name="Scores" parent="EnemyAttackProcess2D" groups=["instantiate_no_success_combo"] instance=ExtResource("13_u4qkl")]
+[node name="Scores" parent="EnemyAttackProcess2D" groups=["instantiate_no_failure", "instantiate_no_success_combo"] instance=ExtResource("13_u4qkl")]
 text = "100"
 amount = 100
 

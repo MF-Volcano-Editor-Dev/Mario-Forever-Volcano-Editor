@@ -52,7 +52,7 @@ _data = {
 }
 
 [node name="MissileBill" type="EntityBody2D"]
-velocality = Vector2(200, -2.72848e-12)
+velocality = Vector2(200, -8.74228e-06)
 velocity = Vector2(200, -8.74228e-06)
 global_rotation_to_gravity_direction = false
 collision_layer = 4
@@ -97,7 +97,7 @@ immune_to_ids = Array[int]([5, 6])
 
 [node name="BulletBillDeath" parent="EnemyKillingProcess" groups=["instantiate_no_failure"] instance=ExtResource("7_at4u2")]
 
-[node name="Scores" parent="EnemyKillingProcess" groups=["instantiate_no_success_combo"] instance=ExtResource("8_snsw7")]
+[node name="Scores" parent="EnemyKillingProcess" groups=["instantiate_no_failure", "instantiate_no_success_combo"] instance=ExtResource("8_snsw7")]
 text = "200"
 amount = 200
 metadata/_edit_pinned_properties_ = [&"amount"]
