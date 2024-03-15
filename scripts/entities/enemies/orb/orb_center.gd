@@ -2,21 +2,29 @@
 extends Node2D
 
 enum _OrbsPlacement {
+	NONE,
 	BAR,
-	CIRCLE,
-	SPIRAL
+	CIRCLE
 }
 
 @export_category("Orb")
 @export var preview: bool:
 	set = set_preview
+@export var orb_prefix: StringName = &"Orb"
+@export_group("Placement")
+@export var orbs_placement: _OrbsPlacement = _OrbsPlacement.NONE:
+	set = set_orbs_placement
+@export_subgroup("Bar")
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px") var size: float = 32
+@export_subgroup("Circle")
+@export_range(-180, 180, 0.001, "degrees") var initial_phase: float
 
 var _orb_data: Array[OrbData]
 
 
 func _enter_tree() -> void:
 	for i in get_children(): # Reset the position of orbs to this object to makes their origin proper
-		if !&"Orb" in i.name || !i is CircularMovementObject2D:
+		if !orb_prefix in i.name || !i is CircularMovementObject2D:
 			continue
 		i.position = Vector2.ZERO
 
@@ -32,7 +40,7 @@ func _run_orbs(delta: float) -> void:
 		return
 	
 	for i in get_children():
-		if !&"Orb" in i.name || !i is CircularMovementObject2D:
+		if !orb_prefix in i.name || !i is CircularMovementObject2D:
 			continue
 		
 		var orb := i as CircularMovementObject2D
@@ -66,7 +74,7 @@ func set_preview(value: bool) -> void:
 	
 	if preview:
 		for i in get_children():
-			if !&"Orb" in i.name || !i is CircularMovementObject2D:
+			if !orb_prefix in i.name || !i is CircularMovementObject2D:
 				continue
 			
 			var orb := i as CircularMovementObject2D
@@ -79,14 +87,13 @@ func set_preview(value: bool) -> void:
 				tw = i.create_tween().set_trans(i.amplitude_changing_mode).set_loops()
 				tw.tween_property(i, ^"amplitude", i.amplitude_max, avr_amplitude / i.amplitude_changing_speed)
 				tw.tween_property(i, ^"amplitude", orb.amplitude, avr_amplitude / i.amplitude_changing_speed)
-				print(tw)
 			
 			_orb_data.append(OrbData.new(orb, orb.phase, orb.track_angle, orb.amplitude, tw))
 	else:
 		var orbs := get_children()
 		
 		for j in orbs:
-			if !&"Orb" in j.name || !j is CircularMovementObject2D:
+			if !orb_prefix in j.name || !j is CircularMovementObject2D:
 				continue
 			for k in _orb_data: # Iterates the orb datas to find matching one
 				if k.orb != j: # Skip dismatched orb data
@@ -98,6 +105,39 @@ func set_preview(value: bool) -> void:
 		
 		_orb_data.clear()
 
+
+func set_orbs_placement(value: _OrbsPlacement) -> void:
+	orbs_placement = value
+	
+	match orbs_placement:
+		# Placement pattern: Bar
+		_OrbsPlacement.BAR:
+			var orbs_index := 1
+			var phase := 0
+			for i in get_children():
+				if !orb_prefix in i.name || !i is CircularMovementObject2D:
+					continue
+				i.amplitude = Vector2(i.amplitude).normalized() * orbs_index * size
+				# Records the phase of the first orb
+				if orbs_index == 1:
+					phase = i.phase
+				# Then set other orbs' phases to the recorded one
+				else:
+					i.phase = phase
+				orbs_index += 1
+			print("[Orbs] Became an orbs bar")
+		# Placement pattern: Circle
+		_OrbsPlacement.CIRCLE:
+			var orbs: Array[CircularMovementObject2D] = []
+			for i in get_children():
+				if !orb_prefix in i.name || !i is CircularMovementObject2D:
+					continue
+				orbs.append(i)
+			for j in orbs:
+				j.phase = initial_phase + orbs.find(j) * 360.0 / orbs.size()
+			print("[Orbs] Became an orbs circle")
+	
+	orbs_placement = _OrbsPlacement.NONE
 
 
 class OrbData:
