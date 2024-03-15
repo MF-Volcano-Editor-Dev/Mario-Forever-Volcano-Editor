@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cmmc0ekq48ety"]
+[gd_scene load_steps=11 format=3 uid="uid://cmmc0ekq48ety"]
 
 [ext_resource type="PackedScene" uid="uid://crnx40c7hevum" path="res://objects/uis/huds/level_hud.tscn" id="1_brdbf"]
 [ext_resource type="Script" path="res://scripts/scenes/room.gd" id="1_p1njg"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://cui35mog5pwf8" path="res://objects/units/general/unit_level_completion.tscn" id="4_an7ri"]
 [ext_resource type="PackedScene" uid="uid://mlw61ix1dmoo" path="res://objects/units/general/unit_coin_to_life.tscn" id="4_vw81q"]
 [ext_resource type="TileSet" uid="uid://7f4u48gspyof" path="res://assets/tilesets/overworld.tres" id="7_6y41o"]
+[ext_resource type="PackedScene" uid="uid://csjk5q6idlgca" path="res://objects/entities/enemies/orbs/orb_center.tscn" id="9_h5dkr"]
+[ext_resource type="PackedScene" uid="uid://sc6byai7jxes" path="res://objects/entities/enemies/orbs/orb_normal.tscn" id="10_1u1ut"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_p1njg")
@@ -36,5 +38,12 @@ layer_0/tile_data = PackedInt32Array(851968, 65537, 0, 917504, 65537, 1, 851969,
 metadata/_edit_lock_ = true
 
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
-position = Vector2(128, 400)
+position = Vector2(64, 400)
 current_powerup = &"fireball"
+
+[node name="OrbCenter" parent="." instance=ExtResource("9_h5dkr")]
+position = Vector2(320, 256)
+
+[node name="OrbNormal" parent="OrbCenter" instance=ExtResource("10_1u1ut")]
+amplitude = Vector2(0, 0)
+amplitude_changing_speed = 250.0

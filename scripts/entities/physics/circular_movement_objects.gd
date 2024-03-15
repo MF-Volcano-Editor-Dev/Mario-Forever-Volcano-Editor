@@ -11,8 +11,8 @@ class_name CircularMovementObject2D extends Node2D
 ## Amplitude can change, too. With [member amplitude_changing_speed] adjusted, the amplitude of the route will vary from [member amplitude] to [member amplitude_max].
 ## Developer can modify [member amplitude_changing_mode] to define the transition of changing speed of amplitude.
 
-@export_group("Tracks and Speed")
 @export_subgroup("Basic")
+@export_group("Tracks and Speed")
 ## Amplitude (X-axis and Y-axis) of the route
 @export var amplitude: Vector2 = Vector2.ONE * 150
 ## Frequency of chaning phase (Angular speed of the object)
@@ -37,29 +37,17 @@ class_name CircularMovementObject2D extends Node2D
 ## Facing method of the object. Useful for objects that have facings.
 @export_enum("None", "Sine", "Cosine", "Look at Player", "Back against Player") var facing_mode: int
 
-var _amplitude_min: Vector2
 var _tw: Tween
 var _ellipse: Ellipse = Ellipse.new()
 
 
 func _ready() -> void:
-	_ellipse.amplitude = amplitude
-	_ellipse.rotation = deg_to_rad(track_angle)
 	_ellipse.center = position
-	
-	_amplitude_min = amplitude
-	if amplitude_changing_speed > 0:
-		# Average values
-		var avr_amplitude := (absf(amplitude.x) + absf(amplitude.y)) / 2
-		# Tween (Using average values)
-		_tw = create_tween().set_trans(amplitude_changing_mode)
-		_tw.tween_property(self, ^"amplitude", _amplitude_min, avr_amplitude / amplitude_changing_speed)
-		_tw.tween_property(self, ^"amplitude", amplitude_max, avr_amplitude / amplitude_changing_speed)
-	
-	if random_phase:
-		phase = randf_range(-180, 180)
+	_update_amplitude_changing()
 
 func _process(delta: float) -> void:
+	_update()
+	
 	phase = wrapf(phase + frequency * delta, -180, 180)
 	track_angle = wrapf(track_angle + track_rotation_speed * delta, -180, 180)
 	
@@ -76,3 +64,20 @@ func _process(delta: float) -> void:
 			if !np:
 				return
 			set_meta(&"facing", Transform2DAlgo.get_direction_to_regardless_transform(global_position, np.global_position, global_transform) * (1 if facing_mode == 3 else -1))
+
+
+func _update() -> void:
+	_ellipse.amplitude = amplitude
+	_ellipse.rotation = deg_to_rad(track_angle)
+	
+	if random_phase:
+		phase = randf_range(-180, 180)
+
+func _update_amplitude_changing() -> void:
+	if amplitude_changing_speed > 0:
+		# Average values
+		var avr_amplitude := (absf(amplitude_max.x - amplitude.x) + absf(amplitude_max.y - amplitude.y)) / 2
+		# Tween (Using average values)
+		_tw = create_tween().set_trans(amplitude_changing_mode).set_loops()
+		_tw.tween_property(self, ^"amplitude", amplitude_max, avr_amplitude / amplitude_changing_speed)
+		_tw.tween_property(self, ^"amplitude", amplitude, avr_amplitude / amplitude_changing_speed)
