@@ -14,3 +14,6 @@ static func flash(node: CanvasItem, duration: float, interval: float = 0.06) -> 
 	var tw: Tween = node.create_tween().set_trans(Tween.TRANS_SINE).set_loops(int(ceilf(duration / interval)))
 	tw.tween_property(node, ^"modulate:a", 0.1, interval / 2)
 	tw.tween_property(node, ^"modulate:a", a, interval / 2)
+	tw.finished.connect(func() -> void:
+		node.modulate.a = a
+	)

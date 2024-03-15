@@ -75,11 +75,11 @@ func _on_body_touched(body: Node2D) -> void:
 	
 	body = body as PhysicsBody2D
 	
+	on_touched_by.emit(body)
+	
 	_detected_bodies.append(body)
 	_touched(body)
 	_on_detection = true # To prevent from double call
-	
-	on_touched_by.emit(body)
 
 func _on_body_left(body: Node2D) -> void:
 	if !body is PhysicsBody2D:

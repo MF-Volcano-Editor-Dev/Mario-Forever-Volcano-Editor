@@ -1,5 +1,7 @@
 extends AnimatableBody2D
 
+signal launched ## Emitted when something is launched.
+
 @export_category("Bullet Bill")
 @export_range(0, 256, 0.001, "suffix:px") var stop_launching_margin: float = 80
 @export_range(0, 60, 0.001, "suffix:s") var first_launch_delay: float = 0.5
@@ -53,6 +55,8 @@ func _on_launching() -> void:
 			if j is Walker2D:
 				j.initial_direction = Walker2D.InitDirection.BY_VELOCITY
 				j.velocality.x = _dir * absf(j.velocality.x)
+		
+		launched.emit()
 		
 		if i < shooting_times - 1:
 			await get_tree().create_timer(shooting_interval, false).timeout

@@ -1,5 +1,7 @@
 extends AnimatableBody2D
 
+signal launched ## Emitted when something is launched.
+
 @export_category("Spikyball Launcher")
 @export_range(0, 60, 0.001, "suffix:s") var launching_interval: float = 3
 @export_range(0, 150, 0.001, "degrees") var launching_central_angle: float = 74
@@ -41,6 +43,8 @@ func _on_launching() -> void:
 				var vel := up.rotated(randf_range(-a, a)) * randf_range(launching_speed, launching_speed + launching_speed_extra)
 				vel *= clampf(cos(up.angle_to(ngdir) / 2), 0.4, 1) # cos(x/2) is a good sample
 				j.velocity = vel
+		
+		launched.emit()
 		
 		if i < shooting_times - 1:
 			await get_tree().create_timer(shooting_interval, false).timeout

@@ -15,7 +15,7 @@ shape = SubResource("RectangleShape2D_pekwa")
 
 [node name="Attacker" type="Node" parent="."]
 script = ExtResource("1_hluyq")
-id = 1
+id = 2
 damage_level = 5
 metadata/_edit_pinned_properties_ = [&"damage_level", &"id"]
 

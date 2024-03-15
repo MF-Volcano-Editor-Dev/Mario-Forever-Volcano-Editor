@@ -50,8 +50,8 @@ func _hit_by_attacker(attacker: Attacker) -> void:
 	for i in filter_ids:
 		if i == DataList.AttackId.NONE || \
 			(attacker.id != DataList.AttackId.FORCED && 
-			(filter_ids_mode == FilterMode.EXCLUSION && attacker.id in filter_ids) || 
-			(filter_ids_mode == FilterMode.INCLUSION && !attacker.id in filter_ids)):
+			((filter_ids_mode == FilterMode.EXCLUSION && attacker.id in filter_ids) || 
+			(filter_ids_mode == FilterMode.INCLUSION && !attacker.id in filter_ids))):
 				return
 	
 	Sound.play_2d(sound_attacked, root)

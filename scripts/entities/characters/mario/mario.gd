@@ -68,6 +68,7 @@ func set_powerup(value: StringName) -> void:
 func invulnerablize(duration: float = 2) -> void:
 	_invulnerablity_counter = get_tree().create_timer(duration, false)
 	_invulnerablity_counter.timeout.connect(func() -> void:
+		await get_tree().create_timer(0.075, false).timeout # Used to ensure that the alpha is properly reset
 		_invulnerablity_counter = null
 	)
 	Effects.flash(self, duration)
@@ -163,7 +164,6 @@ func is_invulnerable() -> bool:
 func _on_falling_to_death() -> void:
 	if !falling_to_death:
 		return
-	
 	die()
 #endregion
 
