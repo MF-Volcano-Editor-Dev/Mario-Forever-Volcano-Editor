@@ -30,6 +30,8 @@ var _invulnerablity_counter: SceneTreeTimer # Invulerability time counter
 
 
 func _ready() -> void:
+	super()
+	
 	current_powerup = current_powerup # Triggers "set_powerup" to set initial powerup
 	
 	Events.EventGame.get_signals().completed_level.connect(add_to_group.bind(&"state_completed")) # Level completion

@@ -45,10 +45,8 @@ func _ready() -> void:
 	body_entered.connect(_on_character_checked)
 	
 	# Clear data on level accomplishment
-	Events.EventGame.get_signals().completion_accomplished.connect(func() -> void:
-		_current_checkpoint = -1
-		_checked_checkpoints.clear()
-	)
+	Scenes.scene_changed.connect(_on_clear_data)
+	Events.EventCharacter.get_signals().game_over.connect(_on_clear_data)
 	
 	# Activated when the register is checked and able to show activation animation
 	if id in _checked_checkpoints && auto_activated_once_checked:
@@ -85,3 +83,7 @@ func _on_character_checked(body: Node2D) -> void:
 
 func _sound() -> void:
 	Sound.play_1d(sounds_checkpoint.pick_random(), self)
+
+func _on_clear_data() -> void:
+	_current_checkpoint = -1
+	_checked_checkpoints.clear()

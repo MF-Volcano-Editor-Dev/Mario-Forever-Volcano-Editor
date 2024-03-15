@@ -38,3 +38,9 @@ metadata/_edit_lock_ = true
 [node name="Mario" parent="." instance=ExtResource("3_2xf2e")]
 position = Vector2(64, 400)
 current_powerup = &"fireball"
+no_appearing_animation_when_ready = null
+sound_starman = null
+id = null
+direction = null
+center_offset = null
+falling_to_death = null

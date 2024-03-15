@@ -29,6 +29,11 @@ class_name Character extends EntityBody2D
 @export var falling_to_death: bool = true
 
 
+func _ready() -> void:
+	# Restores death count on game over
+	Events.EventCharacter.get_signals().game_over.connect(Data.restore_death_count)
+
+
 ## [code]abstract[/code] Makes the character hurt.
 func hurt() -> void:
 	pass
@@ -152,6 +157,13 @@ class Data:
 	
 	## Restores death count
 	static func restore_death_count() -> void:
+		death_counts = 0
+	
+	## Restores all data
+	static func restore_all_data() -> void:
+		lives = ProjectSettings.get_setting("game/data/player/default_lives", 4)
+		coins = 0
+		scores = 0
 		death_counts = 0
 
 
