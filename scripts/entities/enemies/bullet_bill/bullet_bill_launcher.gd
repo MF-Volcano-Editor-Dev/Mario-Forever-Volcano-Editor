@@ -2,7 +2,7 @@ extends AnimatableBody2D
 
 signal launched ## Emitted when something is launched.
 
-@export_category("Bullet Bill")
+@export_category("Bullet Launcher")
 @export_range(0, 256, 0.001, "suffix:px") var stop_launching_margin: float = 80
 @export_range(0, 60, 0.001, "suffix:s") var first_launch_delay: float = 0.5
 @export_range(0, 60, 0.001, "suffix:s") var interval: float = 1.5
