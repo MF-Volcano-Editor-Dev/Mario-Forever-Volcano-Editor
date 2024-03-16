@@ -22,7 +22,7 @@ func _on_start_falling() -> void:
 	
 	await Sound.play_2d(sound_falling, self).finished
 	
-	while _visible_on_screen.is_on_screen():
+	while is_inside_tree() && _visible_on_screen.is_on_screen():
 		await get_tree().physics_frame
 	
 	remove_from_group(&"boss_death")
