@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://dm670pr38isks"]
+[gd_scene load_steps=37 format=3 uid="uid://dm670pr38isks"]
 
 [ext_resource type="Script" path="res://scripts/entities/enemies/bowser/bowser.gd" id="1_u0h8j"]
 [ext_resource type="Script" path="res://scripts/components/attack/class_attackee.gd" id="2_itpdc"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://c4fjmx6pfp0xp" path="res://objects/uis/huds/bowser_health.tscn" id="13_4xmdl"]
 [ext_resource type="PackedScene" uid="uid://fjy05w2ma1lj" path="res://objects/entities/#projectiles/flame/flame_enemy.tscn" id="13_dyhwe"]
 [ext_resource type="PackedScene" uid="uid://ce28yo7na7g27" path="res://objects/entities/#projectiles/hammers/hammer_enemy.tscn" id="14_a7ksb"]
+[ext_resource type="PackedScene" uid="uid://dy3mf177bgoj0" path="res://objects/entities/#projectiles/flameball/flameball_bowser.tscn" id="14_acxmu"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_50jj2"]
 size = Vector2(63.9998, 64.0002)
@@ -178,9 +179,10 @@ animations = [{
 }]
 
 [node name="Bowser" type="EntityBody2D" groups=["boss"]]
-velocality = Vector2(100, 0)
+velocality = Vector2(100, -1.36424e-12)
 velocity = Vector2(100, -4.37114e-06)
 gravity_scale = 0.2
+process_mode = 4
 collision_layer = 4
 collision_mask = 8
 velocity = Vector2(100, -4.37114e-06)
@@ -214,7 +216,6 @@ metadata/_edit_pinned_properties_ = [&"sound_stomped"]
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -4)
 sprite_frames = SubResource("SpriteFrames_igpi6")
-animation = &"open_mouth"
 autoplay = "default"
 script = ExtResource("5_5ddd5")
 
@@ -222,12 +223,14 @@ script = ExtResource("5_5ddd5")
 position = Vector2(16, -4)
 remote_path = NodePath("../../Flame")
 script = ExtResource("5_5ddd5")
+flip_position_x = true
 
 [node name="RemoHammer" type="RemoteTransform2D" parent="AnimatedSprite2D"]
 visible = false
 position = Vector2(22, 1)
 remote_path = NodePath("../../Hammer")
 script = ExtResource("5_5ddd5")
+flip_position_x = true
 
 [node name="EnemyKillingProcess" type="Node2D" parent="."]
 visible = false
@@ -239,6 +242,10 @@ position = Vector2(16, -8)
 script = ExtResource("8_mm1ym")
 
 [node name="FlameballEnemy" parent="Flame" instance=ExtResource("13_dyhwe")]
+editor_description = "Should be the first child!"
+
+[node name="FlameballEnemy2" parent="Flame" instance=ExtResource("14_acxmu")]
+editor_description = "Should be the second child!"
 
 [node name="Hammer" type="Node2D" parent="."]
 visible = false

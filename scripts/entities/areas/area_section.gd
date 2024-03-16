@@ -80,15 +80,6 @@ func set_has_characters(value: bool) -> void:
 				# Initialization for new music player
 				if !is_instance_valid(_music_player):
 					_music_player = Music.play(get_tree(), music, music_channel, DataList.AudioMode.GLOBAL if music_global else DataList.AudioMode.SCENIAL)
-					
-					# Pauses the music when characters are on starman, and resumes when all get their starmen off
-					Events.EventCharacter.get_signals().character_on_starman.connect(Music.pause.bind(music_channel), CONNECT_REFERENCE_COUNTED)
-					Events.EventCharacter.get_signals().character_off_starman.connect(Music.resume.bind(music_channel), CONNECT_REFERENCE_COUNTED)
-					
-					# Stops music if some events are triggered
-					Events.EventMusic.get_signals().music_all_stop.connect(func() -> void:
-						Music.stop_by_player(_music_player, true)
-					, CONNECT_ONE_SHOT | CONNECT_REFERENCE_COUNTED)
 				
 				if !_initial_delay && music_fadable & 1:
 					_music_player.volume_db = music_volume_faded

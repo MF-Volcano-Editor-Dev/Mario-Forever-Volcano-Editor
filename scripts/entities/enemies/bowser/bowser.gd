@@ -22,15 +22,33 @@ signal bowser_damaged ## Emitted when bowser gets damaged.
 @export_range(0, 20, 0.001, "suffix:s") var movement_halt_interval_extra: float = 2.5
 @export_range(0, 20, 0.001, "suffix:s") var movement_halting_duration: float = 0.5
 @export_range(0, 20, 0.001, "suffix:s") var movement_halting_duration_extra: float = 1.5
-@export_range(0, 1, 0.001, "suffix:px/s") var movement_jumping_speed: float = 300
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var movement_jumping_speed: float = 300
 @export_range(0, 20, 0.001, "suffix:s") var movement_jumping_interval: float = 0.5
 @export_range(0, 20, 0.001, "suffix:s") var movement_jumping_interval_extra: float = 1.5
 @export_group("Attack")
 @export var attack_to_next_delay: PackedFloat32Array = [2]
 @export var attack_list: Array[StringName] = [&"flame"]
-@export_subgroup("Multiflame")
+@export_subgroup("Multiflame", "multiflame_")
 @export_range(2, 30) var multiflame_amount: int = 3
 @export_range(0, 360, 0.001, "degrees") var multiflame_central_angle: float = 15
+@export_subgroup("Hammer", "hammer_")
+@export_range(0.1, 30, 0.001, "suffix:s") var hammer_preparation_delay: float = 2
+@export_range(1, 9999) var hammer_amount: int = 20
+@export_range(0, 30, 0.001, "suffix:s") var hammer_interval: float = 0.075
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var hammer_throwing_speed: float = 304
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var hammer_throwing_speed_extra: float = 500
+@export_range(0, 90, 0.001, "degrees") var hammer_throwing_angle_min: float = 45
+@export_range(0, 90, 0.001, "degrees") var hammer_throwing_angle_max: float = 75
+@export_range(1, 20) var hammer_throwing_turns: int = 3
+@export_range(0.1, 20, 0.001, "suffix:s") var hammer_next_turn_delay: float = 2
+@export_subgroup("Burst", "burst_")
+@export_range(0.1, 30, 0.001, "suffix:s") var burst_preparation_delay: float = 2
+@export_range(1, 9999) var burst_amount: int = 40
+@export_range(0, 30, 0.001, "suffix:s") var burst_interval: float = 0.1
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var burst_shooting_speed: float = 300
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var burst_shooting_speed_extra: float = 500
+@export_range(0, 90, 0.001, "degrees") var burst_shooting_angle_min: float = 30
+@export_range(0, 90, 0.001, "degrees") var burst_shooting_angle_max: float = 75
 @export_group("References")
 @export_node_path("AnimatedSprite2D") var sprite_path: NodePath = ^"AnimatedSprite2D"
 @export_node_path("EnemyStompable") var enemy_stompable_path: NodePath = ^"EffectBox/EnemyStompable"
@@ -38,6 +56,9 @@ signal bowser_damaged ## Emitted when bowser gets damaged.
 @export_node_path("Instantiater2D") var hammer_path: NodePath = ^"Hammer"
 @export_node_path("Instantiater2D") var corpse_path: NodePath = ^"Corpse"
 @export_group("Sounds", "sound_")
+@export var sound_flame: AudioStream = preload("res://assets/sounds/bowser_flame.wav")
+@export var sound_throwing: AudioStream = preload("res://assets/sounds/throw.wav")
+@export var sound_burst: AudioStream = preload("res://assets/sounds/flameball.ogg")
 @export var sound_hurt: AudioStream = preload("res://assets/sounds/bowser_hurt.wav")
 @export var sound_death: AudioStream = preload("res://assets/sounds/bowser_died.wav")
 
@@ -46,17 +67,20 @@ var lock_walking: bool:
 		lock_walking = value
 		
 		if lock_walking:
-			_speed = velocality.x
+			if velocality.x != 0:
+				_speed = velocality.x
 			velocality.x = 0
 		else:
 			velocality.x = _speed
-			_speed = 0
+var lock_direction: bool
 
 var _state: StringName = &"idle"
 
+var _moving_dir: int
 var _attack_index: int
 var _speed: float
 var _invulnerable: bool
+var _triggered: bool
 var _defended_stomp: int
 var _defended_attacks: int
 
@@ -105,6 +129,8 @@ func _physics_process(_delta: float) -> void:
 
 
 func _update_dir() -> void:
+	if lock_direction:
+		return
 	var np := Character.Getter.get_nearest(get_tree(), global_position)
 	if !np:
 		return
@@ -112,13 +138,14 @@ func _update_dir() -> void:
 
 #region == Movement ==
 func _on_halt() -> void:
-	lock_walking = true
-	await _get_time(movement_halting_duration, movement_halting_duration_extra)
+	for i in 5:
+		await get_tree().physics_frame
+	if !lock_walking:
+		lock_walking = true
+		await _get_time(movement_halting_duration, movement_halting_duration_extra)
+		if _state in [&"idle", &"flame", &"multiflame"]: # These states doesn't lock the movement as they have no or less effect on it
+			lock_walking = false
 	
-	if !_state in [&"idle", &"flame", &"multiflame"]:
-		return
-	
-	lock_walking = false
 	_timer_halt.start(_get_rand(movement_halt_interval, movement_halt_interval_extra))
 
 func _on_jump() -> void:
@@ -142,13 +169,19 @@ func _on_jump() -> void:
 
 #region == Attack ==
 func _on_attack() -> void:
+	if attack_list.is_empty():
+		_timer_attack.start(attack_to_next_delay[_attack_index])
+		return
+	
 	match attack_list[_attack_index]:
 		&"flame":
 			_state = &"flame"
 			_sprite.play(&"flame")
 			await _sprite.animation_finished
 			
-			# The first child should me flame
+			Sound.play_2d(sound_flame, self)
+			
+			# CAUTION: The first child should be the flame
 			var flame := _flame.instantiate(0) as Walker2D
 			flame.initial_direction = InitDirection.BY_VELOCITY
 			flame.velocality.x = absf(flame.velocality.x) * get_meta(&"facing", 1)
@@ -162,7 +195,9 @@ func _on_attack() -> void:
 			_sprite.play(&"flame_charged")
 			await _get_time(1.5, 0)
 			
-			# The first child should me flame
+			Sound.play_2d(sound_flame, self)
+			
+			# CAUTION: The first child should be the flame
 			for i in multiflame_amount:
 				var flame := _flame.instantiate(0) as Walker2D
 				flame.global_rotation_degrees -= multiflame_central_angle / 2
@@ -174,6 +209,68 @@ func _on_attack() -> void:
 			await _sprite.animation_finished
 			_sprite.play(&"default")
 			_state = &"flame"
+		&"hammer":
+			_state = &"hammer"
+			lock_walking = true
+			_sprite.play(&"hammer")
+			_sprite.frame = 0
+			_sprite.pause()
+			
+			await _get_time(hammer_preparation_delay, 0)
+			
+			for i in hammer_throwing_turns:
+				_sprite.play()
+				
+				for j in hammer_amount:
+					Sound.play_2d(sound_throwing, self)
+					
+					var hammers := _hammer.instantiate_all()
+					for k in hammers:
+						if k is Walker2D:
+							var vel := Vector2.RIGHT.rotated(deg_to_rad(-randf_range(hammer_throwing_angle_min, hammer_throwing_angle_max))) * _get_rand(hammer_throwing_speed, hammer_throwing_speed_extra)
+							vel.x *= get_meta(&"facing", 1)
+							k.initial_direction = InitDirection.BY_VELOCITY
+							k.velocality = vel
+					
+					await _get_time(hammer_interval, 0)
+				
+				_sprite.stop()
+				await _get_time(hammer_next_turn_delay, 0)
+			
+			_state = &"idle"
+			lock_walking = false
+			_sprite.play(&"default")
+		&"burst":
+			_state = &"burst"
+			lock_walking = true
+			lock_direction = true
+			_sprite.play(&"open_mouth")
+			_sprite.frame = 0
+			_sprite.pause()
+			
+			await _get_time(burst_preparation_delay, 0)
+			_sprite.play(&"laugh")
+			
+			for j in burst_amount:
+				Sound.play_2d(sound_burst, self)
+				
+				# The second child of ``Flame`` should be bowser's flameball
+				var flameball := _flame.instantiate(1)
+				if flameball is Walker2D:
+					var vel := Vector2.RIGHT.rotated(deg_to_rad(-randf_range(burst_shooting_angle_min, burst_shooting_angle_max))) * _get_rand(burst_shooting_speed, burst_shooting_speed_extra)
+					vel.x *= get_meta(&"facing", 1)
+					flameball.initial_direction = InitDirection.BY_VELOCITY
+					flameball.velocality = vel
+				
+				await _get_time(burst_interval, 0)
+			
+			_sprite.play(&"open_mouth")
+			await _get_time(burst_preparation_delay, 0)
+			
+			_state = &"idle"
+			lock_walking = false
+			lock_direction = false
+			_sprite.play(&"default")
 	
 	# Add attack index
 	_attack_index += 1
@@ -237,12 +334,17 @@ func _on_stomped() -> void:
 		hurt()
 
 func _on_bowser_defeated() -> void:
+	Music.fade_all(-50, 2, true)
+	
 	var items := _corpse.instantiate_all()
 	for i in items:
 		if i is EntityBody2D:
 			i.set_meta(&"facing", get_meta(&"facing", 1))
 
 func _on_bowser_entered_screen() -> void:
+	if _triggered:
+		return
+	_triggered = true
 	process_mode = Node.PROCESS_MODE_INHERIT
 	bowser_in_screen.emit()
 #endregion

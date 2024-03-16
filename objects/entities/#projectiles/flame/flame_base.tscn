@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://dsiafdub20w5h"]
+[gd_scene load_steps=17 format=3 uid="uid://dsiafdub20w5h"]
 
 [ext_resource type="Script" path="res://scripts/entities/physics/walker_2d.gd" id="1_dc85n"]
 [ext_resource type="Texture2D" uid="uid://3k6tdx4ohaor" path="res://assets/gfx/objects/entities/projectiles/bowser_flame.png" id="2_7nwep"]
+[ext_resource type="Texture2D" uid="uid://3i08m3gbppjg" path="res://assets/gfx/objects/entities/projectiles/fireball_particle.png" id="2_a657v"]
 [ext_resource type="Script" path="res://scripts/#universal/sprite_flip_facing_h.gd" id="3_tn1tb"]
 [ext_resource type="Script" path="res://scripts/components/visible_on_screen/visible_on_screen_directional.gd" id="4_ukfwo"]
 
@@ -10,6 +11,30 @@ size = Vector2(48, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ive05"]
 size = Vector2(48, 16)
+
+[sub_resource type="Curve" id="Curve_eoorq"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.493333, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -5.86081, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_vx7ql"]
+curve = SubResource("Curve_eoorq")
+
+[sub_resource type="Curve" id="Curve_526dk"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.00582, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ggbrl"]
+curve = SubResource("Curve_526dk")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_h54us"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 25.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_curve = SubResource("CurveTexture_ggbrl")
+alpha_curve = SubResource("CurveTexture_vx7ql")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d3j40"]
 atlas = ExtResource("2_7nwep")
@@ -64,6 +89,12 @@ monitorable = false
 shape = SubResource("RectangleShape2D_ive05")
 debug_color = Color(0.980392, 0.133333, 0, 0.419608)
 
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 4
+process_material = SubResource("ParticleProcessMaterial_h54us")
+texture = ExtResource("2_a657v")
+lifetime = 0.5
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_t3s02")
 autoplay = "default"
@@ -72,6 +103,8 @@ script = ExtResource("3_tn1tb")
 
 [node name="VisibleOnScreenNotifierDirectional2D" type="VisibleOnScreenNotifier2D" parent="."]
 visible = false
+position = Vector2(0, 4.76837e-07)
+scale = Vector2(8, 2)
 rect = Rect2(-8, -8, 16, 16)
 script = ExtResource("4_ukfwo")
 direction = 11

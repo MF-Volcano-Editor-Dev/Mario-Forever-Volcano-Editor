@@ -33,7 +33,8 @@ static func play(tree: SceneTree, music_stream: AudioStream, channel: int, mode:
 		m.stream = music_stream
 		m.bus = &"Music"
 		
-		(func() -> void: # Called deferredly to make sure the sound player will be safely added
+		# Called deferredly to make sure the sound player will be safely added
+		(func() -> void:
 			match mode:
 				DataList.AudioMode.SCENIAL:
 					tree.current_scene.add_child(m)
@@ -43,6 +44,15 @@ static func play(tree: SceneTree, music_stream: AudioStream, channel: int, mode:
 		).call_deferred()
 		
 		_musics[channel] = m
+		
+		# Pauses the music when characters are on starman, and resumes when all get their starmen off
+		Events.EventCharacter.get_signals().character_on_starman.connect(Music.pause.bind(channel))
+		Events.EventCharacter.get_signals().character_off_starman.connect(Music.resume.bind(channel))
+		
+		# Stops music if some events are triggered
+		Events.EventMusic.get_signals().music_all_stop.connect(func() -> void:
+			Music.stop(channel, true)
+		, CONNECT_ONE_SHOT | CONNECT_REFERENCE_COUNTED)
 		
 		return m
 
@@ -108,6 +118,13 @@ static func fade(music_player: AudioStreamPlayer, to: float, duration: float, st
 	
 	return true
 
+## Fades all music channels, without any value returned.
+static func fade_all(to: float, duration: float, stop_after_fading: bool = false) -> void:
+	for i in _musics:
+		if !is_instance_valid(i):
+			continue
+		Music.fade(i, to, duration, stop_after_fading)
+
 
 ## Returns [code]true[/code] if the given channel is valid.[br]
 ## A valid channel is set between 0 and the value of project setting, [code]"game/data/music/music_channels"[/code].
@@ -119,3 +136,7 @@ static func is_channel_valid(channel: int) -> bool:
 static func get_music(channel: int) -> AudioStreamPlayer:
 	_resize_musics()
 	return _musics[channel] if is_channel_valid(channel) else null
+
+## Returns all [AudioStreamPlayer]s that is under the control of this class.
+static func get_all_musics() -> Array[AudioStreamPlayer]:
+	return _musics

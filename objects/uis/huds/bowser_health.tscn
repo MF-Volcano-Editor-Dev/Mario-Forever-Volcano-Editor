@@ -77,3 +77,4 @@ stretch_mode = 1
 libraries = {
 "": SubResource("AnimationLibrary_614it")
 }
+autoplay = "RESET"
