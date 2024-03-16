@@ -5,6 +5,8 @@ class_name AreaFluidDeadily extends AreaFluid
 ##
 
 func _ready() -> void:
+	super()
+	
 	body_entered.connect(func(body: Node2D) -> void:
 		if body is Character:
 			body.die()

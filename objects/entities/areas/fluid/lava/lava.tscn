@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://co1ywhvn0jf4s"]
+[gd_scene load_steps=13 format=3 uid="uid://co1ywhvn0jf4s"]
 
 [ext_resource type="Texture2D" uid="uid://buiiq5rcg5yte" path="res://assets/gfx/objects/entities/fluid/lava.png" id="1_tg6on"]
 [ext_resource type="Script" path="res://scripts/entities/areas/fluid/fluid_area.gd" id="2_hok76"]
 [ext_resource type="Script" path="res://objects/entities/areas/fluid/spray/area_spray.gd" id="3_fphiw"]
 [ext_resource type="Script" path="res://scripts/entities/areas/area_fluid_deadily.gd" id="3_h4bci"]
 [ext_resource type="PackedScene" uid="uid://mcaaukfgaam8" path="res://objects/entities/#effects/spray_lava.tscn" id="4_1x575"]
+[ext_resource type="AudioStream" uid="uid://cikyn36geksf2" path="res://assets/sounds/bowser_into_lava.wav" id="6_evtbx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_48q7e"]
 atlas = ExtResource("1_tg6on")
@@ -87,6 +88,8 @@ gravity = 200.0
 linear_damp_space_override = 3
 linear_damp = 300.0
 script = ExtResource("3_h4bci")
+sound_boss_falling_in = ExtResource("6_evtbx")
+metadata/_edit_pinned_properties_ = [&"sound_boss_falling_in"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaFluidDeadily"]
 shape = SubResource("RectangleShape2D_6mwrs")

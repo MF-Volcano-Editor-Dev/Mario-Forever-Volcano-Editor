@@ -31,7 +31,8 @@ class_name Character extends EntityBody2D
 
 func _ready() -> void:
 	# Restores death count on game over
-	Events.EventCharacter.get_signals().game_over.connect(Data.restore_death_count)
+	if !Events.EventCharacter.get_signals().game_over.is_connected(Data.restore_death_count):
+		Events.EventCharacter.get_signals().game_over.connect(Data.restore_death_count)
 
 
 ## [code]abstract[/code] Makes the character hurt.

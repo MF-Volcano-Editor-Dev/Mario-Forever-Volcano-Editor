@@ -5,6 +5,8 @@ class_name AreaFluid extends Area2D
 ## [b]Note:[/b] This node is only avaiable for [Character].
 ## For modification on general [EntityBody2D]s, see [member Area2D.gravity_space_override]
 
+signal boss_death_fell_in ## Emitted when a boss corpse enters in this area.
+
 @export_group("For Character", "character_")
 ## Scales for properties, going to be modified, of a characters that.[br]
 ## [br]
@@ -16,6 +18,9 @@ class_name AreaFluid extends Area2D
 ## When a body enters the fluid, the body will be given the state.
 ## And when it leaves from the fluid, the state will be removed.
 @export var state_for_body: StringName
+@export_group("Boss Death")
+@export_range(0, 1, 0.001, "or_greater", "hide_slider", "suffix:px/s") var boss_corpse_max_falling_speed: float = 100
+@export var sound_boss_falling_in: AudioStream
 
 var _characters: Array[Character]
 
@@ -28,6 +33,7 @@ func _ready() -> void:
 		if body is Character:
 			_characters.append(body)
 		body.add_to_group(&"state_" + state_for_body)
+		_boss_body_in(body)
 	)
 	body_exited.connect(func(body: Node2D) -> void:
 		if body is Character:
@@ -49,3 +55,15 @@ func _property_revert() -> void:
 	for i in _characters:
 		i.max_falling_speed /= character_max_falling_speed_scale
 #endregion
+
+
+func _boss_body_in(body: Node2D) -> void:
+	if !body.is_in_group(&"boss_death"):
+		return
+	
+	Sound.play_2d(sound_boss_falling_in, body)
+	
+	if body is EntityBody2D:
+		body.max_falling_speed = boss_corpse_max_falling_speed
+	
+	boss_death_fell_in.emit()
