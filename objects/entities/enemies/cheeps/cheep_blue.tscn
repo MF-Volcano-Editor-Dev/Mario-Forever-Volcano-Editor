@@ -35,7 +35,7 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_vt0y1"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_7vktw"]
 radius = 1.0
 
 [node name="CheepBlue" type="Node2D"]
@@ -64,9 +64,17 @@ sprite_frames = SubResource("SpriteFrames_r7utg")
 autoplay = "default"
 script = ExtResource("5_es3je")
 
-[node name="Collider" type="ShapeCast2D" parent="."]
+[node name="ColliderX" type="ShapeCast2D" parent="."]
 visible = false
-shape = SubResource("CircleShape2D_vt0y1")
+shape = SubResource("CircleShape2D_7vktw")
+target_position = Vector2(0, 0)
+max_results = 2
+collision_mask = 24
+collide_with_areas = true
+
+[node name="ColliderY" type="ShapeCast2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_7vktw")
 target_position = Vector2(0, 0)
 max_results = 2
 collision_mask = 24
@@ -85,8 +93,8 @@ metadata/_edit_pinned_properties_ = [&"amount"]
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
 visible = false
-position = Vector2(1.43051e-06, 4.76837e-07)
-scale = Vector2(1.6, 1.6)
+position = Vector2(1.90735e-06, 0)
+scale = Vector2(6.4, 6.4)
 script = ExtResource("9_obyv8")
 
 [node name="TimerInterval" type="Timer" parent="."]
@@ -95,3 +103,4 @@ script = ExtResource("9_obyv8")
 [connection signal="cheep_out_of_fluid" from="." to="EnemyKillingProcess" method="forced_kill"]
 [connection signal="on_hit_by_attacker" from="EffectBox/Attackee" to="EnemyKillingProcess" method="killing_process"]
 [connection signal="killing_succeeded" from="EnemyKillingProcess" to="." method="queue_free"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_screen_exited"]

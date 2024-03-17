@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://scripts/components/instantiater/class_enemy_killing_process.gd" id="6_2hl0e"]
 [ext_resource type="PackedScene" uid="uid://bjp3iqqqg38e8" path="res://objects/entities/enemies/#death/cheeps/cheep_red_death.tscn" id="7_lsyao"]
 [ext_resource type="PackedScene" uid="uid://d28wktlfkunys" path="res://objects/uis/counters/scores_label.tscn" id="8_ci3po"]
-[ext_resource type="Script" path="res://scripts/#universal/on_ready_visible.gd" id="9_23ow3"]
+[ext_resource type="Script" path="res://scripts/components/visible_on_screen/visible_on_screen_directional.gd" id="9_2wik6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gmhw1"]
 radius = 16.0
@@ -40,6 +40,8 @@ gravity_scale = 0.25
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_gpuac")
+initial_direction = 3
+metadata/_edit_pinned_properties_ = [&"initial_direction"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -76,11 +78,14 @@ script = ExtResource("6_2hl0e")
 text = "100"
 amount = 100
 
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenNotifier2D" parent="."]
 visible = false
-position = Vector2(1.43051e-06, 4.76837e-07)
-scale = Vector2(1.6, 1.6)
-script = ExtResource("9_23ow3")
+position = Vector2(1.90735e-06, 0)
+scale = Vector2(6.4, 6.4)
+script = ExtResource("9_2wik6")
+direction = 8
+with_global_transform = true
+_is_initialized = true
 
 [node name="TimerInterval" type="Timer" parent="."]
 
@@ -88,3 +93,4 @@ script = ExtResource("9_23ow3")
 [connection signal="on_stomp_succeeded" from="EffectBox/EnemyStompable" to="EnemyKillingProcess" method="stomp_process"]
 [connection signal="killing_succeeded" from="EnemyKillingProcess" to="." method="queue_free"]
 [connection signal="stomp_processed" from="EnemyKillingProcess" to="." method="queue_free"]
+[connection signal="screen_exited_directionally" from="VisibleOnScreenEnabler2D" to="." method="queue_free"]

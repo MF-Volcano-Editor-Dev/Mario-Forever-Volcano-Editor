@@ -65,7 +65,15 @@ sprite_frames = SubResource("SpriteFrames_hyhxs")
 autoplay = "default"
 script = ExtResource("5_siu6w")
 
-[node name="Collider" type="ShapeCast2D" parent="."]
+[node name="ColliderX" type="ShapeCast2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_v3qo7")
+target_position = Vector2(0, 0)
+max_results = 2
+collision_mask = 24
+collide_with_areas = true
+
+[node name="ColliderY" type="ShapeCast2D" parent="."]
 visible = false
 shape = SubResource("CircleShape2D_v3qo7")
 target_position = Vector2(0, 0)
@@ -86,8 +94,8 @@ metadata/_edit_pinned_properties_ = [&"amount"]
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
 visible = false
-position = Vector2(1.43051e-06, 4.76837e-07)
-scale = Vector2(1.6, 1.6)
+position = Vector2(-2.86102e-06, 0)
+scale = Vector2(6.4, 6.4)
 script = ExtResource("7_cjdv3")
 
 [node name="TimerInterval" type="Timer" parent="."]
@@ -96,3 +104,4 @@ script = ExtResource("7_cjdv3")
 [connection signal="cheep_out_of_fluid" from="." to="EnemyKillingProcess" method="forced_kill"]
 [connection signal="on_hit_by_attacker" from="EffectBox/Attackee" to="EnemyKillingProcess" method="killing_process"]
 [connection signal="killing_succeeded" from="EnemyKillingProcess" to="." method="queue_free"]
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_screen_exited"]
