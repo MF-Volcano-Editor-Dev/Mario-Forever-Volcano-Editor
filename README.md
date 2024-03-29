@@ -65,7 +65,7 @@ In Thunder Engine, developers have to overhaul the structure of the engine to im
 We advice to take careful application of this feature, as it may not only lead to problems, but also performance loss due to the high cpu cost of one player.
 
 # Credits
-* ElectronicBoy(Lazy-Rabbit-2001): Major creator, coder, constructurer.
+* Yukana(Lazy-Rabbit-2001): Major creator, coder, constructurer.
 * JUE13: LibOpenMPT compiler for this template.
 * Visphort: Creator of LibOpenMPT GDExtension.
 * Dasasdhba: Optimization for Smooth Outline shader made by Tanders to make the effect compatible with `CanvasGroup` which makes the shader on texts possible.
