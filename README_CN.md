@@ -1,4 +1,5 @@
 [English](README.md) | **中文版（当前页面）**
+
 # Mario-Forever-Thunder-Editor-Refactored
 基于 Godot 4.2 开发的 Mario Forever 同人游戏开发模板，以**GDScript**为主要开发语言，辅以**C#/C++/Rust**来完成大批量、高复杂度的运算。
 建议在使用前在本github页面上阅读`guide`文件夹内的手册以进行学习。
@@ -25,11 +26,11 @@
   若未显示任何错误，则模板更新成功。
 ## 常见问题
 ### 在克隆的时候突然中断，弹出"fatal xxx"错误
-This is majorly because of bad network connection to the github. Network in some location to the github is not as smooth as usual, and if you encounter the similar problem, you can try:
-* Recloning
-* Extending the maximum of cloning buffer
-* Using some tools to help with smoother connection to github
-* Using shallow cloning:
+这种问题一般是与github的连接不稳定导致的。部分地区网络连接到Github时较为困难，若遇到诸如此类的问题，可尝试以下方法：
+* 重新克隆
+* 提高克隆缓冲上限
+* 使用一些工具来加速连接github
+* 使用浅克隆:
   ```dos
   git clone --depth 1 <link> [directory]
   ```]
@@ -38,35 +39,34 @@ This is majorly because of bad network connection to the github. Network in some
   git fetch --unshallow
   git pull
   ```]
-If all of these methods cannot yet help solve the problem, please check your network connection and make sure the connection is available to the Internet.
+若上述问题仍未能解决该问题，请检查您的网络连接是否能与互联网正常连接。
 
 
-# Why only GDScript in the template?
-Since C# needs extra steps to use, to make greenhands better get to using this editor(template), we prefer GDScript first. But this doesn't mean that we have no chances to use C# in the template anymore, unless there should be an archobstacle to solve.
-## GDScript coding
-GDScript is known for the fastest learning and using than C# and C++. We recommended everyone who join in Godot for the first time, to code with this language so that it ensures your smooth syntax and coding process.
+# 为什么引擎本体只使用GDScript来编写脚本？
+由于C#在使用时需要一些额外步骤，为了能让新手也能上手本引擎（模板），我们就采用了GDScript来编写脚本，但这并不代表我们以后不会用C#来编写脚本。日后如有棘手的需求，GDScript无法满足该需求时，我们会考虑使用C#解决。
+## GDScript
+GDScript以其比C#、C++更为简单易上手的特点而被Godot作为亲儿子语言使用至今，我们也推荐第一次使用Godot的开发者使用GDScript来开发引擎，以确保开发者们良好的编程语言使用体验。
 ## C#
-C# is the middle choice between GDScript and C++, providing advanced coding and running faster than GDScript, an interpreted language with dynamic typing, because of C#'s static typing and half-compiling. Also, for those who have experience on Unity or other game engines offering C#, these developers will get familiar with the Godot coding as long as they have explored the C# API in Godot.  
-However, even though C# is able to interact with GDScript, inheritance from C# to GDScript and vice versa, plus from C++ GDExtension are not supported yet.
-## C++, or GDExtension
-Since Godot 4.0, C++ libraries can be installed in a smoother and easier way -- GDExtension, which exceeds GDNative but inherited the style. This means that every developer can now get faster access to making a C++ script/library with godot-cpp project. C++ is the fastest language among the three, and is supported to be inherited by GDScript, so if you have requirement on calculations in large amount, or to make complex logics where some calls may lag the performance, this is a better choice for developers.  
-Actually, this template contains GDExtensions made for convenience and low performance cost, especially EntityBody2D, in which a heavy calculation on physics is conducted. E.g. the redefined `move_and_slide()` in this GDExtension on some old hardwares can run around 140us, but in GDScript the number could be greater, about 200 to 350.
+C#则是介于GDScript和C++的编程语言，编写规则要比GDScript稍微复杂，但运行效率要比GDScript要高，因为GDScript是动态类型解释型语言，而C#则是静态类型半编译半解释型语言。同时，对于有过Unity等使用C#作为脚本语言的游戏开发引擎的用户而言，只需要稍稍查阅Godot C# API，就能在Godot上使用C#快速开发游戏。  
+然而即便C#能与GDScript相互通信，C#脚本类却不能继承GDScript脚本类，反之亦然，且C#还不支持继承由GDExtension所定义类。
+## C++, or GDExtension 
+Godot 4.0起，开发者可以更加简便地调用C++库——即GDExtension技术。GDExtension为GDNative的进化版，开发者只需要使用godot-cpp模板就可以快速调用C++库。C++代码的运行效率比GDScript和C#都要快，其所定义的类能被GDScript脚本类继承。若开发者由大批量、高复杂运算等涉及到性能的需求，建议使用GDExtension（C++）编写相关代码。  
+本引擎就原生包含一部分GDExtension，用于降低部分算法的性能消耗，同时给开发者提供更为便捷的接口，特别是EntityBody2D，该类将大量物理运算封装在内，其重定义的`move_and_slide()`方法则可以在部分老旧设备上仅消耗140us，同样的代码用GDScript写却需要消耗200~350us。  
 
-# Highlights
-## Node-driven Framework
-Unlike previous Thunder Engine, Thunder Editor Refactor is operated based on Nodes, since they can provide clear, logical and easy-to-implement interfaces for users, particularly those who doesn't like to set abundant resources that ends up with mess, like the current situation in Thunder Engine. However, it requires you to remember which node drives which one or more, which means that the implementation of node-driven system could be a bit difficult to comprehend and needs days of hardwork to master.
-## Signal-method Connection Structure
-Since signals help with transmission of messages from one node to the other one(s), and due to their ability to be manually pre-connected to other nodes through the inspector, this template takes this feature into application so that a large amount of behaviors are able to turn into interfaces for other nodes by signal connections, which is couplingless and flexible.
-E.g. You have an EntityBody2D that should jump when it touches the ground. In this situation, you can connect its `collided_floor` signal to its method `jump` with a certain `float` passed in in advanced signal connection panel, and when the object hits the ground, it will jump. If you don't need this feature, just remove the connection. Therefore, you don't have to write two copies of scripts to separately code these behaviors.
-## Guidebooks
-To help freshmen users to operate this template, in `guides` folder are placed .md files which may help and guide them what to know about this template, and how to use, code this it, which may greately reduce the difficulty of learning from zero.
-## Simple Multiplayers
-In Thunder Engine, developers have to overhaul the structure of the engine to implement multiplayer system, but now in Thunder Editor Refactored, it has been installed as a built-in feature! By creating at most 4 instances of the player, with their id differs from this of each other, you will have multiple players in the same level. Of course, anything has pros and cons. The multiple player system is so complex that it requires developers to code for multiplayers, and some behaviors, such as level completion and pipe warping, will behave in an incommon way. For example, if there are 3 players in the level while one of them checked the goal, then other two will disappear and the only one alive will behave walking for the completion. Another instance is that when one triggers pipe warping, the other ones will immediately teleport to this one and then start warping.  
-We advice to take careful application of this feature, as it may not only lead to problems, but also performance loss due to the high cpu cost of one player.
+# 引擎亮点
+## 框架：节点驱动
+与Thunder Engine不同，Thunder Editor Refactor由节点驱动，节点可以为开发者提供更为直观、更有条理、更易操作的物件结构，对于不希望结构凌乱的开发者而言，其更希望使用这样的结构，而非Thunder Engine那种。但该结构也需要开发者熟记每个节点所驱动的对象。因此，节点驱动这种架构对开发者而言更需要花费时间去钻研其运作机理。
+## 结构：信号——方法连接
+信号可以将信息从一个节点传递给其他节点，由于可以在面板中手动进行连接，本引擎便充分发挥了这一特性，让大部分行为都可以通过信号进行操作，降低耦合的同时提升了操作灵活度。例如：若要制作一个落地即起跳的EntityBody2D实例，则可以将其`collided_floor`信号连接至其`jump`方法，并在高级信号连接面板中绑定传入一个`float`类型的参数。当该对象实例碰到地面时，该对象实例就会从地面上立即跳起。若不需要跳起的特性，直接将该信号链接从信号连接面板当中手动移除即可。这样，也就不需要再写额外的脚本去编写这些行为了。
+## 指南
+为帮助新手快速上手本引擎，我们在`guides`文件夹中存放了大量.md文件，以便新人开发者了解本模板、使用方法、代码编写等，能够大大降低新人开发者从0学习本引擎的难度。
+## 简易多人系统
+如果需要在Thunder Engine里制作多人系统，就需要大改Thunder Engine，而现在，Thunder Editor Refactored正式原生实装这一系统。该系统最多支持创建4名玩家，通过调整玩家id即可实现同一关卡内玩家之间的彼此独立。不过，多人系统由于编写起来过于复杂，在开发涉及到多人系统的部分是需要考虑多玩家的情况，部分行为（如过关与水管传送）更是以与原先单玩家模式完全不同的方式呈现在各位开发者与玩家眼前。比如：若当前关卡中有3名玩家，其中有一名玩家触碰到了终点，那么另外两名玩家就会消失，只有碰到关卡终点的这一名玩家会得以存留，走路过关。再如：若多名玩家中有一人触发了水管传送，则其他玩家都会立即传送到该玩家处一并进行水管传送。  
+在此建议各位开发者谨慎使用该系统，若使用不慎，不但会用出问题，而且还会降低性能，因为每存在一名玩家，都会大量消耗CPU性能。
 
-# Credits
-* ElectronicBoy(Lazy-Rabbit-2001): Major creator, coder, constructurer.
-* JUE13: LibOpenMPT compiler for this template.
-* Visphort: Creator of LibOpenMPT GDExtension.
-* Dasasdhba: Optimization for Smooth Outline shader made by Tanders to make the effect compatible with `CanvasGroup` which makes the shader on texts possible.
-* Tanders: Creator of Smooth Outline shader.
+# 鸣谢
+* Yukana(Lazy-Rabbit-2001)：引擎主操，主要工程师。
+* JUE13：为本引擎编译LibOpenMPT插件。
+* Visphort：LibOpenMPT GDExtension的作者。
+* Dasasdhba：优化了Tanders的Smooth Outline Shader，能让其用在`CanvasGroup`上。
+* Tanders：Smooth Outline Shader的作者。
