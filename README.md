@@ -4,6 +4,41 @@ Before using the template, it is recommended to learn the usage in the `guide` f
 ## Current Version
 0.1 Beta
 
+# How to Install and Update?
+## Steps
+* Click on "Code" button and click the button at the right side of the url link, which will help copy the link into your clipboard.
+* Download and install Git before you clone this template.
+* After the successful installation, right click in an empty folder and select "Open Git Bash here". (If the OS you are using is Windows 11, you may need an extra click on "Show more options"). Then you will see a command panel (git bash) popped.
+* In the git bash panel, code these command:
+  ```dos
+  git clone <the_link_in_your_clipboard> [directory] --recursive
+  ```
+  The parameter `--recursive` is needed since there is a [submodule](https://github.com/Thunder-Engine-Dev/Mario-Forever-Thunder-Editor-Refactored-Core-Engine), **the kernel part of the engine**. Therefore, your engine will be cloned as failure if the parameter is missing because without this parameter, the kernel body will be ignored during being cloned.
+* If there is no any error displaying on the panel, it means the cloning and installation are successful.
+* If you want to update the engine, you can right click on the empty field in the folder where the engine is cloned, and open the git bash again and input these commands:
+  ```dos
+  git submodule init --recursive
+  git submodule update --recursive
+  ```
+  If no any errors, the update is successful.
+## Questions
+### My cloning done put an error at the progress of downloading, saying "fatal xxx".
+This is majorly because of bad network connection to the github. Network in some location to the github is not as smooth as usual, and if you encounter the similar problem, you can try:
+* Recloning
+* Extending the maximum of cloning buffer
+* Using some tools to help with smoother connection to github
+* Using shallow cloning:
+  ```dos
+  git clone --depth 1 <link> [directory]
+  ```]
+  After the successful cloning:
+  ```dos
+  git fetch --unshallow
+  git pull
+  ```]
+If all of these methods cannot yet help solve the problem, please check your network connection and make sure the connection is available to the Internet.
+
+
 # Why only GDScript in the template?
 Since C# needs extra steps to use, to make greenhands better get to using this editor(template), we prefer GDScript first. But this doesn't mean that we have no chances to use C# in the template anymore, unless there should be an archobstacle to solve.
 ## GDScript coding
