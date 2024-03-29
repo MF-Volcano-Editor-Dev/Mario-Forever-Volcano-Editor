@@ -25,9 +25,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Game="*res://singletons/scripts/Game.gd"
-Scenes="*res://singletons/scripts/Scenes.gd"
-Transmission="*res://singletons/packed_scenes/Transmission.tscn"
+Game="*res://engine/singletons/scripts/Game.gd"
+Scenes="*res://engine/singletons/scripts/Scenes.gd"
+Transmission="*res://engine/singletons/scripts/Transmission.gd"
 
 [display]
 
@@ -48,7 +48,8 @@ enabled=PackedStringArray("res://addons/InstanceDock/plugin.cfg", "res://addons/
 
 folder_colors={
 "res://assets/": "green",
-"res://gdextension/": "red",
+"res://engine/": "yellow",
+"res://engine/gdextension/": "red",
 "res://guides/": "pink",
 "res://icons/": "green",
 "res://objects/": "blue",
