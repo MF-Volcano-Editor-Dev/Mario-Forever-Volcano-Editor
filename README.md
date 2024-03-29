@@ -1,3 +1,5 @@
+**English(Current)** | [中文版](README_CN.md)
+
 # Mario-Forever-Thunder-Editor-Refactored
 A Mario Forever fangame making template based on Godot 4.2 and above, using <b>GDScript</b> as the main language, with <b>C#/C++/Rust</b> as assistant langs for high-amount and complex calculations
 Before using the template, it is recommended to learn the usage in the `guide` folder on Github.
@@ -15,14 +17,14 @@ Before using the template, it is recommended to learn the usage in the `guide` f
   ```
   The parameter `--recursive` is needed since there is a [submodule](https://github.com/Thunder-Engine-Dev/Mario-Forever-Thunder-Editor-Refactored-Core-Engine), **the kernel part of the engine**. Therefore, your engine will be cloned as failure if the parameter is missing because without this parameter, the kernel body will be ignored during being cloned.
 * If there is no any error displaying on the panel, it means the cloning and installation are successful.
-* If you want to update the engine, you can right click on the empty field in the folder where the engine is cloned, and open the git bash again and input these commands:
+* If you want to update the engine, you can right click on the empty field in the folder where the engine is cloned, and open the Git Bash again and input these commands:
   ```dos
   git submodule init --recursive
   git submodule update --recursive
   ```
   If no any errors, the update is successful.
 ## Questions
-### My cloning done put an error at the progress of downloading, saying "fatal xxx".
+### An error is output during the progress of downloading, saying "fatal xxx".
 This is majorly because of bad network connection to the github. Network in some location to the github is not as smooth as usual, and if you encounter the similar problem, you can try:
 * Recloning
 * Extending the maximum of cloning buffer
