@@ -1,5 +1,5 @@
 # Mario-Forever-Volcano-Editor
-A Mario Forever fangame making template based on Godot 4.3 and above, using <b>GDScript</b> as the main language, with <b>C#/C++/Rust</b> as assistant langs for high-amount and complex calculations
+A Mario Forever fangame making template based on Godot 4.3 and above, using <b>GDScript</b> as the main language, with <b>C#/C++</b> as assistant langs for high-amount and complex calculations
 Before using the template, it is recommended to learn the usage in the `guide` folder on Github.
 ## Current Version
 0.2 Beta
@@ -39,8 +39,9 @@ This is majorly because of bad network connection to the github. Network in some
 If all of these methods cannot yet help solve the problem, please check your network connection and make sure the connection is available to the Internet.
 
 
-# Why only GDScript in the template?
+# Why prefer GDScript more than other languages in the template?
 Since C# needs extra steps to use, to make greenhands better get to using this editor(template), we prefer GDScript first. But this doesn't mean that we have no chances to use C# in the template anymore, unless there should be an archobstacle to solve.
+# Language(s) that is/are being used in this template:
 ## GDScript coding
 GDScript is known for the fastest learning and using than C# and C++. We recommended everyone who join in Godot for the first time, to code with this language so that it ensures your smooth syntax and coding process.
 ## C#
