@@ -1,6 +1,6 @@
 **English(Current)** | [中文版](README_CN.md)
 
-# Mario-Forever-Thunder-Editor-Refactored
+# Mario-Forever-Volcano-Editor
 A Mario Forever fangame making template based on Godot 4.2 and above, using <b>GDScript</b> as the main language, with <b>C#/C++/Rust</b> as assistant langs for high-amount and complex calculations
 Before using the template, it is recommended to learn the usage in the `guide` folder on Github.
 ## Current Version
