@@ -30,12 +30,12 @@ This is majorly because of bad network connection to the github. Network in some
 * Using shallow cloning:
   ```dos
   git clone --depth 1 <link> [directory]
-  ```]
+  ```
   After the successful cloning:
   ```dos
   git fetch --unshallow
   git pull
-  ```]
+  ```
 If all of these methods cannot yet help solve the problem, please check your network connection and make sure the connection is available to the Internet.
 
 
